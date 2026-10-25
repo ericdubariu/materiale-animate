@@ -58,18 +58,6 @@ h1{font:800 clamp(28px,5vw,42px)/1.08 var(--f-display);letter-spacing:-.015em;ma
 .seg.sub button[aria-selected="true"]{color:var(--ink);background:#3A2E45}
 .panel[hidden]{display:none}
 .lead2{margin:-8px 0 18px;font:400 14px/1.5 var(--f-ui);color:var(--muted);max-width:62ch}
-/* Exersat: Triviador */
-a.play{position:relative;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;text-decoration:none;color:inherit;background:radial-gradient(120% 140% at 0% 0%,#4A2550,#2B2034 60%);border:1px solid #5A3A64;border-radius:20px;padding:22px;max-width:760px;transition:transform .2s,border-color .2s}
-a.play:hover{transform:translateY(-2px);border-color:var(--accent)}
-a.play:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-a.play .ic{width:84px;height:84px;border-radius:22px;background:#1A1320;border:1px solid #5A3A64;display:grid;place-items:center}
-a.play .ic svg{width:52px;height:52px}
-a.play h3{margin:0 0 6px;font:800 24px/1.15 var(--f-display)}
-a.play p{margin:0 0 12px;font:400 14.5px/1.5 var(--f-ui);color:var(--body)}
-a.play .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-a.play .tags span{font:600 12px/1 var(--f-ui);color:var(--ink);background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:999px;padding:6px 10px}
-a.play .go2{display:inline-flex;font:700 14.5px/1 var(--f-ui);color:#1A1320;background:var(--accent);border-radius:999px;padding:11px 18px}
-@media (max-width:560px){a.play{grid-template-columns:1fr}a.play .ic{width:64px;height:64px}a.play .ic svg{width:40px;height:40px}}
 section{margin:0 0 34px}
 .sh{display:flex;align-items:center;gap:12px;margin:0 0 14px}
 .sh i{width:12px;height:12px;border-radius:4px;flex:none;background:var(--c)}
@@ -137,7 +125,7 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font:40
         <span class="on">Ecran complet</span><span class="off">Ieși din ecran complet</span>
       </button>
     </div>
-    <p class="lede">Materiale animate pentru LP-uri și cursuri, ca să înveți: în stânga explicația pe puncte, în dreapta animația. Și Triviador, ca să exersezi singur sau cu un coleg. Se completează pe măsură ce apar materiale noi.</p>
+    <p class="lede">Materiale animate pentru LP-uri și cursuri, ca să înveți: în stânga explicația pe puncte, în dreapta animația. Și simulări în formatul real al examenelor, ca să exersezi. Se completează pe măsură ce apar materiale noi.</p>
 
   </header>
   <div class="seg" role="tablist" aria-label="Secțiune">
@@ -159,16 +147,11 @@ footer{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font:40
     </div>
     </div>
     <div class="panel" id="pPractice" role="tabpanel" aria-labelledby="tPractice" hidden>
-      <p class="lead2">Întrebări din LP-uri și cursuri, pe materii: alegi ce vrei să exersezi și cum joci.</p>
-      <a class="play" href="triviador/index.html" id="playTrv">
-        <span class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c-7 0-12 5-12 12 0 5 3 8 3 13v4h18v-4c0-5 3-8 3-13 0-7-5-12-12-12z" stroke="#F09AC6"/><path d="M18 41h12M24 18v7M24 31h.01" stroke="#F3ECF6"/></svg></span>
-        <div>
-          <h3>Triviador</h3>
-          <p>Grile ca la UNIX, întrebări de LP și stații OSPE. Joci singur sau cu un coleg pe același ecran.</p>
-          <div class="tags"><span>Harta cu organe</span><span>Boss fight</span><span>Bomba</span><span>Pariul pe încredere</span><span>Circuit OSPE</span><span>Simulare de examen</span></div>
-          <span class="go2">Joacă</span>
-        </div>
-      </a>
+      <p class="lead2">Simulări în formatul real al examenelor. Alegi simularea, apoi ce intră, câte întrebări și cât de grea să fie.</p>
+      <section><div class="sh"><i style="background:var(--accent)"></i><h2>Examene UNIX (cursuri)</h2></div>
+        <div class="grid" id="simUnix"></div></section>
+      <section><div class="sh"><i style="background:var(--accent)"></i><h2>Examene de laborator</h2></div>
+        <div class="grid" id="simLp"></div></section>
     </div>
   </main>
   <footer id="statsNote" hidden>Site-ul numără anonim vizitele (fără cookie-uri și fără nume), ca să se vadă ce materiale sunt folosite.</footer>
@@ -294,11 +277,11 @@ function openDeck(d, push = true) {
   sessFlush(true);
   curDeck = d;
   sess = { id: d.id, t0: performance.now(), acc: 0, maxSlide: 0 };
-  track(d.game ? 'deschide-triviador' : 'deschide-deck', { deck: d.id, materie: d.subj });
+  track(d.game ? 'deschide-simulare' : 'deschide-deck', { deck: d.id, materie: d.subj });
   const last = d.game ? 0 : parseInt(store.get('last.' + d.id) || '0', 10) || 0;
   if (frame) frame.remove();
   frame = document.createElement('iframe');
-  frame.title = d.game ? 'Triviador' : 'Material animat'; frame.allow = 'fullscreen'; frame.setAttribute('allowfullscreen', '');
+  frame.title = d.game ? 'Simulare de examen' : 'Material animat'; frame.allow = 'fullscreen'; frame.setAttribute('allowfullscreen', '');
   frame.src = d.path + (last > 0 ? '#s' + (last + 1) : '');
   frame.addEventListener('load', onFrameLoad);
   viewer.insertBefore(frame, vbar);
@@ -345,13 +328,23 @@ addEventListener('keydown', (e) => {
 addEventListener('mousemove', () => { if (!viewer.hidden) wake(); }, { passive: true });
 addEventListener('popstate', () => {
   const id = location.hash.slice(1);
-  const d = id === TRV.id ? TRV : id && DECKS.find((x) => x.id === id);
+  const d = simById(id) ? { ...simById(id), game: true } : id && DECKS.find((x) => x.id === id);
   if (d) openDeck(d, false); else closeDeck(true);
 });
 
 /* ---------- secțiunile și lista ---------- */
 let DECKS = [], DATA = null;
-const TRV = { id: 'triviador', title: 'Triviador', path: 'triviador/index.html', subj: 'exersat', game: true };
+const SIMS = [
+  { id: 'sim-unix', kind: 'unix', title: 'Simulare UNIX', sub: 'Grile cu 5 variante (2–5 corecte) și complement simplu, notare Full Match. Alegi materiile, blocurile și câte întrebări.', fmt: 'Full Match · blocuri', subj: 'unix', path: 'sim/index.html#unix' },
+  { id: 'sim-histo', kind: 'lp', subj: 'histo', title: 'Histologie · OSPE', sub: 'Stații cu lame, 7 minute (1 citire + 6 răspuns). Lama + colorația → descrierea → DD cu o lamă (1 asemănare + 3 diferențe).', fmt: 'OSPE · cu voce tare', path: 'sim/index.html#lp=histo' },
+  { id: 'sim-anatopat', kind: 'lp', subj: 'anatopat', title: 'Anatomie patologică · OSPE', sub: 'Stații cu lame și piese, 7 minute. Pe fișa oficială: organ, leziune, definiție, descriere, cauze, complicații, DD; minim 5 puncte.', fmt: 'OSPE · fișa oficială', path: 'sim/index.html#lp=anatopat' },
+  { id: 'sim-farma', kind: 'lp', subj: 'farma', title: 'Farmacologie · OSPE', sub: 'Stații de 7 minute, răspuns cu voce tare, apoi te verifici pe punctele-cheie.', fmt: 'OSPE · cu voce tare', path: 'sim/index.html#lp=farma' },
+  { id: 'sim-micro', kind: 'lp', subj: 'micro', title: 'Microbiologie · oral', sub: 'Întrebări trase din LP 1–6, răspuns cu voce tare, apoi te verifici pe punctele-cheie.', fmt: 'Oral', path: 'sim/index.html#lp=micro' },
+  { id: 'sim-fizio', kind: 'lp', subj: 'fizio', title: 'Fiziologie · scris', sub: 'Calcule cu formulă și unitate, întrebări scurte, grile cu una sau mai multe corecte, curba de etalonare.', fmt: 'Scris', path: 'sim/index.html#lp=fizio' },
+  { id: 'sim-fiziopat', kind: 'lp', subj: 'fiziopat', title: 'Fiziopatologie · scris', sub: '2 întrebări trase din lista de 22 (un mecanism + o definiție/clasificare), 30 de minute, apoi răspunsul model.', fmt: 'Scris · 30 min', path: 'sim/index.html#lp=fiziopat' },
+  { id: 'sim-embrio', kind: 'lp', subj: 'embrio', title: 'Anatomie-Embriologie · grile', sub: 'Mai ales studii de caz; 4 variante, una sau mai multe corecte; un răspuns greșit anulează unul corect.', fmt: 'Grile · LP', path: 'sim/index.html#lp=embrio' },
+];
+const simById = (id) => SIMS.find((x) => x.id === id);
 function setTab(t, save = true) {
   const learn = t !== 'practice';
   $('tLearn').setAttribute('aria-selected', String(learn)); $('tPractice').setAttribute('aria-selected', String(!learn));
@@ -363,6 +356,20 @@ function setKind(k, save = true) {
   renderList(k === 'curs' ? 'curs' : 'lp');
   if (save) store.set('kind', k);
 }
+function renderSims() {
+  const col = (k) => (DATA && DATA.subjects[k] && DATA.subjects[k].color) || '#C2558C';
+  const card = (x) => `<a class="deck" style="--c:${x.kind === 'unix' ? '#F09AC6' : esc(col(x.subj))}" href="${esc(x.path)}" data-sim="${esc(x.id)}">
+      <h3>${esc(x.title)}</h3><p>${esc(x.sub)}</p>
+      <div class="meta"><span>${esc(x.fmt)}</span><span class="go">Începe</span></div></a>`;
+  $('simUnix').innerHTML = SIMS.filter((x) => x.kind === 'unix').map(card).join('');
+  $('simLp').innerHTML = SIMS.filter((x) => x.kind === 'lp').map(card).join('');
+  if (simsOff) document.querySelectorAll('a[data-sim]').forEach((a) => { a.dataset.off = '1'; a.removeAttribute('href'); a.style.opacity = '.65'; a.style.pointerEvents = 'none'; a.querySelector('.go').textContent = 'Se pregătește'; });
+}
+let simsOff = false;
+$('pPractice').addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-sim]'); if (!a || a.dataset.off || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+  e.preventDefault(); openDeck({ ...simById(a.dataset.sim), game: true });
+});
 $('tLearn').addEventListener('click', () => setTab('learn'));
 $('tPractice').addEventListener('click', () => setTab('practice'));
 $('tLp').addEventListener('click', () => setKind('lp'));
@@ -393,13 +400,10 @@ $('list').addEventListener('click', (e) => {
   const d = DECKS.find((x) => x.id === a.dataset.id); if (!d) return;
   e.preventDefault(); openDeck(d);
 });
-$('playTrv').addEventListener('click', (e) => { if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return; e.preventDefault(); openDeck(TRV); });
 setTab(store.get('tab') === 'practice' ? 'practice' : 'learn', false);
-// dacă jocul nu e încă urcat, cardul spune asta în loc să deschidă o pagină goală
-fetch(TRV.path, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) throw 0; }).catch(() => {
-  const a = $('playTrv'); a.removeAttribute('href'); a.style.pointerEvents = 'none'; a.style.opacity = '.7';
-  a.querySelector('.go2').textContent = 'Se pregătește';
-});
+// dacă simulările nu sunt încă urcate, cardurile spun asta în loc să deschidă o pagină goală
+renderSims();
+fetch('sim/index.html', { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) throw 0; }).catch(() => { simsOff = true; renderSims(); });
 (async () => {
   try { DATA = await (await fetch('decks.json', { cache: 'no-cache' })).json(); }
   catch (e) { $('list').innerHTML = '<p class="err">Lista nu s-a putut încărca. Reîncarcă pagina.</p>'; return; }
@@ -408,7 +412,8 @@ fetch(TRV.path, { method: 'HEAD', cache: 'no-cache' }).then((r) => { if (!r.ok) 
   $('nCurs').textContent = DECKS.filter((x) => x.tip === 'curs').length;
   setKind(store.get('kind') === 'curs' ? 'curs' : 'lp', false);
   const start = location.hash.slice(1);
-  const d0 = start === TRV.id ? TRV : start && DECKS.find((x) => x.id === start);
+  const d0 = simById(start) ? { ...simById(start), game: true } : start && DECKS.find((x) => x.id === start);
+  renderSims();
   if (d0) openDeck(d0, false);
 })();
 </script>
