@@ -10,7 +10,8 @@ Site static (GitHub Pages) cu deck-urile animate pentru LP-uri și examenele pra
 
 ## Cum se adaugă / actualizează un deck
 
-1. Din artifactul „Tutor AI animat”, se copiază tot folderul `lp/<id>/` (fără `lib.json`).
-2. Se pune în `lp/<id>/` aici (se suprascrie dacă există).
-3. Pentru un deck nou se adaugă o intrare în `decks.json` (titlu fără data din calendar și fără „· animat”).
-4. Commit + push pe `main`; GitHub Pages se republică singur în ~1 minut.
+1. Din artifactul „Tutor AI animat” se descarcă `index.html` și toate folderele `lp/<id>/` ale deck-urilor animate (fără `lib.json`) într-un folder temporar SRC.
+2. `python3 tools/sync_from_tutor.py SRC` — copiază deck-urile, șterge ce nu mai e în tutor și rescrie `decks.json` (păstrează titlurile deja curățate).
+3. Commit + push pe `main`; GitHub Pages se republică singur în ~1 minut.
+
+Site-ul rămâne doar de vizualizare: fără chat, fără `window.claude`, fără `lib.json` (scriptul se oprește dacă găsește așa ceva).
