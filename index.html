@@ -72,13 +72,29 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
 #vbar button:hover{background:rgba(176,69,122,.85)}
 #vbar button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 #vbar svg{width:15px;height:15px}
-/* iPhone: fără Fullscreen API → explicăm „Adaugă pe ecranul principal” */
-#tip{position:fixed;inset:0;z-index:40;background:rgba(10,5,14,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px max(16px,env(safe-area-inset-bottom,0px))}
-#tip .card{width:min(460px,100%);background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 20px 16px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
-#tip h2{margin:0 0 8px;font:800 18px/1.25 var(--f-display)}
-#tip p{margin:0 0 10px;font:400 14.5px/1.5 var(--f-ui);color:var(--body)}
-#tip ol{margin:0 0 14px;padding-left:20px;font:500 14.5px/1.6 var(--f-ui);color:var(--ink)}
-#tip button{width:100%;font:700 14px/1 var(--f-ui);color:#1A1320;background:var(--accent);border:0;border-radius:12px;padding:13px;cursor:pointer}
+/* ghidul „pune site-ul pe ecranul principal”: pe tot ecranul, la intrarea de pe telefon/tabletă */
+#guide{position:fixed;inset:0;z-index:40;background:radial-gradient(120% 80% at 50% 0%,#3A2340,#1A1320 70%);overflow:auto;-webkit-overflow-scrolling:touch;padding:max(20px,env(safe-area-inset-top,0px)) 16px max(20px,env(safe-area-inset-bottom,0px))}
+#guide .in{width:min(560px,100%);margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:100%;justify-content:center}
+#guide .badge{align-self:flex-start;font:700 11px/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:#1A1320;background:var(--accent);border-radius:999px;padding:6px 10px}
+#guide h2{margin:0;font:800 clamp(22px,6vw,30px)/1.15 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+#guide .why{margin:0;font:400 15px/1.5 var(--f-ui);color:var(--body)}
+#gtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#140D1C;border:1px solid var(--line);border-radius:14px;padding:5px}
+#gtabs button{font:700 14px/1 var(--f-ui);color:var(--muted);background:transparent;border:0;border-radius:10px;padding:12px 8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#gtabs button[aria-selected="true"]{color:#1A1320;background:var(--accent)}
+#gtabs button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.steps li{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.steps li>span{width:30px;height:30px;border-radius:50%;background:#B0457A;color:#fff;font:700 14px/30px var(--f-ui);text-align:center}
+.steps b{color:var(--ink)}
+.steps p{margin:0;font:400 14.5px/1.5 var(--f-ui);color:var(--body)}
+.steps small{display:block;margin-top:4px;font:400 12.5px/1.45 var(--f-ui);color:var(--faint)}
+.ico{display:inline-flex;align-items:center;justify-content:center;vertical-align:-5px;width:24px;height:24px;border-radius:6px;background:#3A2E45;color:#fff;margin:0 2px}
+.ico svg{width:16px;height:16px}
+#gInstall{font:700 15px/1 var(--f-ui);color:#1A1320;background:#9dff8a;border:0;border-radius:12px;padding:14px;cursor:pointer}
+.gact{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+#gOk{font:700 15px/1 var(--f-ui);color:#1A1320;background:var(--accent);border:0;border-radius:12px;padding:14px;cursor:pointer}
+#gNever{font:600 13.5px/1 var(--f-ui);color:var(--muted);background:transparent;border:0;padding:10px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#gOk:focus-visible,#gNever:focus-visible,#gInstall:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media (max-width:560px){.top{flex-direction:column;gap:6px}.fs{align-self:stretch;justify-content:center;margin-bottom:16px}}
 @media (max-height:500px){#vbar button{font-size:11px;padding:6px 10px}#vbar svg{width:13px;height:13px}}
 @media (prefers-reduced-motion:reduce){a.deck,#vbar{transition:none}a.deck:hover{transform:none}}
@@ -116,17 +132,32 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
   </div>
 </div>
 
-<div id="tip" hidden role="dialog" aria-modal="true" aria-labelledby="tipH">
-  <div class="card">
-    <h2 id="tipH">Ecran complet pe iPhone</h2>
-    <p>Safari de pe iPhone nu lasă o pagină să treacă singură pe ecran complet. Merge așa, o singură dată:</p>
-    <ol>
-      <li>Apasă butonul <b>Partajează</b> (pătratul cu săgeata în sus).</li>
-      <li>Alege <b>Adaugă pe ecranul principal</b>.</li>
-      <li>Deschide site-ul de pe iconița nouă: pornește pe tot ecranul, fără bara browserului.</li>
+<div id="guide" hidden role="dialog" aria-modal="true" aria-labelledby="gH">
+  <div class="in">
+    <span class="badge">Important</span>
+    <h2 id="gH">Pune site-ul pe ecranul principal ca să‑l vezi pe tot ecranul</h2>
+    <p class="why">Din browser, slide-urile sunt mici și bara browserului ocupă loc. Dacă adaugi site-ul pe ecranul principal și îl deschizi de pe iconiță, pornește pe <b>tot ecranul</b>, ca o aplicație. Se face o singură dată.</p>
+    <div id="gtabs" role="tablist" aria-label="Tipul telefonului">
+      <button type="button" role="tab" id="tabIos" aria-controls="pIos" aria-selected="true">iPhone / iPad</button>
+      <button type="button" role="tab" id="tabAnd" aria-controls="pAnd" aria-selected="false">Android</button>
+    </div>
+    <ol class="steps" id="pIos" role="tabpanel" aria-labelledby="tabIos">
+      <li><span>1</span><p>Deschide site-ul în <b>Safari</b> și apasă <b>Partajează</b> <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11v9h12v-9"/></svg></span><small>Pe iPhone e jos, pe iPad sus, lângă adresă. Pe iOS-urile noi apasă întâi <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span> (cele trei puncte de lângă adresă), apoi Partajează. În Chrome pe iPhone, Partajează e în bara de adresă.</small></p></li>
+      <li><span>2</span><p>Derulează lista și alege <b>Adaugă pe ecranul principal</b> <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg></span><small>În engleză: „Add to Home Screen”. Dacă nu-l vezi, apasă „Mai multe” / „Editează acțiunile”.</small></p></li>
+      <li><span>3</span><p>Lasă pornit <b>Deschide ca aplicație web</b> (dacă apare) și apasă <b>Adaugă</b>.</p></li>
+      <li><span>4</span><p>Închide Safari și deschide site-ul de pe <b>iconița nouă „Materiale”</b> de pe ecran. Ține telefonul pe orizontală.</p></li>
     </ol>
-    <p>Ține telefonul pe orizontală pentru slide-uri mai mari.</p>
-    <button type="button" id="tipOk">Am înțeles</button>
+    <ol class="steps" id="pAnd" role="tabpanel" aria-labelledby="tabAnd" hidden>
+      <li><span>1</span><p>Deschide site-ul în <b>Chrome</b> și apasă meniul <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></span> din dreapta sus.</p></li>
+      <li><span>2</span><p>Alege <b>Adaugă pe ecranul de pornire</b> sau <b>Instalează aplicația</b>.<small>În engleză: „Add to Home screen” / „Install app”. Pe Samsung Internet: meniul ☰ jos → „Adaugă pagina la” → „Ecran de pornire”.</small></p></li>
+      <li><span>3</span><p>Apasă <b>Instalează</b> / <b>Adaugă</b> și confirmă.</p></li>
+      <li><span>4</span><p>Deschide site-ul de pe <b>iconița nouă „Materiale”</b>. Pornește pe tot ecranul. Ține telefonul pe orizontală.</p></li>
+    </ol>
+    <button type="button" id="gInstall" hidden>Instalează acum pe ecranul principal</button>
+    <div class="gact">
+      <button type="button" id="gOk">Am înțeles</button>
+      <button type="button" id="gNever">Nu mai arăta mesajul ăsta</button>
+    </div>
   </div>
 </div>
 
@@ -147,7 +178,7 @@ function syncFs() {
 }
 async function toggleFs() {
   if (fsEl()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
-  if (!canFs) { $('tip').hidden = false; $('tipOk').focus(); return; }
+  if (!canFs) { openGuide(); return; }
   try {
     const r = root.requestFullscreen || root.webkitRequestFullscreen;
     const p = r.call(root, { navigationUI: 'hide' }); if (p && p.then) await p;
@@ -159,8 +190,29 @@ document.addEventListener('fullscreenchange', syncFs);
 document.addEventListener('webkitfullscreenchange', syncFs);
 document.querySelectorAll('[data-fs]').forEach((b) => b.addEventListener('click', toggleFs));
 if (standalone) document.querySelectorAll('[data-fs]').forEach((b) => (b.hidden = true)); // lansat de pe ecranul principal: e deja pe tot ecranul
-$('tipOk').addEventListener('click', () => { $('tip').hidden = true; });
-$('tip').addEventListener('click', (e) => { if (e.target === $('tip')) $('tip').hidden = true; });
+
+/* ---------- ghidul de la intrare (telefon / tabletă) ---------- */
+const ua = navigator.userAgent;
+const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/i.test(ua);
+const touchDevice = isIOS || isAndroid || matchMedia('(pointer: coarse)').matches;
+function pickTab(t) {
+  const ios = t === 'ios';
+  $('tabIos').setAttribute('aria-selected', String(ios)); $('tabAnd').setAttribute('aria-selected', String(!ios));
+  $('pIos').hidden = !ios; $('pAnd').hidden = ios;
+}
+$('tabIos').addEventListener('click', () => pickTab('ios'));
+$('tabAnd').addEventListener('click', () => pickTab('and'));
+function openGuide() { pickTab(isAndroid ? 'and' : 'ios'); $('guide').hidden = false; $('guide').scrollTop = 0; document.body.classList.add('viewing'); $('gOk').focus({ preventScroll: true }); }
+function closeGuide() { $('guide').hidden = true; if ($('viewer').hidden) document.body.classList.remove('viewing'); }
+$('gOk').addEventListener('click', closeGuide);
+$('gNever').addEventListener('click', () => { store.set('guide.never', '1'); closeGuide(); });
+// Chrome pe Android poate instala direct, dintr-un buton
+let installEv = null;
+addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEv = e; $('gInstall').hidden = false; });
+$('gInstall').addEventListener('click', async () => { if (!installEv) return; installEv.prompt(); try { await installEv.userChoice; } catch {} installEv = null; $('gInstall').hidden = true; closeGuide(); });
+addEventListener('appinstalled', () => { store.set('guide.never', '1'); });
+if (touchDevice && !standalone && store.get('guide.never') !== '1') openGuide();
 
 /* ---------- vizualizatorul de deck ---------- */
 const viewer = $('viewer'), vbar = $('vbar');
