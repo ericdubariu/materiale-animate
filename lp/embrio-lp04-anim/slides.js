@@ -195,7 +195,7 @@ export const SLIDES = [
   },
   {
     scene: 'arches2', kick: 'Partea B · Arcurile aortice (2)', title: 'Arcurile IV și VI: stânga nu e ca dreapta',
-    hud: ['vedere frontală: dreapta pacientului = stânga ecranului', 'gri = nu din arcuri'],
+    hud: ['vedere frontală: dreapta pacientului = stânga ecranului', 'culoarea = arcul de origine · gri = nu din arcuri'],
     points: [
       { h: 'Arcul IV stâng', d: ['contribuie la !!arcul aortic!!'] },
       { h: 'Arcul IV drept', d: ['formează **partea proximală a a. subclavii drepte**'] },
@@ -208,7 +208,7 @@ export const SLIDES = [
   },
   {
     scene: 'aortaBr', kick: 'Partea B · Aorta dorsală, viteline, ombilicale', title: 'Două aorte dorsale devin una; viteline → intestin, ombilicale → ligamente',
-    hud: ['culorile = sursa, nu oxigenarea', 'sus: fuziunea + secțiune · jos: din profil'],
+    hud: ['violet = amestecat (aorta fetală) · albastru = neoxigenat', 'gri = ligament'],
     points: [
       { h: 'Aorta dorsală: inițial bilaterală', d: ['două aorte dorsale, câte una de fiecare parte', '**fuzionează treptat** → aorta descendentă'] },
       { h: 'Ramurile ventrale (viscerale) = arterele viteline', d: ['inițial vascularizează **sacul vitelin**', 'după remodelare: 3 trunchiuri = !!trunchiul celiac, AMS, AMI!! → tubul digestiv; + aa. bronșice și esofagiene (figura din LP)'] },

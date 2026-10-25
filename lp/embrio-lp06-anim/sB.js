@@ -303,7 +303,7 @@ export function occulta() {
   const PH = [['p08_x118', 'Depresiune (gropiță) lombosacrată', CR], ['p08_x119', 'Pilozitatea caracteristică', CR], ['sbo_imagistica', 'a, d: occulta S1 · b: filum terminale gras (IRM)', 'LP: doi.org/10.3389/fped.2022.903507'], ['sbo_imagistica', 'c: lombarizare + occulta pe L6 · e: occulta S2', 'LP: doi.org/10.3389/fped.2022.903507']];
   return {
     home: HOME,
-    anchors: [[150, 90], [150, 90], [150, 90], [150, 90]].map((a, k) => [a[0] + k * 0, a[1]]),
+    anchors: [[190, 90], [810, 90], [190, 470], [810, 470]],
     phase: (i) => ['semnul de pe piele', 'smocul de păr', 'CT + IRM', 'un nivel mai jos / L6'][i] || 'cea mai frecventă formă',
     draw(g, t, b) {
       bg(g);
@@ -437,7 +437,7 @@ export function microCauses() {
   const curveY = (x, stop) => { const u = (x - X0) / (X1 - X0); const full = Y0 - (Y0 - YT) * Math.sqrt(u); if (stop === null || x <= stop) return full; const us = (stop - X0) / (X1 - X0); const ys = Y0 - (Y0 - YT) * Math.sqrt(us); return ys - (x - stop) * 0.03; };
   return {
     home: HOME,
-    anchors: [[300, 760], [300, 760], [300, 760], [300, 760], [300, 760]].map((a, k) => [180 + k * 160, 790]),
+    anchors: [0, 1, 2, 3, 4].map((k) => [180 + k * 160, 735]),
     phase: (i) => GRP[i] || 'tot ce oprește creșterea creierului',
     draw(g, t, b) {
       bg(g);

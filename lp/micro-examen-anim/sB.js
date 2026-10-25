@@ -519,83 +519,95 @@ function cellPoly(g, x, y, s, col, o = {}) {
   if (o.nuclei) o.nuclei.forEach(([dx, dy]) => dot(g, x + dx, y + dy, s * 0.22, '#5a4bb5', { ow: 1.5 })); else dot(g, x, y, s * 0.28, '#5a4bb5', { ow: 1.5 });
   g.restore();
 }
-export function b_cells() {
-  /* CE TREBUIE SĂ SE VADĂ
-     Sus (vas de cultură văzut de sus, 2 vase):
-     1 normale: celulele se atașează și se divid până acoperă peretele → monostrat → SE OPRESC (inhibiția de contact).
+export function b_cells({ spec } = {}) {
+  /* CE TREBUIE SĂ SE VADĂ (o singură scenă, două slide-uri: part 0 = culturile celulare (sus), part 1 = izolatul viral (jos))
+     PART 0 — sus, 2 vase văzute de sus:
+     0 normale: celulele se atașează și se divid până acoperă peretele → monostrat → SE OPRESC (inhibiția de contact).
        tumorale: continuă să se dividă după acoperire → al doilea strat peste primul + celule care plutesc (suspensie).
-     2 primare (direct din țesut) → linii stabilizate; subcultivarea: EDTA desprinde celulele și le împarte în 2 vase noi;
+     1 subcultivarea: EDTA desprinde celulele (se rotunjesc) din vasul plin și le mută ÎNTR-UN VAS NOU (săgeata merge de la vasul vechi la cel nou);
        contorul de pasaje: adulte 4–6, embrionare 60–80, linii nelimitat.
-     3 mediul are indicator (roșu fenol): pe măsură ce celulele cresc, mediul se acidifică și trece din roșu în galben → semn că trebuie subcultivat.
-     Jos (monostrat mărit):
-     4 inocularea: mediul e scos, suspensia virală (puncte violet) stă 1 h pe celule, apoi mediul de întreținere; după zile:
-       efect citopatic = celulele se rotunjesc, se desprind, se adună în ciorchine, unele fuzionează în sinciții (o celulă mare cu mai mulți nuclei).
-     5 hemadsorbția: celulele infectate fără efect citopatic (ex. influenza) — hematiile adăugate se lipesc DOAR de celulele infectate.
-       Apoi specificul: anticorpii marcați se leagă de antigenul viral (Ag-Ac) / PCR → afli CARE virus. */
+     2 mediul are indicator (roșu fenol): pe măsură ce celulele cresc, mediul se acidifică și trece din ROȘU în GALBEN → semn că trebuie subcultivat.
+     PART 1 — jos, monostratul mărit:
+     0 monostratul normal + inocularea, în ordine: mediul (roz) e scos → suspensia virală (puncte violet coboară pe celule) 1 h → mediul de
+       întreținere (roz-pal) → urmărești zilele următoare.
+     1 efectul citopatic: DOAR celulele infectate se rotunjesc, se desprind, se adună în ciorchine; două fuzionează într-un sincițiu (mai mulți nuclei).
+     2 hemadsorbția (virus fără efect citopatic, ex. influenza): celulele infectate arată normal; hematiile adăugate vin de sus și se lipesc
+       DOAR de celulele infectate; restul cad / sunt spălate.
+     3 specificul: anticorpii (Y galbeni) se leagă doar de antigenul viral din celulele infectate (Ag-Ac); PCR → afli CARE virus. */
+  const part = (spec && spec.sceneOpts && spec.sceneOpts.part) || 0;
   const F1 = [250, 200], F2 = [690, 200], FW = 300, FH = 190;
-  const GRID = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 9; c++) GRID.push([140 + c * 60 + (r % 2) * 30, 600 + r * 52]);
+  const GRID = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 9; c++) GRID.push([150 + c * 80 + (r % 2) * 40, 600 + r * 66]);
   const INF = new Set([3, 4, 12, 13, 21, 22, 23]);
+  const pos = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 7; c++) pos.push([-120 + c * 40 + (r % 2) * 20, -60 + r * 40]);
   return {
     home: HOME,
-    anchors: [[F1[0] - FW / 2 + 20, F1[1] - FH / 2 - 18], [F2[0] + FW / 2 - 10, F2[1] - FH / 2 - 18], [930, 330], [130, 520], [770, 520]],
-    phase: (i) => ['inhibiția de contact', 'primare vs. linii', 'ce le ține în viață', 'inoculare → efect citopatic', 'hemadsorbție → specific'][i] || 'virusurile cresc doar în celule vii',
+    anchors: part === 0 ? [[F1[0] - FW / 2 + 20, F1[1] - FH / 2 - 18], [F2[0] + FW / 2 - 10, F2[1] - FH / 2 - 18], [F1[0] + FW / 2 - 10, F1[1] + FH / 2 + 66]]
+      : [[150, 520], [500, 520], [820, 520], [880, 880]],
+    phase: (i) => (part === 0 ? ['inhibiția de contact', 'primare vs. linii', 'ce le ține în viață'][i] || 'virusurile cresc doar în celule vii'
+      : ['monostrat → inoculare', 'efect citopatic', 'hemadsorbție', 'nespecific vs. specific'][i] || 'ce face virusul celulelor'),
     draw(g, t, b) {
-      bg(g); const tt = TT(t); const p = P(b, t, 5);
-      const al = (...k) => (b.i < 0 || k.includes(b.i) ? 1 : 0.42);
-      // ---- vasele de sus
+      bg(g); const tt = TT(t);
+      const bT = part === 0 ? b : { i: 9, bt: 0, bd: 1 }, bV = part === 1 ? b : { i: -9, bt: 0, bd: 1 };
+      const pT = P(bT, t, 3), pV = P(bV, t, 4);
+      const aTop = part === 0 ? 1 : 0.4, aBot = part === 1 ? 1 : 0.4;
+      const alT = (...k) => aTop * (bT.i < 0 || k.includes(bT.i) || part === 1 ? 1 : 0.42);
       const flask = (C, inner, a, med) => {
         g.save(); g.globalAlpha = a; g.fillStyle = med; g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.roundRect(C[0] - FW / 2, C[1] - FH / 2, FW, FH, 18); g.fill(); g.stroke();
-        g.fillStyle = 'rgba(220,245,255,.2)'; g.beginPath(); g.roundRect(C[0] + FW / 2 - 4, C[1] - 26, 44, 52, 8); g.fill(); g.stroke(); g.restore();
-        g.save(); g.globalAlpha = a; g.beginPath(); g.roundRect(C[0] - FW / 2 + 6, C[1] - FH / 2 + 6, FW - 12, FH - 12, 14); g.clip(); inner(); g.restore();
+        g.fillStyle = 'rgba(220,245,255,.2)'; g.beginPath(); g.roundRect(C[0] + FW / 2 - 4, C[1] - 26, 44, 52, 8); g.fill(); g.stroke();
+        g.beginPath(); g.roundRect(C[0] - FW / 2 + 6, C[1] - FH / 2 + 6, FW - 12, FH - 12, 14); g.clip(); inner(); g.restore();
       };
-      const k1 = b.i === 1 || b.i === 2 ? b.i : b.i < 0 ? 0 : 0;
-      const g0 = b.i === 0 ? p(0) : 1; const acid = b.i === 2 ? p(2) : 0;
-      const medium = mix('#e86a7a', '#f2cf4a', acid);
-      const pos = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 7; c++) pos.push([F1[0] - 120 + c * 40 + (r % 2) * 20, F1[1] - 60 + r * 40]);
-      if (b.i !== 1) {
-        flask(F1, () => { const n = Math.round(lerp(3, pos.length, g0)); pos.slice(0, n).forEach(([x, y], j) => cellPoly(g, x, y, 22, '#f3dccf')); }, al(0, 2), medium);
-        flask(F2, () => { const n = Math.round(lerp(3, pos.length, g0)); pos.slice(0, n).forEach(([x, y]) => cellPoly(g, x + 440, y, 22, '#f3c7b8'));
-          const up = clamp(g0 * 2 - 1); for (let j = 0; j < 14 * up; j++) cellPoly(g, F2[0] - 110 + (j * 47) % 220, F2[1] - 50 + ((j * 31) % 100), 20, '#e8a898', { round: true, alpha: 0.95 });
-          for (let j = 0; j < 4 * up; j++) cellPoly(g, F2[0] - 90 + j * 60, F2[1] - 72 + Math.sin(tt * 2 + j) * 8, 13, '#f6d0c4', { round: true }); }, al(0), mix('#e86a7a', '#f2cf4a', b.i === 2 ? 0 : 0));
-        txt(g, 'normale: monostrat, apoi se opresc', F1[0], F1[1] + FH / 2 + 28, 16, M.cream, { alpha: al(0, 2) });
-        txt(g, 'tumorale: mai multe straturi + suspensie', F2[0], F2[1] + FH / 2 + 28, 16, M.cream, { alpha: al(0) });
-        if (b.i === 2 || b.i < 0) { txt(g, 'indicator: roșu → galben\n= acid → subcultivezi', F1[0], 40, 15, '#ffe9a8', { alpha: al(2) }); txt(g, 'aseptic · tampon · antibiotice\ntemperatură constantă + 10% CO₂', F2[0], F2[1] + FH / 2 + 60, 14, '#d8d0c4', { alpha: al(2) }); }
+      // ================= SUS
+      if (bT.i !== 1) {
+        const g0 = bT.i === 0 ? pT(0) : 1; const acid = bT.i === 2 ? pT(2) : 0;
+        flask(F1, () => { const n = Math.round(lerp(3, pos.length, g0)); pos.slice(0, n).forEach(([x, y]) => cellPoly(g, F1[0] + x, F1[1] + y, 22, '#f3dccf')); }, alT(0, 2), mix('#e86a7a', '#f2cf4a', acid));
+        flask(F2, () => { const n = Math.round(lerp(3, pos.length, g0)); pos.slice(0, n).forEach(([x, y]) => cellPoly(g, F2[0] + x, F2[1] + y, 22, '#f3c7b8'));
+          const up = clamp(g0 * 2 - 1); for (let j = 0; j < 14 * up; j++) cellPoly(g, F2[0] - 110 + (j * 47) % 220, F2[1] - 50 + ((j * 31) % 100), 20, '#e8a898', { round: true });
+          for (let j = 0; j < 4 * up; j++) cellPoly(g, F2[0] - 90 + j * 60, F2[1] - 72 + Math.sin(tt * 2 + j) * 8, 13, '#f6d0c4', { round: true }); }, alT(0), '#e86a7a');
+        txt(g, 'normale: monostrat, apoi se opresc', F1[0], F1[1] + FH / 2 + 28, 16, M.cream, { alpha: alT(0, 2) });
+        txt(g, 'tumorale: mai multe straturi + suspensie', F2[0], F2[1] + FH / 2 + 28, 16, M.cream, { alpha: alT(0) });
+        if (part === 0 && (bT.i === 2 || bT.i < 0)) { txt(g, 'indicator: roșu → galben = acid → subcultivezi', F1[0] + 30, F1[1] + FH / 2 + 66, 15, '#ffe9a8'); txt(g, 'aseptic · tampon · antibiotice\n37 °C constant + 10% CO₂', F2[0], F2[1] + FH / 2 + 74, 14, '#d8d0c4'); }
       } else {
-        // 1 · subcultivarea: EDTA desprinde celulele dintr-un vas și le împarte în 2
-        const u = p(1);
-        flask([F1[0], F1[1]], () => pos.forEach(([x, y], j) => cellPoly(g, x + (j % 2 ? 1 : -1) * 40 * clamp(u * 2 - 0.4), y, 22, '#f3dccf', { round: u > 0.2, alpha: 1 - clamp(u * 2 - 1) })), 1, '#e86a7a');
-        flask([F2[0], F2[1] - 50], () => pos.slice(0, Math.round(14 * clamp(u * 2 - 1))).forEach(([x, y]) => cellPoly(g, x + 440, y - 30, 20, '#f3dccf', { round: true })), 1, '#e86a7a');
-        arr(g, F1[0] + FW / 2 + 50, F1[1], F2[0] - FW / 2 - 10, F2[1] - 50, '#fff3e6', 5, 1);
-        txt(g, 'EDTA (versen) după 5–7 zile', 470, 70, 16, '#ffe9a8');
-        txt(g, 'primare: direct din țesut', F1[0], F1[1] + FH / 2 + 28, 16, M.cream);
-        const pas = [['adulte', '4–6 pasaje'], ['embrionare', '60–80'], ['linii (HeLa, Vero)', 'nelimitat']];
-        pas.forEach(([a1, a2], j) => { txt(g, a1, F2[0] - 140, 236 + j * 34, 16, M.cream, { align: 'left', alpha: clamp(u * 3 - j) }); txt(g, a2, F2[0] + 150, 236 + j * 34, 16, C2, { align: 'right', alpha: clamp(u * 3 - j) }); });
+        const u = pT(1);
+        flask(F1, () => pos.forEach(([x, y], j) => cellPoly(g, F1[0] + x, F1[1] + y, 22, '#f3dccf', { round: u > 0.15, alpha: 1 - clamp(u * 2 - 0.8) })), 1, '#e86a7a');
+        flask(F2, () => pos.slice(0, Math.round(16 * clamp(u * 2 - 0.9))).forEach(([x, y]) => cellPoly(g, F2[0] + x * 1.4, F2[1] + y * 1.3, 18, '#f3dccf', { round: true })), 1, '#e86a7a');
+        if (u > 0.3 && u < 0.85) for (let j = 0; j < 5; j++) { const v = loopT(tt * 0.7 + j * 0.2, 1); cellPoly(g, lerp(F1[0] + FW / 2, F2[0] - FW / 2, v), F1[1] - 30 + j * 14, 9, '#f3dccf', { round: true }); }
+        arr(g, F1[0] + FW / 2 + 40, F1[1] + 60, F2[0] - FW / 2 - 6, F2[1] + 60, '#fff3e6', 5, 1);
+        txt(g, 'EDTA (versen) după 5–7 zile', 470, 60, 16, '#ffe9a8');
+        txt(g, 'primare: direct din țesut', F1[0], F1[1] + FH / 2 + 28, 16, M.cream); txt(g, 'vas nou (pasaj)', F2[0], F2[1] + FH / 2 + 28, 16, M.cream);
+        [['adulte', '4–6 pasaje'], ['embrionare', '60–80'], ['linii (HeLa, Vero)', 'nelimitat']].forEach(([a1, a2], j) => { const y = 370 + j * 32; txt(g, a1, 330, y, 17, M.cream, { align: 'left', alpha: clamp(u * 3 - j) }); txt(g, a2, 680, y, 17, C2, { align: 'right', alpha: clamp(u * 3 - j) }); });
       }
-      // ---- monostratul mărit (jos)
-      panel(g, 80, 470, 840, 420, { fill: 'rgba(255,240,228,.04)' });
-      const u3 = b.i === 3 ? p(3) : b.i === 4 ? 1 : b.i < 0 ? loopT(tt, 9) : 0;
-      const ph = (a, z) => clamp((u3 - a) / (z - a));
-      const inoc = ph(0, 0.25), wait = ph(0.25, 0.4), cpe = ph(0.4, 0.95);
-      const hads = b.i === 4 ? p(4) : 0;
-      // supernatantul: mediu → scos → suspensie virală → mediu de întreținere
-      const supC = b.i === 3 || (b.i < 0 && u3 > 0) ? (inoc < 0.4 ? '#e86a7a' : wait < 1 ? '#c9b6e8' : '#f0a0a8') : '#e86a7a';
-      const supA = b.i === 3 || b.i < 0 ? (inoc > 0.2 && inoc < 0.4 ? 0.15 : 0.55) : 0.55;
-      g.save(); g.globalAlpha = supA * al(3, 4); g.fillStyle = supC; g.fillRect(100, 500, 800, 66); g.restore();
-      const stepLab = u3 <= 0 ? 'monostrat normal' : inoc < 0.4 ? 'scoți mediul' : wait < 1 ? 'suspensie virală 1 h' : cpe < 1 ? 'mediu de întreținere → urmărești zilele' : 'efect citopatic';
-      if (b.i === 3 || b.i < 0) txt(g, stepLab, 500, 532, 17, M.cream, { alpha: al(3) });
-      if ((b.i === 3 || b.i < 0) && inoc > 0.4 && wait < 1) for (let j = 0; j < 12; j++) { const v = loopT(tt * 0.6 + j * 0.083, 1); dot(g, 130 + j * 64, lerp(510, 600, v), 5, '#8a4fd0', { ow: 1.5, alpha: Math.sin(v * Math.PI) }); }
+      // ================= JOS: monostratul mărit
+      panel(g, 70, 470, 860, 440, { fill: 'rgba(255,240,228,.04)' });
+      g.save(); g.globalAlpha = aBot;
+      const s0 = pV(0), s1 = pV(1), s2 = pV(2), s3 = pV(3);
+      // supernatantul (bara de sus): mediu → scos → suspensie virală 1 h → mediu de întreținere
+      const ph = (a, z) => clamp((s0 - a) / (z - a));
+      const out = ph(0.1, 0.3), vir = ph(0.3, 0.6), keep = ph(0.6, 0.85);
+      const supC = keep > 0 ? mix('#c9b6e8', '#f2b6bc', keep) : vir > 0 ? '#c9b6e8' : '#e86a7a';
+      const supA = vir > 0 || keep > 0 ? 0.7 : 0.7 * (1 - out);
+      g.save(); g.globalAlpha *= supA; g.fillStyle = supC; g.fillRect(90, 490, 820, 56); g.restore();
+      const lab0 = bV.i <= 0 ? (s0 <= 0.1 ? 'mediul de cultură' : out < 1 ? 'scoți mediul' : vir < 1 ? 'suspensie virală 1 h' : 'mediu de întreținere, mai sărac → urmărești zilele') : bV.i === 1 ? 'zilele următoare' : bV.i === 2 ? 'hematii adăugate' : 'anticorpi marcați (Ag-Ac) · PCR';
+      txt(g, lab0, 500, 518, 17, M.cream);
+      if (bV.i === 0 && vir > 0 && vir < 1) for (let j = 0; j < 12; j++) { const v = loopT(tt * 0.6 + j * 0.083, 1); dot(g, 120 + j * 68, lerp(500, 600, v), 5, '#8a4fd0', { ow: 1.5, alpha: Math.sin(v * Math.PI) }); }
+      const cpe = bV.i === 1 ? s1 : 0;
       GRID.forEach(([x, y], j) => {
         const inf = INF.has(j);
-        if (b.i === 4) { cellPoly(g, x, y, 31, inf ? '#e9cfe8' : '#f3dccf', { alpha: al(4) }); if (inf) for (let q = 0; q < 4; q++) { const a = q * 1.57 + 0.7; const d = lerp(70, 24, hads); rbcD(g, x + Math.cos(a) * d, y + Math.sin(a) * d, 9, '#d8303f', hads); }
-          else if (hads > 0) rbcD(g, x + 20, lerp(500, 880, clamp(hads * 1.2)) , 8, '#d8303f', 1 - hads); return; }
-        if (!inf || cpe <= 0) { cellPoly(g, x, y, 31, '#f3dccf', { alpha: al(3) }); return; }
-        if (j === 21 || j === 22) { if (j === 21) { const pth = new Path2D(); pth.ellipse(x + 30, y, 30 + 30 * cpe, 30, 0, 0, 7); g.save(); g.globalAlpha = al(3); g.fillStyle = mix('#f3dccf', '#e7bfe6', cpe); g.fill(pth); g.strokeStyle = OUT; g.lineWidth = 3; g.stroke(pth); g.restore(); [[-10, -6], [16, 8], [40, -8], [62, 6]].forEach(([dx, dy]) => dot(g, x + dx, y + dy, 6, '#5a4bb5', { ow: 1.5, alpha: al(3) })); } return; }
-        const dx = (j % 3 - 1) * 14 * cpe, dy = -8 * cpe;
-        cellPoly(g, x + dx, y + dy, 31 * (1 - 0.35 * cpe), mix('#f3dccf', '#e7bfe6', cpe), { round: cpe > 0.3, alpha: al(3) });
+        if (!inf || bV.i !== 1) {
+          cellPoly(g, x, y, 34, inf && bV.i === 3 ? mix('#f3dccf', '#e9cfe8', s3) : '#f3dccf');
+          if (inf && bV.i === 2) for (let q = 0; q < 4; q++) { const a = q * 1.57 + 0.7; const d = lerp(150, 28, s2); rbcD(g, x + Math.cos(a) * d * 0.4, lerp(470, y + Math.sin(a) * 28, s2), 10, '#d8303f', clamp(s2 * 3)); }
+          if (inf && bV.i === 3) for (let q = 0; q < 3; q++) { const a = q * 2.1 + 0.4; const X = x + Math.cos(a) * 22, Y = lerp(470, y + Math.sin(a) * 22, s3); g.save(); g.strokeStyle = OUT; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath(); g.moveTo(X, Y); g.lineTo(X, Y - 14); g.moveTo(X, Y - 14); g.lineTo(X - 8, Y - 24); g.moveTo(X, Y - 14); g.lineTo(X + 8, Y - 24); g.stroke(); g.strokeStyle = '#ffe36e'; g.lineWidth = 3.5; g.stroke(); g.restore(); }
+          return;
+        }
+        if (j === 21 || j === 22) { if (j === 21) { const pth = new Path2D(); pth.ellipse(x + 40, y, 34 + 40 * cpe, 34 - 4 * cpe, 0, 0, 7); g.save(); g.fillStyle = mix('#f3dccf', '#e7bfe6', cpe); g.fill(pth); g.strokeStyle = OUT; g.lineWidth = 3; g.stroke(pth); g.restore(); [[-10, -8], [20, 8], [52, -8], [80, 6]].forEach(([dx, dy]) => dot(g, x + dx, y + dy, 7, '#5a4bb5', { ow: 1.5 })); } return; }
+        const dx = (j % 3 - 1) * 16 * cpe, dy = -10 * cpe;
+        cellPoly(g, x + dx, y + dy, 34 * (1 - 0.35 * cpe), mix('#f3dccf', '#e7bfe6', cpe), { round: cpe > 0.3 });
       });
-      if (b.i === 3 && cpe > 0.6) { txt(g, 'sinciții', 380, 880, 15, '#e9cfe8'); txt(g, 'rotunjite · desprinse · ciorchine', 640, 880, 15, '#e9cfe8'); }
-      if (b.i === 4) { pill(g, 300, 870, 290, 34, '#f6efe0', 'nespecifice: CPE, hemadsorbție…', { size: 14, alpha: al(4) }); pill(g, 700, 870, 290, 34, '#9ff0dd', 'specifice: Ag-Ac, PCR', { size: 14, alpha: clamp(hads * 2 - 1) }); }
-      hl(g, b, 0, 470, 200, 470, 140); hl(g, b, 3, 500, 680, 430, 200); hl(g, b, 4, 500, 680, 430, 200);
+      if (bV.i === 2) for (let q = 0; q < 6; q++) { const v = loopT(tt * 0.4 + q * 0.17, 1); rbcD(g, 200 + q * 110, lerp(560, 900, v), 9, '#d8303f', (1 - v) * clamp(s2 * 2)); }
+      if (bV.i === 1 && cpe > 0.6) { txt(g, 'sincițiu', 330, 895, 16, '#e9cfe8'); txt(g, 'rotunjite · desprinse · ciorchine', 640, 895, 16, '#e9cfe8'); }
+      if (bV.i === 3) { pill(g, 300, 890, 330, 32, '#f6efe0', 'nespecifice: arată CĂ se replică', { size: 14, alpha: s3 }); pill(g, 700, 890, 300, 32, '#9ff0dd', 'specifice: arată CARE virus', { size: 14, alpha: s3 }); }
+      g.restore();
+      if (part === 1) { hl(g, b, 1, 500, 690, 420, 170); hl(g, b, 2, 500, 690, 420, 170); }
+      else { hl(g, b, 0, 470, 200, 470, 140); hl(g, b, 2, F1[0], F1[1], FW / 2 + 30, FH / 2 + 30); }
     },
   };
 }

@@ -154,20 +154,30 @@ export const SL = [
     say: 'Incubez la 35–37 °C, 18–24 de ore, în atmosfera pe care o tolerează germenul: aerob, cu CO₂ pentru pretențioși sau anaerob.',
     beatDur: 7,
   },
-  /* ---------------- 26 + 27 · CULTURILE CELULARE + IZOLATUL VIRAL ---------------- */
+  /* ---------------- 26 · CULTURILE CELULARE ---------------- */
   {
-    scene: 'b_cells', kick: 'LP 3 · Culturile celulare + izolatul viral', title: 'Virusurile cresc doar în celule vii; le vezi după ce fac celulelor',
-    hud: ['sus: vasele · jos: monostratul mărit'],
+    scene: 'b_cells', sceneOpts: { part: 0 }, kick: 'LP 3 · Culturile celulare', title: 'Virusurile cresc doar în celule vii',
+    hud: ['vasele văzute de sus'],
     points: [
-      { h: 'Inhibiția de contact', d: ['celulele **normale** se atașează, acoperă peretele → **monostrat**, apoi se opresc din multiplicare', '**tumorale**: se multiplică și după ce au acoperit suprafața → mai multe straturi + în suspensie'] },
-      { h: 'Primare vs. linii', d: ['**primare**: direct din țesut, suportă puține subcultivări · **linii stabilizate**: derivă din primare, nelimitat (HeLa, Vero)', 'subcultivare cu **EDTA (versen) după 5–7 zile** · adulte !!4–6 pasaje!! · embrionare !!60–80!! · linii: nelimitat'] },
+      { h: 'Inhibiția de contact', d: ['celulele **normale** se atașează, acoperă peretele → **monostrat**, apoi !!se opresc din multiplicare!!', '**tumorale**: se multiplică și după ce au acoperit suprafața → mai multe straturi + în suspensie'] },
+      { h: 'Primare vs. linii', d: ['**primare**: direct din țesut, suportă puține subcultivări · **linii stabilizate**: derivă din primare, se mențin nelimitat (HeLa, Vero)', 'subcultivare cu **EDTA (versen) după 5–7 zile** · adulte !!4–6 pasaje!! · embrionare !!60–80!! · linii: nelimitat'] },
       { h: 'Ce le ține în viață', d: ['condiții aseptice, mediu nutritiv cu tampon, **indicator**, antibiotice', 'temperatură constantă + **10% CO₂**; subcultivezi când mediul se **acidifică**'] },
-      { h: 'Inocularea → efectul citopatic', d: ['scoți mediul → **suspensia virală 1 h** → mediu de întreținere, mai sărac (celulele rămân vii, dar nu se mai înmulțesc intens) → urmărești zilele următoare', 'efect citopatic: celulele se **rotunjesc, se desprind, se agregă în ciorchine, fac sinciții**'] },
-      { h: 'Hemadsorbția → apoi specificul', d: ['membrana celulelor infectate e modificată → **hematiile aderă**; pentru virusurile fără efect citopatic (ex. influenza)', '**nespecifice** (efect citopatic, hemadsorbție, interferență, incluzii, plaje) arată **că** un virus se replică · **specifice** (Ag-Ac, PCR) arată **care** virus'] },
     ],
-    why: 'Cultura celulară = celule izolate vii, care se pot multiplica, dar **nu se organizează în țesuturi**. Monostratul normal (celule atașate, egale, una lângă alta) e „ecranul” pe care vezi efectul citopatic: orice celulă care se rotunjește iese în evidență.',
+    why: 'Cultura celulară = celule izolate vii, care se pot multiplica, dar **nu se organizează în țesuturi**. Monostratul normal e „ecranul” pe care vezi efectul citopatic: orice celulă care se rotunjește iese în evidență.',
+    beatDur: 7,
+  },
+  /* ---------------- 27 · IDENTIFICAREA IZOLATULUI VIRAL ---------------- */
+  {
+    scene: 'b_cells', sceneOpts: { part: 1 }, kick: 'LP 3 · Identificarea izolatului viral', title: 'Cum afli că virusul s-a înmulțit în cultură',
+    hud: ['monostratul mărit'],
+    points: [
+      { h: 'Monostratul normal + inocularea', d: ['normal: celule atașate, egale, una lângă alta', 'scoți mediul → **suspensia virală 1 h** → **mediu de întreținere**, mai sărac (celulele rămân vii, dar nu se mai înmulțesc intens) → urmărești zilele următoare'] },
+      { h: 'Efectul citopatic', d: ['celulele **se rotunjesc, se desprind, se agregă în ciorchine, fac sinciții**'] },
+      { h: 'Hemadsorbția', d: ['membrana celulelor infectate e modificată → **hematiile aderă**', 'pentru virusurile **fără efect citopatic** (ex. !!influenza!!)'] },
+      { h: 'Nespecific vs. specific', d: ['**nespecifice** (efect citopatic, hemadsorbție, interferență, incluzii, plaje) arată **că** un virus se replică', '**specifice** (antigene virale prin Ag-Ac, acizi nucleici prin PCR) arată **care** virus'] },
+    ],
     warn: '!!Hemadsorbția și interferența!! (o celulă deja infectată nu mai poate fi infectată cu alt virus) sunt metode !!nespecifice!!.',
-    beatDur: 8,
+    beatDur: 7.5,
   },
   /* ---------------- 28 · OUL EMBRIONAT ȘI ANIMALELE ---------------- */
   {
@@ -251,11 +261,11 @@ export const SL = [
     scene: 'b_ident', kick: 'LP 4 · Enzime, mobilitate, identificarea', title: 'Testele rapide împart germenii; mediile ajung la specie',
     hud: ['sus: testele · jos: schema (manual)'],
     points: [
-      { h: 'Catalaza', d: ['cultura într-o picătură de **H₂O₂** pe lamă → **bule = +** (descompune apa oxigenată în apă și oxigen)', '!!Staphylococcus catalază + · Streptococcus catalază −!!'] },
-      { h: 'Oxidaza', d: ['colonie pe bandă umezită → **mov închis = +**, în secunde (enzimele oxidative fac un compus colorat)', 'Pseudomonas, Neisseria oxidază + · enterobacterii oxidază −'] },
+      { h: 'Catalaza', d: ['cultura în **H₂O₂** pe lamă → **bule = +** (apa oxigenată → apă + oxigen)', '!!Staphylococcus catalază + · Streptococcus catalază −!!'] },
+      { h: 'Oxidaza', d: ['colonie pe bandă umezită → **mov închis = +**, în secunde (compus colorat)', 'Pseudomonas, Neisseria oxidază + · enterobacterii oxidază −'] },
       { h: 'Coagulaza', d: ['pe lamă (picătură de plasmă) sau în tub (**plasmă citratată, 24 h**)', 'coaguli = + → !!S. aureus!!'] },
       { h: 'Mobilitatea', d: ['înțepare în semisolid (SIM): **mobilul tulbură tot mediul**', 'imobilul crește doar pe traiect · flagelii fac mobilitatea'] },
-      { h: 'Identificarea (schemă din manual)', d: ['colonie izolată → **frotiul Gram** (forma și culoarea împart germenii în grupe mari) → coci Gram +: catalaza · bacili Gram −: oxidaza', 'la coci: coagulaza → S. aureus · hemoliza → streptococi · la bacilii Gram −: mediile diferențiale (lactoză, TSI, indol, H₂S, urează, citrat, mobilitate); Pseudomonas: pigment verde'] },
+      { h: 'Identificarea (schemă din manual)', d: ['colonie izolată → **Gram** (forma și culoarea: grupe mari) → coci Gram +: catalaza · bacili Gram −: oxidaza', 'coci: coagulaza → S. aureus, hemoliza → streptococi · bacili Gram −: mediile diferențiale (lactoză, TSI, indol, H₂S, urează, citrat, mobilitate); Pseudomonas: pigment verde'] },
     ],
     why: 'Plasma trebuie să fie **citratată**: citratul oprește coagularea spontană, dar păstrează **fibrinogenul**, pe care coagulaza îl transformă în fibrină. Ordinea contează: întâi testele rapide, pe lamă (Gram, catalază, oxidază), apoi mediile diferențiale, care cer încă o noapte de incubare.',
     say: 'Pornesc de la o colonie izolată: fac Gram, apoi catalaza la coci sau oxidaza la bacili, și abia apoi mediile diferențiale ca să ajung la specie.',

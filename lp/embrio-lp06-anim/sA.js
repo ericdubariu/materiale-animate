@@ -3,7 +3,7 @@
 // Culori (ca în LP): albastru = ectoderm, mov = neuroectoderm, verde = creasta neurală, roșu = mezoderm, galben = endoderm.
 import {
   W, H, cam, HOME, C, N, bg, panel, P, on, loopT, txt, pill, curve, at, sub, tube, flow, dot, ell, arr, ring, lead,
-  foldPlate, crestCell, mix, stage, OUT, clamp, lerp, ease, paint, REDUCED,
+  foldPlate, crestCell, mix, stage, photoCap, OUT, clamp, lerp, ease, paint, REDUCED,
 } from './ek.js';
 
 /* ==========================================================================================
@@ -258,8 +258,8 @@ export function neurulation() {
         lab('→ schelet axial + mușchi', 235, 560, '#ffb0a8', m, cx - 210, y0 + R + 80);
       }
       // bara de etape
-      ['placa', 'șanț + plici', 'fuziune', 'tub', 'derivate'].forEach((s2, k) => { const a = p(k) > 0.5 ? 1 : 0.35; pill(g, 120 + k * 190, 860, 170, 44, k === b.i ? C.hi : '#3a2a26', s2, { size: 17, col: k === b.i ? OUT : '#ffe7d6', alpha: a, ow: 4 }); });
-      txt(g, 'dorsal ↑', 935, 60, 17, '#c9b3a6', { w: 700 });
+      ['placa', 'șanț + plici', 'fuziune', 'tub', 'derivate'].forEach((s2, k) => { const a = p(k) > 0.5 ? 1 : 0.35; pill(g, 120 + k * 190, 50, 170, 44, k === b.i ? C.hi : '#3a2a26', s2, { size: 17, col: k === b.i ? OUT : '#ffe7d6', alpha: a, ow: 4 }); });
+      txt(g, 'dorsal ↑', 935, 120, 17, '#c9b3a6', { w: 700 });
     },
   };
 }
@@ -428,7 +428,7 @@ export function vesicles() {
       tube(g, [[CX, yT], [CX, 900]], 10 + 6 * vent, lc, { ow: 3 });
       tube(g, [[CX, 330], [CX, 410]], 6, lc, { ow: 3 }); // apeductul, îngust
       if (vent > 0) {
-        flow(g, [[CX, 120], [CX, 260], [CX, 370], [CX, 540], [CX, 880]], t, '#2f68bd', 7, 0.22, 7);
+        flow(g, [[CX, 120], [CX, 262], [CX, 370], [CX, 536]], t, '#2f68bd', 6, 0.22, 7); // LCR: laterali → III → apeduct → IV (de acolo iese în spațiul subarahnoidian)
         ring(g, CX, 370, 40, 52, vent);
       }
       // etichetele 3 vezicule (stânga, mici) și cele 5 (dreapta)
@@ -444,6 +444,8 @@ export function vesicles() {
         txt(g, d, 790, y + 22, 16, C.cream, { alpha: a, w: 600 });
       });
       if (vent > 0) VEN.forEach(([n, y]) => { pill(g, 640, y, 360, 44, N.csf, n, { size: 18, alpha: vent }); lead(g, CX + 30, y, 460, y, vent); });
+      // punctul 4: figura din LP (1 lună → 5 săptămâni → copil) peste coloana din dreapta
+      if (b.i === 3) { const a = ease(clamp(b.bt / 1.2)); g.save(); g.globalAlpha = a; panel(g, 420, 90, 560, 620, { fill: 'rgba(20,12,10,.92)', stroke: 'rgba(255,180,138,.7)' }); g.restore(); photoCap(g, 'vezicule_fac', 440, 110, 520, 420, 'De la embrionul de 1 lună la copil', 'Disciplina de Anatomie-Embriologie UMFST (LP)', a); txt(g, 'restul tubului → măduva spinării', 700, 650, 19, C.hi, { alpha: a }); }
     },
   };
 }

@@ -144,7 +144,7 @@ export function timeline() {
 export function tubeForm() {
   const DX = 240, DY = 470; // centrul discului
   const SX = 735;           // centrul secțiunii
-  const cells = []; for (let k = 0; k < 22; k++) { const s = k % 2 ? 1 : -1; const a = Math.PI * (0.18 + 0.64 * ((k >> 1) / 10)); cells.push([s, a]); }
+  const cells = []; for (let k = 0; k < 22; k++) cells.push([k % 2 ? 1 : -1, 0]);
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
     anchors: [[DX + 150, 205], [SX - 200, 520], [SX + 120, 640], [SX + 120, 360]],
@@ -159,15 +159,16 @@ export function tubeForm() {
       tube(g, [[DX - 70, 150], [DX + 70, 150]], 18, '#3db06c', { ow: 5 }); txt(g, 'septul transvers', DX, 120, 17, '#bff0d2');
       dot(g, DX, 300, 16, '#f4c34f', { ow: 4 }); txt(g, 'lama precordală', DX + 24, 300, 17, '#ffe9a8', { align: 'left' });
       tube(g, [[DX, 600], [DX, 780]], 12, '#9a8a8a', { ow: 4 }); txt(g, 'linia primitivă', DX + 20, 740, 17, C.cream, { align: 'left' });
-      // celulele migrează din linia primitivă (jos) spre potcoavă (sus, cranial de lamă)
+      // celulele de mezoderm urcă din linia primitivă (jos) și se strâng în potcoava cardiogenă, CRANIAL de lama precordală
       const p0 = p(0);
       cells.forEach(([s, a], k) => {
-        const tx = DX + s * Math.cos(a - Math.PI / 2 + Math.PI / 2) * 0 + s * 120 * Math.sin(a), ty = 300 - 110 * Math.cos(a);
+        const th = Math.PI * (1.15 + 0.7 * (k / (cells.length - 1)));
+        const tx = DX + 120 * Math.cos(th), ty = 300 + 120 * Math.sin(th);
         const d = clamp(p0 * 1.6 - k * 0.025);
         const x = lerp(DX + s * 14, tx, d), y = lerp(640, ty, d);
-        if (p0 > 0) dot(g, x, y, 9, '#e0603f', { ow: 2.5, alpha: 0.4 + 0.6 * d });
+        if (p0 > 0 && p0 < 0.98) dot(g, x, y, 9, '#e0603f', { ow: 2.5, alpha: 0.4 + 0.6 * d });
       });
-      if (p0 > 0.6) { const a = (p0 - 0.6) / 0.4; g.save(); g.globalAlpha = a; g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 34; g.beginPath(); g.arc(DX, 300, 120, Math.PI * 1.15, Math.PI * 1.85); g.stroke(); g.strokeStyle = '#d2524a'; g.lineWidth = 26; g.stroke(); g.restore(); txt(g, 'aria cardiogenă', DX, 160 + 0, 0.1, C.cream, { alpha: 0 }); }
+      if (p0 > 0.6) { const a = (p0 - 0.6) / 0.4; g.save(); g.globalAlpha = a; g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 34; g.beginPath(); g.arc(DX, 300, 120, Math.PI * 1.15, Math.PI * 1.85); g.stroke(); g.strokeStyle = '#d2524a'; g.lineWidth = 26; g.stroke(); g.restore(); txt(g, 'aria cardiogenă', DX, 230, 18, '#fff', { alpha: a }); }
       // ----- secțiunea
       const oy = 120;
       const wall = new Path2D(); wall.roundRect(SX - 210, oy + 50, 420, 620, 90);
