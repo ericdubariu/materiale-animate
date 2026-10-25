@@ -35,6 +35,16 @@ ORDER = {"histo": 0, "anatopat": 1, "farma": 2, "micro": 3, "fizio": 4, "fiziopa
 # definiții = „definiți / enumerați / prezentați definiția, clasificarea, tipurile, stadiile / DD”.
 FP_MEC = {1, 2, 4, 6, 9, 11, 12, 17, 18, 19, 22}
 
+# Farmacologie: la examen se dă un caz clinic de comentat. Stațiile din pachete care sunt cazuri clinice
+# (un pacient concret cu o situație de comentat). Restul stațiilor (rețete, forme farmaceutice, calcul de doză,
+# decodarea unei substanțe, experimentele) rămân disponibile doar dacă sunt cerute explicit în aplicație.
+FARMA_CASES = {
+    "farma_lp01": [],
+    "farma_lp02": ["q09", "q11", "q12", "q20", "q21", "q22", "q23", "q25", "q26"],
+    "farma_lp03": ["q07", "q08", "q21", "q23", "q24"],
+    "farma_lp04": ["q15", "q23", "q25", "q26", "q27", "q28", "q29", "q30"],
+}
+
 # fișele OSPE din deck-urile de Anatomie patologică → tema (topic) din pachetul de întrebări
 SHEET_MAP = {
     ("anatopat-z1-anim", "edem"): ("anatopat_lp0102", [0]),
@@ -49,10 +59,16 @@ SHEET_MAP = {
     ("anatopat-z2-anim", "ima"): ("anatopat_lp0102", [10]),
     ("anatopat-z2-anim", "hem"): ("anatopat_lp0102", [11]),
     ("anatopat-z2-anim", "soc"): ("anatopat_lp0102", [12]),
+    ("anatopat-z3-anim", "hk"): ("anatopat_lp0304", [0]),    # hipercheratoza
+    ("anatopat-z3-anim", "st"): ("anatopat_lp0304", [1]),    # steatoza hepatică
+    ("anatopat-z3-anim", "pc"): ("anatopat_lp0304", [2]),    # pericardita fibrinoasă
+    ("anatopat-z3-anim", "ab"): ("anatopat_lp0304", [3]),    # abcesele hepatice
+    ("anatopat-z3-anim", "tb"): ("anatopat_lp0304", [4]),    # limfadenita tuberculoasă
+    ("anatopat-z3-anim", "cs"): ("anatopat_lp0304", [5]),    # granulomul de corp străin
 }
 
 NODE_JS = r"""
-const [,, site] = process.argv;
+const site = process.argv[process.argv.length - 1];
 const out = { fp: [], sheets: [] };
 const fp = await import(site + '/lp/fiziopat-examen-anim/slides.js');
 for (const s of fp.SLIDES) {
@@ -64,7 +80,7 @@ for (const s of fp.SLIDES) {
     kw: kw ? kw.tx.split(' · ').map(x => x.replace(/\*\*/g, '').trim()).filter(Boolean) : [],
     mn: mn ? mn.tx : '', words: s.sceneOpts.words, min: s.sceneOpts.min });
 }
-for (const d of ['anatopat-z1-anim', 'anatopat-z2-anim']) {
+for (const d of ['anatopat-z1-anim', 'anatopat-z2-anim', 'anatopat-z3-anim']) {
   const m = await import(site + '/lp/' + d + '/slides.js');
   for (const s of m.SLIDES) if (s.script && s.sceneOpts && s.sceneOpts.f) out.sheets.push({ deck: d, f: s.sceneOpts.f, kick: s.kick, rows: s.script });
 }
@@ -103,12 +119,17 @@ def main():
         for x in p["questions"]:
             t = {"mcq": "m", "open": "o", "calc": "c", "graph": "g"}[x["type"]]
             q.append([x["id"], x["topic"], x["diff"], t, 1 if x.get("station") else 0, 1 if x.get("img") else 0,
-                      len(x.get("opts", [])), len(x.get("ok", []))])
+                      len(x.get("opts", [])), len(x.get("ok", [])),
+                      1 if x["id"].rsplit("_", 1)[-1] in FARMA_CASES.get(u["id"], []) and x.get("station") else 0])
         units.append({"id": u["id"], "subject": u["subject"], "unit": u["unit"], "title": u["title"],
                       "short": u.get("short", ""), "topics": u["topics"], "file": u["file"], "q": q})
         if src != dst:
             shutil.copyfile(f, dst / u["file"])
         keep_files.add(u["file"])
+    for uid, ids in FARMA_CASES.items():
+        u = next((x for x in units if x["id"] == uid), None)
+        assert u, uid
+        assert sum(q[8] for q in u["q"]) == len(ids), f"{uid}: cazurile clinice nu se potrivesc cu pachetul"
     units.sort(key=lambda u: (ORDER.get(u["subject"], 9), not u["id"].startswith("unix_"), u["id"]))
 
     # lista de 22 (Fiziopatologie) și fișele OSPE (Anatomie patologică), citite din deck-uri
@@ -134,7 +155,7 @@ def main():
         unit, topics = SHEET_MAP[k]
         for t in topics:
             sheets[f"{unit}|{t}"] = {"kick": s["kick"], "rows": s["rows"]}
-    assert len(sheets) == 13, len(sheets)
+    assert len(sheets) == 19, len(sheets)
     (dst / "anatopat_fise.js").write_text("TRV.pack(" + json.dumps({"id": "anatopat_fise", "sheets": sheets},
                                           ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
     keep_files.add("anatopat_fise.js")
