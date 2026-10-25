@@ -68,7 +68,7 @@ def main():
         p = prev.get(it['id'], {})
         changed = not p or p.get('slides') != it.get('slides')
         decks.append({
-            'id': it['id'], 'subj': it['subj'],
+            'id': it['id'], 'subj': it['subj'], 'tip': p.get('tip') or ('curs' if it.get('kind') == 'curs' else 'lp'),
             'title': p.get('title') or clean_title(it),
             'sub': p.get('sub') or clean_sub(it),
             'slides': it.get('slides'),

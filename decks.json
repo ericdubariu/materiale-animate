@@ -38,7 +38,8 @@
    "slides": 43,
    "path": "lp/anatopat-z1-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25"
+   "updated": "2026-10-25",
+   "tip": "lp"
   },
   {
    "id": "anatopat-z2-anim",
@@ -48,7 +49,8 @@
    "slides": 40,
    "path": "lp/anatopat-z2-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25"
+   "updated": "2026-10-25",
+   "tip": "lp"
   },
   {
    "id": "histo-lp06-3d",
@@ -58,7 +60,8 @@
    "slides": 26,
    "path": "lp/histo-lp06-3d/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25"
+   "updated": "2026-10-25",
+   "tip": "lp"
   },
   {
    "id": "histo-lp07-anim",
@@ -68,7 +71,8 @@
    "slides": 29,
    "path": "lp/histo-lp07-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25"
+   "updated": "2026-10-25",
+   "tip": "lp"
   },
   {
    "id": "fiziopat-examen-anim",
@@ -78,7 +82,8 @@
    "slides": 46,
    "path": "lp/fiziopat-examen-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25"
+   "updated": "2026-10-25",
+   "tip": "lp"
   }
  ]
 }
