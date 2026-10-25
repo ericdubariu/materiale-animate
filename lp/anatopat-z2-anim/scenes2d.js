@@ -357,7 +357,10 @@ function embolWhy() {
   };
 }
 function renWhy() {
-  const tree = [[[140, 470], [330, 470]], [[330, 470], [470, 330]], [[330, 470], [470, 610]], [[470, 330], [600, 250]], [[470, 330], [610, 380]], [[470, 610], [600, 560]], [[470, 610], [610, 690]]];
+  // artera renală intră pe la hil (stânga) și dă câte o ramură terminală pentru fiecare teritoriu; ramura intră în teritoriu prin VÂRFUL conului
+  const APX = (a) => [470 + Math.cos(a) * 140, 470 + Math.sin(a) * 140];
+  const tree = [[[150, 470], [380, 470]], ...[-0.6, 0, 0.6].map((a) => [[380, 470], APX(a)])];
+  const twigs = (a) => [-0.2, 0, 0.2].map((d) => [APX(a), [470 + Math.cos(a + d) * 290, 470 + Math.sin(a + d) * 290]]);
   return {
     home: HOME, cams: [cam(260, 330, 1.6), cam(560, 470, 1.2), cam(640, 300, 1.7), cam(640, 300, 1.7)],
     anchors: [[150, 220], [500, 160], [800, 160], [860, 360]],
@@ -378,12 +381,16 @@ function renWhy() {
       else paint(g, w0, '#c8573f', '#a8432f', null, [470, 140, 330, 330], OUT, 4);
       if (sc) { g.save(); g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.moveTo(680, 140); g.lineTo(700, 210); g.lineTo(745, 155); g.stroke(); g.restore(); }
       // arborele arterial (terminal)
-      g.save(); g.lineCap = 'round'; for (const [a, c] of tree) { g.strokeStyle = OUT; g.lineWidth = 22; g.beginPath(); g.moveTo(...a); g.lineTo(...c); g.stroke(); g.strokeStyle = '#e8424f'; g.lineWidth = 13; g.stroke(); } g.restore();
-      // embolul care circulă și se oprește în ramura superioară
-      const path = [[200, 335], [200, 470], [330, 470], [470, 330], [600, 250]]; const u = b.i < 0 ? 1 : b.i === 0 ? 0.25 * u01(b) : b.i === 1 ? 0.25 + 0.75 * u01(b) : 1;
+      const occl = b.i < 0 || b.i >= 2;
+      g.save(); g.lineCap = 'round'; for (const [a, c] of tree) { g.strokeStyle = OUT; g.lineWidth = 22; g.beginPath(); g.moveTo(...a); g.lineTo(...c); g.stroke(); g.strokeStyle = '#e8424f'; g.lineWidth = 13; g.stroke(); }
+      // ramurile mici din fiecare teritoriu; după ocluzie, cele din teritoriul superior rămân fără sânge (gri)
+      for (const a of [-0.6, 0, 0.6]) for (const [p0, p1] of twigs(a)) { g.strokeStyle = OUT; g.lineWidth = 13; g.beginPath(); g.moveTo(...p0); g.lineTo(...p1); g.stroke(); g.strokeStyle = a === -0.6 && occl ? '#8d8a93' : '#e8424f'; g.lineWidth = 6; g.stroke(); }
+      g.restore();
+      // embolul pleacă din AS, merge pe artera renală și se oprește la intrarea în ramura terminală = vârful conului
+      const path = [[200, 335], [200, 470], [380, 470], [lerp(380, APX(-0.6)[0], 0.9), lerp(470, APX(-0.6)[1], 0.9)]]; const u = b.i < 0 ? 1 : b.i === 0 ? 0.25 * u01(b) : b.i === 1 ? 0.25 + 0.75 * u01(b) : 1;
       const f = u * (path.length - 1); const i = Math.min(path.length - 2, Math.floor(f)); const kk = f - i; const ex = lerp(path[i][0], path[i + 1][0], kk), ey = lerp(path[i][1], path[i + 1][1], kk);
       if (b.i >= 0 || true) paint(g, blob(ex, ey, 20, 14, 0, t, 0.2, 10, 3), '#3b0a10', null, null, bb(ex, ey, 20, 14), OUT, 4);
-      if (b.i === 1) txt(g, 'ocluzie', 640, 220, 26, '#ffe36e');
+      if (b.i === 1) txt(g, 'ocluzie la vârful conului', 600, 300, 24, '#ffe36e');
     },
   };
 }
