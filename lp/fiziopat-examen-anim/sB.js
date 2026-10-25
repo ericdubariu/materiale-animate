@@ -158,7 +158,9 @@ export function q12({ spec }) {
     phase: (i) => ['consecințele (costurile)', 'efectele benefice'][i] || '',
     draw(g, t, b) {
       bgFill(g);
-      const tilt = b.i === 0 ? 0.12 : b.i === 1 ? -0.12 : 0.04 * Math.sin(t);
+      // talerul despre care vorbește punctul se încarcă și coboară: costuri (stânga) în beat 0, câștig (dreapta) în beat 1
+      const bp = b.i >= 0 ? clamp(b.bt / (b.bd * 0.75)) : 0;
+      const tilt = b.i === 0 ? -0.12 * ease(bp) : b.i === 1 ? lerp(-0.12, 0.12, ease(bp)) : 0.04 * Math.sin(t);
       const ax = Math.cos(tilt), ay = Math.sin(tilt);
       const L = [PIV[0] - 250 * ax, PIV[1] - 250 * ay], R = [PIV[0] + 250 * ax, PIV[1] + 250 * ay];
       // suportul

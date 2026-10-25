@@ -14,7 +14,7 @@ const u01 = (b, k = 0.8) => (b.i >= 0 ? clamp(b.bt / (b.bd * k)) : 1);
 
 /* ---------- celule specifice LP 7 ---------- */
 // fibroblast în LP 7: nucleu alungit, „în bastonaș”, hipocrom; fibrocit: același, dar hipercrom
-function fibroblastRod(g, x, y, s, rot, t) { fibrocyte(g, x, y, s, rot, t, { cyto: '#d9c8f4', cytoS: '#b9a2ea', nuc: '#b3a8ef', nucS: '#8f84e0', nucL: '#e6e1ff' }); }
+function fibroblastRod(g, x, y, s, rot, t) { fibrocyte(g, x, y, s, rot, t, { cyto: '#d9c8f4', cytoS: '#b9a2ea', nuc: '#b3a8ef', nucS: '#8f84e0', nucL: '#e6e1ff' }); paint(g, blob(x, y, 11 * s, 9 * s, rot, t, 0.02, 10, 9), '#2a1670', '#170b4a', '#6a52d0', bb(x, y, 11 * s, 9 * s), OUT, 2.5 * Math.max(0.6, s)); } // nucleol vizibil (celulă activă)
 function fibrocyteRod(g, x, y, s, rot, t) { fibrocyte(g, x, y, s, rot, t); }
 // acin glandular (lobul mamar): epiteliu cubic (nuclei violet) în jurul unui lumen
 function acinus(g, x, y, r, t) {
