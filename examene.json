@@ -1,0 +1,82 @@
+{
+  "titlu": "Modulul 1 · Seria 2 · grupa 16",
+  "actualizat": "2026-10-25",
+  "nota": "Data, ora și sala se actualizează aici când se schimbă. Câmpurile null apar pe site ca „de confirmat”. confirmat = true doar când data, ora și locul sunt sigure.",
+  "examene": [
+    {
+      "id": "fizio-lp",
+      "subj": "fizio",
+      "materie": "Fiziologie",
+      "tip": "Examen de LP",
+      "format": "Scris: calcule, întrebări scurte, grile, curba de etalonare",
+      "data": "2026-10-19",
+      "ora": "08:20",
+      "loc": "Sala 41",
+      "confirmat": true,
+      "detalii": "Pentru seria 2. Intră LP 1–2."
+    },
+    {
+      "id": "micro-lp",
+      "subj": "micro",
+      "materie": "Microbiologie",
+      "tip": "Examen de LP",
+      "format": "Oral + recunoașterea mediilor din poze",
+      "data": "2026-10-30",
+      "ora": null,
+      "oraProbabila": "probabil în intervalul LP-ului de vineri, 11:00–14:00",
+      "loc": null,
+      "confirmat": false,
+      "detalii": "Data e sigură. Intră LP 1–6 (LP 7, micologia, nu intră). Antibiograma: difuzimetric și CMI în detaliu."
+    },
+    {
+      "id": "fiziopat-practic",
+      "subj": "fiziopat",
+      "materie": "Fiziopatologie",
+      "tip": "Examen practic",
+      "format": "Scris, 30 min: 2 întrebări trase din lista de 22 (un mecanism + o definiție/clasificare)",
+      "data": "2026-11-02",
+      "ora": null,
+      "oraProbabila": "dimineața",
+      "loc": null,
+      "confirmat": false,
+      "detalii": "Data e sigură. Prezența cu 15 min înainte. 40% din nota finală."
+    },
+    {
+      "id": "embrio-lp",
+      "subj": "embrio",
+      "materie": "Anatomie-Embriologie",
+      "tip": "Examen de LP",
+      "format": "Grilă: 4 variante, una sau mai multe corecte, mai ales studii de caz",
+      "data": "2026-11-02",
+      "dataPana": "2026-11-06",
+      "ora": null,
+      "loc": null,
+      "confirmat": false,
+      "detalii": "În prima săptămână de sesiune; ziua exactă de confirmat. Intră LP 1–6 (LP 7 nu intră). O variantă greșită bifată anulează una corectă."
+    },
+    {
+      "id": "unix",
+      "subj": "unix",
+      "materie": "Examenele UNIX (cursurile)",
+      "tip": "Examen de curs",
+      "format": "Grile UNIX, Full Match · 180 min · 3 note separate",
+      "data": "2026-11-05",
+      "ora": "08:00–12:00",
+      "loc": "Centrul de examinare UNIX (seria 2 e împărțită între Amfiteatrul 2 și 3, vezi lista)",
+      "confirmat": true,
+      "detalii": "Embriologie (10 întrebări) · blocul mare (70: Histologie 20, Anatomie patologică 20, Farmacologie 13, Fiziopatologie 10, Fiziologie 7) · Microbiologie (40)."
+    },
+    {
+      "id": "ospe",
+      "subj": "ospe",
+      "materie": "OSPE: Histologie, Farmacologie, Anatomie patologică",
+      "tip": "Examen practic OSPE",
+      "format": "Stații de 7 min (1 min citit + 6 min răspuns), contează doar ce spui cu voce tare",
+      "data": "2026-11-11",
+      "ora": "08:00–12:00",
+      "loc": "Biologie Celulară–Epidemiologie",
+      "confirmat": true,
+      "detalii": "După lista provizorie a facultății. Prezența cu 30 min înainte, cu actul de identitate în original."
+    }
+  ]
+}
