@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Materiale animate · Anul 2 MG</title>
 <meta name="description" content="Deck-uri animate pentru LP-uri și examene practice, Medicină Generală anul 2, UMFST Târgu Mureș.">
+<meta name="theme-color" content="#1A1320">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Materiale">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap">
@@ -18,22 +25,33 @@
   --f-ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0;background:var(--bg);color:var(--ink)}
 body{font-family:var(--f-ui);-webkit-font-smoothing:antialiased;min-height:100vh}
+body.viewing{overflow:hidden}
 .wrap{max-width:1040px;margin:0 auto;padding:max(28px,env(safe-area-inset-top,0px)) 16px 56px}
 header{padding:20px 0 26px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .eyebrow{font:700 11.5px/1.2 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
 h1{font:800 clamp(28px,5vw,42px)/1.08 var(--f-display);letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}
 .lede{margin:0;max-width:62ch;font:400 15.5px/1.55 var(--f-ui);color:var(--body)}
 .how{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .how span{font:500 12.5px/1 var(--f-ui);color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 12px}
 .how kbd{font:700 11.5px/1 var(--f-ui);color:var(--ink);background:#3A2E45;border-radius:5px;padding:2px 6px;margin:0 2px}
+/* butonul de ecran complet */
+.fs{display:inline-flex;align-items:center;gap:8px;flex:none;font:700 14px/1 var(--f-ui);color:#1A1320;background:var(--accent);border:0;border-radius:999px;padding:12px 16px;cursor:pointer;box-shadow:0 8px 22px -10px rgba(240,154,198,.8);-webkit-tap-highlight-color:transparent}
+.fs:hover{filter:brightness(1.06)}
+.fs:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.fs svg{width:18px;height:18px;flex:none}
+.fs .off{display:none}
+.isfs .fs .on{display:none}
+.isfs .fs .off{display:inline}
 section{margin:0 0 34px}
 .sh{display:flex;align-items:center;gap:12px;margin:0 0 14px}
 .sh i{width:12px;height:12px;border-radius:4px;flex:none;background:var(--c)}
 .sh h2{margin:0;font:800 20px/1.2 var(--f-display);letter-spacing:-.005em}
 .sh small{font:600 12px/1 var(--f-ui);color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:12px}
 a.deck{position:relative;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px 22px;overflow:hidden;transition:border-color .2s,transform .2s,background .2s}
 a.deck::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
 a.deck:hover{border-color:var(--c);background:#31253B;transform:translateY(-2px)}
@@ -45,32 +63,173 @@ a.deck:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .new{font:700 10.5px/1 var(--f-ui);letter-spacing:.08em;text-transform:uppercase;color:#1A1320;background:var(--accent);border-radius:999px;padding:4px 7px}
 .empty,.err{color:var(--muted);font:500 14px/1.5 var(--f-ui)}
 footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var(--f-ui);color:var(--faint)}
-@media (prefers-reduced-motion:reduce){a.deck{transition:none}a.deck:hover{transform:none}}
+/* deck-ul deschis în pagină: ecranul complet rămâne activ între deck-uri */
+#viewer{position:fixed;inset:0;z-index:30;background:#231A2B}
+#viewer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#vbar{position:absolute;left:50%;top:max(8px,env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;gap:6px;z-index:2;transition:opacity .35s,transform .35s}
+#vbar.hide{opacity:0;pointer-events:none;transform:translate(-50%,-6px)}
+#vbar button{display:inline-flex;align-items:center;gap:6px;font:700 12.5px/1 var(--f-ui);color:#F6EEF7;background:rgba(20,10,28,.82);border:1px solid rgba(255,255,255,.24);border-radius:999px;padding:9px 13px;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);-webkit-tap-highlight-color:transparent}
+#vbar button:hover{background:rgba(176,69,122,.85)}
+#vbar button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#vbar svg{width:15px;height:15px}
+/* iPhone: fără Fullscreen API → explicăm „Adaugă pe ecranul principal” */
+#tip{position:fixed;inset:0;z-index:40;background:rgba(10,5,14,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px max(16px,env(safe-area-inset-bottom,0px))}
+#tip .card{width:min(460px,100%);background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px 20px 16px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+#tip h2{margin:0 0 8px;font:800 18px/1.25 var(--f-display)}
+#tip p{margin:0 0 10px;font:400 14.5px/1.5 var(--f-ui);color:var(--body)}
+#tip ol{margin:0 0 14px;padding-left:20px;font:500 14.5px/1.6 var(--f-ui);color:var(--ink)}
+#tip button{width:100%;font:700 14px/1 var(--f-ui);color:#1A1320;background:var(--accent);border:0;border-radius:12px;padding:13px;cursor:pointer}
+@media (max-width:560px){.top{flex-direction:column;gap:6px}.fs{align-self:stretch;justify-content:center;margin-bottom:16px}}
+@media (max-height:500px){#vbar button{font-size:11px;padding:6px 10px}#vbar svg{width:13px;height:13px}}
+@media (prefers-reduced-motion:reduce){a.deck,#vbar{transition:none}a.deck:hover{transform:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <p class="eyebrow">Medicină Generală · anul 2 · UMFST Târgu Mureș</p>
-    <h1>Materiale animate</h1>
+    <div class="top">
+      <div>
+        <p class="eyebrow">Medicină Generală · anul 2 · UMFST Târgu Mureș</p>
+        <h1>Materiale animate</h1>
+      </div>
+      <button class="fs" type="button" data-fs aria-label="Ecran complet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="on" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="off" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+        <span class="on">Ecran complet</span><span class="off">Ieși din ecran complet</span>
+      </button>
+    </div>
     <p class="lede">Deck-uri cu desene animate pentru LP-uri și examenele practice: în stânga explicația pe puncte, în dreapta animația. Lista se completează pe măsură ce apar materiale noi.</p>
     <div class="how">
       <span>Înainte: <kbd>→</kbd> sau swipe la stânga</span>
       <span>Înapoi: <kbd>←</kbd></span>
-      <span>Ecran complet: <kbd>F</kbd></span>
+      <span>Ecran complet: butonul sau <kbd>F</kbd></span>
       <span>Ascunde etichetele: <kbd>E</kbd></span>
     </div>
   </header>
   <main id="list"><p class="empty">Se încarcă lista…</p></main>
   <footer>Materialele sunt făcute pentru învățat, după LP-urile și sursele disciplinelor. Pot exista greșeli: dacă vezi ceva ce nu se potrivește cu LP-ul, verifică în materialul disciplinei.</footer>
 </div>
+
+<div id="viewer" hidden>
+  <div id="vbar">
+    <button type="button" id="back" aria-label="Înapoi la listă"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Materiale</button>
+    <button type="button" data-fs aria-label="Ecran complet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="fsl">Ecran complet</span></button>
+  </div>
+</div>
+
+<div id="tip" hidden role="dialog" aria-modal="true" aria-labelledby="tipH">
+  <div class="card">
+    <h2 id="tipH">Ecran complet pe iPhone</h2>
+    <p>Safari de pe iPhone nu lasă o pagină să treacă singură pe ecran complet. Merge așa, o singură dată:</p>
+    <ol>
+      <li>Apasă butonul <b>Partajează</b> (pătratul cu săgeata în sus).</li>
+      <li>Alege <b>Adaugă pe ecranul principal</b>.</li>
+      <li>Deschide site-ul de pe iconița nouă: pornește pe tot ecranul, fără bara browserului.</li>
+    </ol>
+    <p>Ține telefonul pe orizontală pentru slide-uri mai mari.</p>
+    <button type="button" id="tipOk">Am înțeles</button>
+  </div>
+</div>
+
 <script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+/* ---------- ecran complet ---------- */
+const root = document.documentElement;
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement;
+const canFs = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+const standalone = matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
+function syncFs() {
+  const on = !!fsEl();
+  root.classList.toggle('isfs', on);
+  document.querySelectorAll('.fsl').forEach((e) => (e.textContent = on ? 'Ieși din ecran complet' : 'Ecran complet'));
+}
+async function toggleFs() {
+  if (fsEl()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+  if (!canFs) { $('tip').hidden = false; $('tipOk').focus(); return; }
+  try {
+    const r = root.requestFullscreen || root.webkitRequestFullscreen;
+    const p = r.call(root, { navigationUI: 'hide' }); if (p && p.then) await p;
+    if (!$('viewer').hidden && matchMedia('(pointer: coarse)').matches && screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+  } catch (e) { /* refuzat de browser: nimic de făcut */ }
+  focusDeck();
+}
+document.addEventListener('fullscreenchange', syncFs);
+document.addEventListener('webkitfullscreenchange', syncFs);
+document.querySelectorAll('[data-fs]').forEach((b) => b.addEventListener('click', toggleFs));
+if (standalone) document.querySelectorAll('[data-fs]').forEach((b) => (b.hidden = true)); // lansat de pe ecranul principal: e deja pe tot ecranul
+$('tipOk').addEventListener('click', () => { $('tip').hidden = true; });
+$('tip').addEventListener('click', (e) => { if (e.target === $('tip')) $('tip').hidden = true; });
+
+/* ---------- vizualizatorul de deck ---------- */
+const viewer = $('viewer'), vbar = $('vbar');
+let frame = null; // iframe nou la fiecare deck, ca să nu adauge pași în istoricul browserului
+let curDeck = null, hideT = 0, pushed = false;
+function wake() { vbar.classList.remove('hide'); clearTimeout(hideT); hideT = setTimeout(() => vbar.classList.add('hide'), 2600); }
+function focusDeck() { if (frame && !viewer.hidden) { try { frame.contentWindow.focus(); } catch {} } }
+function send(m) { if (frame && frame.contentWindow) frame.contentWindow.postMessage(m, '*'); }
+function openDeck(d, push = true) {
+  curDeck = d;
+  const last = parseInt(store.get('last.' + d.id) || '0', 10) || 0;
+  if (frame) frame.remove();
+  frame = document.createElement('iframe');
+  frame.title = 'Material animat'; frame.allow = 'fullscreen'; frame.setAttribute('allowfullscreen', '');
+  frame.src = d.path + (last > 0 ? '#s' + (last + 1) : '');
+  frame.addEventListener('load', onFrameLoad);
+  viewer.insertBefore(frame, vbar);
+  viewer.hidden = false; document.body.classList.add('viewing');
+  document.title = d.title + ' · Materiale animate';
+  if (push) { history.pushState({ deck: d.id }, '', '#' + d.id); pushed = true; }
+  wake();
+}
+function closeDeck(pop = false) {
+  if (viewer.hidden) return;
+  viewer.hidden = true; document.body.classList.remove('viewing');
+  if (frame) { frame.remove(); frame = null; } curDeck = null;
+  document.title = 'Materiale animate · Anul 2 MG';
+  if (pop) { pushed = false; return; }
+  if (pushed) { pushed = false; history.back(); } else if (location.hash) history.replaceState(null, '', location.pathname);
+}
+$('back').addEventListener('click', () => closeDeck());
+function onFrameLoad() {
+  focusDeck();
+  // atingerile și mișcarea mouse-ului din deck readuc bara cu butoane (deck-ul e pe același domeniu)
+  try {
+    const w = frame.contentWindow;
+    if (!w) return;
+    ['mousemove', 'touchstart', 'keydown'].forEach((ev) => w.addEventListener(ev, wake, { passive: true }));
+  } catch {}
+}
+addEventListener('message', (e) => {
+  if (!frame || e.source !== frame.contentWindow) return;
+  const m = e.data || {};
+  if (m.type === 'lp3d-fs') toggleFs();
+  if (m.type === 'lp3d-nav' && curDeck && Number.isInteger(m.i)) store.set('last.' + curDeck.id, String(m.i));
+});
+// tastele apăsate când focusul e pe pagina mare merg mai departe la deck
+addEventListener('keydown', (e) => {
+  if (viewer.hidden) { if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey) toggleFs(); return; }
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); send({ type: 'lp3d-step', d: 1 }); focusDeck(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); send({ type: 'lp3d-step', d: -1 }); focusDeck(); }
+  else if (e.key === 'f' || e.key === 'F') toggleFs();
+  wake();
+});
+addEventListener('mousemove', () => { if (!viewer.hidden) wake(); }, { passive: true });
+addEventListener('popstate', () => {
+  const id = location.hash.slice(1);
+  const d = id && DECKS.find((x) => x.id === id);
+  if (d) openDeck(d, false); else closeDeck(true);
+});
+
+/* ---------- lista ---------- */
+let DECKS = [];
 (async () => {
-  const el = document.getElementById('list');
-  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const el = $('list');
   let data;
   try { data = await (await fetch('decks.json', { cache: 'no-cache' })).json(); }
   catch (e) { el.innerHTML = '<p class="err">Lista nu s-a putut încărca. Reîncarcă pagina.</p>'; return; }
+  DECKS = data.decks;
   const order = ['histo', 'anatopat', 'farma', 'micro', 'fizio', 'fiziopat', 'embrio'];
   const groups = {};
   for (const d of data.decks) (groups[d.subj] ||= []).push(d);
@@ -80,7 +239,7 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
     const s = data.subjects[k] || { name: k, color: '#C2558C' };
     const cards = groups[k].map((d) => {
       const fresh = d.added && now - Date.parse(d.added) < 4 * 864e5;
-      return `<a class="deck" style="--c:${esc(s.color)}" href="${esc(d.path)}">
+      return `<a class="deck" style="--c:${esc(s.color)}" href="${esc(d.path)}" data-id="${esc(d.id)}">
         <h3>${esc(d.title)}</h3>
         ${d.sub ? `<p>${esc(d.sub)}</p>` : ''}
         <div class="meta">${fresh ? '<span class="new">Nou</span>' : ''}<span>${esc(d.slides)} slide-uri</span><span class="go">Deschide</span></div>
@@ -88,6 +247,14 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
     }).join('');
     return `<section style="--c:${esc(s.color)}"><div class="sh"><i></i><h2>${esc(s.name)}</h2><small>${groups[k].length} ${groups[k].length === 1 ? 'material' : 'materiale'}</small></div><div class="grid">${cards}</div></section>`;
   }).join('') || '<p class="empty">Încă nu sunt materiale.</p>';
+  el.addEventListener('click', (e) => {
+    const a = e.target.closest('a.deck'); if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+    const d = DECKS.find((x) => x.id === a.dataset.id); if (!d) return;
+    e.preventDefault(); openDeck(d);
+  });
+  const start = location.hash.slice(1);
+  const d0 = start && DECKS.find((x) => x.id === start);
+  if (d0) openDeck(d0, false);
 })();
 </script>
 </body>

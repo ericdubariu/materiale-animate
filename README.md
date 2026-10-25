@@ -4,7 +4,7 @@ Site static (GitHub Pages) cu deck-urile animate pentru LP-uri și examenele pra
 
 ## Structură
 
-- `index.html` — pagina de start; citește lista din `decks.json` și grupează pe materii.
+- `index.html` — pagina de start; citește lista din `decks.json`, grupează pe materii și deschide deck-urile în pagină (iframe), ca ecranul complet să rămână activ între deck-uri. Butonul „Ecran complet” folosește Fullscreen API; pe iPhone (unde nu există) explică „Adaugă pe ecranul principal” (`manifest.json` cu `display: fullscreen`).
 - `decks.json` — `subjects` (nume + culoare) și `decks` (id, subj, title, sub, slides, path, added).
 - `lp/<id>/` — câte un deck, exact fișierele din artifactul „Tutor AI animat” (`index.html`, `engine.js`, `slides.js`, `scenes2d.js`, `kit2d.js`, `atlas.js`, `data.json`, `img/`…).
 
