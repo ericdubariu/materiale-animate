@@ -3,7 +3,7 @@
 // Regula fluxului pe toate scenele: particulele merg spre inimă în vene, dinspre inimă în artere; prin orice gaură de la presiune mare la mică.
 import {
   W, H, cam, HOME, C, B, H4, heart4, bloodKey, bodyIcon, pipe, bg, panel, P, on, loopT, txt, pill, curve, at, tube, flow, dot, ell, arr, ring,
-  OUT, clamp, lerp, ease, paint, REDUCED,
+  OUT, clamp, lerp, ease, paint, REDUCED, photo,
 } from './ek.js';
 
 const st = (b, k, f = 0.6) => (b.i < 0 ? 1 : b.i > k ? 1 : b.i < k ? 0 : ease(clamp(b.bt / (b.bd * f))));
@@ -18,12 +18,12 @@ const st = (b, k, f = 0.6) => (b.i < 0 ? 1 : b.i > k ? 1 : b.i < k ? 0 : ease(cl
 export function veins3() {
   const SY = 170; const HR = 330, HL = 670; // cornul drept (stânga ecranului), cornul stâng
   const side = [[-1, HR], [1, HL]];
-  const CARD = (s, x) => ({ ant: [[x + s * 330, 90], [x + s * 330, 230], [x + s * 250, 230], [x + s * 70, SY + 10]], post: [[x + s * 330, 820], [x + s * 330, 230]] });
+  const CARD = (s, x) => ({ ant: [[x + s * 290, 90], [x + s * 290, 230], [x + s * 220, 230], [x + s * 70, SY + 10]], post: [[x + s * 290, 820], [x + s * 290, 230]] });
   const UMB = (s, x) => [[x + s * 210, 840], [x + s * 200, 330], [x + s * 140, 230], [x + s * 40, SY + 20]];
   const VIT = (s, x) => [[500 + s * 20, 760], [x + s * -60, 420], [x - s * 20, 250], [x, SY + 24]];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[420, 560], [HL + 250, 560], [HL + 380, 380], [500, 120]],
+    anchors: [[420, 560], [HL + 250, 600], [HL + 290, 380], [500, 120]],
     phase: (i) => ['venele viteline', 'venele ombilicale', 'venele cardinale comune', 'remodelarea spre dreapta'][i] || 'S5: 3 perechi de vene',
     draw(g, t, b) {
       bg(g);
@@ -41,8 +41,9 @@ export function veins3() {
         const ant = tube(g, cd.ant, 26, B.dx, { ow: 5, alpha: a(2), glow: b.i === 2 ? 0.5 : 0 });
         const post = tube(g, cd.post, 26, B.dx, { ow: 5, alpha: a(2), glow: b.i === 2 ? 0.5 : 0 });
         flow(g, ant, t, B.dxL, 4, 0.2, 6, { alpha: a(2) }); flow(g, [...cd.post, ...cd.ant.slice(2)], t, B.dxL, 7, 0.14, 6, { alpha: a(2) });
-        // ombilicala (oxigenat)
-        const um = tube(g, UMB(s, x), 22, B.ox, { ow: 5, alpha: a(1), glow: b.i === 1 ? 0.6 : 0 }); flow(g, um, t, B.oxL, 5, 0.18, 6, { alpha: a(1) });
+        // ombilicala (oxigenat). EXCEPȚIE (manual): la remodelare dispare cea DREAPTĂ; cea stângă rămâne, dar se varsă în ficat (→ ductul venos → VCI).
+        const ua = dim(1) * (s < 0 ? 1 - 0.8 * rem : 1); const uu = s > 0 ? 1 - 0.45 * rem : 1;
+        const um = tube(g, UMB(s, x), 22, B.ox, { ow: 5, alpha: ua, u1: uu, glow: b.i === 1 ? 0.6 : 0 }); flow(g, um, t, B.oxL, 5, 0.18, 6, { alpha: ua, u1: uu });
         // vitelina
         const vi = tube(g, VIT(s, x), 18, '#3d5fae', { ow: 5, alpha: a(0), glow: b.i === 0 ? 0.6 : 0 }); flow(g, vi, t, B.dxL, 5, 0.18, 5, { alpha: a(0) });
       });
@@ -54,9 +55,9 @@ export function veins3() {
       txt(g, 'corn drept', HR, SY, 19, OUT, { stroke: false }); txt(g, rem > 0.6 ? '→ sinus\ncoronar' : 'corn stâng', HL - 20 + (150 - lw) * 0.6, SY, rem > 0.6 ? 15 : 19, OUT, { stroke: false });
       txt(g, 'sinusul venos', 500, 82, 20, '#e3d6ff');
       // etichete
-      txt(g, 'cardinală anterioară', 120, 70, 15, '#c9d8ff', { align: 'left', alpha: dim(2) }); txt(g, 'cardinală posterioară', 120, 860, 15, '#c9d8ff', { align: 'left', alpha: dim(2) });
+      txt(g, 'cardinală anterioară', 60, 70, 15, '#c9d8ff', { align: 'left', alpha: dim(2) }); txt(g, 'cardinală posterioară', 60, 860, 15, '#c9d8ff', { align: 'left', alpha: dim(2) });
       txt(g, 'ombilicală\n(de la placentă)', HL + 210, 880, 15, '#ffd0cc', { alpha: dim(1) }); txt(g, 'viteline', 500, 700, 16, '#c9d8ff', { alpha: dim(0) });
-      if (b.i === 3) txt(g, 'drenajul se mută spre dreapta → atriul drept', 500, 920, 19, C.hi);
+      if (b.i === 3) { txt(g, 'drenajul se mută spre dreapta → atriul drept', 500, 920, 19, C.hi); txt(g, 'excepție (manual): v. ombilicală stg.\nrămâne și se varsă în ficat', HL + 150, 560, 15, '#ffd0cc', { alpha: rem, align: 'right' }); }
     },
   };
 }
@@ -72,7 +73,7 @@ export function cardinals() {
   const RX = 360, LX = 640; // cardinala dreaptă (stânga ecranului), stângă
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[RX - 150, 110], [500, 150], [RX - 50, 300], [RX + 70, 470], [500, 560]],
+    anchors: [[RX - 150, 195], [500, 150], [RX - 50, 300], [RX + 70, 470], [500, 560]],
     phase: (i) => ['v. subclavie → cardinala ant.', 'anastomoza → brahiocefalica stg.', 'VCS = 2 părți', 'venele abdomenului', 'sistemul azygos'][i] || 'totul se mută spre dreapta',
     draw(g, t, b) {
       bg(g);
@@ -109,8 +110,8 @@ export function cardinals() {
         const Hz = [[ZL, AY1], [ZL, gapY + 30], [ZR + 10, gapY + 60]]; const Ha = [[ZL, AY0 + 30], [ZL, gapY - 30], [ZR + 10, gapY - 60]];
         tube(g, Hz, 22, B.dx, { ow: 5, alpha: a }); tube(g, Ha, 22, B.dx, { ow: 5, alpha: a });
         flow(g, Hz, t, B.dxL, 4, 0.2, 5, { alpha: a }); flow(g, Ha, t, B.dxL, 3, 0.2, 5, { alpha: a });
-        txt(g, 'hemiazygos', ZL + 30, 860, 17, '#c9d8ff', { align: 'left', alpha: a }); txt(g, 'hemiazygos accesorie', ZL + 30, 650, 17, '#c9d8ff', { align: 'left', alpha: a });
-        txt(g, 'azygos', ZR - 30, 820, 19, C.hi, { align: 'right', alpha: a });
+        txt(g, 'hemiazygos', ZL + 140, 860, 17, '#c9d8ff', { align: 'left', alpha: a }); txt(g, 'hemiazygos accesorie', ZL + 140, 640, 17, '#c9d8ff', { align: 'left', alpha: a });
+        txt(g, 'azygos', ZR + 22, 662, 19, C.hi, { align: 'left', alpha: a });
       }
       // venele intercostale
       for (let k = 0; k < 6; k++) { const y = 640 + k * 45; tube(g, [[ZR - 120, y + 10], [ZR - 12, y]], 7, '#6f8fe0', { ow: 3 }); tube(g, [[ZL + 120, y + 10], [ZL + 12, y]], 7, '#6f8fe0', { ow: 3, alpha: sp > 0.5 && y > gapY - 30 && y < gapY + 30 ? 0.3 : 1 }); }
@@ -153,7 +154,7 @@ function fetalScene(g, t, o) {
   // ficatul
   ell(g, 470, 690, 150, 70, '#d9a46a', { ow: 5 }); txt(g, 'ficat', 560, 700, 17, OUT, { stroke: false });
   // plămânii
-  ell(g, 560, 50, 120, 34, '#f2b3c4', { ow: 4 }); txt(g, 'plămâni', 680, 30, 16, '#ffd0dd', { align: 'left' });
+  ell(g, 560, 50, 120, 34, '#f2b3c4', { ow: 4 }); txt(g, 'plămâni', 560, 50, 16, OUT, { stroke: false });
   // arterele: aorta descendentă + iliace + ombilicale
   const glow = (k) => (hi === k ? 0.85 : 0);
   tube(g, FG.IL, 18, cl[4] > 0.6 ? LIG : B.dx, { raw: true, ow: 5, glow: glow(4) });
@@ -201,13 +202,13 @@ const FLBL = [
   ['v. ombilicală', 'lig. rotund al ficatului', 300, 830, 'center'],
   ['foramen ovale', 'fosa ovală', 535, 225, 'center'],
   ['canal arterial', 'lig. arterial', 700, 215, 'center'],
-  ['aa. ombilicale', 'lig. ombilicale mediale', 520, 930, 'center'],
+  ['aa. ombilicale', 'lig. ombilicale mediale', 440, 862, 'center'],
 ];
 export function fetal() {
   const HI = [1, 2, 3, 0];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[300, 660], [535, 380], [760, 250], [240, 780]],
+    anchors: [[300, 660], [535, 380], [760, 250], [240, 790]],
     phase: (i) => ['ductul venos: ocolește ficatul', 'foramen ovale: AD → AS', 'canalul arterial: pulmonar → aortă', 'vena și arterele ombilicale'][i] || 'făt: 3 șunturi',
     draw(g, t, b) {
       bg(g);
@@ -218,7 +219,8 @@ export function fetal() {
       const PT = [0, 3, 1, 2, 3]; // FLBL[k] e explicat la punctul PT[k]
       FLBL.forEach(([n, , x, y, al], k) => txt(g, n, x, y, 17, b.i === PT[k] ? C.hi : C.cream, { align: al }));
       txt(g, 'VCI', 330, 470, 16, C.cream, { align: 'right' }); txt(g, 'VCS', 460, 60, 16, C.cream, { align: 'left' }); txt(g, 'aorta', 880, 500, 16, C.cream, { align: 'left' });
-      if (b.i === 2) txt(g, 'plămânii fetali:\nrezistență mare', 300, 70, 16, '#ffd0dd');
+      if (b.i === 2) txt(g, 'plămânii fetali:\nrezistență mare', 760, 40, 16, '#ffd0dd');
+      photo(g, 'fetal', 20, 165, 250, 300, 'Figura din LP\n(Langman 19.25)', 1);
       bloodKey(g, 990, 905);
     },
   };
@@ -226,7 +228,7 @@ export function fetal() {
 export function birth() {
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[300, 790], [300, 650], [535, 180], [760, 250], [560, 880]],
+    anchors: [[300, 790], [300, 650], [535, 180], [760, 250], [640, 870]],
     phase: (i) => ['v. ombilicală → lig. rotund', 'ductul venos → lig. venos', 'foramen ovale → fosa ovală', 'canalul arterial → lig. arterial', 'aa. ombilicale → lig. ombilicale mediale'][i] || 'prima respirație',
     draw(g, t, b) {
       bg(g);
@@ -238,7 +240,7 @@ export function birth() {
       ord.forEach((fi, k) => { const [n, l, x, y, al] = FLBL[fi]; const c = cl[k]; txt(g, c > 0.6 ? l : n, x, y, c > 0.6 ? 18 : 16, c > 0.6 ? '#f0e6dc' : C.cream, { align: al, alpha: b.i === k ? 1 : 0.85 }); });
       if (b.i === 2) { arr(g, 640, 360, 560, 340, B.ox, 6, 1); txt(g, 'AS > AD', 700, 380, 18, '#ffd0cc'); }
       if (b.i === 3) txt(g, 'O₂ ↑ · prostaglandine ↓', 760, 120, 17, C.hi);
-      if (b.i < 0) txt(g, 'prima respirație → plămânii se destind', 300, 120, 16, '#ffd0dd');
+      if (b.i < 0) txt(g, 'prima respirație → plămânii se destind', 330, 108, 16, '#ffd0dd');
       txt(g, 'gri = ligament', 100, 40, 16, '#e8ddd4');
       bloodKey(g, 990, 905);
     },
@@ -253,7 +255,7 @@ export function freq() {
   const X0 = 400, SC = 20;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[X0 + 25 * SC + 60, 110], [X0 + 12 * SC + 60, 200], [X0 + 8 * SC + 60, 380], [500, 680]],
+    anchors: [[X0 + 25 * SC + 60, 110], [X0 + 12 * SC + 90, 200], [X0 + 8 * SC + 60, 380], [70, 700]],
     phase: (i) => ['DSV 25%', 'DSA + canal arterial: 12%', 'Fallot 8%', 'harta OMS (2012)'][i] || '% din malformațiile cardiace',
     draw(g, t, b) {
       bg(g);
@@ -268,8 +270,8 @@ export function freq() {
         if (grow > 0.9) txt(g, v + '%', X0 + w + 34, y, 18, C.cream);
       });
       txt(g, '% din malformațiile cardiace congenitale (tabelul din LP)', 500, 600, 16, C.cream);
-      if (b.i === 0) txt(g, '2,62 / 1000 de nașteri (28,8%)', X0 + 250, 160, 17, C.hi);
-      if (b.i === 1) txt(g, 'DSA 1,64 / 1000 · canal arterial 0,87 / 1000', X0 + 270, 280, 17, C.hi);
+      if (b.i === 0) txt(g, '2,62 / 1000 de nașteri (28,8%)', X0 + 300, 140, 16, C.hi);
+      if (b.i === 1) txt(g, 'DSA 1,64 / 1000 · canal arterial 0,87 / 1000', X0 + 300, 260, 16, C.hi);
       if (b.i === 2) txt(g, 'cea mai frecventă cianogenă', X0 + 330, 350, 17, C.hi);
       // harta OMS (simbolic)
       const s3 = st(b, 3);
@@ -322,7 +324,7 @@ export function shuntRule() {
 export function dsv() {
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[560, 560], [500, 690], [110, 420], [940, 700]],
+    anchors: [[560, 560], [500, 690], [110, 420], [870, 600]],
     phase: (i) => ['orificiu în partea membranoasă', 'șunt VS → VD', 'defect mare: insuficiență cardiacă + HTP', 'clinic: ♂, cea mai frecventă'][i] || 'DSV',
     draw(g, t, b) {
       bg(g);
@@ -346,7 +348,7 @@ export function dsv() {
 export function dsa() {
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[560, 330], [340, 560], [940, 520]],
+    anchors: [[560, 330], [340, 560], [870, 420]],
     phase: (i) => ['orificiu la nivelul fosei ovale', 'șunt AS → AD · AD + VD supraîncărcate', 'clinic: ♀, poate fi asimptomatic'][i] || 'DSA',
     draw(g, t, b) {
       bg(g);
@@ -408,7 +410,7 @@ export function fallot() {
       const ax = lerp(680, 520, Math.max(s2, b.i < 0 ? 1 : 0)); const aw = lerp(56, 92, Math.max(s2, b.i < 0 ? 1 : 0));
       const AOp = [[ax, 530], [ax, 260], [ax + 60, 150], [760, 120], [860, 200], [880, 320]];
       tube(g, AOp, aw, s2 > 0.5 || b.i < 0 ? B.mx : B.ox, { ow: 7 });
-      txt(g, s2 > 0.5 ? 'aorta (călare)' : 'aorta', 780, 70, 20, '#e3c6ff');
+      txt(g, s2 > 0.5 || b.i < 0 ? 'aorta (călare)' : 'aorta', 730, 290, 20, '#e3c6ff');
       // fluxul
       const pulmN = Math.round(lerp(6, 2, s0));
       flow(g, [[120, 640], [300, 640], [300, 530], [300, 240], [230, 160]], t, B.dxL, pulmN, 0.15, 7);
@@ -433,7 +435,7 @@ export function pda() {
   const DUCT = [[690, 100], [310, 100]]; // aortă → pulmonară (sensul după naștere)
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[500, 60], [760, 160], [890, 420], [500, 470]],
+    anchors: [[615, 55], [800, 235], [890, 420], [500, 470]],
     phase: (i) => ['canalul (arcul VI stâng) nu se închide', 'după naștere: aortă → a. pulmonară', 'sângele recirculă prin plămâni', 'ecografie Doppler'][i] || 'făt: pulmonar → aortă',
     draw(g, t, b) {
       bg(g);
@@ -443,8 +445,8 @@ export function pda() {
         heart4(g, t, { pulmCol: !fetalPh && b.i >= 1 ? B.mx : B.dx, pulmW: 46 + 14 * s2 });
         tube(g, DUCT, 30, '#9a5fc8', { ow: 6, cap: 'butt' }); txt(g, 'canal arterial', 500, 50, 19, '#e3c6ff');
         flow(g, H4.blue, t, B.dxL, 10, 0.1, 7); flow(g, H4.red, t, B.oxL, 10, 0.1, 7);
-        if (fetalPh) { flow(g, [[310, 100], [690, 100]], t, B.dx, 5, 0.25, 8); txt(g, 'făt: trunchiul pulmonar → aortă', 500, 165, 18, '#c9d8ff'); }
-        else { flow(g, DUCT, t, B.ox, 5, 0.25, 8); txt(g, 'după naștere: aortă → a. pulmonară', 500, 165, 18, '#ffd0cc'); }
+        if (fetalPh) { flow(g, [[310, 100], [690, 100]], t, B.dx, 5, 0.25, 8); txt(g, 'făt: trunchiul pulmonar → aortă', 500, 235, 17, '#c9d8ff'); }
+        else { flow(g, DUCT, t, B.ox, 5, 0.25, 8); txt(g, 'după naștere: aortă → a. pulmonară', 500, 235, 17, '#ffd0cc'); }
         if (b.i === 2) { const loopP = [[290, 120], [200, 50], [60, 50]]; tube(g, loopP, 10, C.hi, { ow: 0, alpha: 0.6 }); txt(g, 'plămâni', 60, 30, 16, C.hi); flow(g, [[690, 100], [310, 100], [290, 120]], t, B.ox, 3, 0.3, 7); ring(g, 660, 400, 150, 110, ease(b.bt)); ring(g, 660, 680, 150, 120, ease(b.bt)); }
         bodyIcon(g, 950, 820, 0, 0.9); bloodKey(g, 880, 905);
       } else {
@@ -472,7 +474,7 @@ export function pda() {
 export function eisen() {
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[500, 690], [200, 230], [340, 830], [600, 610]],
+    anchors: [[500, 560], [200, 230], [340, 830], [600, 610]],
     phase: (i) => ['DSV mare: VS → VD', 'HTP ireversibilă', 'presiunea VD > VS', 'șunt inversat: VD → VS'][i] || 'ani de evoluție',
     draw(g, t, b) {
       bg(g);
@@ -515,7 +517,7 @@ export function caseLP() {
       // copilul obosit
       const tired = REDUCED ? 0 : Math.sin(t * 2) * 4;
       dot(g, 180, 170 + tired * 0.5, 34, '#f3c29b', { ow: 4 }); const bd = new Path2D(); bd.roundRect(140, 210, 80, 100, 26); paint(g, bd, '#7ab0e0', null, null, [140, 210, 80, 100], OUT, 4);
-      txt(g, '7 ani', 260, 180, 22, C.hi, { align: 'left' }); txt(g, '💧', 225, 150, 22, '#9cd0ff', { stroke: false, alpha: 0.6 + 0.4 * Math.abs(Math.sin(t * 2)) });
+      txt(g, '7 ani', 260, 180, 22, C.hi, { align: 'left' }); { const dy = REDUCED ? 0 : (t * 30) % 40; dot(g, 224, 140 + dy, 7, '#9cd0ff', { ow: 2, alpha: 1 - dy / 40 }); }
       txt(g, 'obosește excesiv\nla efort', 180, 360, 19, C.cream);
       txt(g, 'examen: defect cardiac,\nunul dintre cele mai\nfrecvente la copii', 180, 450, 17, C.cream, { alpha: Math.max(0.4, s0) });
       // diagnosticul

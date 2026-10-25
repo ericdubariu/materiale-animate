@@ -2,7 +2,7 @@
 // CONVENȚIE pe tot deck-ul: vedere frontală = dreapta embrionului e STÂNGA ecranului; cranial = sus.
 import {
   W, H, cam, HOME, C, B, bg, panel, P, on, loopT, txt, pill, curve, at, tube, flow, dot, ell, arr, ring, lead,
-  OUT, clamp, lerp, ease, paint, blob, bb, REDUCED,
+  OUT, clamp, lerp, ease, paint, blob, bb, REDUCED, photo,
 } from './ek.js';
 
 /* =================================================== COPERTA: 4 părți → tot LP-ul
@@ -83,22 +83,22 @@ const ROWS = [
   ['Se închide foramenul interventricular', 18, 20, 1, '#d2524a'], ['Corzile tendinoase', 22, 23, 0, '#a59a94'],
 ];
 export function timeline() {
-  const AX = { S3: 110, S4: 235, S5: 360, S6: 485, S7: 610, S8: 735, N: 905 }; const AY = 200;
+  const AX = { S3: 110, S4: 235, S5: 360, S6: 485, S7: 610, S8: 735, N: 880 }; const AY = 210;
   const SX = (s) => 400 + (s - 13) * 54; // coloana stadiului s (lățime 54)
   const RY = (r) => 420 + r * 37;
   // evenimentele de pe axă: [x, y eticheta, text, punctul la care apar]
   const EV = [
-    [AX.S3, 70, 'aria cardiogenă\n2 tuburi endocardiace', 0], [172, 290, 'tub unic · bate\nîn zilele 21–23', 0],
-    [AX.S4, 128, 'cordul sigmoid\n(bucla cardiacă)', 1], [297, 340, 'cord tetracameral\n(S4–5)', 1],
-    [AX.S5, 70, 'venele: 3 seturi\nseptum primum', 2], [422, 290, 'crestele conotruncale\n→ septul spiral (S5–6)', 2],
-    [AX.S7, 70, 'septum secundum\n+ foramen ovale', 3], [672, 290, 'se închide foramenul\ninterventricular', 3], [800, 340, 'corzile\ntendinoase', 3],
-    [AX.N, 70, 'șunturile\nse închid', 4],
+    [AX.S3, 112, 'aria cardiogenă\n2 tuburi endocardiace', 0], [172, 278, 'tub unic · bate\nîn zilele 21–23', 0],
+    [AX.S4, 162, 'cordul sigmoid\n(bucla cardiacă)', 1], [297, 326, 'cord tetracameral\n(S4–5)', 1],
+    [AX.S5, 112, 'venele: 3 seturi\nseptum primum', 2], [422, 278, 'crestele conotruncale\n→ septul spiral (S5–6)', 2],
+    [AX.S7, 112, 'septum secundum\n+ foramen ovale', 3], [672, 278, 'se închide foramenul\ninterventricular', 3], [800, 326, 'corzile\ntendinoase', 3],
+    [AX.N, 162, 'șunturile\nse închid', 4],
   ];
   const STOP = [AX.S3, AX.S4, AX.S5, AX.S7, AX.N]; const FROM = [AX.S3 - 20, AX.S3, AX.S4, AX.S6, AX.S8];
   const NOW = [12.4, 12.6, 18, 24, 24]; // linia „acum” pe tabel (în stadii) la sfârșitul fiecărui punct
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[AX.S3, 150], [AX.S4, 175], [SX(15), 395], [SX(20), 395], [AX.N - 40, 150]],
+    anchors: [[AX.S3 - 40, AY - 30], [AX.S4 - 40, AY - 30], [370, RY(2)], [370, RY(10)], [AX.N - 40, AY - 30]],
     phase: (i) => ['S3', 'S4', 'S5–S6 · st. 13–17', 'S7–S8 · st. 18–23', 'nașterea'][i] || 'S3 → naștere',
     draw(g, t, b) {
       bg(g);
@@ -156,7 +156,7 @@ export function tubeForm() {
       // ----- disc
       ell(g, DX, DY, 190, 340, '#cfe0f6', { ow: 5 });
       txt(g, 'CRANIAL ↑', DX - 160, 118, 17, C.cream, { align: 'left' });
-      tube(g, [[DX - 70, 150], [DX + 70, 150]], 18, '#3db06c', { ow: 5 }); txt(g, 'septul transvers', DX, 120, 17, '#bff0d2');
+      tube(g, [[DX - 70, 150], [DX + 70, 150]], 18, '#3db06c', { ow: 5 }); txt(g, 'septul transvers', DX + 80, 182, 17, '#bff0d2', { align: 'left' });
       dot(g, DX, 300, 16, '#f4c34f', { ow: 4 }); txt(g, 'lama precordală', DX + 24, 300, 17, '#ffe9a8', { align: 'left' });
       tube(g, [[DX, 600], [DX, 780]], 12, '#9a8a8a', { ow: 4 }); txt(g, 'linia primitivă', DX + 20, 740, 17, C.cream, { align: 'left' });
       // celulele de mezoderm urcă din linia primitivă (jos) și se strâng în potcoava cardiogenă, CRANIAL de lama precordală
@@ -197,7 +197,7 @@ export function tubeForm() {
         ell(g, SX, HY, 40 * beat, 38 * beat, '#ffd6c4', { ow: 4, alpha: p2 });
         if (p2 > 0.4) txt(g, 'tub cardiac unic · bate\nzilele 21–23', SX, HY + 150, 19, C.hi, { alpha: (p2 - 0.4) / 0.6 });
         if (p3 > 0) { txt(g, 'mezocard dorsal', SX + 30, oy + 300, 18, '#ffe7d6', { align: 'left', alpha: p3 }); }
-        if (brk > 0.6) txt(g, 'rupt → sinusul pericardic\ntransvers (în plus față de LP)', SX, oy + 590, 17, '#ffd2b8', { alpha: (brk - 0.6) / 0.4 });
+        if (brk > 0.6) txt(g, 'rupt → sinusul pericardic\ntransvers (în plus față de LP)', SX, oy + 650, 17, '#ffd2b8', { alpha: (brk - 0.6) / 0.4 });
       }
       if (on(b, 0)) ring(g, DX, 250, 160, 110, ease(b.bt * 1.3));
     },
@@ -218,7 +218,7 @@ export function segments() {
     phase: (i) => NAMES[i] || 'intrare jos → ieșire sus',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 5, 0.5);
-      txt(g, 'CRANIAL ↑ (ieșire)', TX, 46, 18, C.cream); txt(g, 'CAUDAL ↓ (intrare)', TX, 912, 18, C.cream);
+      txt(g, 'CAUDAL ↓ (intrare)', TX, 912, 18, C.cream);
       // venele care intră (2 coarne) și arcurile care ies
       [-1, 1].forEach((s) => tube(g, [[TX + s * 120, 900], [TX + s * 40, 850], [TX + s * 16, 800]], 26, '#5b7fd0', { ow: 5 }));
       [-1, 0, 1].forEach((s) => tube(g, [[TX, 120], [TX + s * 60, 90], [TX + s * 120, 70]], 12, '#e8b93a', { ow: 4 }));
@@ -257,7 +257,7 @@ export function loop() {
   let morph = 0;
   return {
     home: cam(560, 470, 1), cams: [cam(560, 470, 1), cam(560, 470, 1), cam(560, 470, 1), cam(560, 470, 1)],
-    anchors: [() => { const s = shape(morph); return [s[5][0] - 90, s[5][1]]; }, () => { const s = shape(morph); return [s[3][0] + 100, s[3][1]]; }, () => { const s = shape(morph); return [s[1][0] + 90, s[1][1] - 40]; }, () => { const s = shape(morph); return [s[0][0] + 110, s[0][1] + 30]; }],
+    anchors: [() => { const s = shape(morph); return [s[5][0] - 150, s[5][1]]; }, () => { const s = shape(morph); return [s[3][0] + 185, s[3][1]]; }, () => { const s = shape(morph); return [s[1][0] + 160, s[1][1] - 10]; }, () => { const s = shape(morph); return [s[0][0] + 205, s[0][1] + 40]; }],
     phase: (i) => ['bulbul cardiac', 'ansa bulboventriculară', 'atriul urcă · canalul AV', 'sinusul venos'][i] || '23 → 24 → 35 de zile',
     draw(g, t, b) {
       bg(g);
@@ -266,8 +266,9 @@ export function loop() {
       morph = b.i < 0 ? (REDUCED ? 1 : 0.5 - 0.5 * Math.cos(t * 0.55)) : [0, lerp(0, 0.55, k), lerp(0.55, 1, k), 1][b.i];
       const m = morph; const S = shape(m); const PTS = curve(S, 14);
       const zile = m < 0.25 ? '23 de zile' : m < 0.75 ? '24 de zile' : '35 de zile';
-      txt(g, zile, 860, 60, 26, C.hi);
-      txt(g, '← dreapta embrionului', 200, 60, 17, C.cream);
+      txt(g, zile, 900, 120, 26, C.hi);
+      txt(g, '← dreapta embrionului', 200, 120, 17, C.cream);
+      photo(g, 'loop', 70, 770, 350, 120, 'Figura din LP (UMFST): 23, 24, 35 de zile', 1);
       // atriile din spate la 35 de zile (de o parte și de alta a trunchiului)
       if (m > 0.7) { const a = (m - 0.7) / 0.3; ell(g, 450, 380, 70, 56, '#8a5ad0', { alpha: a }); ell(g, 690, 360, 70, 56, '#8a5ad0', { alpha: a }); txt(g, 'atriul drept', 360, 300, 17, '#e3d6ff', { alpha: a }); txt(g, 'atriul stâng', 790, 290, 17, '#e3d6ff', { alpha: a }); }
       // venele care intră în sinus

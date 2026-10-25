@@ -168,7 +168,7 @@ export const SL = [
   },
   /* ---------------- 27 · IDENTIFICAREA IZOLATULUI VIRAL ---------------- */
   {
-    scene: 'b_cells', sceneOpts: { part: 1 }, kick: 'LP 3 · Identificarea izolatului viral', title: 'Cum afli că virusul s-a înmulțit în cultură',
+    scene: 'b_cells', sceneOpts: { part: 1 }, kick: 'LP 3 · Identificarea izolatului viral', title: 'Cum afli că virusul s‑a înmulțit în cultură',
     hud: ['monostratul mărit'],
     points: [
       { h: 'Monostratul normal + inocularea', d: ['normal: celule atașate, egale, una lângă alta', 'scoți mediul → **suspensia virală 1 h** → **mediu de întreținere**, mai sărac (celulele rămân vii, dar nu se mai înmulțesc intens) → urmărești zilele următoare'] },
@@ -242,34 +242,47 @@ export const SL = [
   },
   /* ---------------- 30 + 35 · TUBURILE BIOCHIMICE ---------------- */
   {
-    scene: 'b_biochem', kick: 'LP 4 · Caractere biochimice + metabolismul proteic', title: 'Tuburile: nu vezi enzima, vezi produsul ei',
+    scene: 'b_biochem', sceneOpts: { lite: true }, kick: 'LP 4 · Caractere biochimice + metabolismul proteic', title: 'Tuburile: ce citești în fiecare',
     hud: ['TSI: 3 zaharuri + roșu fenol + fier'],
     points: [
-      { h: 'TSI K/A: doar glucoza', d: ['pantă **roșie**, coloană **galbenă** → !!Salmonella, Shigella!!', 'K/K = tot alcalin (tot roșu)'] },
+      { h: 'TSI K/A: doar glucoza', d: ['pantă **roșie**, coloană **galbenă** → !!Salmonella, Shigella!! · K/K = tot roșu'] },
       { h: 'TSI A/A: și lactoza / zaharoza', d: ['tot galben (E. coli), **adesea cu gaz**'] },
-      { h: 'Negru = H₂S', d: ['aminoacizii cu sulf → H₂S; cu **săruri de fier sau plumb** → sulfuri negre (TSI, SIM)', 'Salmonella, Proteus + · Shigella, E. coli −'] },
+      { h: 'Negru = H₂S', d: ['aminoacizii cu sulf → H₂S; cu **săruri de fier sau plumb** → sulfuri negre (TSI, SIM) · Salmonella, Proteus + · Shigella, E. coli −'] },
       { h: 'Indolul', d: ['triptofanul se degradează → indol; cu **Kovacs** (hârtie la dop sau SIM) → !!inel roșu = +!!', 'E. coli indol + · Klebsiella, Salmonella indol −'] },
-      { h: 'Ureaza', d: ['ureea → amoniac → mediul devine alcalin → roșul fenol **roz**', '**Proteus puternic +** (câteva ore)'] },
-      { h: 'Simmons', d: ['citratul ca **unică sursă de carbon** → alcalin → **albastru**', 'Klebsiella + · E. coli −'] },
+      { h: 'Ureaza', d: ['ureea → amoniac → alcalin → roșul fenol **roz** · **Proteus puternic +** (câteva ore)'] },
+      { h: 'Simmons', d: ['citratul ca **unică sursă de carbon** → alcalin → **albastru** · Klebsiella + · E. coli −'] },
     ],
-    why: 'TSI are !!glucoză de 10× mai puțină!!. Dacă germenul fermentează doar glucoza, ea se termină repede; pe pantă (cu oxigen) degradează **peptonele → amine → roșu**, iar în coloană acidul rămâne → **galben**. Fiecare specie are un set propriu de enzime: vezi produsul (acid, bază, indol sau H₂S), care schimbă culoarea mediului sau a unui reactiv.',
+    why: 'TSI are !!glucoză de 10× mai puțină!!. Dacă germenul fermentează doar glucoza, ea se termină repede; pe pantă (cu oxigen) degradează **peptonele → amine → roșu**, iar în coloană acidul rămâne → **galben**.',
     say: 'Germenul degradează un substrat din mediu, iar produsul se vede: indolul face inel roșu cu Kovacs, H₂S-ul face precipitat negru cu sărurile de fier, amoniacul de la urează face mediul roz.',
     beatDur: 7,
   },
-  /* ---------------- 36 + 37 · ENZIME, MOBILITATE, IDENTIFICAREA ---------------- */
+  /* ---------------- 36 + 35 · ENZIME ȘI MOBILITATE ---------------- */
   {
-    scene: 'b_ident', kick: 'LP 4 · Enzime, mobilitate, identificarea', title: 'Testele rapide împart germenii; mediile ajung la specie',
-    hud: ['sus: testele · jos: schema (manual)'],
+    scene: 'b_ident', sceneOpts: { part: 0 }, kick: 'LP 4 · Enzime și mobilitate', title: 'Testele rapide care împart germenii în grupe',
+    hud: ['pe lamă · în tub'],
     points: [
       { h: 'Catalaza', d: ['cultura în **H₂O₂** pe lamă → **bule = +** (apa oxigenată → apă + oxigen)', '!!Staphylococcus catalază + · Streptococcus catalază −!!'] },
       { h: 'Oxidaza', d: ['colonie pe bandă umezită → **mov închis = +**, în secunde (compus colorat)', 'Pseudomonas, Neisseria oxidază + · enterobacterii oxidază −'] },
-      { h: 'Coagulaza', d: ['pe lamă (picătură de plasmă) sau în tub (**plasmă citratată, 24 h**)', 'coaguli = + → !!S. aureus!!'] },
-      { h: 'Mobilitatea', d: ['înțepare în semisolid (SIM): **mobilul tulbură tot mediul**', 'imobilul crește doar pe traiect · flagelii fac mobilitatea'] },
-      { h: 'Identificarea (schemă din manual)', d: ['colonie izolată → **Gram** (forma și culoarea: grupe mari) → coci Gram +: catalaza · bacili Gram −: oxidaza', 'coci: coagulaza → S. aureus, hemoliza → streptococi · bacili Gram −: mediile diferențiale (lactoză, TSI, indol, H₂S, urează, citrat, mobilitate); Pseudomonas: pigment verde'] },
+      { h: 'Coagulaza', d: ['pe lamă (picătură de plasmă) sau în tub (**plasmă citratată, 24 h**) · coaguli = + → !!S. aureus!!'] },
+      { h: 'Mobilitatea', d: ['înțepare în semisolid (SIM): **mobilul tulbură tot mediul** (flageli) · imobilul crește doar pe traiect'] },
+      { h: 'Substrat → enzimă → produs vizibil', d: ['fiecare specie are un **set propriu de enzime**; nu vezi enzima, ci **produsul ei** (acid, bază, indol, H₂S), care schimbă culoarea mediului sau a reactivului'] },
     ],
-    why: 'Plasma trebuie să fie **citratată**: citratul oprește coagularea spontană, dar păstrează **fibrinogenul**, pe care coagulaza îl transformă în fibrină. Ordinea contează: întâi testele rapide, pe lamă (Gram, catalază, oxidază), apoi mediile diferențiale, care cer încă o noapte de incubare.',
-    say: 'Pornesc de la o colonie izolată: fac Gram, apoi catalaza la coci sau oxidaza la bacili, și abia apoi mediile diferențiale ca să ajung la specie.',
+    why: 'Plasma trebuie să fie **citratată**: citratul oprește coagularea spontană, dar păstrează **fibrinogenul**, pe care coagulaza îl transformă în fibrină.',
     warn: 'Pentru catalază **nu** iei colonia de pe geloza-sânge: hematiile au catalază proprie → !!fals pozitiv la streptococ!!.',
     beatDur: 7,
+  },
+  /* ---------------- 37 · IDENTIFICAREA ---------------- */
+  {
+    scene: 'b_ident', sceneOpts: { part: 1 }, kick: 'LP 4 · Identificarea', title: 'Cum legi testele: de la colonie la gen (schemă din manual)',
+    hud: ['colonie → Gram → test rapid → mediu'],
+    points: [
+      { h: 'Frotiul Gram', d: ['primul pas: **forma și culoarea** împart germenii în grupe mari'] },
+      { h: 'Testele rapide pe lamă', d: ['coci Gram +: !!catalaza!! (stafilococ + / streptococ −)', 'bacili Gram −: !!oxidaza!! (Pseudomonas + / enterobacterii −)'] },
+      { h: 'La coci', d: ['**coagulaza** → S. aureus · **hemoliza** → streptococi'] },
+      { h: 'La bacilii Gram −', d: ['**mediile diferențiale**: lactoză, TSI, indol, H₂S, urează, citrat, mobilitate', 'Pseudomonas: pigment verde'] },
+    ],
+    why: 'Ordinea contează: întâi testele **rapide, pe lamă** (Gram, catalază, oxidază), apoi **mediile diferențiale**, care cer încă o noapte de incubare.',
+    say: 'Pornesc de la o colonie izolată: fac Gram, apoi catalaza la coci sau oxidaza la bacili, și abia apoi mediile diferențiale ca să ajung la specie.',
+    beatDur: 6.5,
   },
 ];

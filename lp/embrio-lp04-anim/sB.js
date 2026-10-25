@@ -1,7 +1,7 @@
 // Partea A (septarea) + Partea B (arterele). Vedere frontală: dreapta embrionului = STÂNGA ecranului; cranial = sus.
 import {
   W, H, cam, HOME, C, B, bg, panel, P, on, loopT, txt, pill, curve, at, tube, flow, dot, ell, arr, ring, lead,
-  OUT, clamp, lerp, ease, paint, REDUCED,
+  OUT, clamp, lerp, ease, paint, REDUCED, photo,
 } from './ek.js';
 
 /* =================================================== SEPTAREA ATRIALĂ
@@ -16,7 +16,7 @@ export function atrial() {
   const L = 120, R = 880, T = 170, BOT = 740; const XS = 430, XP = 560; // linia septum secundum / primum
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[XP + 50, 230], [XP + 50, 760], [XS - 50, 230], [XS - 70, 620]],
+    anchors: [[XP + 50, 230], [XP + 50, 760], [XS - 50, 230], [XS - 210, 700]],
     phase: (i) => ['st. 13: septum primum', 'ostium primum se închide', 'st. 18–21: septum secundum', 'supapa: făt → naștere'][i] || 'septarea atrială',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.55);
@@ -72,7 +72,7 @@ export function ventSep() {
   const MX = 500;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[MX + 80, 800], [MX + 90, 520], [MX + 190, 380], [MX + 90, 470]],
+    anchors: [[MX + 80, 800], [MX - 60, 600], [MX + 190, 380], [MX + 50, 610]],
     phase: (i) => ['septul muscular urcă', 'foramenul interventricular', 'pernițele fuzionează (st. 19)', 'partea membranoasă = ultima'][i] || 'septul ventricular',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.55);
@@ -127,7 +127,7 @@ export function spiral() {
   const PT = [[560, 850], [580, 700], [720, 560], [760, 420], [720, 290], [700, 200], [700, 140]];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[290, 120], [290, 600], [880, 420], [660, 900]],
+    anchors: [[290, 120], [50, 470], [880, 420], [660, 900]],
     phase: (i) => ['st. 15–16: crestele bulbare', 'fuziune cu rotire ~180°', 'aorta din VS · pulmonara din VD', 'se unește cu septul ventricular'][i] || 'septul spiral',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.55);
@@ -180,10 +180,10 @@ export function arteryMap() {
   const ARCH = [0, 1, 2].map((k) => [[400 + k * 10, 300 + k * 40], [360 + k * 10, 230 + k * 30], [420 + k * 20, 160 + k * 25], [520 + k * 15, 170 + k * 20]]);
   const DA = [[520, 180], [640, 170], [760, 250], [820, 400], [800, 560], [720, 690], [620, 730]];
   const VIT = [[700, 450], [640, 520], [560, 600], [520, 650]];
-  const UMB = [[650, 720], [560, 760], [470, 760], [410, 720]];
+  const UMB = [[650, 720], [600, 770], [540, 790], [520, 820]];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[330, 170], [700, 120], [600, 520], [520, 820]],
+    anchors: [[250, 250], [700, 120], [600, 520], [640, 840]],
     phase: (i) => ['arcurile aortice', 'aorta dorsală', 'arterele viteline', 'arterele ombilicale'][i] || '26 de zile: 4 surse',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.5);
@@ -197,7 +197,8 @@ export function arteryMap() {
       // inima
       ell(g, HEART[0], HEART[1], 46, 54, '#e07a76', { ow: 5 }); txt(g, 'inima', 340, 380, 17, '#ffd0cc', { align: 'right' });
       // ombilic + placenta
-      ell(g, 420, 860, 90, 34, '#e2569f', { ow: 5 }); txt(g, 'spre placentă', 560, 885, 17, '#ffc0dd', { align: 'left' });
+      ell(g, 520, 865, 90, 34, '#e2569f', { ow: 5 }); txt(g, 'spre placentă', 630, 895, 17, '#ffc0dd', { align: 'left' });
+      photo(g, 'vessels26', 14, 560, 290, 140, 'Figura din LP:\nembrion de 26 de zile', 1);
       const glow = (k) => (b.i === k ? 0.9 : 0);
       const dim = (k) => (b.i < 0 || b.i === k ? 1 : 0.45);
       // 2 · aorta dorsală
@@ -208,13 +209,12 @@ export function arteryMap() {
       const vit = tube(g, VIT, 12, '#f0c020', { ow: 4, glow: glow(2), alpha: dim(2) });
       [-30, 30].forEach((dx) => tube(g, [[520, 650], [490 + dx, 610]], 7, '#f0c020', { ow: 3, alpha: dim(2) }));
       // 4 · ombilicale
-      const umb = tube(g, [...UMB, [420, 830]], 12, '#e2569f', { ow: 4, glow: glow(3), alpha: dim(3) });
+      const umb = tube(g, [...UMB, [520, 840]], 12, '#e2569f', { ow: 4, glow: glow(3), alpha: dim(3) });
       // sensul sângelui
       arcs.forEach((a) => flow(g, a, t, '#fff', 3, 0.22, 5));
       flow(g, da, t, '#fff', 7, 0.12, 6); flow(g, vit, t, '#fff', 3, 0.25, 5); flow(g, umb, t, '#fff', 3, 0.25, 5);
-      const L = [['arcurile aortice', 330, 170, 0], ['aorta dorsală', 760, 160, 1], ['a. vitelină', 610, 470, 2], ['a. ombilicală', 640, 800, 3]];
+      const L = [['arcurile aortice', 330, 170, 0], ['aorta dorsală', 760, 160, 1], ['a. vitelină', 610, 470, 2], ['a. ombilicală', 700, 790, 3]];
       L.forEach(([s, x, y, k]) => txt(g, s, x, y, 19, b.i === k ? C.hi : C.cream, { alpha: dim(k) }));
-      txt(g, 'particule = sensul sângelui', 830, 900, 16, C.cream);
     },
   };
 }
@@ -252,7 +252,7 @@ export function arches1() {
         if (b.i >= 0 || a > 0.5) txt(g, DERIV[k], 680, y - 32, 17, act ? C.hi : C.cream, { alpha: Math.max(0.35, a), w: 700 });
       }
       // III: carotida externă = mugure din arcul III (în plus față de LP); restul carotidei interne = aorta dorsală
-      if (b.i === 2 || b.i < 0) { const g2 = b.i === 2 ? ease(clamp(b.bt / (b.bd * 0.6))) : 1; tube(g, [[300, Y(2)], [290, Y(2) - 60 * g2]], 10, '#8fe0a8', { ow: 4 }); if (b.i === 2) { txt(g, 'carotida externă:\nmugure din III', 270, Y(2) - 110, 16, '#bff0d2'); tube(g, [[LX, Y(2)], [LX, 140]], 12, '#3db06c', { ow: 0, alpha: 0.9 * g2 }); txt(g, 'restul carotidei interne\n= aorta dorsală', LX + 30, 170, 15, '#bff0d2', { align: 'left', alpha: g2 }); } }
+      if (b.i === 2 || b.i < 0) { const g2 = b.i === 2 ? ease(clamp(b.bt / (b.bd * 0.6))) : 1; tube(g, [[300, Y(2)], [290, Y(2) - 60 * g2]], 10, '#8fe0a8', { ow: 4 }); if (b.i === 2) { txt(g, 'carotida externă:\nmugure din III', 312, Y(2) - 50, 16, '#bff0d2', { align: 'left' }); tube(g, [[LX, Y(2)], [LX, 140]], 12, '#3db06c', { ow: 0, alpha: 0.9 * g2 }); txt(g, 'restul carotidei interne\n= aorta dorsală', LX + 30, 170, 15, '#bff0d2', { align: 'left', alpha: g2 }); } }
     },
   };
 }
@@ -280,15 +280,15 @@ export function arches2() {
   const NR = [[300, 80], [300, 260], [320, 330], [370, 320], [380, 260], [390, 80]];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[640, 330], [380, 250], [840, 590], [300, 740]],
+    anchors: [[640, 330], [400, 335], [840, 590], [330, 625]],
     phase: (i) => ['IV stâng → arcul aortei', 'IV drept → subclavia dr. (proximal)', 'VI stâng → a. pulmonară stg. + canal arterial', 'VI drept → a. pulmonară dr. (proximal)'][i] || 'stânga ≠ dreapta',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.55);
       const G = B.gray; const hi = (k) => (b.i === k ? 0.85 : 0);
-      txt(g, '← dreapta pacientului', 180, 40, 17, C.cream); txt(g, 'stânga pacientului →', 830, 40, 17, C.cream);
+      txt(g, '← dreapta pacientului', 150, 905, 17, C.cream); txt(g, 'stânga pacientului →', 860, 905, 17, C.cream);
       // gri = nu din arcuri
       tube(g, PT, 46, G, { ow: 6 }); txt(g, 'trunchiul pulmonar', 600, 900, 17, C.cream);
-      tube(g, ASC, 50, G, { ow: 6 }); txt(g, 'aorta ascendentă', 420, 760, 17, C.cream, { align: 'right' });
+      tube(g, ASC, 50, G, { ow: 6 }); txt(g, 'aorta ascendentă', 470, 835, 17, C.cream, { align: 'right' });
       tube(g, RSUBd, 26, G, { ow: 5 }); tube(g, LSUB, 26, G, { ow: 5 }); txt(g, 'subclavia stg.\n(nu din arcuri)', 880, 210, 16, C.cream);
       tube(g, ARC.slice(3), 44, G, { ow: 6 }); // aorta descendentă (aorta dorsală)
       // III: carotidele (verde)
@@ -299,7 +299,7 @@ export function arches2() {
       tube(g, RSUBp, 26, '#d2524a', { ow: 5, glow: hi(1) }); txt(g, 'subclavia dr.\n(IV dr., proximal)', 250, 240, 16, '#ffd0cc');
       // VI
       tube(g, LPA, 30, B.dx, { ow: 5, glow: hi(2) }); txt(g, 'a. pulmonară stg.', 880, 690, 16, '#c9d8ff');
-      tube(g, RPA, 30, B.dx, { ow: 5, glow: hi(3) }); txt(g, 'a. pulmonară dr.\n(VI dr., proximal)', 280, 740, 16, '#c9d8ff');
+      tube(g, RPA, 30, B.dx, { ow: 5, glow: hi(3) }); txt(g, 'a. pulmonară dr.\n(VI dr., proximal)', 250, 750, 16, '#c9d8ff');
       const s3 = p(3);
       tube(g, RPAd, 18, B.dx, { ow: 4, dash: [10, 9], alpha: 1 - 0.75 * s3 }); if (b.i === 3) txt(g, 'VI dr. distal\ndispare', 220, 470, 16, C.hi);
       const s2 = p(2);
@@ -311,7 +311,6 @@ export function arches2() {
       // sânge: din aorta ascendentă în arc și ramuri; din trunchiul pulmonar în pulmonare
       flow(g, curve([...ASC, ...ARC.slice(1)]), t, '#fff', 9, 0.1, 6);
       flow(g, curve([...PT, [740, 646], [880, 640]]), t, '#fff', 5, 0.14, 5);
-      txt(g, 'gri = nu din arcuri', 860, 900, 16, C.cream);
     },
   };
 }

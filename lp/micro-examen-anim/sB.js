@@ -541,13 +541,13 @@ export function b_cells({ spec } = {}) {
   const pos = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 7; c++) pos.push([-120 + c * 40 + (r % 2) * 20, -60 + r * 40]);
   return {
     home: HOME,
-    anchors: part === 0 ? [[F1[0] - FW / 2 + 20, F1[1] - FH / 2 - 18], [F2[0] + FW / 2 - 10, F2[1] - FH / 2 - 18], [F1[0] + FW / 2 - 10, F1[1] + FH / 2 + 66]]
-      : [[150, 520], [500, 520], [820, 520], [880, 880]],
+    anchors: part === 0 ? [[F1[0] - FW / 2 + 20, F1[1] - FH / 2 - 18], [F2[0] + FW / 2 - 10, F2[1] - FH / 2 - 18], [F1[0] - FW / 2 - 14, F1[1] + FH / 2 + 10]]
+      : [[95, 518], [905, 640], [905, 760], [905, 880]],
     phase: (i) => (part === 0 ? ['inhibiția de contact', 'primare vs. linii', 'ce le ține în viață'][i] || 'virusurile cresc doar în celule vii'
       : ['monostrat → inoculare', 'efect citopatic', 'hemadsorbție', 'nespecific vs. specific'][i] || 'ce face virusul celulelor'),
     draw(g, t, b) {
       bg(g); const tt = TT(t);
-      const bT = part === 0 ? b : { i: 9, bt: 0, bd: 1 }, bV = part === 1 ? b : { i: -9, bt: 0, bd: 1 };
+      const bT = part === 0 ? b : { i: 9, bt: 0, bd: 1 }, bV = part === 1 ? b : { i: 99, bt: 0, bd: 1 };
       const pT = P(bT, t, 3), pV = P(bV, t, 4);
       const aTop = part === 0 ? 1 : 0.4, aBot = part === 1 ? 1 : 0.4;
       const alT = (...k) => aTop * (bT.i < 0 || k.includes(bT.i) || part === 1 ? 1 : 0.42);
@@ -586,7 +586,7 @@ export function b_cells({ spec } = {}) {
       const supC = keep > 0 ? mix('#c9b6e8', '#f2b6bc', keep) : vir > 0 ? '#c9b6e8' : '#e86a7a';
       const supA = vir > 0 || keep > 0 ? 0.7 : 0.7 * (1 - out);
       g.save(); g.globalAlpha *= supA; g.fillStyle = supC; g.fillRect(90, 490, 820, 56); g.restore();
-      const lab0 = bV.i <= 0 ? (s0 <= 0.1 ? 'mediul de cultură' : out < 1 ? 'scoți mediul' : vir < 1 ? 'suspensie virală 1 h' : 'mediu de întreținere, mai sărac → urmărești zilele') : bV.i === 1 ? 'zilele următoare' : bV.i === 2 ? 'hematii adăugate' : 'anticorpi marcați (Ag-Ac) · PCR';
+      const lab0 = part === 0 ? 'monostrat normal = ecranul' : bV.i <= 0 ? (s0 <= 0.1 ? 'mediul de cultură' : out < 1 ? 'scoți mediul' : vir < 1 ? 'suspensie virală 1 h' : 'mediu de întreținere, mai sărac → urmărești zilele') : bV.i === 1 ? 'zilele următoare' : bV.i === 2 ? 'hematii adăugate' : 'anticorpi marcați (Ag-Ac) · PCR';
       txt(g, lab0, 500, 518, 17, M.cream);
       if (bV.i === 0 && vir > 0 && vir < 1) for (let j = 0; j < 12; j++) { const v = loopT(tt * 0.6 + j * 0.083, 1); dot(g, 120 + j * 68, lerp(500, 600, v), 5, '#8a4fd0', { ow: 1.5, alpha: Math.sin(v * Math.PI) }); }
       const cpe = bV.i === 1 ? s1 : 0;
@@ -901,8 +901,51 @@ export function b_oxygen() {
   };
 }
 
+
+// panoul „substrat → enzimă → produs vizibil” (k = 0..5: TSI K/A, A/A, H₂S, indol, uree, citrat); desenat la (x0, y0)
+export function chemPanel(g, x0, y0, k, u, tt) {
+  g.save(); g.translate(x0, y0);
+      panel(g, 24, 30, 610, 270);
+      const CH = [
+        ['glucoză 1× · lactoză 10× · zaharoză 10×', 'acid → galben; glucoza se termină → pe pantă: peptone → amine → roșu'],
+        ['lactoză / zaharoză fermentate', 'acid mult → galben peste tot · adesea gaz'],
+        ['aminoacizi cu sulf → H₂S', '+ săruri de Fe / Pb → sulfură NEAGRĂ'],
+        ['triptofan → indol', '+ Kovacs → inel ROȘU'],
+        ['uree → NH₃ (+ CO₂)', 'alcalin → roșul fenol devine ROZ'],
+        ['citrat = unica sursă de C', 'alcalin → bromtimolul devine ALBASTRU'],
+      ];
+      txt(g, CH[k][0], 330, 70, 19, M.cream); txt(g, CH[k][1], 330, 260, 15, '#d8d0c4');
+      if (k <= 1) { // barele de zahăr: glucoza de 10× mai puțină
+        const used = k === 0 ? clamp(u / 0.4) : clamp(u / 0.9);
+        [['glucoză', 1, '#f2c62e'], ['lactoză', 10, '#7fe0ff'], ['zaharoză', 10, '#c9b3ff']].forEach(([n, q, c0], j) => { const y = 120 + j * 42; const w = 40 * q; const left = j === 0 ? 1 - used : k === 1 ? 1 - used * 0.6 : 1;
+          txt(g, n, 110, y, 16, M.cream, { align: 'right' }); g.save(); g.strokeStyle = OUT; g.lineWidth = 3; g.strokeRect(124, y - 12, w, 24); g.fillStyle = c0; g.fillRect(124, y - 12, w * left, 24); g.restore(); });
+      } else {
+        const sub0 = [null, null, ['aa cu S', '#e6d39a'], ['triptofan', '#e6d39a'], ['uree', '#f3e9c6'], ['citrat', '#cfe6c2']][k];
+        const prod = [null, null, ['sulfură Fe', M.black], ['indol', '#e0303a'], ['NH₃', M.urPink], ['alcalin', M.simB]][k];
+        const v = loopT(tt * 0.35, 1);
+        pill(g, 130, 160, 150, 50, sub0[1], sub0[0], { size: 17 });
+        g.save(); const mx = 330; g.fillStyle = '#7fe0ff'; g.strokeStyle = OUT; g.lineWidth = 4; const mo = 0.35 + 0.25 * Math.sin(tt * 5); g.beginPath(); g.moveTo(mx, 160); g.arc(mx, 160, 40, mo, 6.283 - mo); g.closePath(); g.fill(); g.stroke(); g.restore();
+        txt(g, 'enzima', 330, 222, 14, '#cfefff');
+        dot(g, lerp(190, 300, clamp(v * 2)), 160, 10, sub0[1], { alpha: v < 0.5 ? 1 : 0, ow: 2 });
+        if (v > 0.5) dot(g, lerp(370, 500, (v - 0.5) * 2), 160, 12, prod[1], { ow: 2 });
+        pill(g, 540, 160, 150, 50, prod[1], prod[0], { size: 17, col: k === 2 || k === 5 ? '#ffffff' : OUT });
+      }
+  g.restore();
+}
+// raftul de referință TSI: K/A, A/A, H₂S, K/K
+export function tsiRack(g, x0, y0, k, b) {
+  const RED = '#d42c3c', YEL = '#f2c62e';
+  g.save(); g.translate(x0, y0);
+      [['K/A', RED, YEL, 0], ['A/A', YEL, YEL, 0], ['H₂S', RED, YEL, 1], ['K/K', RED, RED, 0]].forEach(([n, s0, c0, bl], j) => { const x = 700 + j * 80, y = 60; const on3 = (j === 0 && k === 0) || (j === 1 && k === 1) || (j === 2 && k === 2);
+        vial(g, x, y, 40, 190, (c) => { slantFill(c, x, 40, y + 60, y + 100, s0); c.fillStyle = c0; c.fillRect(x - 24, y + 104, 48, 300); if (bl) { c.fillStyle = M.black; c.fillRect(x - 24, y + 120, 48, 300); c.fillStyle = YEL; c.fillRect(x - 24, y + 104, 48, 14); } }, { ow: 4, alpha: on3 || b.i < 0 ? 1 : 0.55 });
+        txt(g, n, x, y + 218, 16, on3 ? M.hi : M.cream); });
+      txt(g, 'K/K = tot roșu', 820, 312, 14, '#d8d0c4');
+  g.restore();
+}
+
 /* ================================================================ 13 · TUBURILE BIOCHIMICE: TSI, H₂S, INDOL, UREE, SIMMONS */
-export function b_biochem() {
+export function b_biochem({ spec } = {}) {
+  const lite = !!(spec && spec.sceneOpts && spec.sceneOpts.lite); // lite = fără panoul de chimie și raft (mutate pe slide-ul enzimelor); tuburile ocupă tot cadrul
   /* CE TREBUIE SĂ SE VADĂ (culori reale: TSI și ureea cu roșu fenol, Simmons cu bromtimol, Kovacs → inel roșu)
      Sus-stânga: chimia punctului (substrat → produs → culoare). Sus-dreapta: raftul de referință TSI: K/A, A/A, H₂S, K/K (tot roșu).
      Jos: TSI mare (pantă sus, coloană jos), SIM, Simmons + / −, uree + / −.
@@ -914,7 +957,7 @@ export function b_biochem() {
      4 uree: ureaza → NH₃ (urcă din pantă) → alcalin → galben-pai devine ROZ, de la pantă în jos (Proteus, în câteva ore); tubul − rămâne galben-pai.
      5 Simmons: citratul = singura sursă de C → creștere pe pantă → alcalin → VERDE devine ALBASTRU de sus în jos (Klebsiella +); E. coli − rămâne verde. */
   const RED = '#d42c3c', YEL = '#f2c62e', SL = '#e04a4a';
-  const TX = 130, TY = 360, TW = 100, TH = 470, YL = TY + 110, YR = TY + 210; // panta: suprafața urcă spre stânga
+  const TX = 130, TY = lite ? 80 : 360, TW = 100, TH = lite ? 720 : 470, YL = TY + 110, YR = TY + 210; // panta: suprafața urcă spre stânga
   const pos = [[310, 'SIM'], [480, 'Simmons +'], [590, 'Simmons −'], [770, 'uree +'], [880, 'uree −']];
   return {
     home: HOME,
@@ -959,109 +1002,103 @@ export function b_biochem() {
         if (j === 3 && k === 4) for (let q = 0; q < 4; q++) { const w = loopT(tt * 0.6 + q * 0.25, 1); dot(g, x - 15 + q * 10, lerp(YL - 6, YL - 80, w), 5, '#ffffff', { alpha: Math.sin(w * Math.PI), ow: 1.5 }); }
         txt(g, pos[j][1], x, TY + TH - 12, 15, M.cream, { alpha: a }); });
       txt(g, 'Proteus', pos[3][0], TY + TH + 14, 14, '#ffb3d0', { alpha: 0.9 });
-      // ---- chimia (sus-stânga)
-      panel(g, 24, 30, 610, 270);
-      const CH = [
-        ['glucoză 1× · lactoză 10× · zaharoză 10×', 'acid → galben; glucoza se termină → pe pantă: peptone → amine → roșu'],
-        ['lactoză / zaharoză fermentate', 'acid mult → galben peste tot · adesea gaz'],
-        ['aminoacizi cu sulf → H₂S', '+ săruri de Fe / Pb → sulfură NEAGRĂ'],
-        ['triptofan → indol', '+ Kovacs → inel ROȘU'],
-        ['uree → NH₃ (+ CO₂)', 'alcalin → roșul fenol devine ROZ'],
-        ['citrat = unica sursă de C', 'alcalin → bromtimolul devine ALBASTRU'],
-      ];
-      txt(g, CH[k][0], 330, 70, 19, M.cream); txt(g, CH[k][1], 330, 260, 15, '#d8d0c4');
-      if (k <= 1) { // barele de zahăr: glucoza de 10× mai puțină
-        const used = k === 0 ? clamp(u / 0.4) : clamp(u / 0.9);
-        [['glucoză', 1, '#f2c62e'], ['lactoză', 10, '#7fe0ff'], ['zaharoză', 10, '#c9b3ff']].forEach(([n, q, c0], j) => { const y = 120 + j * 42; const w = 40 * q; const left = j === 0 ? 1 - used : k === 1 ? 1 - used * 0.6 : 1;
-          txt(g, n, 110, y, 16, M.cream, { align: 'right' }); g.save(); g.strokeStyle = OUT; g.lineWidth = 3; g.strokeRect(124, y - 12, w, 24); g.fillStyle = c0; g.fillRect(124, y - 12, w * left, 24); g.restore(); });
-      } else {
-        const sub0 = [null, null, ['aa cu S', '#e6d39a'], ['triptofan', '#e6d39a'], ['uree', '#f3e9c6'], ['citrat', '#cfe6c2']][k];
-        const prod = [null, null, ['sulfură Fe', M.black], ['indol', '#e0303a'], ['NH₃', M.urPink], ['alcalin', M.simB]][k];
-        const v = loopT(tt * 0.35, 1);
-        pill(g, 130, 160, 150, 50, sub0[1], sub0[0], { size: 17 });
-        g.save(); const mx = 330; g.fillStyle = '#7fe0ff'; g.strokeStyle = OUT; g.lineWidth = 4; const mo = 0.35 + 0.25 * Math.sin(tt * 5); g.beginPath(); g.moveTo(mx, 160); g.arc(mx, 160, 40, mo, 6.283 - mo); g.closePath(); g.fill(); g.stroke(); g.restore();
-        txt(g, 'enzima', 330, 222, 14, '#cfefff');
-        dot(g, lerp(190, 300, clamp(v * 2)), 160, 10, sub0[1], { alpha: v < 0.5 ? 1 : 0, ow: 2 });
-        if (v > 0.5) dot(g, lerp(370, 500, (v - 0.5) * 2), 160, 12, prod[1], { ow: 2 });
-        pill(g, 540, 160, 150, 50, prod[1], prod[0], { size: 17, col: k === 2 || k === 5 ? '#ffffff' : OUT });
-      }
-      // ---- raftul de referință TSI
-      [['K/A', RED, YEL, 0], ['A/A', YEL, YEL, 0], ['H₂S', RED, YEL, 1], ['K/K', RED, RED, 0]].forEach(([n, s0, c0, bl], j) => { const x = 700 + j * 80, y = 60; const on3 = (j === 0 && k === 0) || (j === 1 && k === 1) || (j === 2 && k === 2);
-        vial(g, x, y, 40, 190, (c) => { slantFill(c, x, 40, y + 60, y + 100, s0); c.fillStyle = c0; c.fillRect(x - 24, y + 104, 48, 300); if (bl) { c.fillStyle = M.black; c.fillRect(x - 24, y + 120, 48, 300); c.fillStyle = YEL; c.fillRect(x - 24, y + 104, 48, 14); } }, { ow: 4, alpha: on3 || b.i < 0 ? 1 : 0.55 });
-        txt(g, n, x, y + 218, 16, on3 ? M.hi : M.cream); });
-      txt(g, 'K/K = tot roșu', 820, 312, 14, '#d8d0c4');
+      if (!lite) { chemPanel(g, 0, 0, k, u, tt); tsiRack(g, 0, 0, k, b); }
     },
   };
 }
 
-/* ================================================================ 14 · TESTELE RAPIDE ȘI IDENTIFICAREA */
-export function b_ident() {
+/* ================================================================ 14 · TESTELE RAPIDE (part 0) ȘI IDENTIFICAREA (part 1) */
+export function b_ident({ spec } = {}) {
   /* CE TREBUIE SĂ SE VADĂ
-     Sus, 4 panouri:
-     0 catalaza: pe lamă, 2 picături de H₂O₂; ansa pune cultura: stafilococ → bule de O₂ urcă (2 H₂O₂ → 2 H₂O + O₂); streptococ → nimic.
-       Capcana: colonia luată de pe geloza-sânge aduce hematii (catalază proprie) → bule false la streptococ.
+     PART 0 (enzimele), sus 4 panouri:
+     0 catalaza: pe lamă, 2 picături de H₂O₂; ansa pune cultura: stafilococ → bule de O₂ URCĂ (2 H₂O₂ → 2 H₂O + O₂); streptococ → nimic.
      1 oxidaza: banda umezită; colonia întinsă pe ea → în secunde zona devine MOV ÎNCHIS (Pseudomonas, Neisseria); enterobacterii: rămâne pal.
      2 coagulaza: tubul cu plasmă citratată + S. aureus → fibrinogenul devine fibrină: plasma se încheagă; tubul se înclină și cheagul NU curge;
        tubul de control (fără coagulază) rămâne lichid și curge.
      3 mobilitatea: SIM semisolid înțepat: imobil → creștere doar pe traiect; mobil → tulbureala pornește din traiect SPRE pereți (flageli).
-     Jos, 4 identificarea: o colonie izolată → Gram; jetonul coboară pe ramură: coci Gram + (violet) → catalaza (+ Staphylococcus → coagulaza + =
-       S. aureus; − Streptococcus → hemoliza α / β) și bacili Gram − (roz) → oxidaza (− enterobacterii → lactoză, TSI, indol, urează;
-       + Pseudomonas → pigment verde). Ordinea: întâi lamă (rapid), apoi mediile diferențiale (încă o noapte). */
+     4 principiul (jos): substrat → enzimă → produs vizibil (ciclează sulfură neagră / indol roșu / NH₃ roz / citrat albastru) + raftul TSI
+       K/A, A/A, H₂S, K/K, cu culorile reale.
+     PART 1 (identificarea), arborele pe tot cadrul: colonie izolată → Gram; coci Gram + (violet) → catalaza (+ Staphylococcus → coagulaza + =
+       S. aureus; − Streptococcus → hemoliza α / β); bacili Gram − (roz) → oxidaza (− enterobacterii → lactoză, TSI, indol, urează; + Pseudomonas →
+       pigment verde). Jetonul coboară pe ramura punctului: 0 rădăcina; 1 Gram → catalaza / oxidaza; 2 ramurile cocilor; 3 ramurile bacililor.
+       Ordinea: întâi lama (rapid), apoi mediile diferențiale (încă o noapte). */
+  const part = (spec && spec.sceneOpts && spec.sceneOpts.part) || 0;
   const P4 = [[30, 40], [520, 40], [30, 300], [520, 300]], PW = 450, PH = 240;
-  const N = { root: [500, 590], cp: [270, 650], bn: [730, 650], cat: [270, 710], ox: [730, 710], sta: [160, 770], str: [380, 770], ent: [620, 770], pse: [840, 770], coa: [160, 860], hem: [380, 860], dif: [620, 860], pig: [840, 860] };
+  const big = part === 1;
+  const Y = big ? [130, 290, 450, 610, 800] : [590, 650, 710, 770, 860];
+  const XL = big ? [160, 390, 610, 840] : [160, 380, 620, 840];
+  const N = { root: [500, Y[0]], cp: [big ? 270 : 270, Y[1]], bn: [big ? 730 : 730, Y[1]], cat: [270, Y[2]], ox: [730, Y[2]], sta: [XL[0], Y[3]], str: [XL[1], Y[3]], ent: [XL[2], Y[3]], pse: [XL[3], Y[3]], coa: [XL[0], Y[4]], hem: [XL[1], Y[4]], dif: [XL[2], Y[4]], pig: [XL[3], Y[4]] };
   const ED = [['root', 'cp'], ['root', 'bn'], ['cp', 'cat'], ['bn', 'ox'], ['cat', 'sta'], ['cat', 'str'], ['ox', 'ent'], ['ox', 'pse'], ['sta', 'coa'], ['str', 'hem'], ['ent', 'dif'], ['pse', 'pig']];
   const PATHS = [['root', 'cp', 'cat', 'sta', 'coa'], ['root', 'cp', 'cat', 'str', 'hem'], ['root', 'bn', 'ox', 'ent', 'dif'], ['root', 'bn', 'ox', 'pse', 'pig']];
+  // part 1: ce se aprinde la fiecare punct + pe ce drum merge jetonul
+  const HL = [['root'], ['root', 'cp', 'bn', 'cat', 'ox'], ['cat', 'sta', 'str', 'coa', 'hem'], ['ox', 'ent', 'pse', 'dif', 'pig']];
+  const RUN = [[], [['root', 'cp', 'cat'], ['root', 'bn', 'ox']], [['cat', 'sta', 'coa'], ['cat', 'str', 'hem']], [['ox', 'ent', 'dif'], ['ox', 'pse', 'pig']]];
+  const NL = { root: ['colonie izolată → Gram', '#9ff0dd'], cp: ['coci Gram +', '#c9a7f2'], bn: ['bacili Gram −', '#ffb3c4'], cat: ['catalaza', '#f6efe0'], ox: ['oxidaza', '#f6efe0'], sta: ['+ Staphylococcus', '#f6efe0'], str: ['− Streptococcus', '#f6efe0'], ent: ['− enterobacterii', '#f6efe0'], pse: ['+ Pseudomonas', '#f6efe0'], coa: ['coagulază + = S. aureus', '#e6dcc4'], hem: ['hemoliza α · β', '#e6dcc4'], dif: ['lactoză, TSI, indol, urează', '#e6dcc4'], pig: ['pigment verde', '#bfe6c4'] };
+  const PWd = (kk) => (kk === 'root' ? 250 : ['coa', 'dif'].includes(kk) ? 214 : 196) * (big ? 1.1 : 1);
   return {
     home: HOME,
-    anchors: P4.map(([x, y]) => [x + PW - 24, y + 24]).concat([[N.root[0] + 150, N.root[1] - 10]]),
-    phase: (i) => ['catalaza', 'oxidaza', 'coagulaza', 'mobilitatea', 'colonie → gen'][i] || 'întâi lama, apoi mediile',
+    anchors: part === 0 ? P4.map(([x, y], k) => (k < 2 ? [x + 160, y + 26] : [x + PW - 24, y + 26])).concat([[500, 548]])
+      : [[N.root[0] + 150, N.root[1] - 4], [500, Y[2]], [N.cat[0], Y[3] - 50], [N.ox[0], Y[3] - 50]],
+    phase: (i) => (part === 0 ? ['catalaza', 'oxidaza', 'coagulaza', 'mobilitatea', 'substrat → enzimă → produs'][i] || 'testele rapide'
+      : ['Gram', 'catalaza / oxidaza', 'la coci', 'la bacilii Gram −'][i] || 'colonie → gen'),
     draw(g, t, b) {
-      bg(g); const tt = TT(t); const p = P(b, t, 5, 0.75);
-      P4.forEach(([x, y], k) => { panel(g, x, y, PW, PH, { fill: b.i === k ? 'rgba(14,156,134,.14)' : 'rgba(255,240,228,.05)' }); txt(g, ['Catalaza', 'Oxidaza', 'Coagulaza', 'Mobilitatea'][k], x + 20, y + 26, 19, M.cream, { align: 'left' }); });
-      const al = (k) => (b.i < 0 || b.i === k ? 1 : 0.45);
-      // 0 · catalaza
-      { const [x0, y0] = P4[0]; const u = b.i === 0 ? p(0) : 1; const a = al(0);
-        g.save(); g.globalAlpha = a; g.fillStyle = 'rgba(220,245,255,.35)'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x0 + 30, y0 + 120, 390, 54, 6); g.fill(); g.stroke(); g.restore();
-        [[x0 + 130, 1, 'stafilococ +'], [x0 + 320, 0, 'streptococ −']].forEach(([x, pos2, lab]) => { ell(g, x, y0 + 130, 54, 16, 'rgba(190,230,255,.75)', { ow: 3, alpha: a });
-          if (pos2 && u > 0.3) for (let j = 0; j < 9; j++) { const v = loopT(tt * 0.9 + j * 0.11, 1); dot(g, x - 36 + (j * 19) % 72, lerp(y0 + 128, y0 + 60, v), 4 + 4 * v, 'rgba(255,255,255,.9)', { ow: 1.5, alpha: a * (1 - v) * clamp(u * 2 - 0.6) }); }
-          txt(g, lab, x, y0 + 202, 15, M.cream, { alpha: a }); });
-        if (b.i === 0 && u < 0.35) loop(g, x0 + 130 + 10, lerp(y0 + 60, y0 + 126, u / 0.35), -0.6);
-        txt(g, 'bule în H₂O₂ = +', x0 + PW / 2, y0 + 60, 15, '#d8d0c4', { alpha: a });
+      bg(g); const tt = TT(t); const p = P(b, t, part === 0 ? 5 : 4, 0.75);
+      if (part === 0) {
+        P4.forEach(([x, y], k) => { panel(g, x, y, PW, PH, { fill: b.i === k ? 'rgba(14,156,134,.14)' : 'rgba(255,240,228,.05)' }); txt(g, ['Catalaza', 'Oxidaza', 'Coagulaza', 'Mobilitatea'][k], x + 20, y + 26, 19, M.cream, { align: 'left' }); });
+        const al = (k) => (b.i < 0 || b.i === k ? 1 : 0.45);
+        // 0 · catalaza
+        { const [x0, y0] = P4[0]; const u = b.i === 0 ? p(0) : 1; const a = al(0);
+          g.save(); g.globalAlpha = a; g.fillStyle = 'rgba(220,245,255,.35)'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x0 + 30, y0 + 120, 390, 54, 6); g.fill(); g.stroke(); g.restore();
+          [[x0 + 130, 1, 'stafilococ +'], [x0 + 320, 0, 'streptococ −']].forEach(([x, pos2, lab]) => { ell(g, x, y0 + 130, 54, 16, 'rgba(190,230,255,.75)', { ow: 3, alpha: a });
+            if (pos2 && u > 0.3) for (let j = 0; j < 9; j++) { const v = loopT(tt * 0.9 + j * 0.11, 1); dot(g, x - 36 + (j * 19) % 72, lerp(y0 + 128, y0 + 60, v), 4 + 4 * v, 'rgba(255,255,255,.9)', { ow: 1.5, alpha: a * (1 - v) * clamp(u * 2 - 0.6) }); }
+            txt(g, lab, x, y0 + 202, 15, M.cream, { alpha: a }); });
+          if (b.i === 0 && u < 0.35) loop(g, x0 + 130 + 10, lerp(y0 + 60, y0 + 126, u / 0.35), -0.6);
+          txt(g, 'bule în H₂O₂ = +', x0 + PW / 2, y0 + 60, 15, '#d8d0c4', { alpha: a });
+        }
+        // 1 · oxidaza
+        { const [x0, y0] = P4[1]; const u = b.i === 1 ? p(1) : 1; const a = al(1);
+          [[x0 + 120, 1, 'Pseudomonas, Neisseria +'], [x0 + 330, 0, 'enterobacterii −']].forEach(([x, pos2, lab]) => { g.save(); g.globalAlpha = a; g.fillStyle = '#efe6f6'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x - 80, y0 + 90, 160, 70, 8); g.fill(); g.stroke();
+            const v = clamp(u * 1.6); g.fillStyle = pos2 ? mix('#efe6f6', '#3b1470', clamp(u * 2 - 0.5)) : '#e6dcc4'; g.beginPath(); g.ellipse(x, y0 + 125, 40 * v + 1, 18 * v + 1, 0, 0, 7); g.fill(); g.restore();
+            txt(g, lab, x, y0 + 196, 14, M.cream, { alpha: a }); });
+          txt(g, 'mov închis în secunde = +', x0 + PW / 2, y0 + 60, 14, '#d8d0c4', { alpha: a });
+        }
+        // 2 · coagulaza
+        { const [x0, y0] = P4[2]; const u = b.i === 2 ? p(2) : 1; const a = al(2); const clot = clamp(u * 2), tilt = clamp(u * 2 - 1) * 1.2;
+          [[x0 + 130, 1, 'S. aureus: coagul'], [x0 + 320, 0, 'fără coagulază']].forEach(([x, pos2, lab]) => { const cy = y0 + 110;
+            g.save(); g.translate(x, cy); g.rotate(-tilt); g.translate(-x, -cy);
+            vial(g, x, y0 + 60, 54, 140, (c) => { const plasma = '#f2c98a'; if (pos2 || tilt < 0.05) { c.fillStyle = pos2 ? mix(plasma, '#d9a35a', clot) : plasma; c.fillRect(x - 40, y0 + 120, 80, 300); if (pos2 && clot > 0.5) { c.strokeStyle = 'rgba(120,70,20,.6)'; c.lineWidth = 2; for (let q = 0; q < 5; q++) { c.beginPath(); c.moveTo(x - 24, y0 + 135 + q * 12); c.lineTo(x + 24, y0 + 130 + q * 13); c.stroke(); } } }
+              else { c.save(); c.translate(x, cy + 60); c.rotate(tilt); c.fillStyle = plasma; c.fillRect(-120, -8, 240, 300); c.restore(); } }, { alpha: a, ow: 5 });
+            g.restore(); txt(g, lab, x, y0 + 222, 14, M.cream, { alpha: a }); });
+          txt(g, 'plasmă citratată (tub, 24 h) · lamă', x0 + PW / 2 + 60, y0 + 26, 13, '#d8d0c4', { alpha: a });
+        }
+        // 3 · mobilitatea
+        { const [x0, y0] = P4[3]; const u = b.i === 3 ? p(3) : 1; const a = al(3);
+          [[x0 + 130, 0, 'imobil: doar pe traiect'], [x0 + 320, 1, 'mobil: se tulbură']].forEach(([x, mob, lab]) => {
+            vial(g, x, y0 + 50, 60, 160, (c) => { fillFrom(c, x, 60, y0 + 76, '#ecd9a0'); c.fillStyle = 'rgba(140,110,55,.85)'; c.fillRect(x - 2.5, y0 + 80, 5, 110);
+              if (mob) { c.fillStyle = 'rgba(140,110,55,.4)'; c.beginPath(); c.ellipse(x, y0 + 140, 4 + 34 * u, 70, 0, 0, 7); c.fill(); for (let j = 0; j < 8; j++) { const v = loopT(tt * 0.5 + j * 0.125, 1); bacillus(c, x + (j % 2 ? 1 : -1) * v * 30 * u, y0 + 96 + j * 12, 9, 4, j, M.gramN, 1); } } }, { alpha: a, ow: 5 });
+            txt(g, lab, x, y0 + 230, 14, M.cream, { alpha: a }); });
+          txt(g, 'SIM semisolid · flageli', x0 + PW / 2 + 40, y0 + 26, 14, '#d8d0c4', { alpha: a });
+        }
+        // 4 · principiul: substrat → enzimă → produs vizibil + raftul TSI
+        { const a = b.i < 0 || b.i === 4 ? 1 : 0.45; const kk = REDUCED ? 0 : Math.floor(t / 3.2) % 6; /* ciclează: glucoza 10× (K/A), A/A, H₂S, indol, uree, citrat */ const u = b.i === 4 ? p(4) : 1;
+          g.save(); g.globalAlpha = a; chemPanel(g, 6, 560, kk, u, tt); tsiRack(g, 0, 570, -1, { i: -1 }); g.restore();
+          txt(g, 'nu vezi enzima, ci produsul ei', 330, 880, 15, '#9ff0dd', { alpha: a });
+        }
+        return;
       }
-      // 1 · oxidaza
-      { const [x0, y0] = P4[1]; const u = b.i === 1 ? p(1) : 1; const a = al(1);
-        [[x0 + 120, 1, 'Pseudomonas, Neisseria +'], [x0 + 330, 0, 'enterobacterii −']].forEach(([x, pos2, lab]) => { g.save(); g.globalAlpha = a; g.fillStyle = '#efe6f6'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x - 80, y0 + 90, 160, 70, 8); g.fill(); g.stroke();
-          const v = clamp(u * 1.6); g.fillStyle = pos2 ? mix('#efe6f6', '#3b1470', clamp(u * 2 - 0.5)) : '#e6dcc4'; g.beginPath(); g.ellipse(x, y0 + 125, 40 * v + 1, 18 * v + 1, 0, 0, 7); g.fill(); g.restore();
-          txt(g, lab, x, y0 + 196, 14, M.cream, { alpha: a }); });
-        txt(g, 'mov închis în secunde = +', x0 + PW / 2, y0 + 60, 14, '#d8d0c4', { alpha: a });
-      }
-      // 2 · coagulaza
-      { const [x0, y0] = P4[2]; const u = b.i === 2 ? p(2) : 1; const a = al(2); const clot = clamp(u * 2), tilt = clamp(u * 2 - 1) * 1.2;
-        [[x0 + 130, 1, 'S. aureus: coagul'], [x0 + 320, 0, 'fără coagulază']].forEach(([x, pos2, lab]) => { const cy = y0 + 110;
-          g.save(); g.translate(x, cy); g.rotate(-tilt); g.translate(-x, -cy);
-          vial(g, x, y0 + 60, 54, 140, (c) => { const plasma = '#f2c98a'; if (pos2 || tilt < 0.05) { const lvl = pos2 ? y0 + 120 : y0 + 120; c.fillStyle = pos2 ? mix(plasma, '#d9a35a', clot) : plasma; c.fillRect(x - 40, lvl, 80, 300); if (pos2 && clot > 0.5) { c.strokeStyle = 'rgba(120,70,20,.6)'; c.lineWidth = 2; for (let q = 0; q < 5; q++) { c.beginPath(); c.moveTo(x - 24, y0 + 135 + q * 12); c.lineTo(x + 24, y0 + 130 + q * 13); c.stroke(); } } }
-            else { // lichidul rămâne orizontal: în cadrul tubului rotit apare înclinat → desenăm nivelul rotit invers
-              c.save(); c.translate(x, cy + 60); c.rotate(tilt); c.fillStyle = plasma; c.fillRect(-120, -8, 240, 300); c.restore(); } }, { alpha: a, ow: 5 });
-          g.restore(); txt(g, lab, x, y0 + 222, 14, M.cream, { alpha: a }); });
-        txt(g, 'plasmă citratată (tub, 24 h) · lamă', x0 + PW / 2 + 60, y0 + 26, 13, '#d8d0c4', { alpha: a });
-      }
-      // 3 · mobilitatea
-      { const [x0, y0] = P4[3]; const u = b.i === 3 ? p(3) : 1; const a = al(3);
-        [[x0 + 130, 0, 'imobil: doar pe traiect'], [x0 + 320, 1, 'mobil: se tulbură']].forEach(([x, mob, lab]) => {
-          vial(g, x, y0 + 50, 60, 160, (c) => { fillFrom(c, x, 60, y0 + 76, '#ecd9a0'); c.fillStyle = 'rgba(140,110,55,.85)'; c.fillRect(x - 2.5, y0 + 80, 5, 110);
-            if (mob) { c.fillStyle = 'rgba(140,110,55,.4)'; c.beginPath(); c.ellipse(x, y0 + 140, 4 + 34 * u, 70, 0, 0, 7); c.fill(); for (let j = 0; j < 8; j++) { const v = loopT(tt * 0.5 + j * 0.125, 1); bacillus(c, x + (j % 2 ? 1 : -1) * v * 30 * u, y0 + 96 + j * 12, 9, 4, j, M.gramN, 1); } } }, { alpha: a, ow: 5 });
-          txt(g, lab, x, y0 + 230, 14, M.cream, { alpha: a }); });
-        txt(g, 'SIM semisolid · flageli', x0 + PW / 2 + 40, y0 + 26, 14, '#d8d0c4', { alpha: a });
-      }
-      // ---- arborele identificării
-      const a4 = b.i < 0 || b.i === 4 ? 1 : 0.5;
-      ED.forEach(([s, e]) => { g.save(); g.globalAlpha = a4 * 0.75; g.strokeStyle = '#cfc6d6'; g.lineWidth = 3; g.beginPath(); g.moveTo(N[s][0], N[s][1] + 14); g.lineTo(N[e][0], N[e][1] - 14); g.stroke(); g.restore(); });
-      const NL = { root: ['colonie izolată → Gram', '#9ff0dd'], cp: ['coci Gram +', '#c9a7f2'], bn: ['bacili Gram −', '#ffb3c4'], cat: ['catalaza', '#f6efe0'], ox: ['oxidaza', '#f6efe0'], sta: ['+ Staphylococcus', '#f6efe0'], str: ['− Streptococcus', '#f6efe0'], ent: ['− enterobacterii', '#f6efe0'], pse: ['+ Pseudomonas', '#f6efe0'], coa: ['coagulază + = S. aureus', '#e6dcc4'], hem: ['hemoliza α · β', '#e6dcc4'], dif: ['lactoză, TSI, indol, urează', '#e6dcc4'], pig: ['pigment verde', '#bfe6c4'] };
-      Object.entries(NL).forEach(([kk, [s, c0]]) => pill(g, N[kk][0], N[kk][1], kk === 'root' ? 250 : kk.length === 3 && ['coa', 'dif'].includes(kk) ? 214 : 196, 30, c0, s, { size: 14, alpha: a4, ow: 3, r: 10 }));
-      coccus(g, N.cp[0] - 120, N.cp[1], 9, M.gram, a4); coccus(g, N.cp[0] - 104, N.cp[1] + 4, 9, M.gram, a4); bacillus(g, N.bn[0] + 120, N.bn[1], 30, 10, 0.3, M.gramN, a4);
-      if (b.i === 4 || b.i < 0) { const v = b.i === 4 ? p(4) : loopT(tt, 8); const q = Math.min(3, Math.floor(v * 4)); const f = v * 4 - q; const path = PATHS[q].map((n) => N[n]); const Q = curve(path, 6); const pt = at(Q, clamp(f / 0.8));
-        dot(g, pt[0], pt[1], 12, M.hi, { ow: 3 }); }
-      txt(g, 'întâi lama (rapid) → apoi mediile (încă o noapte)', 500, 915, 15, '#d8d0c4', { alpha: a4 });
+      // ================= PART 1: arborele identificării
+      const act = b.i < 0 ? null : HL[b.i]; const u = b.i >= 0 ? p(b.i) : 0;
+      ED.forEach(([s0, e]) => { const on2 = !act || (act.includes(s0) && act.includes(e)); g.save(); g.globalAlpha = on2 ? 0.85 : 0.3; g.strokeStyle = on2 && act ? '#ffe36e' : '#cfc6d6'; g.lineWidth = on2 && act ? 5 : 3; g.beginPath(); g.moveTo(N[s0][0], N[s0][1] + 18); g.lineTo(N[e][0], N[e][1] - 18); g.stroke(); g.restore(); });
+      Object.entries(NL).forEach(([kk, [s0, c0]]) => { const on2 = !act || act.includes(kk); pill(g, N[kk][0], N[kk][1], PWd(kk), 38, c0, s0, { size: 17, alpha: on2 ? 1 : 0.4, ow: 3, r: 12, glow: act && act.includes(kk) ? 0.6 : 0 }); });
+      const CPx = N.cp[0] - PWd('cp') / 2 - 36, BNx = N.bn[0] + PWd('bn') / 2 + 36;
+      coccus(g, CPx - 8, N.cp[1], 11, M.gram); coccus(g, CPx + 10, N.cp[1] + 5, 11, M.gram); bacillus(g, BNx, N.bn[1], 36, 12, 0.3, M.gramN);
+      txt(g, '+ / − = rezultatul testului', 500, Y[2] + 60, 14, '#d8d0c4');
+      [['+', N.sta], ['−', N.str], ['−', N.ent], ['+', N.pse]].forEach(([sg, n]) => txt(g, sg, n[0], n[1] - 58, 22, sg === '+' ? '#9ff0dd' : '#ff9a9a'));
+      // jetonul
+      if (b.i < 0) { const v = loopT(tt, 8); const q = Math.min(3, Math.floor(v * 4)); const f = v * 4 - q; const Q = curve(PATHS[q].map((n) => N[n]), 6); const pt = at(Q, clamp(f / 0.8)); dot(g, pt[0], pt[1], 13, M.hi, { ow: 3 }); }
+      else if (b.i === 0) ring(g, N.root[0], N.root[1], 150, 36, ease(b.bt * 1.4));
+      else RUN[b.i].forEach((path) => { const Q = curve(path.map((n) => N[n]), 6); const pt = at(Q, clamp(u / 0.9)); dot(g, pt[0], pt[1], 13, M.hi, { ow: 3 }); });
+      txt(g, 'întâi lama (rapid: Gram, catalază, oxidază) → apoi mediile diferențiale (încă o noapte)', 500, 890, 15, '#d8d0c4');
     },
   };
 }

@@ -78,7 +78,7 @@ export const SL = [
   // ---------------- LP 1 · CONTROLUL CREȘTERII + CURBA ----------------
   {
     scene: 'a_kill', kick: 'LP 1 · Controlul creșterii', title: 'Cât omoară fiecare metodă și de ce sporii rezistă',
-    hud: ['de jos în sus: omori tot mai mult'],
+    hud: [],
     points: [
       { h: 'Sterilizarea: omoară TOT, și sporii', d: ['!!singura care omoară sigur sporii!!', 'Poupinel !!160 °C / 2 h!! · autoclav !!121 °C / 15–30 min!!'] },
       { h: 'Dezinfecția (obiecte) și antisepsia (țesut viu)', d: ['dezinfecție: pe obiecte, suprafețe, aer; substanțe toxice pentru țesut; patogenii, **nu sporii**', 'antisepsie: pe **țesut viu** (alcool 70%, iod); doar formele vegetative'] },
@@ -93,7 +93,7 @@ export const SL = [
   // ---------------- LP 1 · RECOLTAREA (+ pe produse) ----------------
   {
     scene: 'a_sample', kick: 'LP 1 · Recoltarea', title: 'Să nu omori germenul și să nu contaminezi proba',
-    hud: ['frig · gheață · t° camerei'],
+    hud: [],
     points: [
       { h: 'Regulile generale', d: ['!!recoltezi înainte de antibiotic!!', 'steril · închis ermetic · bilet de trimitere · transport rapid'] },
       { h: 'Frig DA: urina (4 °C) și virusurile (−70 °C)', d: ['urina: 4 °C dacă nu ajunge în 2 h; frigul oprește înmulțirea contaminanților, altfel bacteriuria iese fals crescută', 'virusologic: pe gheață, !!−70 °C (nu −20 °C)!!: la −20 °C își pierd viabilitatea'] },
@@ -108,7 +108,7 @@ export const SL = [
   // ---------------- LP 1 · SCHEMA DIAGNOSTICULUI ----------------
   {
     scene: 'a_diag', kick: 'LP 1 · Schema diagnosticului', title: 'Direct cauți germenul, indirect cauți urma lui',
-    hud: ['direct ↓ · indirect'],
+    hud: [],
     points: [
       { h: 'Examen direct', d: ['microscop, antigen, ADN', 'rapid, dar grosier'] },
       { h: 'Cultură pură', d: ['!!o colonie = o singură bacterie inițială!!; colonie izolată → repicare', 'fără ea nu poți identifica și nu faci antibiogramă'] },
@@ -122,7 +122,7 @@ export const SL = [
   // ---------------- LP 1 · CĂLDURA ----------------
   {
     scene: 'a_heat', kick: 'LP 1 · Căldura', title: 'Uscată omoară prin oxidare, umedă prin denaturare',
-    hud: ['uscată · umedă'],
+    hud: [],
     points: [
       { h: 'Căldura uscată (oxidare)', d: ['ansa la roșu, flambarea completează, incinerarea arde tot', 'Poupinel: **160 °C / 2 h · 180 °C / 1 h**; DA: sticlărie, porțelan, instrumente (metal), pulberi termostabile · NU: lichide, plastic, textile'] },
       { h: 'Fierberea și vaporii fluenți', d: ['100 °C, 30 min · vapori fluenți (vasul Koch)', '!!omoară formele vegetative, nu sporii → deci nu sterilizează!!'] },
@@ -136,7 +136,7 @@ export const SL = [
   // ---------------- LP 1 · ALTE METODE ----------------
   {
     scene: 'a_other', kick: 'LP 1 · Alte metode', title: 'Fără căldură: filtrezi, iradiezi sau folosești chimicale',
-    hud: ['fără căldură · prezervare'],
+    hud: [],
     points: [
       { h: 'Pasteurizarea', d: ['denaturare sub 100 °C, pentru alimente termolabile (lapte); reduce patogenii', 'în LP: nu distruge micobacteriile și enterovirusurile → **NU e sterilizare**'] },
       { h: 'Filtrarea', d: ['!!reține germenii, nu-i omoară!! (membrane 0,22–0,8 µm; 0,22 µm pentru seruri, antibiotice)', 'lichide care nu pot fi încălzite · aer steril în hotă (HEPA)'] },
@@ -178,7 +178,7 @@ export const SL = [
   // ---------------- LP 2 · GRAM + ALTE COLORAȚII ----------------
   {
     scene: 'a_gram', kick: 'LP 2 · Colorația Gram + alte colorații', title: 'Peretele decide culoarea',
-    hud: ['Gram + violet', 'Gram − roșu'],
+    hud: [],
     points: [
       { h: 'Gram-pozitivii → violet', d: ['peptidoglican **gros** → alcoolul îl deshidratează, porii se strâng', '!!complexul violet–iod rămâne prins → violet!!'] },
       { h: 'Gram-negativii → roșu', d: ['membrană externă lipidică (LPS) + peptidoglican subțire → alcoolul dizolvă membrana', 'complexul iese, fuxina îi face roșii'] },

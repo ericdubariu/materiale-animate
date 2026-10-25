@@ -83,7 +83,7 @@ export const SLIDES = [
   // ================= PARTEA A · INIMA =================
   {
     scene: 'tubeForm', kick: 'Partea A · Inima · S3', title: 'Aria cardiogenă → 2 tuburi → un singur tub care bate',
-    hud: ['stânga: discul văzut de sus', 'dreapta: secțiune transversală'],
+    hud: ['disc de sus', 'secțiune'],
     points: [
       { h: 'Aria cardiogenă (EN: cardiogenic area)', d: ['dezvoltarea inimii **începe în S3**', '!!anterior (cranial) de lama precordală!!, din **mezodermul splanhnic** (lateral)'] },
       { h: 'Cordul primordial (S3)', d: ['**două tuburi endocardiace** în curs de fuzionare', 'plierea laterală le aduce pe linia mediană'] },
@@ -170,7 +170,7 @@ export const SLIDES = [
   // ================= PARTEA B · ARTERELE =================
   {
     scene: 'arteryMap', kick: 'Partea B · Arterele · Harta', title: 'Arterele vin din 4 surse; la 26 de zile le vezi pe toate',
-    hud: ['embrion de 26 de zile, din profil', 'culorile = sursa, nu oxigenarea'],
+    hud: ['embrion de 26 de zile, din profil', 'culoare = sursa · particule = sensul sângelui'],
     points: [
       { h: 'Arcurile aortice (EN: aortic / pharyngeal arch arteries)', d: ['câte unul în fiecare arc faringian (I–VI)', '→ **vasele gâtului și ale toracelui**'] },
       { h: 'Aorta dorsală (LA: aorta dorsalis)', d: ['inițial !!pereche → fuzionează → aorta descendentă!!'] },
@@ -195,7 +195,7 @@ export const SLIDES = [
   },
   {
     scene: 'arches2', kick: 'Partea B · Arcurile aortice (2)', title: 'Arcurile IV și VI: stânga nu e ca dreapta',
-    hud: ['vedere frontală: dreapta pacientului = stânga ecranului', 'culoarea = arcul de origine · gri = nu din arcuri'],
+    hud: ['culoarea = arcul de origine', 'gri = nu din arcuri'],
     points: [
       { h: 'Arcul IV stâng', d: ['contribuie la !!arcul aortic!!'] },
       { h: 'Arcul IV drept', d: ['formează **partea proximală a a. subclavii drepte**'] },
@@ -208,7 +208,7 @@ export const SLIDES = [
   },
   {
     scene: 'aortaBr', kick: 'Partea B · Aorta dorsală, viteline, ombilicale', title: 'Două aorte dorsale devin una; viteline → intestin, ombilicale → ligamente',
-    hud: ['violet = amestecat (aorta fetală) · albastru = neoxigenat', 'gri = ligament'],
+    hud: ['violet = sânge amestecat (aorta fetală)'],
     points: [
       { h: 'Aorta dorsală: inițial bilaterală', d: ['două aorte dorsale, câte una de fiecare parte', '**fuzionează treptat** → aorta descendentă'] },
       { h: 'Ramurile ventrale (viscerale) = arterele viteline', d: ['inițial vascularizează **sacul vitelin**', 'după remodelare: 3 trunchiuri = !!trunchiul celiac, AMS, AMI!! → tubul digestiv; + aa. bronșice și esofagiene (figura din LP)'] },
@@ -223,14 +223,14 @@ export const SLIDES = [
   // ================= PARTEA C · VENELE + CIRCULAȚIA FETALĂ =================
   {
     scene: 'veins3', kick: 'Partea C · Venele · 3 seturi (S5)', title: 'Trei perechi de vene se varsă în cele două coarne ale sinusului venos',
-    hud: ['vedere frontală', 'roșu = oxigenat · albastru = neoxigenat'],
+    hud: ['vedere frontală'],
     points: [
       { h: 'Venele viteline', d: ['drenează sânge **neoxigenat** din **sacul vitelin**', 'trec prin septul transvers (→ ficat)'] },
       { h: 'Venele ombilicale', d: ['drenează sânge !!oxigenat de la placentă!!'] },
       { h: 'Venele cardinale comune', d: ['drenează sânge **neoxigenat** din corpul fătului', '= !!cardinala anterioară + cardinala posterioară!!'] },
       { h: 'Remodelarea spre dreapta', d: ['în **S5** cele 3 seturi se văd deja în embrion', 'drenajul se mută din stânga în dreapta, ca sângele să ajungă în **atriul drept**'] },
     ],
-    warn: 'Atenție la termen: LP-ul o numește „shuntul general stg → dr”. Nu e un șunt cardiac: înseamnă că venele din stânga se închid sau trimit sângele spre dreapta, iar !!cornul stâng al sinusului venos rămâne mic (→ sinusul coronar)!!. Doar vena ombilicală duce sânge oxigenat; viteline și cardinale, neoxigenat.',
+    warn: 'Atenție la termen: LP-ul o numește „shuntul general stg → dr”. Nu e un șunt cardiac: înseamnă că venele din stânga se închid sau trimit sângele spre dreapta, iar !!cornul stâng al sinusului venos rămâne mic (→ sinusul coronar)!!. Doar vena ombilicală duce sânge oxigenat; viteline și cardinale, neoxigenat. Excepție pe desen (manual): din venele ombilicale dispare cea **dreaptă**; cea stângă rămâne și se varsă în ficat (→ ductul venos).',
     extraText: WK, beatDur: 6.5,
   },
   {
@@ -249,7 +249,7 @@ export const SLIDES = [
   },
   {
     scene: 'fetal', kick: 'Partea C · Circulația fetală', title: 'Trei șunturi ocolesc ficatul și plămânii',
-    hud: ['roșu = oxigenat · albastru = neoxigenat · violet = amestecat'],
+    hud: ['făt'],
     points: [
       { h: 'Ductul venos (LA: ductus venosus)', d: ['sângele oxigenat din v. ombilicală !!ocolește ficatul!! → VCI'] },
       { h: 'Foramen ovale', d: ['!!AD → AS!!: sângele din VCI ocolește plămânii', 'supapa din septul atrial'] },
@@ -289,7 +289,7 @@ export const SLIDES = [
     scene: 'shuntRule', kick: 'Partea D · Malformații · Regula șuntului', title: 'Sângele trece mereu de unde presiunea e mai mare',
     hud: ['presiuni tipice (în plus față de LP)'],
     points: [
-      { h: 'Stânga are presiune mai mare decât dreapta', d: ['AS > AD, VS ≫ VD, aorta ≫ a. pulmonară', 'orice gaură între ele → !!șunt stânga → dreapta!!'] },
+      { h: 'Stânga are presiune mai mare decât dreapta', d: ['AS > AD, VS ≫ VD, aorta ≫ a. pulmonară (tipic: AD 5, AS 8, VD 25, VS 120 mmHg)', 'orice gaură între ele → !!șunt stânga → dreapta!!'] },
       { h: 'Șunt stânga → dreapta = !!fără cianoză!!', d: ['sânge **oxigenat** se întoarce în plămâni', 'corpul primește tot sânge oxigenat (dar mai puțin)'] },
       { h: 'Plămânii primesc prea mult sânge', d: ['în timp: **hipertensiune pulmonară** → Eisenmenger', 'obstacol pe dreapta (Fallot) → !!șunt dreapta → stânga → cianoză!!'] },
     ],

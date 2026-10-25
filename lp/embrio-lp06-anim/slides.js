@@ -282,7 +282,7 @@ export const SLIDES = [
         ['Cromozomiale / genetice', '!!trisomiile 13, 18, 21!!; sindromul Cornelia de Lange; sindromul cri du chat; sindromul Smith-Lemli-Opitz', 'erori înnăscute de metabolism; boli mitocondriale; aminoacidopatii; defecte ale transportului de glucoză'],
         ['Traume disruptive (dobândite)', 'hipoxie / anoxie (placentă insuficientă); moartea unui geamăn (monocorionic)', 'traumatism cranio-cerebral; hemoragie parenchimatoasă (mai ales la prematuri); hipoxie / anoxie'],
         ['Infecții', 'sifilis, !!toxoplasmoză, rubeolă, CMV!!, herpes simplex, parvovirus B19, !!virusul Zika!!, alte virusuri', 'meningită, encefalită'],
-        ['Teratogeni / toxine', '!!alcool!!, hidantoină, droguri (cocaină, crack), radiații, diabet matern necontrolat, fenilcetonurie maternă', 'intoxicație cu cupru; insuficiență renală cronică'],
+        ['Teratogeni / toxine', '**alcool**, hidantoină, droguri (cocaină, crack), radiații, diabet matern necontrolat, fenilcetonurie maternă', 'intoxicație cu cupru; insuficiență renală cronică'],
         ['Carențe', 'hipotiroidism matern; !!deficit de acid folic!!; malnutriție; placentă insuficientă', 'hipotiroidism; malnutriție; anemie; cardiopatie congenitală'],
       ],
     },

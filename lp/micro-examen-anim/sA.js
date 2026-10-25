@@ -143,9 +143,9 @@ function diplo(g, x, y, s, rot, col, a = 1, kind = 'ren') { // diplococ: renifor
   g.restore();
 }
 function field(g, x, y, r, fill, fn, o = {}) { // câmp microscopic circular, conținutul desenat în clip
-  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  g.save();
   g.beginPath(); g.arc(x, y, r, 0, 7); g.fillStyle = fill; g.fill();
-  g.save(); g.clip(); fn(); g.restore();
+  g.save(); g.clip(); fn(); if (o.alpha !== undefined && o.alpha < 1) { g.globalAlpha = 1; g.fillStyle = `rgba(16,9,22,${(1 - o.alpha) * 0.85})`; g.fillRect(x - r, y - r, 2 * r, 2 * r); } g.restore();
   g.lineWidth = 8; g.strokeStyle = OUT; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke();
   g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.25)'; g.beginPath(); g.arc(x, y, r + 7, 0, 7); g.stroke();
   g.restore();
@@ -210,7 +210,7 @@ export function a_cover() {
   }
   return {
     home: HOME,
-    anchors: [[60, 72], [56, 462], [56, 660], [540, 72]],
+    anchors: [[60, 72], [231, 459], [56, 660], [540, 72]],
     draw(g, t, b) {
       bg(g);
       const hi = b.i < 0 ? Math.floor(TT(t) / 2.6) % 4 : b.i;
@@ -220,12 +220,12 @@ export function a_cover() {
       T(g, 'PARTEA A · principiile LP 1–6', 255, 72, 22, '#9ef0dd');
       T(g, 'LP 7 (micologia) nu intră', 255, 104, 16, M.dim, { w: 600 });
       TL.forEach(([x, y], k) => tile(g, k, x, y, t, (hi === 0) || (hi === 1 && k === 4), k === 4 ? Math.max(dimOf(0), dimOf(1)) : dimOf(0)));
-      if (hi === 1) ring(g, 265 + TW / 2, 445 + 85, 100, 74, ease((b.i < 0 ? TT(t) % 2.6 : b.bt) * 1.2));
+      if (hi === 1) ring(g, 40 + TW / 2, 445 + 85, 100, 74, ease((b.i < 0 ? TT(t) % 2.6 : b.bt) * 1.2));
       // ---- Partea B: cărțile se întorc de pe „?” pe poza reală
       panel(g, 510, 40, 470, 570, { fill: hi === 3 ? 'rgba(14,156,134,.16)' : 'rgba(255,240,228,.05)', stroke: hi === 3 ? 'rgba(127,227,207,.7)' : 'rgba(255,230,210,.16)' });
       T(g, 'PARTEA B · atlasul mediilor', 745, 72, 22, '#9ef0dd');
       T(g, 'întâi poza, apoi răspunsul', 745, 104, 16, M.dim, { w: 600 });
-      const tt = (REDUCED ? 6 : t) % 12;
+      const tt = REDUCED ? 6 : b.i === 3 ? Math.min(9, b.bt) : t % 12;
       CARDS.forEach(([img, cap], k) => {
         const [cx, cy] = CP[k];
         const a = clamp((tt - 1 - k * 0.7) / 0.8) - clamp((tt - 10.4 - k * 0.25) / 0.6);
@@ -271,7 +271,7 @@ export function a_intro() {
   const COLS = [[-60, -40], [30, -70], [60, 20], [-30, 50], [-80, 30], [10, -10], [70, -40], [-10, 85]];
   return {
     home: HOME,
-    anchors: [[48, 150], [538, 150], [48, 345], [470, 270]],
+    anchors: [[48, 150], [538, 150], [540, 345], [24, 268]],
     draw(g, t, b) {
       bg(g);
       // ---- arborele
@@ -288,8 +288,8 @@ export function a_intro() {
         if (k === 6) xmark(g, x, 268, 1.1, 1);
       }
       // mini-iconițe pentru practic: placă + tub
-      plate(g, 690, 268, 26, M.chapR, { alpha: hi === 1 ? 1 : 0.6 }); testTube(g, 780, 238, 26, 64, M.yellow, { alpha: hi === 1 ? 1 : 0.6 });
-      T(g, 'ce mediu · ce crește · + / −', 880, 268, 15, M.cream, { alpha: hi === 1 ? 1 : 0.6, w: 600 });
+      plate(g, 600, 268, 26, M.chapR, { alpha: hi === 1 ? 1 : 0.6 }); testTube(g, 670, 238, 26, 64, M.yellow, { alpha: hi === 1 ? 1 : 0.6 });
+      T(g, 'ce mediu · ce crește · + / −', 840, 268, 15, M.cream, { alpha: hi === 1 ? 1 : 0.6, w: 600 });
       // ---- progresul formulei
       let fs;
       if (b.i < 0) fs = P(b, t, 5, 0.6);
@@ -348,7 +348,7 @@ export function a_intro() {
  mai abruptă (timp, concentrație, t° ↑). (jos dreapta) scara rezistenței, cel mai greu de omorât sus: prioni, spori… */
 export function a_kill() {
   const BARS = [['Sterilizare', 'omoară TOT, și sporii', '#0f5e4f', '#ffffff'], ['Dezinfecție', 'patogenii, fără spori · obiecte', '#1f7d68', '#ffffff'], ['Antisepsie', 'forme vegetative · țesut viu', '#4aa58c', OUT], ['Curățare', 'doar murdăria · curat ≠ steril', '#a8d8c8', OUT]];
-  const BY = [80, 168, 256, 344];
+  const BY = [100, 183, 266, 349];
   sr(7);
   const DIRT = Array.from({ length: 6 }, () => [R(590, 950), R(120, 380), R(9, 16)]);
   const VEG = Array.from({ length: 8 }, () => [R(600, 940), R(125, 380), R(0, 3)]);
@@ -358,7 +358,7 @@ export function a_kill() {
   const ly = (e) => OY - (e / 8) * (OY - YT); const lx = (u) => OX + u * (XT - OX);
   return {
     home: HOME,
-    anchors: [[46, BY[0] - 30], [66, BY[1] - 30], [106, BY[3] - 30], [OX + 40, 475], [780, 470]],
+    anchors: [[488, BY[0] - 24], [488, BY[1] - 24], [488, BY[3] - 24], [56, 478], [955, 478]],
     draw(g, t, b) {
       bg(g);
       // ---- nivelul aplicat probei: L = 1 curățare, 2 antisepsie, 3 dezinfecție, 4 sterilizare
@@ -371,7 +371,7 @@ export function a_kill() {
       const barOf = { 4: 0, 3: 1, 2: 2, 1: 3 };
       BARS.forEach(([n, s, c, tc], k) => {
         const x = 30 + k * 22, w = 470 - k * 22; const act = barOf[L] === k && b.i < 3;
-        pill(g, x + w / 2, BY[k], w, 74, c, '', { glow: act ? 1 : 0, alpha: b.i >= 3 ? 0.5 : 1, r: 16 });
+        pill(g, x + w / 2, BY[k], w, 70, c, '', { glow: act ? 1 : 0, alpha: b.i >= 3 ? 0.5 : 1, r: 16 });
         T(g, n, x + 26, BY[k] - 13, 21, tc, { stroke: false, align: 'left', alpha: b.i >= 3 ? 0.5 : 1 });
         T(g, s, x + 26, BY[k] + 15, 16, tc, { stroke: false, align: 'left', w: 600, alpha: b.i >= 3 ? 0.5 : 1 });
       });
@@ -393,13 +393,13 @@ export function a_kill() {
       panel(g, 30, 450, 530, 465);
       g.save(); g.globalAlpha = pa; g.strokeStyle = M.cream; g.lineWidth = 4; g.beginPath(); g.moveTo(OX, YT - 20); g.lineTo(OX, OY); g.lineTo(XT + 20, OY); g.stroke(); g.restore();
       [[8, '10⁸'], [6, '10⁶'], [4, '10⁴'], [2, '10²'], [0, '1']].forEach(([e, s]) => T(g, s, OX - 34, ly(e), 17, M.cream, { alpha: pa }));
-      T(g, 'germeni (scară log)', 230, 470, 16, M.dim, { alpha: pa, w: 600 }); T(g, 'timp →', XT - 20, OY + 32, 16, M.dim, { alpha: pa, w: 600 });
+      T(g, 'germeni (scară log)', 250, 478, 16, M.dim, { alpha: pa, w: 600 }); T(g, 'timp →', XT - 20, OY + 32, 16, M.dim, { alpha: pa, w: 600 });
       const lu = b.i === 3 ? fb(b, 0.6) : 1;
       const line = (e0, uEnd, col, u1, dash) => { g.save(); g.globalAlpha = pa; g.lineCap = 'round'; if (dash) g.setLineDash([14, 10]); for (const [c, w] of [[OUT, 12], [col, 7]]) { g.strokeStyle = c; g.lineWidth = w; g.beginPath(); g.moveTo(lx(0), ly(e0)); g.lineTo(lx(uEnd * u1), ly(e0 * (1 - u1))); g.stroke(); } g.restore(); };
       line(8, 1, '#3fd1a8', lu); line(4, 0.5, '#7fb8ff', lu);
       if (lu > 0.95) { dot(g, lx(1), ly(0), 9, '#3fd1a8', { alpha: pa }); dot(g, lx(0.5), ly(0), 9, '#7fb8ff', { alpha: pa }); }
-      T(g, '10⁸ germeni', lx(0.36), ly(5.6) - 22, 17, '#3fd1a8', { alpha: pa });
-      T(g, '10⁴', lx(0.12) + 30, ly(2.4), 17, '#7fb8ff', { alpha: pa });
+      T(g, '10⁸ germeni', 300, 600, 17, '#3fd1a8', { alpha: pa });
+      T(g, '10⁴ germeni', 200, 770, 17, '#7fb8ff', { alpha: pa });
       if (b.i === 3 || b.i < 0) { // punctele care coboară, cu aceeași pantă
         const u = loopT(t, 4);
         dot(g, lx(u), ly(8 * (1 - u)), 10, M.hi, { alpha: pa }); if (u < 0.5) dot(g, lx(u), ly(4 * (1 - u / 0.5)), 10, M.hi, { alpha: pa });
@@ -409,7 +409,7 @@ export function a_kill() {
         for (let k = 0; k < 10; k++) rod(g, 300 + k * 22, 535, 18, 9, 1.57, COL.pink, pa, k === 3 ? 0 : clamp((c - 0.35) * 3));
         T(g, '−90% / interval', 400, 568, 16, M.hi, { alpha: pa });
       }
-      if (b.i === 4 || b.i < 0) { line(8, 0.55, M.hi, b.i === 4 ? fb(b, 0.5) : 1, true); T(g, 'timp, concentrație, t° ↑\n→ moare mai repede', lx(0.3) + 40, ly(1.2), 16, M.hi, { alpha: pa }); }
+      if (b.i === 4 || b.i < 0) { line(8, 0.55, M.hi, b.i === 4 ? fb(b, 0.5) : 1, true); T(g, 'timp, concentrație, t° ↑\n→ moare mai repede', 430, 660, 16, M.hi, { alpha: pa }); }
       // ---- scara rezistenței
       panel(g, 580, 450, 400, 465);
       T(g, 'cei mai greu de omorât ↑', 780, 478, 18, M.cream, { alpha: pa });
@@ -435,7 +435,7 @@ export function a_kill() {
 export function a_sample() {
   const Z = [[30, 'FRIG · 4 °C', '#7fb8ff', 'rgba(127,184,255,.14)'], [350, 'GHEAȚĂ · −70 °C', '#9fe8ff', 'rgba(159,232,255,.12)'], [670, 'NU FRIG · t° camerei', '#ff8a8a', 'rgba(255,138,138,.12)']];
   // [tip, x, y, etichetă, beat]
-  const IT = [['urina', 180, 230, 'urina\n(dacă > 2 h)', 1], ['vir', 430, 220, 'probe\nvirusologice', 1], ['lcr', 575, 220, 'LCR\nvirusologic', 1], ['hemo', 730, 205, 'hemocultură', 2], ['lcr', 830, 205, 'LCR\nbacteriologic', 2], ['swab', 920, 205, 'secreții\ngenitale', 2], ['ser', 820, 335, 'serologie (galben)', 3]];
+  const IT = [['urina', 180, 230, 'urina\n(dacă > 2 h)', 1], ['vir', 430, 220, 'probe\nvirusologice', 1], ['lcr', 575, 220, 'LCR\nvirusologic', 1], ['hemo', 725, 200, 'hemo-\ncultură', 2], ['lcr', 820, 200, 'LCR bacte-\nriologic', 2], ['swab', 920, 200, 'secreții\ngenitale', 2], ['ser', 820, 335, 'serologie (galben)', 3]];
   function item(g, k, x, y, t, a) {
     if (a <= 0.01) return;
     if (k === 'urina') cup(g, x, y - 30, 56, 64, '#f2d23a', 0.7, a);
@@ -447,7 +447,7 @@ export function a_sample() {
   }
   return {
     home: HOME,
-    anchors: [[60, 478], [52, 72], [690, 72], [600, 478], [880, 478]],
+    anchors: [[60, 478], [52, 72], [690, 72], [760, 140], [940, 478]],
     labelText: ['LCR'],
     draw(g, t, b) {
       bg(g);
@@ -457,24 +457,25 @@ export function a_sample() {
       IT.forEach(([k, x, y, lab, bk]) => {
         const a = b.i < 0 || b.i > bk ? 1 : b.i === bk ? ease(f) : 0; if (a <= 0) return;
         const xx = lerp(500, x, a), yy = lerp(-40, y, a);
-        item(g, k, xx, yy, t, 1); if (a > 0.95) T(g, lab, x, y + 60, 16, M.cream);
+        item(g, k, xx, yy, t, 1); if (a > 0.95) T(g, lab, x, y + (k === 'ser' ? 52 : 56), 15, M.cream);
       });
       // ---- panoul mecanismului
       panel(g, 30, 450, 940, 465);
       const dk = b.i < 0 ? Math.floor(TT(t) / 3.6) % 5 : b.i;
       const df = b.i < 0 ? (TT(t) % 3.6) / 3.2 : fb(b, 0.8);
       if (dk === 0) {
-        pill(g, 190, 540, 220, 56, '#bff0d2', '1 · recoltare', { size: 20 }); arr(g, 310, 540, 370, 540, '#fff3e6', 6);
-        pill(g, 490, 540, 220, 56, '#ffd0d0', '2 · antibiotic', { size: 20 });
-        testTube(g, 720, 490, 46, 110, '#f6efe0', { level: 0.6 });
-        for (let k = 0; k < 4; k++) rod(g, 712 + (k % 2) * 16, 560 + k * 10, 16, 8, k, COL.pink, 1, 0);
-        T(g, 'germen viu → crește în cultură', 840, 640, 16, '#bff0d2');
-        // ordinea inversă: germenii din probă mor
+        // ordinea corectă: recoltare → apoi antibiotic → germenul e viu în probă; ordinea greșită: antibioticul îl omoară în probă
         const u = ease(clamp(df * 1.5));
-        T(g, 'antibiotic întâi →', 190, 680, 18, '#ff8a8a'); testTube(g, 380, 640, 46, 100, '#f6efe0', { level: 0.6 });
-        for (let k = 0; k < 4; k++) rod(g, 372 + (k % 2) * 16, 700 + k * 9, 16, 8, k, COL.pink, 1, u);
-        T(g, 'germenul moare în probă', 560, 700, 16, '#ff8a8a', { alpha: u });
-        ['steril', 'închis ermetic', 'bilet de trimitere', 'transport rapid'].forEach((s, k) => { const a = clamp(df * 4 - k * 0.7); pill(g, 150 + k * 225, 840, 205, 48, '#e6f4ef', s, { size: 17, alpha: 0.4 + 0.6 * a }); check(g, 70 + k * 225, 840, 0.8, a); });
+        T(g, 'CORECT', 110, 520, 18, '#9dff8a'); T(g, 'GREȘIT', 110, 660, 18, '#ff8a8a');
+        pill(g, 280, 520, 190, 50, '#bff0d2', 'recoltare', { size: 19 }); arr(g, 380, 520, 420, 520, '#fff3e6', 5); pill(g, 520, 520, 190, 50, '#ffd0d0', 'antibiotic', { size: 19 });
+        testTube(g, 700, 470, 40, 96, '#f6efe0', { level: 0.6 });
+        for (let k = 0; k < 4; k++) rod(g, 692 + (k % 2) * 14, 528 + k * 8, 14, 7, k + Math.sin(TT(t) * 3 + k) * 0.3, COL.pink);
+        check(g, 770, 520, 1, 1); T(g, 'germen viu →\ncrește în cultură', 870, 520, 16, '#bff0d2');
+        pill(g, 280, 660, 190, 50, '#ffd0d0', 'antibiotic', { size: 19 }); arr(g, 380, 660, 420, 660, '#fff3e6', 5); pill(g, 520, 660, 190, 50, '#bff0d2', 'recoltare', { size: 19 });
+        testTube(g, 700, 610, 40, 96, '#f6efe0', { level: 0.6 });
+        for (let k = 0; k < 4; k++) rod(g, 692 + (k % 2) * 14, 668 + k * 8, 14, 7, k, COL.pink, 1, u);
+        xmark(g, 770, 660, 1, u); T(g, 'germenul moare\nîn probă', 870, 660, 16, '#ff8a8a', { alpha: 0.3 + 0.7 * u });
+        ['steril', 'închis ermetic', 'bilet de trimitere', 'transport rapid'].forEach((s, k) => { const a = clamp(df * 4 - k * 0.7); pill(g, 150 + k * 225, 830, 205, 48, '#e6f4ef', s, { size: 17, alpha: 0.4 + 0.6 * a }); check(g, 70 + k * 225, 830, 0.8, a); });
       } else if (dk === 1) {
         // urina: la cald bacteriile se dublează, la 4 °C nu
         const gen = Math.min(4, Math.floor(df * 5));
@@ -548,7 +549,7 @@ export function a_sample() {
  la proba 2; IDR: papula crește la locul injectării. Capcana: antigenul = bucată din germen (direct), anticorpul = răspunsul
  gazdei (indirect). */
 export function a_diag() {
-  const BY = [150, 300, 450, 600];
+  const BY = [165, 310, 455, 600];
   const BL = [['Examen direct', 'microscop, antigen, ADN'], ['Cultură pură', 'colonie izolată → repicare'], ['Identificare', 'cultură, colorație, biochimie'], ['Patogenitate', 'in vitro / in vivo + antibiogramă']];
   const SX = 725;
   function ab(g, x, y, s, rot, col = '#ffe36e', a = 1) { // anticorp (Y)
@@ -562,7 +563,7 @@ export function a_diag() {
     labelText: ['ADN', 'IDR'],
     draw(g, t, b) {
       bg(g);
-      T(g, 'METODE DIRECTE · cauți germenul', 240, 60, 18, '#9ef0dd');
+      T(g, 'METODE DIRECTE · cauți germenul', 240, 80, 18, '#9ef0dd');
       const hi = b.i < 0 ? Math.floor(TT(t) / 3.4) % 5 : b.i;
       const f = b.i < 0 ? (TT(t) % 3.4) / 3 : fb(b, 0.8);
       BL.forEach(([h, s], k) => {
@@ -668,7 +669,7 @@ export function a_heat() {
   const STEAM = Array.from({ length: 16 }, (_, k) => [R(0, 1), R(0.2, 0.8), k]);
   return {
     home: HOME,
-    anchors: [[46, 110], [550, 100], [550, 330], [550, 560]],
+    anchors: [[46, 110], [962, 100], [962, 335], [962, 575]],
     labelText: [],
     draw(g, t, b) {
       bg(g);
@@ -699,7 +700,7 @@ export function a_heat() {
       g.fillStyle = '#b8c2c8'; g.beginPath(); g.roundRect(170, 560, 150, 12, 5); g.fill(); g.stroke();
       g.fillStyle = '#e6d6b0'; g.beginPath(); g.ellipse(320, 480, 26, 10, 0, 0, 7); g.fill(); g.stroke();
       g.restore();
-      T(g, 'Poupinel', 410, 400, 17, OUT, { stroke: false, alpha: dimL });
+      T(g, 'Poupinel', 250, 360, 18, OUT, { stroke: false, alpha: dimL });
       thermo(g, 410, 430, 120, 0.85, { alpha: dimL });
       pill(g, 250, 660, 400, 50, '#ffd0d0', '160 °C / 2 h · 180 °C / 1 h', { size: 20, alpha: dimL });
       T(g, '✓ sticlă, porțelan, metal, pulberi', 250, 718, 17, '#9dff8a', { alpha: dimL });
@@ -725,13 +726,13 @@ export function a_heat() {
       const heating = Math.floor(ph) % 2 === 0 && ph < 5;
       if (heating) flame(g, 600 + Math.floor(ph / 2) * 150, 520, 0.5, t, dimR(2));
       // ziua 1: încălzirea omoară forma vegetativă (V), sporii rămân; incubarea: sporul 1 germinează; ziua 2 îl omoară; sporul 2 germinează; ziua 3 îl omoară
-      if (ph < 1.6) rod(g, 640, 430, 34, 13, 0.3, COL.pink, dimR(2) * (1 - clamp((ph - 1.2) * 2.5)), clamp(ph * 1.5));
+      if (ph < 1.6) rod(g, 640, 435, 46, 17, 0.3, COL.pink, dimR(2) * (1 - clamp((ph - 1.2) * 2.5)), clamp(ph * 1.5));
       [[750, 455], [850, 420]].forEach(([x, y], j) => {
         const i = j + 1, gs = 2 * i - 1, ks = 2 * i; if (ph > ks + 0.8) return;
         const gm = clamp(ph - gs); const dd = clamp((ph - ks) * 1.5);
-        if (ph < gs) spore(g, x, y, 1.1, { alpha: dimR(2) });
-        else if (gm < 1) { spore(g, x, y, 1.1, { alpha: dimR(2) * (1 - gm) }); rod(g, x, y, 34, 13, 0.3, COL.pink, dimR(2) * gm); }
-        else rod(g, x, y, 34, 13, 0.3, COL.pink, dimR(2) * (1 - clamp((ph - ks - 0.4) * 2.5)), dd);
+        if (ph < gs) spore(g, x, y, 1.4, { alpha: dimR(2) });
+        else if (gm < 1) { spore(g, x, y, 1.4, { alpha: dimR(2) * (1 - gm) }); rod(g, x, y, 46, 17, 0.3, COL.pink, dimR(2) * gm); }
+        else rod(g, x, y, 46, 17, 0.3, COL.pink, dimR(2) * (1 - clamp((ph - ks - 0.4) * 2.5)), dd);
       });
       T(g, heating ? 'încălzești' : ph < 5 ? 'incubezi: sporii germinează' : 'după 3 zile: nimic viu', 750, 515, 17, heating ? '#ffb48a' : '#bff0d2', { alpha: dimR(2) });
       // ---- 4 · autoclavul
@@ -815,15 +816,15 @@ export function a_other() {
       const u2 = b.i < 0 ? loopT(t, 3) : p(2);
       g.save(); g.globalAlpha = al(2); g.fillStyle = '#c9a77a'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.roundRect(60, 470, 150, 110, 8); g.fill(); g.stroke(); g.restore();
       rod(g, 135, 525, 50, 20, 0.2, COL.pink, al(2), clamp(u2 * 2 - 1));
-      zig(g, 135, 400, 135, 400 + 125 * clamp(u2 * 2), 8, 4, '#ffe36e', 4, TT(t) * 6, al(2));
+      zig(g, 135, 420, 135, 420 + 105 * clamp(u2 * 2), 8, 4, '#ffe36e', 4, TT(t) * 6, al(2));
       T(g, 'ionizante:\ntrec prin ambalaj', 135, 620, 16, '#ffe36e', { alpha: al(2) });
       g.save(); g.globalAlpha = al(2); g.fillStyle = '#9aa4ab'; g.strokeStyle = OUT; g.lineWidth = 5; g.fillRect(270, 520, 190, 30); g.strokeRect(270, 520, 190, 30); g.fillStyle = '#c9a77a'; g.fillRect(380, 470, 70, 50); g.strokeRect(380, 470, 70, 50); g.restore();
       rod(g, 320, 510, 34, 14, 0, COL.pink, al(2), clamp(u2 * 2 - 1));
       rod(g, 415, 505, 30, 12, 0, COL.pink, al(2) * 0.9);
-      zig(g, 320, 400, 320, 400 + 95 * clamp(u2 * 2), 6, 5, '#c08aff', 4, TT(t) * 6, al(2));
-      zig(g, 415, 400, 415, 400 + 68 * clamp(u2 * 2), 6, 5, '#c08aff', 4, TT(t) * 6, al(2));
+      zig(g, 320, 420, 320, 420 + 75 * clamp(u2 * 2), 6, 5, '#c08aff', 4, TT(t) * 6, al(2));
+      zig(g, 415, 420, 415, 420 + 48 * clamp(u2 * 2), 6, 5, '#c08aff', 4, TT(t) * 6, al(2));
       T(g, 'UV: doar suprafața;\ndedesubt rămâne viu', 365, 600, 16, '#c08aff', { alpha: al(2) });
-      T(g, 'ambele lovesc ADN-ul', 250, 640, 15, M.cream, { alpha: al(2), w: 600 });
+      T(g, 'ambele lovesc ADN-ul', 255, 402, 15, M.cream, { alpha: al(2), w: 600 });
       // 4 · Chimice: alcool 70% vs 100%
       til(510, 345, 470, 310, 3, 'Chimice');
       const u3 = b.i < 0 ? loopT(t, 3.5) * 1.2 : p(3);
@@ -905,9 +906,9 @@ export function a_ctrl() {
       g.save(); g.fillStyle = '#b8c2c8'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.roundRect(80, 800, 220, 40, 8); g.fill(); g.stroke(); g.restore();
       T(g, 'suprafață sterilă', 190, 870, 16, M.cream);
       const su = clamp(cs * 3); const sx = su < 0.5 ? lerp(120, 260, su * 2) : lerp(260, 520, (su - 0.5) * 2); const sy = su < 0.5 ? 790 : lerp(790, 800, (su - 0.5) * 2);
-      swab(g, sx, sy, -1.1, 1, 90);
       arr(g, 330, 810, 420, 810, '#fff3e6', 5, 0.8);
       plate(g, 520, 810, 70, M.agar);
+      swab(g, sx, sy, -1.1, 1, 90);
       clock(g, 680, 810, 34, clamp(cs * 3 - 1.2)); T(g, 'incubare', 680, 870, 16, M.cream);
       arr(g, 730, 810, 790, 810, '#fff3e6', 5, 0.8);
       if (cs > 0.75) { check(g, 860, 800, 1.2, (cs - 0.75) * 4); T(g, 'nu crește nimic', 870, 860, 16, M.hi, { alpha: (cs - 0.75) * 4 }); }
@@ -1030,7 +1031,7 @@ export function a_gram() {
   }
   return {
     home: HOME,
-    anchors: [[60, 90], [560, 90], [86, 455], [120, 610], [620, 610]],
+    anchors: [[60, 90], [560, 90], [620, 425], [120, 610], [620, 610]],
     labelText: ['LPS', 'BAAR'],
     draw(g, t, b) {
       bg(g); const tt = TT(t);
@@ -1114,22 +1115,25 @@ export function a_scope() {
       const sb = (x, s, sub, c, k) => { pill(g, x, 820, 145, 96, sys === k ? c : '#3a3046', '', { r: 14, glow: sys === k ? 1 : 0 }); T(g, s, x, 798, 16, sys === k ? OUT : M.cream, { stroke: false }); T(g, sub, x, 840, 13, sys === k ? OUT : M.dim, { stroke: false, w: 600 }); };
       sb(85, 'OPTIC', 'ocular · revolver\n· obiective', '#7fe8ff', 0); sb(235, 'MECANIC', 'macro/microviză\n· platină', '#ffb36b', 1); sb(385, 'ILUMINARE', 'sursă · diafragmă\n· condensor', '#ffe36e', 2);
       // ---- razele: aer vs ulei
+      // Razele pleacă din preparat (sub lamelă), urcă prin sticlă; la ieșirea în AER se frâng spre exterior (n 1,5 → 1) și
+      // cele oblice ratează lentila frontală (sau se reflectă total); cu ULEI (n ≈ sticla) merg drept și intră toate.
       const rays = (cx, oil, act) => {
-        const a = act ? 1 : 0.45; const ySpec = 340, yTop = 300, yLens = 170, lw = 46;
+        const a = act ? 1 : 0.45; const ySpec = 330, yTop = 285, yLens = 220, half = 118;
         g.save(); g.globalAlpha = a;
-        g.fillStyle = 'rgba(220,245,255,.45)'; g.strokeStyle = OUT; g.lineWidth = 4; g.fillRect(cx - 110, yTop, 220, 50); g.strokeRect(cx - 110, yTop, 220, 50);
-        if (oil) { g.fillStyle = 'rgba(255,214,90,.55)'; g.beginPath(); g.moveTo(cx - 60, yTop); g.lineTo(cx - 40, yLens); g.lineTo(cx + 40, yLens); g.lineTo(cx + 60, yTop); g.closePath(); g.fill(); }
-        g.fillStyle = '#c9ced2'; g.beginPath(); g.moveTo(cx - 50, 70); g.lineTo(cx + 50, 70); g.lineTo(cx + lw / 2 + 2, yLens); g.lineTo(cx - lw / 2 - 2, yLens); g.closePath(); g.fill(); g.stroke();
+        g.fillStyle = 'rgba(220,245,255,.45)'; g.strokeStyle = OUT; g.lineWidth = 4; g.fillRect(cx - 122, yTop, 244, 60); g.strokeRect(cx - 122, yTop, 244, 60);
+        if (oil) { g.fillStyle = 'rgba(255,214,90,.55)'; g.beginPath(); g.moveTo(cx - half - 14, yTop); g.lineTo(cx - half, yLens); g.lineTo(cx + half, yLens); g.lineTo(cx + half + 14, yTop); g.closePath(); g.fill(); }
+        g.fillStyle = '#c9ced2'; g.beginPath(); g.moveTo(cx - 40, 70); g.lineTo(cx + 40, 70); g.lineTo(cx + half, yLens - 26); g.lineTo(cx - half, yLens - 26); g.closePath(); g.fill(); g.stroke();
+        g.fillStyle = '#e6f6ff'; g.beginPath(); g.ellipse(cx, yLens - 13, half, 13, 0, 0, 7); g.fill(); g.stroke();
         g.restore();
-        const n = 1.5; let hit = 0;
-        [-0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6].forEach((th, k) => {
+        const n = 1.5; let hit = 0; const TH = [-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8];
+        TH.forEach((th, k) => {
           const x1 = cx + Math.tan(th) * (ySpec - yTop);
-          let pts = [[cx, ySpec], [x1, yTop]]; let inLens = true;
-          if (oil) { const x2 = x1 + Math.tan(th) * (yTop - yLens); pts.push([x2, yLens]); inLens = Math.abs(x2 - cx) < lw / 2; }
-          else { const sn = n * Math.sin(th); if (Math.abs(sn) >= 1) { pts.push([x1 + Math.sign(th) * 60, yTop - 4]); inLens = false; } else { const th2 = Math.asin(sn); const x2 = x1 + Math.tan(th2) * (yTop - yLens); pts.push([x2, yLens]); inLens = Math.abs(x2 - cx) < lw / 2; } }
+          const pts = [[cx, ySpec], [x1, yTop]]; let inLens;
+          if (oil) { const x2 = x1 + Math.tan(th) * (yTop - yLens); pts.push([x2, yLens]); inLens = Math.abs(x2 - cx) < half; }
+          else { const sn = n * Math.sin(th); if (Math.abs(sn) >= 1) { pts.push([x1 + Math.tan(th) * 30, yTop + 30]); inLens = false; } else { const th2 = Math.asin(sn); const x2 = x1 + Math.tan(th2) * (yTop - yLens); pts.push([x2, yLens]); inLens = Math.abs(x2 - cx) < half; } }
           if (inLens) hit++;
           tube(g, pts, 3, inLens ? '#ffe36e' : '#ff8a8a', { ow: 2, raw: true, alpha: a * 0.9 });
-          const u = loopT(t + k * 0.13, 1.2); const P0 = u < 0.4 ? pts[0] : pts[1], P1 = u < 0.4 ? pts[1] : pts[2]; const uu = u < 0.4 ? u / 0.4 : (u - 0.4) / 0.6;
+          const u = loopT(t + k * 0.13, 1.2); const P0 = u < 0.45 ? pts[0] : pts[1], P1 = u < 0.45 ? pts[1] : pts[2]; const uu = u < 0.45 ? u / 0.45 : (u - 0.45) / 0.55;
           dot(g, lerp(P0[0], P1[0], uu), lerp(P0[1], P1[1], uu), 5, inLens ? '#ffffff' : '#ff8a8a', { ow: 1.5, alpha: a });
         });
         dot(g, cx, ySpec, 7, COL.cv, { alpha: a });
@@ -1138,7 +1142,7 @@ export function a_scope() {
       panel(g, 470, 30, 510, 420);
       const h1 = rays(600, false, b.i === 1 || b.i < 0); const h2 = rays(850, true, b.i === 2 || b.i < 0);
       T(g, '×10, ×40: aer', 600, 395, 18, '#ff8a8a', { alpha: b.i === 1 || b.i < 0 ? 1 : 0.5 }); T(g, '×100: ulei de cedru', 850, 395, 18, M.hi, { alpha: b.i === 2 || b.i < 0 ? 1 : 0.5 });
-      T(g, `${h1} / 7 raze intră`, 600, 425, 15, M.cream, { alpha: b.i === 1 || b.i < 0 ? 1 : 0.5, w: 600 }); T(g, `${h2} / 7 raze intră`, 850, 425, 15, M.cream, { alpha: b.i === 2 || b.i < 0 ? 1 : 0.5, w: 600 });
+      T(g, `${h1} / 9 raze intră`, 600, 425, 15, M.cream, { alpha: b.i === 1 || b.i < 0 ? 1 : 0.5, w: 600 }); T(g, `${h2} / 9 raze intră`, 850, 425, 15, M.cream, { alpha: b.i === 2 || b.i < 0 ? 1 : 0.5, w: 600 });
       // ---- condensorul
       panel(g, 470, 470, 510, 440, { fill: on(b, 3) ? 'rgba(14,156,134,.16)' : 'rgba(255,240,228,.05)' });
       const up = b.i === 3 ? 0.5 - 0.5 * Math.cos(clamp(b.bt / (b.bd * 0.9)) * Math.PI * 2) : b.i < 0 ? 0.5 - 0.5 * Math.cos(tt * 0.8) : 0.5;
@@ -1166,7 +1170,7 @@ export function a_shape() {
   const STP = [0, 1, 2, 3].map((gN) => Array.from({ length: 2 ** gN }, (_, i) => [(i - (2 ** gN - 1) / 2) * 24, 0]));
   return {
     home: HOME,
-    anchors: [[48, 70], [48, 490], [690, 490], [880, 490], [500, 885]],
+    anchors: [[48, 70], [48, 490], [690, 490], [880, 490], [44, 885]],
     draw(g, t, b) {
       bg(g); const tt = TT(t);
       const DYES = [['albastru de metilen', COL.mb], ['safranină', COL.saf], ['metil violet', COL.mv]];
@@ -1195,12 +1199,12 @@ export function a_shape() {
       [[90, 540, 0.3], [130, 610, -0.5], [70, 670, 1.1], [140, 690, 0.1]].forEach(([x, y, r]) => bacillus(g, x, y, 46, 18, r, cc(COL.pink), al(1)));
       [[300, 540, 0.2, 0], [270, 620, -0.4, 1], [320, 690, 1.2, 0]].forEach(([x, y, r, term]) => { bacillus(g, x, y, 62, 18, r, cc(COL.cv), al(1)); const off = term ? 20 : 0; ell(g, x + Math.cos(r) * off, y + Math.sin(r) * off, 10, 7, '#f6f0e6', { ow: 2, rot: r, alpha: al(1) }); });
       [[440, 540, 0.9], [470, 540, 2.2], [500, 640, 1.57], [520, 640, 1.57], [540, 640, 1.57], [430, 690, 0], [430, 690, 1.57]].forEach(([x, y, r]) => bacillus(g, x + Math.cos(r) * 18, y + Math.sin(r) * 18, 42, 13, r, cc(COL.cv), al(1)));
-      [[640, 540], [680, 580], [620, 630], [700, 660], [650, 700]].forEach(([x, y], k) => bacillus(g, x, y, 14 + (k % 3) * 9, 11, k * 0.8, cc(COL.pink), al(2)));
-      for (let k = 0; k < 3; k++) { const pts = []; for (let j = 0; j <= 30; j++) pts.push([815 + j * 4.2, 560 + k * 65 + Math.sin(j * 0.9 + tt * 4 + k) * 9]); tube(g, pts, 5, cc('#e25472'), { ow: 3, raw: true, alpha: al(3) }); }
+      [[640, 540], [690, 585], [625, 630], [700, 665], [650, 700], [610, 580]].forEach(([x, y], k) => bacillus(g, x, y, 20 + (k % 3) * 10, 15, k * 0.8, cc(COL.pink), al(2)));
+      for (let k = 0; k < 3; k++) { const pts = []; for (let j = 0; j <= 30; j++) pts.push([815 + j * 4.2, 545 + k * 55 + Math.sin(j * 0.9 + tt * 4 + k) * 9]); tube(g, pts, 5, cc('#e25472'), { ow: 3, raw: true, alpha: al(3) }); }
       T(g, 'nativ: fond întunecat\nsau Burri', 912, 715, 14, M.dim, { alpha: al(3), w: 600 });
       // ---- colorația simplă
-      pill(g, 500, 885, 940, 50, simple ? '#fff3e6' : '#3a3046', '', { glow: b.i === 4 ? 1 : 0 });
-      T(g, simple ? `colorația simplă: ${DYES[dy][0]} → aceeași culoare la toți` : 'culorile de aici = Gram (violet +, roz −)', 500, 885, 17, simple ? OUT : M.cream, { stroke: false });
+      pill(g, 525, 885, 890, 50, simple ? '#fff3e6' : '#3a3046', '', { glow: b.i === 4 ? 1 : 0 });
+      T(g, simple ? `colorația simplă: ${DYES[dy][0]} → aceeași culoare la toți` : 'culorile de aici = Gram (violet +, roz −)', 525, 885, 17, simple ? OUT : M.cream, { stroke: false });
     },
   };
 }
@@ -1303,6 +1307,7 @@ export function a_virus() {
       const hexP = (r) => Array.from({ length: 6 }, (_, k) => [cx + Math.cos(k / 6 * Math.PI * 2 + Math.PI / 6) * r, cy + Math.sin(k / 6 * Math.PI * 2 + Math.PI / 6) * r]);
       const HX = hexP(95);
       for (let k = 0; k < 18; k++) { const e = Math.floor(k / 3), f = (k % 3 + 0.5) / 3; const A = HX[e], B = HX[(e + 1) % 6]; const tx = lerp(A[0], B[0], f), ty = lerp(A[1], B[1], f); const a = clamp(cap * 1.4 - k * 0.02); const sx = lerp(tx + (tx - cx) * 1.6, tx, ease(a)), sy = lerp(ty + (ty - cy) * 1.6, ty, ease(a)); dot(g, sx, sy, 12, '#7fe8ff', { alpha: al(0) * clamp(a * 3) }); }
+      if (cap > 0.95) { g.save(); g.globalAlpha = al(0) * (cap - 0.95) * 20; g.strokeStyle = '#7fe8ff'; g.lineWidth = 4; g.beginPath(); HX.forEach(([a, c], k) => (k ? g.lineTo(a, c) : g.moveTo(a, c))); g.closePath(); g.stroke(); g.restore(); }
       const gp = []; for (let k = 0; k <= 40; k++) gp.push([cx - 60 + k * 3, cy + Math.sin(k * 0.5 + tt * 2) * 22]); tube(g, gp, 5, '#ff6b9a', { ow: 3, raw: true, u1: gen, alpha: al(0) });
       T(g, 'genom (ARN sau ADN)', cx, 380, 16, '#ff9ab8', { alpha: al(0) * gen }); T(g, 'capsidă', 420, 100, 16, '#7fe8ff', { alpha: al(0) * cap }); T(g, envOn ? 'înveliș (la unele)' : 'fără înveliș', 400, 400, 16, '#ffb36b', { alpha: al(0) * env });
       // ---- 2 · simetria
@@ -1318,13 +1323,13 @@ export function a_virus() {
       // ---- 3 · rigla
       panel(g, 20, 450, 960, 165);
       const X = (nm) => 60 + nm / 1000 * 880;
-      g.save(); g.globalAlpha = al(2); g.strokeStyle = M.cream; g.lineWidth = 4; g.beginPath(); g.moveTo(X(0), 560); g.lineTo(X(1000), 560); g.stroke(); [0, 200, 400, 600, 800, 1000].forEach((n) => { g.beginPath(); g.moveTo(X(n), 552); g.lineTo(X(n), 568); g.stroke(); T(g, `${n}`, X(n), 588, 14, M.dim, { w: 600 }); }); g.restore();
+      g.save(); g.globalAlpha = al(2); g.strokeStyle = M.cream; g.lineWidth = 4; g.beginPath(); g.moveTo(X(0), 560); g.lineTo(X(1000), 560); g.stroke(); [0, 200, 400, 600, 800, 1000].forEach((n) => { g.beginPath(); g.moveTo(X(n), 552); g.lineTo(X(n), 568); g.stroke(); if (n < 600 || n === 1000) T(g, `${n}${n === 1000 ? ' nm' : ''}`, X(n), 588, 14, M.dim, { w: 600 }); }); g.restore();
       const ru = b.i === 2 ? ease(fb(b, 0.6)) : 1;
       g.save(); g.globalAlpha = al(2); g.fillStyle = '#ff9a5a'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(X(20), 512, (X(900) - X(20)) * ru, 26, 10); g.fill(); g.stroke(); g.restore();
       T(g, 'virusuri 20–900 nm', X(460), 490, 16, '#ff9a5a', { alpha: al(2) });
       g.save(); g.globalAlpha = al(2); g.strokeStyle = '#ff4d4d'; g.lineWidth = 5; g.setLineDash([10, 7]); g.beginPath(); g.moveTo(X(200), 470); g.lineTo(X(200), 575); g.stroke(); g.restore();
       T(g, 'limita MO ≈ 200 nm', X(200) - 8, 600, 15, '#ff8a8a', { alpha: al(2), align: 'right' });
-      T(g, 'virionul doar la ME: colorare negativă\n(acid fosfotungstic), 20.000–40.000×', 700, 600 - 6, 13, M.cream, { alpha: al(2), w: 600 });
+      T(g, 'virionul doar la ME: colorare negativă\n(acid fosfotungstic), 20.000–40.000×', 690, 594, 14, M.cream, { alpha: al(2), w: 600 });
       // ---- 4 · incluziile
       panel(g, 20, 635, 960, 275);
       const iu = b.i === 3 ? fb(b, 0.8) : b.i < 0 ? loopT(t, 6) : 1;

@@ -125,8 +125,8 @@ export function timeline() {
   // [lane, w0, w1 (= w0 → punct), text, punctul, dx, dy]
   const EV = [
     [0, 3.4, 3.6, 'Z18: placa neurală,\nîncepe neurulația', 0, 70, -40],
-    [0, 3.6, 5.0, 'tubul închis: neuropori Z29 / Z30 (curs)\nZ25 / Z28 (Langman)', 1, 230, 44],
-    [1, 4.4, 5.0, 'se formează la închiderea tubului\nși migrează (st. 9–10)', 1, 210, -40],
+    [0, 3.6, 5.0, 'tubul închis: neuropori Z29 / Z30 (curs)\nZ25 / Z28 (Langman)', 1, 230, 34],
+    [1, 4.4, 5.0, 'se formează la închiderea tubului\nși migrează (st. 9–10)', 1, 210, -32],
     [2, 4.6, 4.6, '3 vezicule\n(1 lună)', 1, -40, -44],
     [2, 5.3, 5.3, '5 vezicule (S5)', 2, 60, 40],
     [2, 9, 11, 'cerebelul: S9 coalescență,\nS10 eversie', 2, 120, -40],
@@ -138,7 +138,7 @@ export function timeline() {
   const RANGE = [[3, 3.6], [3.6, 5.0], [5.0, 11], [11, 16.6]];
   return {
     home: HOME,
-    anchors: [[X(3.5), LY[0] - 100], [X(4.8), LY[1] + 52], [X(9), LY[2] + 52], [X(14.5), LY[3] + 52]],
+    anchors: [[X(3.3), 846], [X(4.3), 846], [X(7.5), 846], [X(14.5), 846]],
     phase: (i) => ['S3 · Z18', 'sfârșitul S4', 'S5 → S10', 'S13 → S16'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -245,15 +245,15 @@ export function neurulation() {
       lab('placa neurală', 215, 220, '#d9c6ff', p(0) * (1 - p(1)), cx - 80, y0);
       lab(m > 0.05 ? 'notocord →\nnucleul pulpos' : 'notocord', 190, r.notoY, '#ffb0a8', 1, cx - 30, r.notoY);
       lab('șanțul neural', 215, 420, '#d9c6ff', p(1) * (1 - p(3)), cx - 10, y0 - 30);
-      lab('plicile neurale', 790, 160, '#d9c6ff', p(1) * (1 - p(2)), r.tipR[0] + 10, r.tipR[1] + 30);
-      lab('creasta neurală', 800, 180, '#bff0d2', p(2), cx + 30, b.i >= 3 || (b.i < 0 && d > 0) ? y0 + 30 : r.tipR[1]);
-      lab('tubul neural', 170, 480, '#d9c6ff', p(3), cx - R - 10, r.center[1]);
-      lab('ectodermul cutanat\n(pielea) se închide', 800, 250, '#cfe0ff', p(3), cx + 120, y0);
+      lab('plicile neurale', 790, 150, '#d9c6ff', p(1) * (1 - p(2)), r.tipR[0] + 10, r.tipR[1] + 30);
+      lab('creasta neurală', 820, 200, '#bff0d2', p(2), cx + 30, b.i >= 3 || (b.i < 0 && d > 0) ? y0 + 30 : r.tipR[1]);
+      lab('tubul neural', 200, 395, '#d9c6ff', p(3), cx - R - 10, r.center[1]);
+      lab('ectodermul cutanat\n(pielea) se închide', 820, 262, '#cfe0ff', p(3), cx + 120, y0);
       lab(m > 0.05 ? 'somită → schelet\naxial + mușchi' : 'somită', 860, 470, '#ffb0a8', 1, cx + 250, y0 + R + 80);
-      lab('endoderm', 880, y0 + 2 * R + 220, '#ffe9a8', 1);
+      lab('endoderm', 470, y0 + 2 * R + 185, '#ffe9a8', 1);
       // 5 · ce devine fiecare
       if (m > 0.05) {
-        lab('ganglion spinal\n(din creastă, lângă tub)', 820, 600, '#bff0d2', m, cx + R + 45, r.center[1]);
+        lab('ganglion spinal\n(din creastă, lângă tub)', 800, 640, '#bff0d2', m, cx + R + 45, r.center[1]);
       }
       // bara de etape
       txt(g, 'dorsal ↑', 935, 120, 17, '#c9b3a6', { w: 700 });

@@ -975,7 +975,7 @@ export function c_rfc() {
         });
         // hematiile sensibilizate (cu Ac anti-hematii)
         if (q2 > 0) RBS.forEach(([dx, dy, rot], i) => {
-          const fall = ease(seg(p2, 0, 0.3)); let x = cx + dx, y = lerp(top + 30, mid + dy, fall);
+          const fall = ease(seg(p2, 0, 0.3)); let x = cx + dx, y = lerp(top + 95, mid + dy, fall);
           g.save(); g.globalAlpha *= clamp(fall * 4);
           if (hasAc) { const sx = cx - 70 + (i % 6) * 28, sy = top + h - 50 - Math.floor(i / 6) * 18; x = lerp(x, sx, seg(p2, 0.45, 0.95)); y = lerp(y, sy, seg(p2, 0.45, 0.95)); rbc(g, x, y, 0.55, rot); }
           else { const burst = seg(p2, 0.45, 0.85); if (burst < 1) { g.save(); g.globalAlpha *= 1 - burst; rbc(g, x, y, 0.55 * (1 + burst * 0.5), rot); g.restore(); } }
