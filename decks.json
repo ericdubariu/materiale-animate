@@ -1,0 +1,79 @@
+{
+ "subjects": {
+  "histo": {
+   "name": "Histologie",
+   "color": "#B0457A"
+  },
+  "anatopat": {
+   "name": "Anatomie patologică",
+   "color": "#A3213F"
+  },
+  "farma": {
+   "name": "Farmacologie",
+   "color": "#A86A0C"
+  },
+  "micro": {
+   "name": "Microbiologie",
+   "color": "#0E7C6B"
+  },
+  "fizio": {
+   "name": "Fiziologie",
+   "color": "#1F5FD1"
+  },
+  "fiziopat": {
+   "name": "Fiziopatologie",
+   "color": "#6B3FC7"
+  },
+  "embrio": {
+   "name": "Embriologie",
+   "color": "#C4541A"
+  }
+ },
+ "decks": [
+  {
+   "id": "anatopat-z1-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 1–5 · lamele (tulburări hemodinamice)",
+   "sub": "Edem pulmonar acut · stază + infarct pulmonar · infarct renal · infarct miocardic · tromb mixt",
+   "slides": 43,
+   "path": "lp/anatopat-z1-anim/index.html",
+   "added": "2026-10-25"
+  },
+  {
+   "id": "anatopat-z2-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 6–12 · piesele (tulburări hemodinamice)",
+   "sub": "Aortă cu tromb · tromb călăreț · infarct renal · infarct pulmonar · infarct miocardic · hematom intracerebral · rinichi de șoc",
+   "slides": 40,
+   "path": "lp/anatopat-z2-anim/index.html",
+   "added": "2026-10-25"
+  },
+  {
+   "id": "histo-lp06-3d",
+   "subj": "histo",
+   "title": "LP 6 · Țesutul conjunctiv (I)",
+   "sub": "Celulele țesutului conjunctiv · fibrele de colagen · fibrele de reticulină",
+   "slides": 26,
+   "path": "lp/histo-lp06-3d/index.html",
+   "added": "2026-10-25"
+  },
+  {
+   "id": "histo-lp07-anim",
+   "subj": "histo",
+   "title": "LP 7 · Țesutul conjunctiv (II)",
+   "sub": "Conjunctiv lax · adipos alb · conjunctiv tendinos · conjunctiv reticular",
+   "slides": 29,
+   "path": "lp/histo-lp07-anim/index.html",
+   "added": "2026-10-25"
+  },
+  {
+   "id": "fiziopat-examen-anim",
+   "subj": "fiziopat",
+   "title": "Examenul practic: cele 22 de întrebări",
+   "sub": "Termoreglarea (Î 1–9) · febra (Î 10–15) · Hodgkin și angina streptococică (Î 16–20) · inflamația (Î 21–22)",
+   "slides": 46,
+   "path": "lp/fiziopat-examen-anim/index.html",
+   "added": "2026-10-25"
+  }
+ ]
+}
