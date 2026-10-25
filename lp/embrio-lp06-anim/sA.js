@@ -247,7 +247,7 @@ export function neurulation() {
       lab('șanțul neural', 215, 420, '#d9c6ff', p(1) * (1 - p(3)), cx - 10, y0 - 30);
       lab('plicile neurale', 790, 150, '#d9c6ff', p(1) * (1 - p(2)), r.tipR[0] + 10, r.tipR[1] + 30);
       lab('creasta neurală', 820, 200, '#bff0d2', p(2), cx + 30, b.i >= 3 || (b.i < 0 && d > 0) ? y0 + 30 : r.tipR[1]);
-      lab('tubul neural', 200, 395, '#d9c6ff', p(3), cx - R - 10, r.center[1]);
+      lab('tubul neural', 200, 462, '#d9c6ff', p(3), cx - R - 10, r.center[1]);
       lab('ectodermul cutanat\n(pielea) se închide', 820, 262, '#cfe0ff', p(3), cx + 120, y0);
       lab(m > 0.05 ? 'somită → schelet\naxial + mușchi' : 'somită', 860, 470, '#ffb0a8', 1, cx + 250, y0 + R + 80);
       lab('endoderm', 470, y0 + 2 * R + 185, '#ffe9a8', 1);
@@ -316,7 +316,7 @@ export function dorsalTube(g, t, ur, uc, o = {}) {
 export function closure() {
   return {
     home: HOME,
-    anchors: [[640, 360], [690, 120], [690, 830], [330, 520]],
+    anchors: [[640, 360], [664, 120], [664, 800], [330, 520]],
     phase: (i) => ['fermoarul pornește din regiunea cervicală', 'neuroporul rostral se închide primul', 'neuroporul caudal se închide după', 'pielea se închide deasupra'][i] || 'sfârșitul S4',
     draw(g, t, b) {
       bg(g); const s = closureState(b, t);
@@ -329,11 +329,12 @@ export function closure() {
       lead(g, 720, 380, 560, 360, 1); txt(g, 'închiderea pornește\nde la mijloc, ca un\nfermoar, în 2 sensuri', 830, 400, 18, C.hi);
       // neuroporii
       const rc = s.ur >= 1 ? '#bff0d2' : '#ffd0e6', cc = s.uc >= 1 ? '#bff0d2' : '#ffd0e6';
-      txt(g, s.ur >= 1 ? 'neuroporul rostral ÎNCHIS' : 'neuroporul rostral', 820, 120, 19, rc);
-      txt(g, 'Z29 (curs) · ~Z25 (Langman)', 820, 152, 17, C.cream, { w: 600 });
-      if (s.ur >= 1) txt(g, 'lamina terminală (curs)', 820, 182, 16, '#d9c6ff', { w: 600 });
-      txt(g, s.uc >= 1 ? 'neuroporul caudal ÎNCHIS' : 'neuroporul caudal', 820, 800, 19, cc);
-      txt(g, 'Z30 (curs) · ~Z28 (Langman)', 820, 832, 17, C.cream, { w: 600 });
+      // etichetele stau la dreapta badge-urilor 2 / 3 (x ≈ 664), ca să nu fie acoperite
+      txt(g, s.ur >= 1 ? 'neuroporul rostral ÎNCHIS' : 'neuroporul rostral', 846, 120, 19, rc);
+      txt(g, 'Z29 (curs) · ~Z25 (Langman)', 846, 152, 17, C.cream, { w: 600 });
+      if (s.ur >= 1) txt(g, 'lamina terminală (curs)', 846, 182, 16, '#d9c6ff', { w: 600 });
+      txt(g, s.uc >= 1 ? 'neuroporul caudal ÎNCHIS' : 'neuroporul caudal', 846, 800, 19, cc);
+      txt(g, 'Z30 (curs) · ~Z28 (Langman)', 846, 832, 17, C.cream, { w: 600 });
       txt(g, 'somite', 230, 520, 18, '#ffb0a8'); lead(g, 270, 520, 405, 520, 1);
       if (s.sk > 0.3) txt(g, 'ectodermul cutanat\nsigilează pielea\npeste tub', 200, 700, 18, '#cfe0ff', { alpha: s.sk });
       if (b.i === 1) ring(g, 500, 140, 110, 70, ease(b.bt * 1.3));

@@ -34,7 +34,7 @@ export function malAxis() {
       tube(g, [[X(1), 640], [X(11), 640]], 5, '#6b5650', { ow: 3 });
       for (let m = 1; m <= 9; m++) txt(g, m === 1 ? 'luna 1' : m === 9 ? 'luna 9' : String(m), X(m), 668, 15, '#d8c4b8', { w: 700 });
       txt(g, 'după naștere', X(10.4), 668, 15, '#d8c4b8', { w: 700 });
-      tube(g, [[X(9.4), 60], [X(9.4), 650]], 3, '#ffe36e', { ow: 0, alpha: 0.5, dash: [8, 8] }); txt(g, 'naștere', X(9.4), 45, 14, C.hi);
+      tube(g, [[X(9.4), 92], [X(9.4), 650]], 3, '#ffe36e', { ow: 0, alpha: 0.5, dash: [8, 8] }); txt(g, 'naștere', X(9.4), 78, 14, C.hi); // sub pastila de fază din colț
       STG.forEach(([n, w, a, c, mal, col], k) => {
         const gi = k === 5 ? 4 : k; const act = gi === cur; const done = b.i < 0 ? gi <= cur : gi < cur;
         const u = act ? pr : done ? 1 : 0;
@@ -59,8 +59,9 @@ export function malAxis() {
       } else if (cur === 3) { // migrare: de la ventricul (stânga) spre cortex (dreapta)
         tube(g, [[mx - 260, my - 60], [mx - 260, my + 50]], 20, N.csf, { ow: 4 }); tube(g, [[mx + 230, my - 60], [mx + 230, my + 50]], 26, '#b9a7c9', { ow: 4 });
         txt(g, 'ventricul', mx - 260, my + 75, 14, '#cfe0ff'); txt(g, 'cortex', mx + 230, my + 75, 14, '#e3d6ff');
-        for (let j = 0; j < 4; j++) { const u = clamp(q * 1.3 - j * 0.1); dot(g, lerp(mx - 230, mx + 200, ease(u)), my - 40 + j * 28, 11, N.crest, { ow: 3 }); tube(g, [[mx - 240, my - 40 + j * 28], [mx + 210, my - 40 + j * 28]], 2, '#bff0d2', { ow: 0, alpha: 0.4 }); }
-        txt(g, 'neuronii migrează spre suprafață', mx, my - 80, 16, '#bff0d2');
+        // neuronii sunt mov (neuroectoderm), nu verzi: verde = creasta neurală în tot deck-ul
+        for (let j = 0; j < 4; j++) { const u = clamp(q * 1.3 - j * 0.1); dot(g, lerp(mx - 230, mx + 200, ease(u)), my - 40 + j * 28, 11, N.neuro, { ow: 3 }); tube(g, [[mx - 240, my - 40 + j * 28], [mx + 210, my - 40 + j * 28]], 2, '#d9c6ff', { ow: 0, alpha: 0.4 }); }
+        txt(g, 'neuronii migrează spre suprafață', mx, my - 80, 16, '#d9c6ff');
       } else { // organizare + mielinizare
         tube(g, [[mx - 260, my], [mx + 260, my]], 8, '#f3ecff', { ow: 3 });
         for (let j = 0; j < 5; j++) { const u = clamp(q * 1.4 - j * 0.12); if (u > 0) ell(g, mx - 200 + j * 100, my, 40 * u, 16 * u + 4, '#f7f0c8', { ow: 3 }); }
@@ -175,7 +176,7 @@ export function malBrain2() {
             const pp = new Path2D(); pp.moveTo(pts[0][0], pts[0][1]); pts.forEach((p) => pp.lineTo(p[0], p[1])); pp.closePath();
             paint(g, pp, '#e9b9c9', null, null, [cx - 100, cy - 100, 200, 100], OUT, 4);
             ell(g, cx, cy - 4, 40, 14, N.csf, { ow: 3 });
-            for (let j = 0; j < 5; j++) { const an = Math.PI * (1.15 + j * 0.17); const stop = s < 0 ? 0.92 : 0.45; const r = lerp(22, 88, ease(clamp(u * 1.2 - j * 0.04)) * stop); dot(g, cx + Math.cos(an) * r, cy + Math.sin(an) * r, 8, N.crest, { ow: 2.5 }); }
+            for (let j = 0; j < 5; j++) { const an = Math.PI * (1.15 + j * 0.17); const stop = s < 0 ? 0.92 : 0.45; const r = lerp(22, 88, ease(clamp(u * 1.2 - j * 0.04)) * stop); dot(g, cx + Math.cos(an) * r, cy + Math.sin(an) * r, 8, N.neuroS, { ow: 2.5 }); } // neuroni mov, nu verzi (verde = creasta)
             txt(g, s < 0 ? 'normal: girusuri' : 'neuronii se opresc\n→ creier neted', cx, cy + 70, 14, s < 0 ? '#bff0d2' : '#ffd6c4');
           });
         } else if (k === 1) {

@@ -210,7 +210,7 @@ export function a_cover() {
   }
   return {
     home: HOME,
-    anchors: [[60, 72], [231, 459], [56, 660], [540, 72]],
+    anchors: [[60, 72], [236, 525], [56, 660], [540, 72]],
     draw(g, t, b) {
       bg(g);
       const hi = b.i < 0 ? Math.floor(TT(t) / 2.6) % 4 : b.i;
