@@ -167,7 +167,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
 
 /* ---------- statistici anonime (Umami, fără cookie-uri) ---------- */
-const UMAMI_ID = ''; // ID-ul site-ului din Umami; gol = statisticile sunt oprite
+const UMAMI_ID = 'e7ee0df4-7dbc-489e-a92a-71dc7c32aa98'; // ID-ul site-ului din Umami; gol = statisticile sunt oprite
 if (UMAMI_ID) {
   const sc = document.createElement('script'); sc.defer = true; sc.src = 'https://cloud.umami.is/script.js';
   sc.dataset.websiteId = UMAMI_ID; sc.dataset.excludeHash = 'true'; document.head.appendChild(sc);
