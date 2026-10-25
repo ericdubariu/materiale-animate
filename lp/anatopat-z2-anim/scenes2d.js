@@ -527,6 +527,14 @@ const DDF = {
   hem: (g, t) => drawBrain(g, t, { hem: 1 }), subdural: (g, t) => drawBrain(g, t, { subdural: 1 }),
   soc: (g, t) => drawShockKidney(g, t), renInf: (g, t) => drawKidney(g, t, { wedge: { a: -2.05 } }),
 };
+/* poza reală a partenerului de DD, decupată în cerc (când nu există desen în deck) */
+const _DDIMG = {};
+function photoDisc(g, x, y, r, n) {
+  let im = _DDIMG[n]; if (!im) { im = new Image(); im.src = `img/${n}.jpg`; _DDIMG[n] = im; }
+  g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.clip(); g.fillStyle = '#21122a'; g.fillRect(x - r, y - r, 2 * r, 2 * r);
+  if (im.complete && im.naturalWidth) { const s = Math.max(2 * r / im.naturalWidth, 2 * r / im.naturalHeight); g.drawImage(im, x - im.naturalWidth * s / 2, y - im.naturalHeight * s / 2, im.naturalWidth * s, im.naturalHeight * s); }
+  g.restore(); g.save(); g.lineWidth = 10; g.strokeStyle = OUT; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke(); g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.35)'; g.stroke(); g.restore();
+}
 function ddPair({ spec }) {
   const o = spec.sceneOpts;
   return {
@@ -536,7 +544,8 @@ function ddPair({ spec }) {
     draw(g, t, b) {
       bgFill(g);
       field(g, 260, 470, 225, () => { g.save(); g.fillStyle = '#21122a'; g.fillRect(30, 240, 460, 460); g.translate(35, 245); g.scale(0.45, 0.48); DDF[o.a](g, t); g.restore(); });
-      field(g, 740, 470, 225, () => { g.save(); g.fillStyle = '#21122a'; g.fillRect(510, 240, 460, 460); g.translate(515, 245); g.scale(0.45, 0.48); DDF[o.b](g, t); g.restore(); });
+      if (o.bImg) photoDisc(g, 740, 470, 225, o.bImg);
+      else field(g, 740, 470, 225, () => { g.save(); g.fillStyle = '#21122a'; g.fillRect(510, 240, 460, 460); g.translate(515, 245); g.scale(0.45, 0.48); DDF[o.b](g, t); g.restore(); });
       const e = b.i >= 0 ? ease(b.bt * 1.5) : 0;
       if (b.i === 0 || b.i === 3) { glowRing(g, 260, 470, 235, 235, 0, e); glowRing(g, 740, 470, 235, 235, 0, e); }
       if (b.i === 1) glowRing(g, 260, 470, 235, 235, 0, e); if (b.i === 2) glowRing(g, 740, 470, 235, 235, 0, e);

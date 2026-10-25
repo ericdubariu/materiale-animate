@@ -337,15 +337,23 @@ function ddDraw(g, t, o, pa, pb) {
   if (o.ka) wrapTxt(g, o.ka, 260, 150, 23, '#ffe36e', 420); if (o.kb) wrapTxt(g, o.kb, 740, 150, 23, '#7fe8ff', 420);
   if (pa > 0) glowRing(g, 260, 540, 225, 225, 0, pa); if (pb > 0) glowRing(g, 740, 540, 225, 225, 0, pb, '#7fe8ff');
 }
+/* poza reală a partenerului de DD, decupată în cerc (când nu există desen în deck) */
+const _DDIMG = {};
+function photoDisc(g, x, y, r, n) {
+  let im = _DDIMG[n]; if (!im) { im = new Image(); im.src = `img/${n}.jpg`; _DDIMG[n] = im; }
+  g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.clip(); g.fillStyle = '#21122a'; g.fillRect(x - r, y - r, 2 * r, 2 * r);
+  if (im.complete && im.naturalWidth) { const s = Math.max(2 * r / im.naturalWidth, 2 * r / im.naturalHeight); g.drawImage(im, x - im.naturalWidth * s / 2, y - im.naturalHeight * s / 2, im.naturalWidth * s, im.naturalHeight * s); }
+  g.restore(); g.save(); g.lineWidth = 10; g.strokeStyle = OUT; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke(); g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.35)'; g.stroke(); g.restore();
+}
 function ddPair({ spec }) {
   const o = spec.sceneOpts; const n = (spec.points || []).length;
   return {
     home: HOME, cams: Array.from({ length: Math.max(1, n) }, () => cam(500, 470, 1)),
-    anchors: [[40, 50], [960, 50], [500, 900], [620, 900], [740, 900], [860, 900]].slice(0, n),
+    anchors: [[260, 175], [740, 175], [440, 900], [560, 900], [680, 900], [800, 900]].slice(0, n),
     labels: [lbl([260, 255], o.l), lbl([740, 255], o.r)],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      mini(g, 260, 470, 225, FIELDS[o.a], t); mini(g, 740, 470, 225, FIELDS[o.b], t);
+      mini(g, 260, 470, 225, FIELDS[o.a], t); if (o.bImg) photoDisc(g, 740, 470, 225, o.bImg); else mini(g, 740, 470, 225, FIELDS[o.b], t);
       txt(g, 'vs.', 500, 485, 40, '#ffe36e');
       if (o.ka) txt(g, o.ka, 260, 860, 24, '#ffe36e'); if (o.kb) txt(g, o.kb, 740, 860, 24, '#7fe8ff');
       if (b.i === 0 || b.i < 0) glowRing(g, 260, 470, 235, 235, 0, b.i < 0 ? 0 : ease(b.bt * 1.5));

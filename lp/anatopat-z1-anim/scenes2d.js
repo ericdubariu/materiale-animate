@@ -248,6 +248,14 @@ function recap() {
     draw(g, t, b) { bgFill(g, '#3a1d2a', '#140a12'); POS5.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); mini(g, x, y, 140, FIELDS[NAMES5[i]], t); if (k[i] > 0.05) glowRing(g, x, y, 155, 155, 0, k[i]); txt(g, ['1', '2', '3', '4', '5'][i], x - 110, y - 100, 34, '#ffe36e'); }); },
   };
 }
+/* poza reală a partenerului de DD, decupată în cerc (când nu există desen în deck) */
+const _DDIMG = {};
+function photoDisc(g, x, y, r, n) {
+  let im = _DDIMG[n]; if (!im) { im = new Image(); im.src = `img/${n}.jpg`; _DDIMG[n] = im; }
+  g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.clip(); g.fillStyle = '#21122a'; g.fillRect(x - r, y - r, 2 * r, 2 * r);
+  if (im.complete && im.naturalWidth) { const s = Math.max(2 * r / im.naturalWidth, 2 * r / im.naturalHeight); g.drawImage(im, x - im.naturalWidth * s / 2, y - im.naturalHeight * s / 2, im.naturalWidth * s, im.naturalHeight * s); }
+  g.restore(); g.save(); g.lineWidth = 10; g.strokeStyle = OUT; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke(); g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.35)'; g.stroke(); g.restore();
+}
 function ddPair({ spec }) {
   const o = spec.sceneOpts;
   return {
@@ -256,7 +264,7 @@ function ddPair({ spec }) {
     labels: [lbl([260, 810], o.l), lbl([740, 810], o.r)],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      mini(g, 260, 470, 225, FIELDS[o.a], t, o.ao); mini(g, 740, 470, 225, FIELDS[o.b], t, o.bo);
+      mini(g, 260, 470, 225, FIELDS[o.a], t, o.ao); if (o.bImg) photoDisc(g, 740, 470, 225, o.bImg); else mini(g, 740, 470, 225, FIELDS[o.b], t, o.bo);
       txt(g, 'vs.', 500, 485, 40, '#ffe36e');
       if (b.i >= 0) { glowRing(g, 260, 470, 235, 235, 0, ease(b.bt * 1.5)); glowRing(g, 740, 470, 235, 235, 0, ease(b.bt * 1.5), '#7fe8ff'); }
     },
