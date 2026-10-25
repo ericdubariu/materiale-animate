@@ -31,28 +31,6 @@
  },
  "decks": [
   {
-   "id": "anatopat-z1-anim",
-   "subj": "anatopat",
-   "title": "Preparatele 1–5 · lamele (tulburări hemodinamice)",
-   "sub": "Edem pulmonar acut · stază + infarct pulmonar · infarct renal · infarct miocardic · tromb mixt",
-   "slides": 43,
-   "path": "lp/anatopat-z1-anim/index.html",
-   "added": "2026-10-25",
-   "updated": "2026-10-25",
-   "tip": "lp"
-  },
-  {
-   "id": "anatopat-z2-anim",
-   "subj": "anatopat",
-   "title": "Preparatele 6–12 · piesele (tulburări hemodinamice)",
-   "sub": "Aortă cu tromb · tromb călăreț · infarct renal · infarct pulmonar · infarct miocardic · hematom intracerebral · rinichi de șoc",
-   "slides": 40,
-   "path": "lp/anatopat-z2-anim/index.html",
-   "added": "2026-10-25",
-   "updated": "2026-10-25",
-   "tip": "lp"
-  },
-  {
    "id": "histo-lp06-3d",
    "subj": "histo",
    "title": "LP 6 · Țesutul conjunctiv (I)",
@@ -61,7 +39,8 @@
    "path": "lp/histo-lp06-3d/index.html",
    "added": "2026-10-25",
    "updated": "2026-10-25",
-   "tip": "lp"
+   "tip": "lp",
+   "ord": 60
   },
   {
    "id": "histo-lp07-anim",
@@ -72,29 +51,8 @@
    "path": "lp/histo-lp07-anim/index.html",
    "added": "2026-10-25",
    "updated": "2026-10-25",
-   "tip": "lp"
-  },
-  {
-   "id": "fiziopat-examen-anim",
-   "subj": "fiziopat",
-   "title": "Examenul practic: cele 22 de întrebări",
-   "sub": "Termoreglarea (Î 1–9) · febra (Î 10–15) · Hodgkin și angina streptococică (Î 16–20) · inflamația (Î 21–22)",
-   "slides": 46,
-   "path": "lp/fiziopat-examen-anim/index.html",
-   "added": "2026-10-25",
-   "updated": "2026-10-25",
-   "tip": "lp"
-  },
-  {
-   "id": "anatopat-z3-anim",
-   "subj": "anatopat",
-   "title": "Preparatele 13–18 · lamele (distrofii și inflamații)",
-   "sub": "Hipercheratoză · steatoză hepatică · pericardită fibrinoasă · abcese hepatice · limfadenită TBC · granulom de corp străin",
-   "slides": 33,
-   "path": "lp/anatopat-z3-anim/index.html",
-   "added": "2026-10-25",
-   "updated": "2026-10-25",
-   "tip": "lp"
+   "tip": "lp",
+   "ord": 70
   },
   {
    "id": "recap-histo-02-05-anim",
@@ -105,7 +63,56 @@
    "path": "lp/recap-histo-02-05-anim/index.html",
    "added": "2026-10-25",
    "updated": "2026-10-25",
-   "tip": "lp"
+   "tip": "lp",
+   "ord": 902
+  },
+  {
+   "id": "anatopat-z1-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 1–5 · lamele (tulburări hemodinamice)",
+   "sub": "Edem pulmonar acut · stază + infarct pulmonar · infarct renal · infarct miocardic · tromb mixt",
+   "slides": 43,
+   "path": "lp/anatopat-z1-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp",
+   "ord": 101
+  },
+  {
+   "id": "anatopat-z2-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 6–12 · piesele (tulburări hemodinamice)",
+   "sub": "Aortă cu tromb · tromb călăreț · infarct renal · infarct pulmonar · infarct miocardic · hematom intracerebral · rinichi de șoc",
+   "slides": 40,
+   "path": "lp/anatopat-z2-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp",
+   "ord": 106
+  },
+  {
+   "id": "anatopat-z3-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 13–18 · lamele (distrofii și inflamații)",
+   "sub": "Hipercheratoză · steatoză hepatică · pericardită fibrinoasă · abcese hepatice · limfadenită TBC · granulom de corp străin",
+   "slides": 33,
+   "path": "lp/anatopat-z3-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp",
+   "ord": 113
+  },
+  {
+   "id": "fiziopat-examen-anim",
+   "subj": "fiziopat",
+   "title": "Examenul practic: cele 22 de întrebări",
+   "sub": "Termoreglarea (Î 1–9) · febra (Î 10–15) · Hodgkin și angina streptococică (Î 16–20) · inflamația (Î 21–22)",
+   "slides": 46,
+   "path": "lp/fiziopat-examen-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp",
+   "ord": 500
   },
   {
    "id": "embrio-lp05-anim",
@@ -116,7 +123,8 @@
    "path": "lp/embrio-lp05-anim/index.html",
    "added": "2026-10-25",
    "updated": "2026-10-25",
-   "tip": "lp"
+   "tip": "lp",
+   "ord": 50
   }
  ]
 }

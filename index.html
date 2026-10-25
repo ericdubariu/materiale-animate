@@ -380,6 +380,7 @@ function renderList(kind) {
   const order = ['histo', 'anatopat', 'farma', 'micro', 'fizio', 'fiziopat', 'embrio'];
   const groups = {};
   for (const d of DECKS.filter((x) => (x.tip || 'lp') === kind)) (groups[d.subj] ||= []).push(d);
+  for (const k in groups) groups[k].sort((a, b) => (a.ord ?? 500) - (b.ord ?? 500));
   const keys = Object.keys(groups).sort((a, b) => (order.indexOf(a) + 99) % 99 - (order.indexOf(b) + 99) % 99);
   const now = Date.now();
   el.innerHTML = keys.map((k) => {
