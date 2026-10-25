@@ -122,7 +122,7 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
     </div>
   </header>
   <main id="list"><p class="empty">Se încarcă lista…</p></main>
-  <footer>Materialele sunt făcute pentru învățat, după LP-urile și sursele disciplinelor. Pot exista greșeli: dacă vezi ceva ce nu se potrivește cu LP-ul, verifică în materialul disciplinei.</footer>
+  <footer>Materialele sunt făcute pentru învățat, după LP-urile și sursele disciplinelor. Pot exista greșeli: dacă vezi ceva ce nu se potrivește cu LP-ul, verifică în materialul disciplinei.<span id="statsNote" hidden><br>Site-ul numără anonim vizitele (fără cookie-uri și fără nume), ca să se vadă ce materiale sunt folosite.</span></footer>
 </div>
 
 <div id="viewer" hidden>
@@ -165,6 +165,26 @@ footer{border-top:1px solid var(--line);padding-top:18px;font:400 12.5px/1.6 var
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+
+/* ---------- statistici anonime (Umami, fără cookie-uri) ---------- */
+const UMAMI_ID = ''; // ID-ul site-ului din Umami; gol = statisticile sunt oprite
+if (UMAMI_ID) {
+  const sc = document.createElement('script'); sc.defer = true; sc.src = 'https://cloud.umami.is/script.js';
+  sc.dataset.websiteId = UMAMI_ID; sc.dataset.excludeHash = 'true'; document.head.appendChild(sc);
+  document.getElementById('statsNote').hidden = false;
+}
+const track = (name, data) => { try { if (UMAMI_ID && window.umami) window.umami.track(name, data); } catch {} };
+// timpul petrecut într-un deck: se numără doar cât e pagina vizibilă, trimis în bucăți (și când telefonul trece pe alt ecran)
+let sess = null; // {id, t0, acc, maxSlide}
+function sessFlush(final) {
+  if (!sess) return;
+  const now = performance.now(); if (sess.t0) { sess.acc += now - sess.t0; sess.t0 = document.hidden ? 0 : now; }
+  const min = Math.round(sess.acc / 30000) / 2; // în jumătăți de minut
+  if (min >= 0.5) { track('timp-deck', { deck: sess.id, minute: min, 'slide-max': sess.maxSlide + 1 }); sess.acc = 0; }
+  if (final) sess = null;
+}
+document.addEventListener('visibilitychange', () => { if (!sess) return; if (document.hidden) sessFlush(false); else sess.t0 = performance.now(); });
+addEventListener('pagehide', () => sessFlush(true));
 
 /* ---------- ecran complet ---------- */
 const root = document.documentElement;
@@ -222,7 +242,10 @@ function wake() { vbar.classList.remove('hide'); clearTimeout(hideT); hideT = se
 function focusDeck() { if (frame && !viewer.hidden) { try { frame.contentWindow.focus(); } catch {} } }
 function send(m) { if (frame && frame.contentWindow) frame.contentWindow.postMessage(m, '*'); }
 function openDeck(d, push = true) {
+  sessFlush(true);
   curDeck = d;
+  sess = { id: d.id, t0: performance.now(), acc: 0, maxSlide: 0 };
+  track('deschide-deck', { deck: d.id, materie: d.subj });
   const last = parseInt(store.get('last.' + d.id) || '0', 10) || 0;
   if (frame) frame.remove();
   frame = document.createElement('iframe');
@@ -237,6 +260,7 @@ function openDeck(d, push = true) {
 }
 function closeDeck(pop = false) {
   if (viewer.hidden) return;
+  sessFlush(true);
   viewer.hidden = true; document.body.classList.remove('viewing');
   if (frame) { frame.remove(); frame = null; } curDeck = null;
   document.title = 'Materiale animate · Anul 2 MG';
@@ -257,7 +281,7 @@ addEventListener('message', (e) => {
   if (!frame || e.source !== frame.contentWindow) return;
   const m = e.data || {};
   if (m.type === 'lp3d-fs') toggleFs();
-  if (m.type === 'lp3d-nav' && curDeck && Number.isInteger(m.i)) store.set('last.' + curDeck.id, String(m.i));
+  if (m.type === 'lp3d-nav' && curDeck && Number.isInteger(m.i)) { store.set('last.' + curDeck.id, String(m.i)); if (sess) sess.maxSlide = Math.max(sess.maxSlide, m.i); }
 });
 // tastele apăsate când focusul e pe pagina mare merg mai departe la deck
 addEventListener('keydown', (e) => {
