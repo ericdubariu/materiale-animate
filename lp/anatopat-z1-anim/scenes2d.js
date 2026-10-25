@@ -382,8 +382,9 @@ function stazaWhy() {
       txt(g, 'AS', 170, 784, 36);
       // vena pulmonară → capilar
       g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 64; g.beginPath(); path.forEach((p, k) => (k ? g.lineTo(...p) : g.moveTo(...p))); g.stroke(); g.strokeStyle = '#b8304e'; g.lineWidth = 50 + 8 * clamp(st - 1); g.stroke(); g.restore();
-      for (let k = 0; k < 10; k++) { const u = ((k / 10) + (REDUCED ? 0 : t * 0.04 * (st > 1 ? 0.3 : 1))) % 1; const i = Math.min(3, Math.floor(u * 4)), f = u * 4 - i; rbc(g, lerp(path[i + 1][0], path[i][0], f), lerp(path[i + 1][1], path[i][1], f), 0.8, 0.5, t); }
-      if (st > 1) { g.save(); g.globalAlpha = clamp(st - 1); arrow(g, 520, 560, 330, 660, '#ffe36e', 7); g.restore(); }
+      // sângele venos curge alveolă → vene pulmonare → AS (încetinit când AS cedează); presiunea se transmite invers (retrograd)
+      for (let k = 0; k < 10; k++) { const u = 1 - (((k / 10) + (REDUCED ? 0 : t * 0.04 * (st > 1 ? 0.3 : 1))) % 1); const i = Math.min(3, Math.floor(u * 4)), f = u * 4 - i; rbc(g, lerp(path[i][0], path[i + 1][0], f), lerp(path[i][1], path[i + 1][1], f), 0.8, 0.5, t); }
+      if (st > 1) { g.save(); g.globalAlpha = clamp(st - 1); arrow(g, 330, 660, 520, 560, '#ffe36e', 7); g.restore(); }
       // alveola
       const sw = 20 + 40 * clamp(st - 3);
       g.save(); g.fillStyle = '#ee9cc4'; g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.ellipse(760, 280, 190 + sw, 160 + sw, 0, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#fff7fb'; g.beginPath(); g.ellipse(760, 280, 185, 150, 0, 0, 7); g.fill(); g.strokeStyle = '#a54a7c'; g.lineWidth = 4; g.stroke(); g.restore();
@@ -413,7 +414,7 @@ function infMare() {
 function infWhy() {
   return {
     home: HOME, cams: [cam(260, 620, 1.4), cam(500, 470, 1), cam(600, 300, 1.4), cam(600, 300, 1.6)], anchors: [[200, 520], [460, 170], [700, 140], [600, 380]],
-    labels: [lbl([170, 880], 'embol din TVP'), lbl([330, 220], 'a. pulmonară blocată'), lbl([760, 560], 'a. bronșică: sânge în continuare'), lbl([600, 500], 'con cu baza la pleură')],
+    labels: [lbl([170, 880], 'embol din TVP'), lbl([420, 520], 'a. pulmonară blocată'), lbl([760, 560], 'a. bronșică: sânge în continuare'), lbl([790, 70], 'con cu baza la pleură')],
     phase: (i) => ['embol pulmonar mic', 'circulația dublă', 'sângele inundă alveolele', 'septurile mor'][i] || '',
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a'); const st = b.i < 0 ? 4 : b.i + clamp(b.bt / 3);
@@ -424,14 +425,17 @@ function infWhy() {
       const red = clamp(st - 2);
       if (st > 1) { const c = new Path2D(); c.moveTo(380, 95); c.lineTo(820, 115); c.lineTo(560, 470); c.closePath(); g.save(); g.fillStyle = `rgba(${Math.round(lerp(220, 150, red))},${Math.round(lerp(150, 20, red))},${Math.round(lerp(180, 40, red))},${0.3 + 0.6 * red})`; g.fill(c); g.strokeStyle = '#ffe36e'; g.setLineDash([14, 9]); g.lineWidth = 4; g.stroke(c); g.restore(); }
       // arborele arterial pulmonar
-      g.save(); g.lineCap = 'round'; const tree = [[[240, 860], [330, 600], [450, 420], [560, 470]], [[330, 600], [260, 380], [230, 180]], [[450, 420], [520, 250], [560, 130]], [[450, 420], [700, 300], [800, 160]]];
-      tree.forEach((br) => { g.strokeStyle = OUT; g.lineWidth = 30; g.beginPath(); br.forEach((p, k) => (k ? g.lineTo(...p) : g.moveTo(...p))); g.stroke(); g.strokeStyle = '#6e8ee6'; g.lineWidth = 20; g.stroke(); }); g.restore();
+      g.save(); g.lineCap = 'round'; // ce trebuie să se vadă: embolul urcă pe trunchi, intră în ramura care irigă conul și se oprește la VÂRFUL conului;
+      // după el, ramura din con (până la pleură = baza) rămâne fără flux (gri); celelalte ramuri ocolesc conul și rămân perfuzate
+      const tree = [[[240, 860], [330, 600], [450, 420], [560, 470]], [[330, 600], [260, 380], [230, 180]], [[450, 420], [330, 260], [290, 130]], [[450, 420], [700, 300], [810, 170]]];
+      tree.forEach((br) => { g.strokeStyle = OUT; g.lineWidth = 30; g.beginPath(); br.forEach((p, k) => (k ? g.lineTo(...p) : g.moveTo(...p))); g.stroke(); g.strokeStyle = '#6e8ee6'; g.lineWidth = 20; g.stroke(); });
+      const occ = [[560, 470], [590, 300], [600, 110]]; g.strokeStyle = OUT; g.lineWidth = 24; g.beginPath(); occ.forEach((p, k) => (k ? g.lineTo(...p) : g.moveTo(...p))); g.stroke(); g.strokeStyle = b.i < 0 || b.i >= 1 || ease(b.bt / 3) > 0.95 ? '#8d8a93' : '#6e8ee6'; g.lineWidth = 15; g.stroke(); g.restore();
       // embolul se deplasează
-      const u = b.i < 0 ? 1 : b.i === 0 ? ease(b.bt / 3) : 1; const ex = lerp(240, 560, u), ey = lerp(860, 470, u) - (u > 0.5 ? 0 : 0);
+      const u = b.i < 0 ? 1 : b.i === 0 ? ease(b.bt / 3) : 1; const EP = tree[0]; const fu = u * (EP.length - 1), ei = Math.min(EP.length - 2, Math.floor(fu)), ef = fu - ei; const ex = lerp(EP[ei][0], EP[ei + 1][0], ef), ey = lerp(EP[ei][1], EP[ei + 1][1], ef);
       paint(g, blob(ex, ey, 22, 14, -0.6, t, 0.1, 10, 3), '#5a0d1e', null, '#a33', bb(ex, ey, 22, 14), OUT, 4);
       // artera bronșică (circulația dublă)
       if (st > 1) { g.save(); g.globalAlpha = clamp(st - 1); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 20; g.beginPath(); g.moveTo(920, 700); g.quadraticCurveTo(760, 450, 640, 250); g.stroke(); g.strokeStyle = '#ff5a6e'; g.lineWidth = 12; g.stroke(); for (let k = 0; k < 5; k++) { const v = (t * 0.25 + k / 5) % 1; rbc(g, lerp(920, 640, v), lerp(700, 250, v) + Math.sin(v * 3) * 30, 0.6, 0, t); } g.restore(); }
-      if (st > 3) { g.save(); g.globalAlpha = clamp(st - 3); txt(g, 'fără nuclei', 600, 300, 28, '#fff'); g.restore(); }
+      if (st > 3) { g.save(); g.globalAlpha = clamp(st - 3); txt(g, 'fără nuclei', 690, 190, 24, '#fff'); g.restore(); }
       txt(g, 'pleura', 500, 70, 24, '#f8e07a');
     },
   };
