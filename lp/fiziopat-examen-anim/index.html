@@ -126,6 +126,10 @@ body.quiz .sec.peek p{filter:none}
 /* nav doar când pagina e deschisă singură */
 body.solo #err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:#eadbea;font:500 14px/1.5 var(--f-ui)}
 @media (prefers-reduced-motion:reduce){.badge,.pt,.sec,#well,#txt{transition:none}}
+/* roșu = ce dă puncte la examen */
+:root{--key:#FF4D4D}
+b.key,#body b.key,.pt b.key,.box b.key,.say b.key,.script b.key,.rt b.key{color:var(--key)!important;font-weight:800}
+body.quiz b.key{color:inherit!important}
 </style>
 </head>
 <body>

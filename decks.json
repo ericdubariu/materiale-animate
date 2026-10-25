@@ -84,6 +84,39 @@
    "added": "2026-10-25",
    "updated": "2026-10-25",
    "tip": "lp"
+  },
+  {
+   "id": "anatopat-z3-anim",
+   "subj": "anatopat",
+   "title": "Preparatele 13–18 · lamele (distrofii și inflamații)",
+   "sub": "Hipercheratoză · steatoză hepatică · pericardită fibrinoasă · abcese hepatice · limfadenită TBC · granulom de corp străin",
+   "slides": 27,
+   "path": "lp/anatopat-z3-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp"
+  },
+  {
+   "id": "recap-histo-02-05-anim",
+   "subj": "histo",
+   "title": "Recapitulare OSPE · LP 2–5 · epiteliile și glandele",
+   "sub": "Cele 12 lame: recunoaștere + colorație → descriere → DD (1 asemănare + 3 diferențe)",
+   "slides": 19,
+   "path": "lp/recap-histo-02-05-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp"
+  },
+  {
+   "id": "embrio-lp05-anim",
+   "subj": "embrio",
+   "title": "LP 5 · Sistemul urogenital",
+   "sub": "Pronefros → mezonefros → metanefros · gonadele și SRY · ductele Wolff și Müller · organele externe · malformații",
+   "slides": 23,
+   "path": "lp/embrio-lp05-anim/index.html",
+   "added": "2026-10-25",
+   "updated": "2026-10-25",
+   "tip": "lp"
   }
  ]
 }

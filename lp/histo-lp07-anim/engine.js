@@ -35,8 +35,9 @@ function resize() {
 }
 /* ---------- text ---------- */
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
-const plain = (s) => String(s || '').replace(/\*\*/g, '').replace(/<[^>]+>/g, '');
+// !!text!! = ROȘU: doar ce dă puncte la examen (1–4 pe slide); **text** = bold alb obișnuit
+const md = (s) => esc(s).replace(/!!(.+?)!!/g, '<b class="key">$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+const plain = (s) => String(s || '').replace(/\*\*|!!/g, '').replace(/<[^>]+>/g, '');
 function glossFor(spec) {
   const parts = [spec.kick, spec.title, spec.why, spec.say, spec.warn, spec.hud && spec.hud.join(' '), spec.extraText];
   (spec.points || []).forEach((p) => parts.push(p.h, ...(p.d || [])));
