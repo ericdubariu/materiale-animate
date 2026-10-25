@@ -63,23 +63,23 @@ function well(g, x, y, r, turb, a = 1) {
   g.restore();
 }
 function dashBox(g, x, y, w, h, col, a) { if (a <= 0.01) return; g.save(); g.globalAlpha = clamp(a); g.strokeStyle = col; g.lineWidth = 4; g.setLineDash([10, 8]); g.beginPath(); g.roundRect(x, y, w, h, 12); g.stroke(); g.restore(); }
-function hline(g, x0, x1, y, col, w = 3, dash = null, a = 1) { g.save(); g.globalAlpha = clamp(a); g.strokeStyle = col; g.lineWidth = w; if (dash) g.setLineDash(dash); g.beginPath(); g.moveTo(x0, y); g.lineTo(x1, y); g.stroke(); g.restore(); }
-function vline(g, x, y0, y1, col, w = 3, dash = null, a = 1) { g.save(); g.globalAlpha = clamp(a); g.strokeStyle = col; g.lineWidth = w; if (dash) g.setLineDash(dash); g.beginPath(); g.moveTo(x, y0); g.lineTo(x, y1); g.stroke(); g.restore(); }
+function hline(g, x0, x1, y, col, w = 3, dash = null, a = 1) { g.save(); g.globalAlpha *= clamp(a); g.strokeStyle = col; g.lineWidth = w; if (dash) g.setLineDash(dash); g.beginPath(); g.moveTo(x0, y); g.lineTo(x1, y); g.stroke(); g.restore(); }
+function vline(g, x, y0, y1, col, w = 3, dash = null, a = 1) { g.save(); g.globalAlpha *= clamp(a); g.strokeStyle = col; g.lineWidth = w; if (dash) g.setLineDash(dash); g.beginPath(); g.moveTo(x, y0); g.lineTo(x, y1); g.stroke(); g.restore(); }
 function check(g, x, y, ok, a = 1, s = 30) { txt(g, ok ? '✓' : '✗', x, y, s, ok ? GREEN : RED, { alpha: a }); }
 // anticorp (Y): tips = cele 2 situsuri de legare; rot = 0 → brațele în sus
 function Y(g, x, y, s = 1, rot = 0, col = '#ffe08a', a = 1) {
   if (a <= 0.01) return;
-  g.save(); g.globalAlpha = clamp(a); g.translate(x, y); g.rotate(rot); g.lineCap = 'round'; g.lineJoin = 'round';
+  g.save(); g.globalAlpha *= clamp(a); g.translate(x, y); g.rotate(rot); g.lineCap = 'round'; g.lineJoin = 'round';
   const path = () => { g.beginPath(); g.moveTo(0, 22 * s); g.lineTo(0, 0); g.lineTo(-15 * s, -18 * s); g.moveTo(0, 0); g.lineTo(15 * s, -18 * s); };
   g.strokeStyle = OUT; g.lineWidth = 11 * s; path(); g.stroke(); g.strokeStyle = col; g.lineWidth = 6 * s; path(); g.stroke(); g.restore();
 }
 // antigen (triunghi galben)
 function agTri(g, x, y, s = 12, col = '#ffcf4a', a = 1) {
   if (a <= 0.01) return; const p = new Path2D(); p.moveTo(x, y - s); p.lineTo(x + s * 0.95, y + s * 0.7); p.lineTo(x - s * 0.95, y + s * 0.7); p.closePath();
-  g.save(); g.globalAlpha = clamp(a); paint(g, p, col, null, null, [x - s, y - s, 2 * s, 2 * s], OUT, 3); g.restore();
+  g.save(); g.globalAlpha *= clamp(a); paint(g, p, col, null, null, [x - s, y - s, 2 * s, 2 * s], OUT, 3); g.restore();
 }
 function star(g, x, y, r, col = '#7dff8a', a = 1, glow = 0) {
-  if (a <= 0.01) return; g.save(); g.globalAlpha = clamp(a); g.beginPath();
+  if (a <= 0.01) return; g.save(); g.globalAlpha *= clamp(a); g.beginPath();
   for (let k = 0; k < 10; k++) { const an = -Math.PI / 2 + k * Math.PI / 5; const rr2 = k % 2 ? r * 0.45 : r; g.lineTo(x + Math.cos(an) * rr2, y + Math.sin(an) * rr2); }
   g.closePath(); if (glow) { g.shadowColor = col; g.shadowBlur = 18 * glow; } g.fillStyle = col; g.fill(); g.shadowBlur = 0; g.strokeStyle = OUT; g.lineWidth = 2.5; g.stroke(); g.restore();
 }
@@ -183,7 +183,7 @@ export function c_kb() {
   const prof = (d, front) => Math.exp(-Math.abs(d) / LAM) * clamp((front - Math.abs(d)) / 45);
   return {
     home: HOME,
-    anchors: [[X + 46, Y - 46], [X + 89, Y + 89], [X + R + 70, G0 - 150]],
+    anchors: [[X + 46, Y - 46], [X + 89, Y + 89], [880, 556]],
     draw(g, t, b) {
       bg(g); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
       const osc = 0.5 - 0.5 * Math.cos(T(t) * 0.9);
@@ -292,11 +292,11 @@ export function c_steps() {
       lawn(g, cx, cy, r, seg(q, 0.84, 1), 11);
       if (cur) swab(g, cur[0], cur[1]);
       // secțiune prin placă: stratul de 4 mm
-      const sx = x0 + 280, sy = y0 + 125;
-      g.save(); g.fillStyle = M.mh; g.fillRect(sx, sy - 18, 150, 18); g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.moveTo(sx - 6, sy - 40); g.lineTo(sx - 6, sy + 4); g.lineTo(sx + 156, sy + 4); g.lineTo(sx + 156, sy - 40); g.stroke(); g.restore();
-      vline(g, sx + 172, sy - 18, sy, C.hi, 3);
-      txt(g, '4 mm', sx + 200, sy - 9, 16, C.hi, { w: 800 });
-      txt(g, 'secțiune', sx + 75, sy - 58, 14, DIM, { w: 600 });
+      const sx = x0 + 262, sy = y0 + 125;
+      g.save(); g.fillStyle = M.mh; g.fillRect(sx, sy - 18, 120, 18); g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.moveTo(sx - 6, sy - 40); g.lineTo(sx - 6, sy + 4); g.lineTo(sx + 126, sy + 4); g.lineTo(sx + 126, sy - 40); g.stroke(); g.restore();
+      vline(g, sx + 140, sy - 18, sy, C.hi, 3);
+      txt(g, '4 mm', sx + 172, sy - 9, 16, C.hi, { w: 800 });
+      txt(g, 'secțiune', sx + 60, sy - 58, 14, DIM, { w: 600 });
       txt(g, 'ștergi toată suprafața\nde 3 ori', x0 + 355, y0 + 190, 16, CREAM, { w: 700 });
       txt(g, '→ gazon', x0 + 355, y0 + 240, 18, GOLD, { alpha: seg(q, 0.84, 1) });
     },
@@ -320,14 +320,14 @@ export function c_steps() {
       g.fillStyle = mix('#3b4a52', '#7a4a2a', warm); g.beginPath(); g.roundRect(bx + 16, by + 40, 158, 134, 10); g.fill(); g.stroke();
       g.fillStyle = '#16221c'; g.beginPath(); g.roundRect(bx + 50, by + 8, 90, 26, 6); g.fill(); g.restore();
       txt(g, '35 °C', bx + 95, by + 22, 16, '#7dff8a', { stroke: false });
-      for (let j = 0; j < 2; j++) { const py = by + 90 + j * 50; plate(g, bx + 95, py, 50, M.mh); lawn(g, bx + 95, py, 50, seg(q, 0.3, 0.9), 20 + j); [[-22, 0], [22, 0]].forEach(([dx]) => { zone(g, circ(bx + 95 + dx, py, 16 * seg(q, 0.4, 0.9)), seg(q, 0.3, 0.9)); disc(g, bx + 95 + dx, py, '', 1, 7); }); }
+      for (let j = 0; j < 2; j++) { const px = bx + 56 + j * 78, py = by + 107; plate(g, px, py, 30, M.mh); lawn(g, px, py, 30, seg(q, 0.3, 0.9), 20 + j); g.save(); g.beginPath(); g.arc(px, py, 29, 0, 7); g.clip(); [[-12, -8], [12, 9]].forEach(([dx, dy]) => zone(g, circ(px + dx, py + dy, 11 * seg(q, 0.4, 0.9)), seg(q, 0.3, 0.9))); g.restore(); [[-12, -8], [12, 9]].forEach(([dx, dy]) => disc(g, px + dx, py + dy, '', 1, 5)); }
       const cx = x0 + 350, cy = y0 + 122;
       ell(g, cx, cy, 50, 50, '#fff3e6', { ow: 5 });
       for (let k = 0; k < 12; k++) { const an = k * Math.PI / 6; vline(g, 0, 0, 0, OUT); g.save(); g.strokeStyle = OUT; g.lineWidth = 3; g.beginPath(); g.moveTo(cx + Math.cos(an) * 40, cy + Math.sin(an) * 40); g.lineTo(cx + Math.cos(an) * 46, cy + Math.sin(an) * 46); g.stroke(); g.restore(); }
       const ha = -Math.PI / 2 + q * Math.PI * 2 * 1.4;
       g.save(); g.strokeStyle = OUT; g.lineWidth = 5; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(ha) * 36, cy + Math.sin(ha) * 36); g.stroke(); g.restore();
-      txt(g, '16–18 h', cx, cy + 75, 19, GOLD);
-      txt(g, 'aer sau CO₂ · pretențioși 20–24 h\nvancomicina: 24 h', x0 + 330, y0 + 238, 14, CREAM, { w: 600 });
+      txt(g, '16–18 h', cx, cy + 68, 19, GOLD);
+      txt(g, 'aer sau CO₂\npretențioși 20–24 h\nvancomicina 24 h', x0 + 350, y0 + 232, 13, CREAM, { w: 600 });
     },
     (g, x0, y0, q) => { // 5 · citirea
       const cx = x0 + 145, cy = y0 + 152, r = 100, zr2 = 58;
@@ -382,7 +382,7 @@ export function c_steps() {
 export function c_sir() {
   const X = [190, 500, 810]; const PY = 205, PR = 108;
   const Z = [0, 50, 88]; const LAB = [['R', RED], ['I', AMBER], ['S', GREEN]];
-  const YB = 885, YS = 700, YU = 545; const CMI = [480, 672, 805];
+  const YB = 875, YS = 700, YU = 545; const CMI = [505, 672, 805];
   return {
     home: HOME,
     anchors: X.map((x) => [x + 84, PY - 84]),
@@ -403,14 +403,14 @@ export function c_sir() {
         if (act) ring(g, x, PY, PR + 18, PR + 18, ease(b.bt * 1.2));
       });
       // nivelurile
-      txt(g, 'concentrația ↑', 92, 470, 16, CREAM, { w: 700 });
+      txt(g, 'concentrația ↑', 100, 462, 15, CREAM, { w: 700 });
       hline(g, 60, 950, YU, BLUE, 3, [12, 8]); txt(g, 'în urină / doze mari', 860, YU - 20, 16, BLUE, { w: 700 });
       hline(g, 60, 950, YS, '#9EF0DD', 3, [12, 8]); txt(g, 'concentrația serică obișnuită', 820, YS - 20, 16, '#9EF0DD', { w: 700 });
       hline(g, 60, 950, YB, CREAM, 3);
       X.forEach((x, k) => {
         const q = p(k);
         // CMI-ul germenului
-        hline(g, x - 60, x + 60, CMI[k], '#ff8a7a', 5); txt(g, 'CMI', x - 92, CMI[k], 17, '#ff8a7a');
+        hline(g, x - 60, x + 60, CMI[k], '#ff8a7a', 5); txt(g, 'CMI', x + 92, CMI[k], 17, '#ff8a7a');
         // barul de concentrație: întâi până la nivelul seric, apoi (doar la I) până la urină
         const ys = lerp(YB, YS, ease(seg(q, 0, 0.45)));
         const yu = k === 1 ? lerp(YS, YU, ease(seg(q, 0.55, 0.85))) : YS;
@@ -419,9 +419,9 @@ export function c_sir() {
         if (k === 1 && yu < YS - 1) { g.fillStyle = 'rgba(111,182,255,.45)'; g.beginPath(); g.rect(x - 22, yu, 44, YS - yu); g.fill(); g.stroke(); }
         g.restore();
         const a1 = seg(q, 0.42, 0.55);
-        if (k === 0) { check(g, x + 50, YS + 30, false, a1); txt(g, 'nu e inhibat', x, YS + 70, 16, RED, { alpha: a1 }); }
-        if (k === 1) { txt(g, '?', x + 50, YS + 30, 26, AMBER, { alpha: a1 * (1 - seg(q, 0.85, 0.95)) }); check(g, x + 50, YU + 30, true, seg(q, 0.85, 0.95)); txt(g, 'răspuns posibil mai slab', x, YS + 70, 15, AMBER, { alpha: a1 }); }
-        if (k === 2) { check(g, x + 50, CMI[k] - 30, true, a1); txt(g, 'inhibat în ser', x, YS + 70, 16, GREEN, { alpha: a1 }); }
+        if (k === 0) { check(g, x + 50, YS + 30, false, a1); txt(g, 'nu e inhibat', x, YB + 22, 16, RED, { alpha: a1 }); }
+        if (k === 1) { txt(g, '?', x + 50, YS + 30, 26, AMBER, { alpha: a1 * (1 - seg(q, 0.85, 0.95)) }); check(g, x + 50, YU + 30, true, seg(q, 0.85, 0.95)); txt(g, 'răspuns posibil mai slab', x, YB + 22, 15, AMBER, { alpha: a1 }); }
+        if (k === 2) { check(g, x - 50, CMI[k] - 30, true, a1); txt(g, 'inhibat în ser', x, YB + 22, 16, GREEN, { alpha: a1 }); }
       });
     },
   };
@@ -612,14 +612,12 @@ export function c_plate() {
 }
 
 /* =================================================================================================
- 8 · ANTIBIOTICELE (ținte) + REZISTENȚA (p. 44 + 48)
+ 8 · ANTIBIOTICELE: ȚINTELE (p. 44)
  CE TREBUIE SĂ SE VADĂ:
  - celula: perete (violet, exterior) → membrana (inelul galben) → citoplasmă cu ADN și ribozomi (50S mare + 30S mic).
  - 1: β-lactaminele vin din AFARĂ și lovesc peretele → peretele se fisurează.  2: moleculele intră până la ADN →
    ADN-ul se oprește (nu se mai răsucește/copiază).  3: o moleculă se leagă de 50S, alta de 30S → lanțul proteic nu mai crește.
  - 4: polimixinele găuresc MEMBRANA (inelul galben) → conținutul curge afară.
- - 5: 4 căi de scăpare: enzima sparge antibioticul; ținta modificată nu mai „primește” antibioticul; porina închisă →
-   antibioticul ricoșează; pompa de eflux scoate antibioticul din celulă (dinăuntru → afară).
 ================================================================================================= */
 export function c_abx() {
   const RB = [[690, 290, 0], [330, 520, 1], [650, 545, 2]]; // ribozomi
@@ -628,11 +626,13 @@ export function c_abx() {
   };
   const ab = (g, x, y, col = RED, a = 1) => { dot(g, x, y, 12, col, { alpha: a, ow: 3 }); txt(g, 'AB', x, y + 1, 10, '#ffffff', { stroke: false, alpha: a, w: 900 }); };
   const fly = (q, x0, y0, x1, y1) => [lerp(x0, x1, ease(q)), lerp(y0, y1, ease(q))];
+  const ZK = 1.12; const Z = ([x, y]) => [500 + (x - 500) * ZK, 467 + (y - 380) * ZK];
   return {
     home: HOME,
-    anchors: [[500, 110], [400, 330], [770, 220], [870, 330], [500, 690]],
+    anchors: [[500, 110], [400, 330], [770, 220], [870, 330]].map(Z),
     draw(g, t, b) {
-      bg(g); const p = P(b, t, 5); const q = [0, 1, 2, 3, 4].map((k) => p(k));
+      bg(g); const p = P(b, t, 4); const q = [0, 1, 2, 3].map((k) => p(k));
+      g.save(); g.translate(500, 467); g.scale(ZK, ZK); g.translate(-500, -380); // celula mărită: ocupă tot cadrul
       // celula
       const W0 = new Path2D(); W0.roundRect(170, 150, 660, 490, 130);
       const M0 = new Path2D(); M0.roundRect(192, 172, 616, 446, 110);
@@ -641,7 +641,7 @@ export function c_abx() {
       paint(g, M0, '#f2c94c', null, null, [192, 172, 616, 446], OUT, 3);
       paint(g, C0, '#fbeccf', null, null, [204, 184, 592, 422], OUT, 3);
       txt(g, 'perete', 105, 240, 19, '#d9c6ff'); lead(g, 130, 255, 172, 280, 0.8);
-      txt(g, 'membrană', 905, 600, 18, '#f2c94c'); lead(g, 880, 585, 810, 560, 0.8);
+      txt(g, 'membrană', 870, 650, 18, '#f2c94c'); lead(g, 850, 638, 800, 600, 0.8);
       // 1 · peretele: fisuri unde lovesc β-lactaminele
       [350, 500, 650].forEach((x, k) => {
         const u = seg(q[0], k * 0.12, 0.5 + k * 0.12);
@@ -670,41 +670,82 @@ export function c_abx() {
       // 4 · membrana: polimixinele fac găuri → conținutul curge afară
       const hole = q[3] >= 0.55;
       if (q[3] > 0 && q[3] < 0.55) ab(g, ...fly(q[3] / 0.55, 960, 400, 808, 400), '#ffb547');
-      if (hole) { g.save(); g.fillStyle = '#fbeccf'; g.fillRect(790, 380, 20, 40); g.restore(); ab(g, 812, 375, '#ffb547'); for (let k = 0; k < 5; k++) { const u = ((T(t) * 0.5 + k / 5) % 1); dot(g, 800 + u * 150, 400 + Math.sin(k * 2 + u * 6) * 18, 5, '#fbeccf', { alpha: 1 - u, ow: 2 }); } txt(g, 'conținutul curge afară', 900, 470, 15, AMBER, { w: 700, alpha: q[3] }); }
-      // 5 · rezistența: 4 mini-scene
-      const ra = intro(b) || b.i >= 4 ? 1 : 0.35; const u = loopT(t, 3.2);
-      const BX = [135, 375, 615, 855]; const by = 790;
-      [['enzime', 'β-lactamaze, ESBL'], ['ținta modificată', 'PBP2a (MRSA)'], ['porină pierdută', 'Gram −'], ['pompă de eflux', 'scoate AB afară']].forEach(([a1, a2], k) => {
-        panel(g, BX[k] - 115, 670, 230, 245, { fill: b.i === 4 ? 'rgba(14,156,134,.14)' : 'rgba(255,240,228,.05)' });
-        txt(g, a1, BX[k], 695, 17, GOLD, { alpha: ra }); txt(g, a2, BX[k], 893, 14, CREAM, { alpha: ra, w: 700 });
-      });
-      g.save(); g.globalAlpha = ra;
-      { // enzima (verde, „pac-man”) sparge antibioticul
-        const x = BX[0], ex = x + 40; const ax = lerp(x - 90, ex - 24, ease(seg(u, 0, 0.45)));
-        const mo = 0.35 + 0.3 * Math.abs(Math.sin(T(t) * 6));
-        g.save(); g.fillStyle = '#57c27d'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.moveTo(ex, by); g.arc(ex, by, 32, Math.PI + mo, Math.PI - mo + Math.PI * 2); g.closePath(); g.fill(); g.stroke(); g.restore();
-        if (u < 0.5) ab(g, ax, by); else { const s = ease(seg(u, 0.5, 0.9)); g.save(); g.globalAlpha = ra * (1 - s * 0.6); g.fillStyle = RED; g.strokeStyle = OUT; g.lineWidth = 3; g.beginPath(); g.arc(ex - 40 - 20 * s, by - 20 * s, 12, Math.PI / 2, Math.PI * 1.5); g.closePath(); g.fill(); g.stroke(); g.beginPath(); g.arc(ex - 36 + 4 * s, by + 22 * s, 12, -Math.PI / 2, Math.PI / 2); g.closePath(); g.fill(); g.stroke(); g.restore(); }
-      }
-      { // ținta modificată: antibioticul (triunghi) nu mai intră în locașul pătrat
-        const x = BX[1]; const tp = new Path2D(); tp.moveTo(x - 50, by + 40); tp.lineTo(x - 50, by - 10); tp.lineTo(x - 14, by - 10); tp.lineTo(x - 14, by - 40); tp.lineTo(x + 14, by - 40); tp.lineTo(x + 14, by - 10); tp.lineTo(x + 50, by - 10); tp.lineTo(x + 50, by + 40); tp.closePath();
-        paint(g, tp, '#d4b2ff', null, null, [x - 50, by - 40, 100, 80], OUT, 4);
-        const d = u < 0.5 ? lerp(-120, -54, ease(u / 0.5)) : lerp(-54, -110, ease((u - 0.5) / 0.5));
-        g.save(); g.fillStyle = RED; g.strokeStyle = OUT; g.lineWidth = 3; g.beginPath(); g.moveTo(x, by + d + 26); g.lineTo(x - 16, by + d); g.lineTo(x + 16, by + d); g.closePath(); g.fill(); g.stroke(); g.restore();
-        if (u > 0.45 && u < 0.7) check(g, x + 40, by - 70, false, 1, 24);
-      }
-      { // porina pierdută: antibioticul ricoșează din membrană
-        const x = BX[2]; g.save(); g.fillStyle = '#f2c94c'; g.strokeStyle = OUT; g.lineWidth = 4; g.fillRect(x - 100, by + 5, 200, 26); g.strokeRect(x - 100, by + 5, 200, 26); g.restore();
-        g.save(); g.fillStyle = '#7b6a5a'; g.strokeStyle = OUT; g.lineWidth = 3; g.fillRect(x - 14, by + 2, 28, 32); g.strokeRect(x - 14, by + 2, 28, 32); g.restore();
-        const yy = u < 0.5 ? lerp(by - 80, by - 14, ease(u / 0.5)) : lerp(by - 14, by - 75, ease((u - 0.5) / 0.5)); const xx = u < 0.5 ? x : x + (u - 0.5) * 120;
-        ab(g, xx, yy); txt(g, 'afară', x - 70, by - 50, 14, DIM, { w: 700 }); txt(g, 'înăuntru', x - 60, by + 62, 14, DIM, { w: 700 });
-      }
-      { // pompa de eflux: dinăuntru (jos) → afară (sus)
-        const x = BX[3]; g.save(); g.fillStyle = '#f2c94c'; g.strokeStyle = OUT; g.lineWidth = 4; g.fillRect(x - 100, by + 5, 200, 26); g.strokeRect(x - 100, by + 5, 200, 26); g.restore();
-        g.save(); g.fillStyle = '#3f7fd9'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x - 18, by - 12, 36, 62, 10); g.fill(); g.stroke(); g.restore();
-        const yy = lerp(by + 72, by - 70, ease(u)); ab(g, x, yy);
-        txt(g, 'afară', x - 70, by - 50, 14, DIM, { w: 700 }); txt(g, 'înăuntru', x - 60, by + 62, 14, DIM, { w: 700 });
-      }
+      if (hole) { g.save(); g.fillStyle = '#fbeccf'; g.fillRect(790, 380, 20, 40); g.restore(); ab(g, 812, 375, '#ffb547'); for (let k = 0; k < 5; k++) { const u = ((T(t) * 0.5 + k / 5) % 1); dot(g, 800 + u * 150, 400 + Math.sin(k * 2 + u * 6) * 18, 5, '#fbeccf', { alpha: 1 - u, ow: 2 }); } txt(g, 'conținutul\ncurge afară', 880, 470, 15, AMBER, { w: 700, alpha: q[3] }); }
       g.restore();
+    },
+  };
+}
+
+/* =================================================================================================
+ 8b · REZISTENȚA: DOAR PRINCIPIUL (p. 48) — mecanismele sunt din manual
+ CE TREBUIE SĂ SE VADĂ (câte un panou, cel activ se animă în buclă):
+ 1 enzima (β-lactamaza, verde) prinde antibioticul și îl SPARGE în două (inelul β-lactamic distrus).
+ 2 ținta modificată (PBP2a): antibioticul (triunghi) coboară spre țintă, dar locașul are altă formă → nu se poate lega,
+   ricoșează; dedesubt: discul de cefoxitin pe gazon fără zonă = MRSA.
+ 3 porina pierdută: membrana externă a Gram-negativului e închisă (porina e un dop) → antibioticul vine din AFARĂ și ricoșează.
+ 4 pompa de eflux: antibioticul a intrat (e ÎNĂUNTRU, jos) → pompa îl scoate AFARĂ (sus).
+================================================================================================= */
+export function c_res() {
+  const ab = (g, x, y, col = RED, a = 1) => { dot(g, x, y, 15, col, { alpha: a, ow: 3 }); txt(g, 'AB', x, y + 1, 12, '#ffffff', { stroke: false, alpha: a, w: 900 }); };
+  const PAN = [[20, 70], [510, 70], [20, 495], [510, 495]];
+  const TI = [['inactivare enzimatică', 'β-lactamaze · ESBL · carbapenemaze'], ['ținta modificată', 'MRSA: PBP2a (gena mecA)'], ['permeabilitate scăzută', 'porine pierdute (Gram −)'], ['pompe de eflux', 'AB scos din celulă']];
+  const memb = (g, x0, y) => { g.save(); g.fillStyle = '#f2c94c'; g.strokeStyle = OUT; g.lineWidth = 4; g.fillRect(x0 + 40, y, 390, 30); g.strokeRect(x0 + 40, y, 390, 30); g.restore(); };
+  return {
+    home: HOME,
+    anchors: PAN.map(([x, y]) => [x + 30, y + 30]),
+    draw(g, t, b) {
+      bg(g);
+      PAN.forEach(([x0, y0], k) => {
+        const act = b.i === k || intro(b);
+        const u = act ? (b.i === k ? (b.bt % 3.4) / 3.4 : loopT(t + k * 0.8, 3.4)) : 0.25;
+        panel(g, x0, y0, 470, 410, { fill: b.i === k ? 'rgba(14,156,134,.16)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(120,230,200,.6)' : 'rgba(255,230,210,.16)' });
+        txt(g, TI[k][0], x0 + 250, y0 + 32, 21, b.i === k ? '#9EF0DD' : GOLD);
+        txt(g, TI[k][1], x0 + 235, y0 + 380, 16, CREAM, { w: 700 });
+        g.save(); if (!act) g.globalAlpha = 0.55;
+        const cx = x0 + 235, cy = y0 + 200;
+        if (k === 0) { // enzima sparge antibioticul
+          const ex = cx + 60; const ax = lerp(cx - 170, ex - 30, ease(seg(u, 0, 0.45)));
+          const mo = 0.35 + 0.3 * Math.abs(Math.sin(T(t) * 6));
+          g.save(); g.fillStyle = '#57c27d'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.moveTo(ex, cy); g.arc(ex, cy, 52, Math.PI + mo, Math.PI - mo + Math.PI * 2); g.closePath(); g.fill(); g.stroke(); g.restore();
+          txt(g, 'β-lactamază', ex, cy + 82, 16, '#9ff0b8', { w: 800 });
+          if (u < 0.5) ab(g, ax, cy);
+          else { const s2 = ease(seg(u, 0.5, 0.9)); g.save(); g.globalAlpha *= 1 - s2 * 0.5; g.fillStyle = RED; g.strokeStyle = OUT; g.lineWidth = 3;
+            g.beginPath(); g.arc(ex - 50 - 40 * s2, cy - 30 * s2, 15, Math.PI / 2, Math.PI * 1.5); g.closePath(); g.fill(); g.stroke();
+            g.beginPath(); g.arc(ex - 44 - 10 * s2, cy + 34 * s2, 15, -Math.PI / 2, Math.PI / 2); g.closePath(); g.fill(); g.stroke(); g.restore();
+            txt(g, 'inelul β-lactamic spart', cx - 60, cy - 80, 15, RED, { w: 800, alpha: s2 }); }
+          txt(g, 'ESBL (E. coli, Klebsiella) → inhibate de clavulanat', cx, cy + 135, 14, DIM, { w: 700 });
+        }
+        if (k === 1) { // ținta modificată: antibioticul nu se mai leagă
+          const tx = cx - 90, ty = cy - 10;
+          const tp = new Path2D(); tp.moveTo(tx - 60, ty + 50); tp.lineTo(tx - 60, ty); tp.lineTo(tx - 22, ty); tp.lineTo(tx - 22, ty - 36); tp.lineTo(tx + 22, ty - 36); tp.lineTo(tx + 22, ty); tp.lineTo(tx + 60, ty); tp.lineTo(tx + 60, ty + 50); tp.closePath();
+          paint(g, tp, '#d4b2ff', null, null, [tx - 60, ty - 36, 120, 86], OUT, 4);
+          txt(g, 'PBP2a', tx, ty + 72, 15, '#d4b2ff', { w: 800 });
+          const d = u < 0.5 ? lerp(-150, -72, ease(u / 0.5)) : lerp(-72, -140, ease((u - 0.5) / 0.5));
+          g.save(); g.fillStyle = RED; g.strokeStyle = OUT; g.lineWidth = 3; g.beginPath(); g.moveTo(tx, ty + d + 30); g.lineTo(tx - 20, ty + d); g.lineTo(tx + 20, ty + d); g.closePath(); g.fill(); g.stroke(); g.restore();
+          if (u > 0.42 && u < 0.75) check(g, tx + 52, ty - 92, false, 1, 26);
+          // discul de cefoxitin: fără zonă = MRSA
+          const px = cx + 115, py = cy + 10; plate(g, px, py, 70, M.mh); lawn(g, px, py, 70, 1, 91); disc(g, px, py, 'FOX', 1, 16);
+          txt(g, 'cefoxitin:\nfără zonă', px, py + 105, 14, CREAM, { w: 800 });
+          txt(g, 'rezistent la toate β-lactaminele clasice', cx, y0 + 345, 14, DIM, { w: 700 });
+        }
+        if (k === 2) { // porina pierdută: AB ricoșează din afară
+          const my = cy + 10; memb(g, x0, my);
+          g.save(); g.fillStyle = '#7b6a5a'; g.strokeStyle = OUT; g.lineWidth = 3; g.fillRect(cx - 20, my - 4, 40, 38); g.strokeRect(cx - 20, my - 4, 40, 38); g.restore();
+          txt(g, 'porină închisă', cx + 110, my + 60, 14, DIM, { w: 800 });
+          const yy = u < 0.5 ? lerp(my - 130, my - 18, ease(u / 0.5)) : lerp(my - 18, my - 110, ease((u - 0.5) / 0.5)); const xx = u < 0.5 ? cx : cx + (u - 0.5) * 220;
+          ab(g, xx, yy);
+          txt(g, 'afară', x0 + 70, my - 70, 15, CREAM, { w: 800 }); txt(g, 'înăuntru', x0 + 85, my + 85, 15, CREAM, { w: 800 });
+        }
+        if (k === 3) { // pompa de eflux: dinăuntru → afară
+          const my = cy + 10; memb(g, x0, my);
+          g.save(); g.fillStyle = '#3f7fd9'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(cx - 24, my - 22, 48, 74, 12); g.fill(); g.stroke(); g.restore();
+          txt(g, 'pompă', cx - 70, my - 40, 14, '#8fc0ff', { w: 800 });
+          ab(g, cx, lerp(my + 120, my - 120, ease(u)));
+          arr(g, cx + 60, my + 80, cx + 60, my - 50, CREAM, 4, 0.6);
+          txt(g, 'afară', x0 + 70, my - 70, 15, CREAM, { w: 800 }); txt(g, 'înăuntru', x0 + 85, my + 85, 15, CREAM, { w: 800 });
+        }
+        g.restore();
+      });
     },
   };
 }
@@ -723,7 +764,7 @@ export function c_ag() {
   const NAMES = [['precipitare', 'Ag solubil'], ['aglutinare', 'Ag corpuscular'], ['neutralizare', 'virus / toxină'], ['RFC', 'complement'], ['marcaj', 'RIF · IPO · ELISA']];
   return {
     home: HOME,
-    anchors: TXs.map((x) => [x + 70, 392]),
+    anchors: TXs.map((x) => [x + 70, 455]),
     draw(g, t, b) {
       bg(g); const p = P(b, t, 5);
       panel(g, 20, 70, 960, 290); panel(g, 20, 720, 470, 190); panel(g, 510, 720, 470, 190);
@@ -780,7 +821,7 @@ export function c_prec() {
   const ag = (g, x, y, a = 1) => dot(g, x, y, 8, '#ffcf4a', { ow: 3, alpha: a });
   return {
     home: HOME,
-    anchors: [[GX0 + 20, 300], [930, 300], [500, 545]],
+    anchors: [[575, 300], [930, 300], [70, 600]],
     draw(g, t, b) {
       bg(g); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
       panel(g, 20, 70, 600, 440); panel(g, 640, 70, 340, 440); panel(g, 20, 525, 960, 390);
@@ -842,7 +883,7 @@ export function c_aggl() {
   const NET = RB.map((_, i) => { const r = Math.floor(i / 6), c = i % 6; return [-70 + c * 28 + (r % 2) * 14, -62 + r * 31]; });
   return {
     home: HOME,
-    anchors: [[300, 120], [500, 372], [270, 700]],
+    anchors: [[300, 120], [620, 440], [270, 700]],
     draw(g, t, b) {
       bg(g); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
       panel(g, 20, 70, 960, 285); panel(g, 20, 370, 960, 290); panel(g, 20, 675, 960, 240);
@@ -898,7 +939,7 @@ export function c_rfc() {
   const RBS = Array.from({ length: 12 }, () => [rr(-60, 60), rr(-110, 80), rr(0, 6)]);
   return {
     home: HOME,
-    anchors: [[60, 130], [300, 400], [700, 400]],
+    anchors: [[60, 130], [150, 520], [850, 520]],
     draw(g, t, b) {
       bg(g); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
       panel(g, 20, 70, 960, 270); panel(g, 20, 355, 960, 560);
@@ -914,15 +955,15 @@ export function c_rfc() {
       });
       txt(g, 'cultură celulară,\nanimal sau piele (Schick)', 860, 300, 14, DIM, { w: 700 });
       // 2–3 · RFC
-      txt(g, 'RFC: complementul e „martorul”', 500, 382, 19, GOLD);
+      txt(g, 'RFC: complementul e „martorul”', 500, 384, 19, GOLD);
       const q1 = ease(p1), q2 = ease(p2);
       [[300, true], [700, false]].forEach(([cx, hasAc]) => {
-        const top = 420, h = 430, w = 230;
+        const top = 440, h = 420, w = 230;
         // lichidul: la negativ devine roșu (hemoliză)
         const lys = hasAc ? 0 : ease(seg(p2, 0.45, 0.95));
         g.save(); const body = new Path2D(); body.moveTo(cx - w / 2, top); body.lineTo(cx - w / 2, top + h - w / 2); body.arc(cx, top + h - w / 2, w / 2, Math.PI, 0, true); body.lineTo(cx + w / 2, top);
         g.fillStyle = mix('#f7f1e1', '#c8283a', lys); g.globalAlpha = 0.9; g.fill(body); g.globalAlpha = 1; g.strokeStyle = OUT; g.lineWidth = 6; g.stroke(body); g.restore();
-        txt(g, hasAc ? 'ser CU Ac' : 'ser FĂRĂ Ac', cx, top - 2, 17, CREAM);
+        txt(g, hasAc ? 'ser CU Ac' : 'ser FĂRĂ Ac', cx, top - 22, 17, CREAM);
         const mid = top + 210;
         // Ag + (Ac) + C
         AGS.forEach(([dx, dy], i) => { const x = cx + dx, y = mid + dy * 0.9; agTri(g, x, y, 10); if (hasAc) Y(g, x, y + 12 + 22 * (1 - q1) + 6, 0.6, Math.PI, '#ffe08a', Math.max(0.3, q1)); });
@@ -934,14 +975,16 @@ export function c_rfc() {
         });
         // hematiile sensibilizate (cu Ac anti-hematii)
         if (q2 > 0) RBS.forEach(([dx, dy, rot], i) => {
-          const fall = ease(seg(p2, 0, 0.3)); let x = cx + dx, y = lerp(top - 40, mid + dy, fall);
+          const fall = ease(seg(p2, 0, 0.3)); let x = cx + dx, y = lerp(top + 30, mid + dy, fall);
+          g.save(); g.globalAlpha *= clamp(fall * 4);
           if (hasAc) { const sx = cx - 70 + (i % 6) * 28, sy = top + h - 50 - Math.floor(i / 6) * 18; x = lerp(x, sx, seg(p2, 0.45, 0.95)); y = lerp(y, sy, seg(p2, 0.45, 0.95)); rbc(g, x, y, 0.55, rot); }
-          else { const burst = seg(p2, 0.45, 0.85); if (burst < 1) { g.save(); g.globalAlpha = 1 - burst; rbc(g, x, y, 0.55 * (1 + burst * 0.5), rot); g.restore(); } }
+          else { const burst = seg(p2, 0.45, 0.85); if (burst < 1) { g.save(); g.globalAlpha *= 1 - burst; rbc(g, x, y, 0.55 * (1 + burst * 0.5), rot); g.restore(); } }
+          g.restore();
         });
         if (q1 > 0.5 && hasAc) txt(g, 'complementul se fixează', cx, top + 40, 15, GREEN, { w: 800, alpha: q1 });
         if (!hasAc && q1 > 0.5) txt(g, 'complementul rămâne liber', cx, top + 40, 15, AMBER, { w: 800, alpha: q1 });
       });
-      txt(g, '+ hematii + Ac anti-hematii', 500, 455, 15, CREAM, { w: 800, alpha: Math.max(0.3, q2) });
+      txt(g, 'a 2-a etapă:\n+ hematii\n+ Ac anti-\nhematii', 500, 650, 14, CREAM, { w: 800, alpha: Math.max(0.3, q2) }); arr(g, 470, 712, 432, 712, CREAM, 4, Math.max(0.3, q2)); arr(g, 530, 712, 568, 712, CREAM, 4, Math.max(0.3, q2));
       txt(g, 'pozitiv: fără hemoliză', 300, 893, 19, GREEN, { alpha: Math.max(0.3, seg(p2, 0.6, 1)) });
       txt(g, 'negativ: hemoliză', 700, 893, 19, RED, { alpha: Math.max(0.3, seg(p2, 0.6, 1)) });
     },
@@ -989,10 +1032,10 @@ export function c_label() {
         [120, 235, 350].forEach((dx, k) => {
           const x = ox + dx; agTri(g, x, 840, 13);
           const s = 1.3; const yAc = 840 - 13 - 18 * s; // vârfurile Ac pe Ag
-          if (!side) { const v = ease(seg(q, 0.05 + k * 0.05, 0.4 + k * 0.05)); Y(g, x, lerp(560, yAc, v), s, Math.PI, '#ffe08a'); star(g, x, lerp(560, yAc, v) - 22 * s - 10, 11, '#7dff8a', 1, v); }
+          if (!side) { const v = ease(seg(q, 0.05 + k * 0.05, 0.4 + k * 0.05)); const al = clamp(v * 5); Y(g, x, lerp(600, yAc, v), s, Math.PI, '#ffe08a', al); star(g, x, lerp(600, yAc, v) - 22 * s - 10, 11, '#7dff8a', al, v); }
           else {
-            const v1 = ease(seg(q, 0.02 + k * 0.04, 0.3 + k * 0.04)); Y(g, x, lerp(560, yAc, v1), s, Math.PI, '#d8d0c0');
-            const v2 = ease(seg(q, 0.6 + k * 0.04, 0.9 + k * 0.04)); const y2 = yAc - 22 * s - 18 * s; Y(g, x, lerp(560, y2, v2), s, Math.PI, '#ffe08a', v2 > 0 ? 1 : 0); star(g, x, lerp(560, y2, v2) - 22 * s - 10, 11, '#7dff8a', v2 > 0 ? 1 : 0, v2);
+            const v1 = ease(seg(q, 0.02 + k * 0.04, 0.3 + k * 0.04)); Y(g, x, lerp(600, yAc, v1), s, Math.PI, '#d8d0c0', clamp(v1 * 5));
+            const v2 = ease(seg(q, 0.6 + k * 0.04, 0.9 + k * 0.04)); const y2 = yAc - 22 * s - 18 * s; Y(g, x, lerp(600, y2, v2), s, Math.PI, '#ffe08a', clamp(v2 * 5)); star(g, x, lerp(600, y2, v2) - 22 * s - 10, 11, '#7dff8a', clamp(v2 * 5), v2);
           }
         });
         // spălarea: Ac nelegați pleacă
@@ -1021,7 +1064,7 @@ export function c_na() {
   const strand = (g, x0, x1, y, col, a = 1) => { hline(g, x0, x1, y, OUT, 11, null, a); hline(g, x0, x1, y, col, 6, null, a); };
   return {
     home: HOME,
-    anchors: [[60, 110], [660, 220], [60, 385], [440, 640], [740, 640]],
+    anchors: [[60, 200], [660, 220], [60, 385], [440, 640], [740, 640]],
     draw(g, t, b) {
       bg(g); const p = P(b, t, 5); const p0 = p(0), p1 = p(1), p2 = p(2);
       panel(g, 20, 70, 960, 285); panel(g, 20, 365, 960, 240); panel(g, 20, 615, 960, 300);
@@ -1153,7 +1196,7 @@ export function c_idr() {
       });
       // ceasul: maximul la ~48 h
       const cx = 940, cy = 165; ell(g, cx, cy, 24, 24, '#fff3e6', { ow: 4 }); const ha = -Math.PI / 2 + r2 * Math.PI * 4; g.save(); g.strokeStyle = OUT; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(ha) * 17, cy + Math.sin(ha) * 17); g.stroke(); g.restore();
-      txt(g, '~48 h', cx - 10, cy + 42, 15, '#d9c6ff', { w: 800 });
+      txt(g, '~48 h', cx - 62, cy, 15, '#d9c6ff', { w: 800 });
       txt(g, 'limfocite T', 755, 360, 13, '#4a3aa8', { stroke: false, w: 800, alpha: r2 });
       txt(g, '↔ citire inversă', 500, 557, 18, C.hi);
       // boala experimentală

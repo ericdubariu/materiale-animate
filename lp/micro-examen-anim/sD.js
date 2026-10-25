@@ -955,14 +955,14 @@ export function d_skin() {
       const D = bp(B, 'duo');
       // 1 · Ancylostoma
       { const u = U(0); dash(g, skin1, '#ff9a8a', 3, A(b, 0) ? 0.85 : 0.2);
-        if (A(b, 0)) { if (u < 0.55) larva(g, ...at(skin1, u / 0.55).slice(0, 2), 18, -1.3, t); else if (u < 0.8) larva(g, ...at(toDuo, (u - 0.55) / 0.25).slice(0, 2), 18, 1.2, t); }
+        if (A(b, 0)) { if (u < 0.55) larva(g, ...at(skin1, u / 0.55).slice(0, 2), 26, -1.3, t); else if (u < 0.8) larva(g, ...at(toDuo, (u - 0.55) / 0.25).slice(0, 2), 18, 1.2, t); }
         const bite = b.i > 0 ? 1 : A(b, 0) ? sm(u, 0.78, 0.9) : 0;
         if (bite > 0) { worm(g, [[D[0] - 22, D[1] + 4], [D[0] - 8, D[1] - 6], [D[0] + 10, D[1] + 2]], 8, '#f4dccc', { ow: 3, alpha: vis(b, 0) }); if (A(b, 0)) for (let k = 0; k < 3; k++) { const v = (t * 0.8 + k / 3) % 1; dot(g, D[0] - 26 - k * 4, D[1] + 8 + v * 26, 4, K.blood, { ow: 1.5, alpha: 1 - v }); } }
         if (A(b, 0)) larva(g, 62, 812, 22, 0.2 + Math.sin(t) * 0.2, t);
       }
       // 2 · Strongyloides
       { const u = U(1); dash(g, skin2, '#ffd09a', 3, A(b, 1) ? 0.85 : 0.2);
-        if (A(b, 1)) { if (u < 0.45) larva(g, ...at(skin2, u / 0.45).slice(0, 2), 18, -1.3, t, '#fff0c8'); else if (u < 0.65) larva(g, ...at(toJej, (u - 0.45) / 0.2).slice(0, 2), 18, 1.2, t, '#fff0c8');
+        if (A(b, 1)) { if (u < 0.45) larva(g, ...at(skin2, u / 0.45).slice(0, 2), 26, -1.3, t, '#fff0c8'); else if (u < 0.65) larva(g, ...at(toJej, (u - 0.45) / 0.2).slice(0, 2), 18, 1.2, t, '#fff0c8');
           // ouăle eclozează în intestin → larve coboară spre anus
           const J = bp(B, [20, 452]); if (u > 0.62 && u < 0.78) egg(g, J[0], J[1], 'hook', 9, { alpha: 1 - sm(u, 0.7, 0.78) });
           const down = curve([J, bp(B, [-86, 480]), bp(B, [0, 530]), bp(B, 'anus'), [B.x, 788]]); if (u > 0.72) larva(g, ...at(down, sm(u, 0.72, 1)).slice(0, 2), 14, 1.5, t, '#fff0c8');

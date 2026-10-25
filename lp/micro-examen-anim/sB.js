@@ -318,13 +318,13 @@ export function b_pure() {
   const ZB = [520, 120];
   return {
     home: HOME,
-    anchors: [[A[0] - 150, A[1] - 175], [ZB[0] + 70, ZB[1] - 70], [Bp[0] + 110, Bp[1] - 140], [500, 640]],
+    anchors: [[A[0] - 150, A[1] - 175], [ZB[0] + 70, ZB[1] - 70], [Bp[0] + 110, Bp[1] - 140], [900, 630]],
     phase: (i) => ['însămânțarea', 'colonia = o clonă', 'izolarea → cultura pură', 'după consistență'][i] || 'produs → colonie → cultură pură',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4); const p0 = p(0), p1 = p(1), p2 = p(2), p3 = p(3); const tt = TT(t);
       // eprubeta cu produsul patologic
-      vial(g, 80, 70, 52, 150, (c) => fillFrom(c, 80, 52, 140, '#c9b27a'));
-      txt(g, 'produs\npatologic', 80, 262, 16, M.cream);
+      vial(g, 62, 40, 46, 120, (c) => fillFrom(c, 62, 46, 95, '#c9b27a'));
+      txt(g, 'produs\npatologic', 62, 196, 15, M.cream);
       plateIn(g, A[0], A[1], RA, M.agar, (c) => {
         const nS = Math.floor(p0 * SEED.length);
         SEED.forEach(([x, y, k], j) => {
@@ -336,7 +336,7 @@ export function b_pure() {
       });
       txt(g, 'placa A: flora amestecată', A[0], A[1] + RA + 34, 17, M.cream);
       // ansa: 1 însămânțarea (eprubetă → striu), 3 izolarea (o colonie A → B)
-      if (b.i === 0 || (b.i < 0 && p0 < 1)) { const n = STREAK.length - 1; const f = p0 * n; const j = Math.min(n - 1, Math.floor(f)); const [x, y] = [lerp(STREAK[j][0], STREAK[j + 1][0], f - j), lerp(STREAK[j][1], STREAK[j + 1][1], f - j)]; loop(g, p0 < 0.03 ? 80 : x, p0 < 0.03 ? 140 : y, -0.6); }
+      if (b.i === 0 || (b.i < 0 && p0 < 1)) { const n = STREAK.length - 1; const f = p0 * n; const j = Math.min(n - 1, Math.floor(f)); const [x, y] = [lerp(STREAK[j][0], STREAK[j + 1][0], f - j), lerp(STREAK[j][1], STREAK[j + 1][1], f - j)]; loop(g, p0 < 0.03 ? 62 : x, p0 < 0.03 ? 110 : y, -0.6); }
       if (b.i === 2 || (b.i < 0 && p2 > 0 && p2 < 1)) {
         const s = SEED[PICK]; const u = clamp(p2 * 1.6); const x = lerp(s[0], Bp[0] - 40, u), y = lerp(s[1], Bp[1] - 20, u) - Math.sin(u * Math.PI) * 120;
         loop(g, x, y, -0.6); if (u < 1) dot(g, x + 14, y, 6, '#efd27a', { ow: 2 });
@@ -414,7 +414,7 @@ export function b_special() {
       // 3 · transport
       { const [x0, y0] = PN[2]; const u = p(2); const a = al(2); const tx = x0 + 130;
         vial(g, tx, y0 + 70, 90, 300, (c) => { fillFrom(c, tx, 90, y0 + 170, '#e8eef0'); for (let j = 0; j < 10; j++) bacillus(c, tx - 26 + (j % 4) * 17, y0 + 230 + Math.floor(j / 4) * 30 + Math.sin(tt * 1.5 + j) * 2, 16, 6, j, M.gramN, 1); }, { alpha: a });
-        g.save(); g.globalAlpha = a; g.strokeStyle = OUT; g.lineWidth = 10; g.beginPath(); g.moveTo(tx, y0 + 20); g.lineTo(tx, y0 + 250); g.stroke(); g.strokeStyle = '#f2ead8'; g.lineWidth = 5; g.stroke(); ell(g, tx, y0 + 256, 12, 20, '#f7f1e6', { ow: 3 }); g.restore();
+        g.save(); g.globalAlpha = a; g.strokeStyle = OUT; g.lineWidth = 10; g.beginPath(); g.moveTo(tx, y0 + 52); g.lineTo(tx, y0 + 250); g.stroke(); g.strokeStyle = '#f2ead8'; g.lineWidth = 5; g.stroke(); ell(g, tx, y0 + 256, 12, 20, '#f7f1e6', { ow: 3 }); g.restore();
         const C = [x0 + 340, y0 + 150]; g.save(); g.globalAlpha = a; ell(g, C[0], C[1], 60, 60, '#f6efe0', { ow: 5 });
         const an = -Math.PI / 2 + u * Math.PI * 4; g.strokeStyle = OUT; g.lineWidth = 5; g.lineCap = 'round'; g.beginPath(); g.moveTo(C[0], C[1]); g.lineTo(C[0] + Math.cos(an) * 44, C[1] + Math.sin(an) * 44); g.stroke(); g.restore();
         txt(g, '10 germeni → 10 germeni', C[0], C[1] + 96, 16, M.cream, { alpha: a });
@@ -455,7 +455,7 @@ export function b_incub() {
   const JX = [190, 500, 810], JY = 640;
   return {
     home: HOME,
-    anchors: [[TH[0] + 60, TH[1] - 10], [560, 70], [500, 470]],
+    anchors: [[TH[0] + 60, TH[1] - 10], [560, 70], [955, 500]],
     phase: (i) => ['35–37 °C', '18 h → săptămâni', 'aerob · CO₂ · anaerob'][i] || 'temperatură · timp · atmosferă',
     draw(g, t, b) {
       bg(g); const tt = TT(t); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
@@ -622,16 +622,16 @@ export function b_egg() {
      5 în embrion. 6 Animalele: șoarecele marcat, cu cele 7 căi, de la intradermic la intracerebral (se aprind pe rând). */
   const E = [330, 470], ER = [230, 300];
   const T = [ // [ținta x,y], [punctul de intrare pe coajă]
-    [[E[0] - 150, E[1] - 140], [E[0] - 200, E[1] - 170]],
+    [[E[0] - 178, E[1] - 148], [E[0] - 222, E[1] - 186]],
     [[E[0] + 120, E[1] + 40], [E[0] + 226, E[1] + 30]],
     [[E[0] + 10, E[1] + 150], [E[0] + 60, E[1] + 296]],
-    [[E[0] - 170, E[1] + 70], [E[0] - 226, E[1] + 70]],
+    [[E[0] - 137, E[1] + 207], [E[0] - 176, E[1] + 262]],
     [[E[0] - 10, E[1] - 30], [E[0] + 150, E[1] - 230]],
   ];
   const ROUTES = ['intradermic', 'subcutanat', 'intramuscular', 'intravenos', 'intraperitoneal', 'intranazal', 'intracerebral'];
   return {
     home: HOME,
-    anchors: [[E[0] - 200, E[1] - 220], [E[0] + 200, E[1] - 60], [E[0] + 110, E[1] + 230], [E[0] - 250, E[1] + 160], [E[0] + 40, E[1] - 120], [780, 120]],
+    anchors: [[E[0] - 150, E[1] - 250], [E[0] + 200, E[1] - 60], [E[0] + 110, E[1] + 230], [E[0] - 230, E[1] + 240], [E[0] + 40, E[1] - 120], [780, 120]],
     phase: (i) => ['membrana corioalantoidiană', 'cavitatea alantoidiană / amniotică', 'sacul vitelin', 'venele alantoidiene', 'embrionul', 'animalele: 7 căi'][i] || 'oul embrionat: 5 căi',
     draw(g, t, b) {
       bg(g); const tt = TT(t); const p = P(b, t, 6);
@@ -657,7 +657,7 @@ export function b_egg() {
       g.restore();
       txt(g, 'amnion', E[0] + 76, E[1] - 100, 15, '#cfefff', { alpha: aE }); txt(g, 'embrion', E[0] - 10, E[1] + 26, 14, OUT, { stroke: false, alpha: aE });
       txt(g, 'sacul vitelin', E[0] + 10, E[1] + 150, 15, OUT, { stroke: false, alpha: aE }); txt(g, 'cavitatea\nalantoidiană', E[0] + 150, E[1] + 120, 14, '#cfefff', { alpha: aE });
-      txt(g, 'membrana\ncorioalantoidiană', E[0] - 300, E[1] - 250, 15, '#ff9fae', { alpha: aE });
+      txt(g, 'membrana\ncorioalantoidiană', 120, 110, 15, '#ff9fae', { alpha: aE }); lead(g, 120, 136, E[0] - 170, E[1] - 200, aE);
       // seringa: pe intro trece pe rând prin cele 5 ținte; pe punct se oprește în ținta lui
       const k = b.i >= 0 ? b.i : REDUCED ? 0 : Math.floor(t / 2.6) % 5; const u = b.i >= 0 ? p(b.i) : ease(clamp((t % 2.6) / 1.6));
       if (k < 5) { const [tg, en] = T[k]; const dx = tg[0] - en[0], dy = tg[1] - en[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
@@ -665,7 +665,7 @@ export function b_egg() {
         g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 7; g.beginPath(); g.moveTo(tipx, tipy); g.lineTo(tipx - ux * 120, tipy - uy * 120); g.stroke(); g.strokeStyle = '#d8dde0'; g.lineWidth = 3.5; g.stroke();
         g.lineWidth = 26; g.strokeStyle = OUT; g.beginPath(); g.moveTo(tipx - ux * 120, tipy - uy * 120); g.lineTo(tipx - ux * 230, tipy - uy * 230); g.stroke(); g.lineWidth = 19; g.strokeStyle = '#eef4f6'; g.stroke(); g.restore();
         if (u > 0.92) ring(g, tg[0], tg[1], 26, 26, 1);
-        if (k === 0 && u > 0.6) for (let q = 0; q < 5; q++) dot(g, E[0] - 160 + q * 24, E[1] - 205 + q * 22 - (q > 2 ? (q - 2) * 34 : 0), 6 * clamp(u * 3 - 2), '#ffffff', { ow: 2 });
+        if (k === 0 && u > 0.6) [[-196, -110], [-186, -128], [-164, -166], [-150, -182], [-200, -88]].forEach(([dx, dy]) => dot(g, E[0] + dx, E[1] + dy, 6 * clamp(u * 3 - 2), '#ffffff', { ow: 2 }));
       }
       // animalele
       const aA = b.i < 0 || b.i === 5 ? 1 : 0.4;
@@ -695,8 +695,8 @@ export function b_colonies() {
        însămânțare și acoperă placa; două tulpini diferite din 2 puncte se întâlnesc și NU se amestecă → linia Dieneș rămâne între ele.
      5 pigment: stânga Pseudomonas: pigmentul VERDE difuzează din colonie în mediu (mediul se colorează); dreapta S. aureus: colonii
        galben-aurii, mediul rămâne necolorat (pigment nedifuzibil). */
-  const SX = [95, 257, 419, 581, 743, 905], SY = 120, SR = 58;
-  const BIG = [650, 575], BR = 248;
+  const SX = [95, 257, 419, 581, 743, 905], SY = 150, SR = 58;
+  const BIG = [650, 590], BR = 240;
   const BASE = [M.agar, M.agar, M.mac, M.sab, M.lactB, '#e9d9a6'];
   const NM = ['S', 'R', 'M', 'untoase', 'cățărare', 'pigment'];
   const R = rng(21); const POS = []; for (let k = 0; k < 9; k++) POS.push([(R() - 0.5) * 1.3, (R() - 0.5) * 1.3, 0.7 + R() * 0.6]);
@@ -848,7 +848,7 @@ export function b_oxygen() {
   const r0 = rng(31); const DOTS = Array.from({ length: 60 }, () => [r0(), r0()]);
   return {
     home: HOME,
-    anchors: [[100, 60], [270, 60], [690, 60], [690, 380], [930, 200]],
+    anchors: [[175, 140], [335, 140], [690, 100], [690, 380], [930, 200]],
     phase: (i) => ['panta', 'înțeparea', 'sus: aerobi stricți', 'jos: anaerobi / lanțuri', 'peste tot: facultativi'][i] || 'O₂ intră doar prin suprafață',
     draw(g, t, b) {
       bg(g); const tt = TT(t); const p = P(b, t, 5, 0.75);
@@ -918,7 +918,7 @@ export function b_biochem() {
   const pos = [[310, 'SIM'], [480, 'Simmons +'], [590, 'Simmons −'], [770, 'uree +'], [880, 'uree −']];
   return {
     home: HOME,
-    anchors: [[TX + 76, YL - 20], [TX - 76, TY + 330], [TX + 76, TY + 420], [pos[0][0] + 56, TY + 70], [pos[3][0] + 56, YL], [pos[1][0] + 56, YL]],
+    anchors: [[TX + 76, YL + 40], [TX - 76, TY + 330], [TX + 76, TY + 420], [pos[0][0] + 56, TY + 70], [pos[3][0] + 56, YL], [pos[1][0] + 56, YL]],
     phase: (i) => ['K/A: doar glucoza', 'A/A: + lactoză / zaharoză', 'negru = H₂S', 'indol: inel roșu', 'ureaza → roz', 'citrat → albastru'][i] || 'TSI · SIM · Simmons · uree',
     draw(g, t, b) {
       bg(g); const tt = TT(t); const { k, u } = cyc(b, t, 6, 5.2, 0.8);
@@ -940,7 +940,7 @@ export function b_biochem() {
         for (let j = 0; j < 6; j++) dot(c, lerp(TX - 34, TX + 34, j / 5), lerp(YL, YR, (j + 0.5) / 6) - 2, 4, '#f6efe0', { ow: 1.2 });
       });
       if ((k === 0 || k === 2) && u > 0.5) for (let j = 0; j < 4; j++) { const v = loopT(tt * 0.7 + j * 0.25, 1); dot(g, TX + 80 - v * 50, YL - 60 + v * 60 + j * 8, 5, '#8fd3ff', { ow: 1.5, alpha: Math.sin(v * Math.PI) }); }
-      txt(g, 'pantă (O₂)', TX + 110, YL - 70, 15, '#bfe6ff', { align: 'left' }); txt(g, 'coloană', TX + 64, TY + 370, 15, M.cream, { align: 'left' });
+      txt(g, 'pantă (O₂)', TX - 60, TY - 40, 15, '#bfe6ff', { align: 'left' }); txt(g, 'coloană', TX + 64, TY + 370, 15, M.cream, { align: 'left' });
       txt(g, 'TSI', TX, TY + TH + 28, 20, M.cream);
       txt(g, ['K/A', 'A/A', 'K/A + H₂S', '', '', ''][k], TX, TY + TH + 54, 17, M.hi);
       // ---- SIM: indol
@@ -975,21 +975,21 @@ export function b_biochem() {
         [['glucoză', 1, '#f2c62e'], ['lactoză', 10, '#7fe0ff'], ['zaharoză', 10, '#c9b3ff']].forEach(([n, q, c0], j) => { const y = 120 + j * 42; const w = 40 * q; const left = j === 0 ? 1 - used : k === 1 ? 1 - used * 0.6 : 1;
           txt(g, n, 110, y, 16, M.cream, { align: 'right' }); g.save(); g.strokeStyle = OUT; g.lineWidth = 3; g.strokeRect(124, y - 12, w, 24); g.fillStyle = c0; g.fillRect(124, y - 12, w * left, 24); g.restore(); });
       } else {
-        const sub0 = [null, null, ['S-aa', '#e6d39a'], ['Trp', '#e6d39a'], ['uree', '#f3e9c6'], ['citrat', '#cfe6c2']][k];
-        const prod = [null, null, ['FeS', M.black], ['indol', '#e0303a'], ['NH₃', M.urPink], ['alcalin', M.simB]][k];
+        const sub0 = [null, null, ['aa cu S', '#e6d39a'], ['triptofan', '#e6d39a'], ['uree', '#f3e9c6'], ['citrat', '#cfe6c2']][k];
+        const prod = [null, null, ['sulfură Fe', M.black], ['indol', '#e0303a'], ['NH₃', M.urPink], ['alcalin', M.simB]][k];
         const v = loopT(tt * 0.35, 1);
-        pill(g, 130, 160, 110, 50, sub0[1], sub0[0], { size: 18 });
+        pill(g, 130, 160, 150, 50, sub0[1], sub0[0], { size: 17 });
         g.save(); const mx = 330; g.fillStyle = '#7fe0ff'; g.strokeStyle = OUT; g.lineWidth = 4; const mo = 0.35 + 0.25 * Math.sin(tt * 5); g.beginPath(); g.moveTo(mx, 160); g.arc(mx, 160, 40, mo, 6.283 - mo); g.closePath(); g.fill(); g.stroke(); g.restore();
         txt(g, 'enzima', 330, 222, 14, '#cfefff');
         dot(g, lerp(190, 300, clamp(v * 2)), 160, 10, sub0[1], { alpha: v < 0.5 ? 1 : 0, ow: 2 });
         if (v > 0.5) dot(g, lerp(370, 500, (v - 0.5) * 2), 160, 12, prod[1], { ow: 2 });
-        pill(g, 540, 160, 120, 50, prod[1], prod[0], { size: 18, col: k === 2 || k === 5 ? '#ffffff' : OUT });
+        pill(g, 540, 160, 150, 50, prod[1], prod[0], { size: 17, col: k === 2 || k === 5 ? '#ffffff' : OUT });
       }
       // ---- raftul de referință TSI
       [['K/A', RED, YEL, 0], ['A/A', YEL, YEL, 0], ['H₂S', RED, YEL, 1], ['K/K', RED, RED, 0]].forEach(([n, s0, c0, bl], j) => { const x = 700 + j * 80, y = 60; const on3 = (j === 0 && k === 0) || (j === 1 && k === 1) || (j === 2 && k === 2);
         vial(g, x, y, 40, 190, (c) => { slantFill(c, x, 40, y + 60, y + 100, s0); c.fillStyle = c0; c.fillRect(x - 24, y + 104, 48, 300); if (bl) { c.fillStyle = M.black; c.fillRect(x - 24, y + 120, 48, 300); c.fillStyle = YEL; c.fillRect(x - 24, y + 104, 48, 14); } }, { ow: 4, alpha: on3 || b.i < 0 ? 1 : 0.55 });
         txt(g, n, x, y + 218, 16, on3 ? M.hi : M.cream); });
-      txt(g, 'K/K = tot roșu', 820, 300, 14, '#d8d0c4');
+      txt(g, 'K/K = tot roșu', 820, 312, 14, '#d8d0c4');
     },
   };
 }
@@ -1026,14 +1026,14 @@ export function b_ident() {
           if (pos2 && u > 0.3) for (let j = 0; j < 9; j++) { const v = loopT(tt * 0.9 + j * 0.11, 1); dot(g, x - 36 + (j * 19) % 72, lerp(y0 + 128, y0 + 60, v), 4 + 4 * v, 'rgba(255,255,255,.9)', { ow: 1.5, alpha: a * (1 - v) * clamp(u * 2 - 0.6) }); }
           txt(g, lab, x, y0 + 202, 15, M.cream, { alpha: a }); });
         if (b.i === 0 && u < 0.35) loop(g, x0 + 130 + 10, lerp(y0 + 60, y0 + 126, u / 0.35), -0.6);
-        txt(g, 'bule în H₂O₂ = +', x0 + 330, y0 + 26, 15, '#d8d0c4', { alpha: a });
+        txt(g, 'bule în H₂O₂ = +', x0 + PW / 2, y0 + 60, 15, '#d8d0c4', { alpha: a });
       }
       // 1 · oxidaza
       { const [x0, y0] = P4[1]; const u = b.i === 1 ? p(1) : 1; const a = al(1);
         [[x0 + 120, 1, 'Pseudomonas, Neisseria +'], [x0 + 330, 0, 'enterobacterii −']].forEach(([x, pos2, lab]) => { g.save(); g.globalAlpha = a; g.fillStyle = '#efe6f6'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(x - 80, y0 + 90, 160, 70, 8); g.fill(); g.stroke();
           const v = clamp(u * 1.6); g.fillStyle = pos2 ? mix('#efe6f6', '#3b1470', clamp(u * 2 - 0.5)) : '#e6dcc4'; g.beginPath(); g.ellipse(x, y0 + 125, 40 * v + 1, 18 * v + 1, 0, 0, 7); g.fill(); g.restore();
           txt(g, lab, x, y0 + 196, 14, M.cream, { alpha: a }); });
-        txt(g, 'mov închis în secunde = +', x0 + 300, y0 + 26, 14, '#d8d0c4', { alpha: a });
+        txt(g, 'mov închis în secunde = +', x0 + PW / 2, y0 + 60, 14, '#d8d0c4', { alpha: a });
       }
       // 2 · coagulaza
       { const [x0, y0] = P4[2]; const u = b.i === 2 ? p(2) : 1; const a = al(2); const clot = clamp(u * 2), tilt = clamp(u * 2 - 1) * 1.2;
@@ -1043,7 +1043,7 @@ export function b_ident() {
             else { // lichidul rămâne orizontal: în cadrul tubului rotit apare înclinat → desenăm nivelul rotit invers
               c.save(); c.translate(x, cy + 60); c.rotate(tilt); c.fillStyle = plasma; c.fillRect(-120, -8, 240, 300); c.restore(); } }, { alpha: a, ow: 5 });
           g.restore(); txt(g, lab, x, y0 + 222, 14, M.cream, { alpha: a }); });
-        txt(g, 'plasmă citratată (tub, 24 h) · lamă', x0 + 300, y0 + 26, 13, '#d8d0c4', { alpha: a });
+        txt(g, 'plasmă citratată (tub, 24 h) · lamă', x0 + PW / 2 + 60, y0 + 26, 13, '#d8d0c4', { alpha: a });
       }
       // 3 · mobilitatea
       { const [x0, y0] = P4[3]; const u = b.i === 3 ? p(3) : 1; const a = al(3);
@@ -1051,7 +1051,7 @@ export function b_ident() {
           vial(g, x, y0 + 50, 60, 160, (c) => { fillFrom(c, x, 60, y0 + 76, '#ecd9a0'); c.fillStyle = 'rgba(140,110,55,.85)'; c.fillRect(x - 2.5, y0 + 80, 5, 110);
             if (mob) { c.fillStyle = 'rgba(140,110,55,.4)'; c.beginPath(); c.ellipse(x, y0 + 140, 4 + 34 * u, 70, 0, 0, 7); c.fill(); for (let j = 0; j < 8; j++) { const v = loopT(tt * 0.5 + j * 0.125, 1); bacillus(c, x + (j % 2 ? 1 : -1) * v * 30 * u, y0 + 96 + j * 12, 9, 4, j, M.gramN, 1); } } }, { alpha: a, ow: 5 });
           txt(g, lab, x, y0 + 230, 14, M.cream, { alpha: a }); });
-        txt(g, 'SIM semisolid · flageli', x0 + 330, y0 + 26, 14, '#d8d0c4', { alpha: a });
+        txt(g, 'SIM semisolid · flageli', x0 + PW / 2 + 40, y0 + 26, 14, '#d8d0c4', { alpha: a });
       }
       // ---- arborele identificării
       const a4 = b.i < 0 || b.i === 4 ? 1 : 0.5;

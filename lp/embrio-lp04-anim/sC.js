@@ -215,7 +215,8 @@ export function fetal() {
       fetalScene(g, t, { hi: b.i === 3 ? 4 : hi });
       if (b.i === 3) { ring(g, 330, 850, 150, 50, ease(b.bt)); }
       // etichetele cu numele fetale
-      [[1, 0], [2, 1], [3, 2], [0, 3], [4, 3]].forEach(([k, p]) => { const [n, , x, y, al] = [FLBL[[1, 0, 2, 3, 4][k]][0], 0, FLBL[[1, 0, 2, 3, 4][k]][2], FLBL[[1, 0, 2, 3, 4][k]][3], FLBL[[1, 0, 2, 3, 4][k]][4]]; txt(g, n, x, y, 17, b.i === p ? C.hi : C.cream, { align: al }); });
+      const PT = [0, 3, 1, 2, 3]; // FLBL[k] e explicat la punctul PT[k]
+      FLBL.forEach(([n, , x, y, al], k) => txt(g, n, x, y, 17, b.i === PT[k] ? C.hi : C.cream, { align: al }));
       txt(g, 'VCI', 330, 470, 16, C.cream, { align: 'right' }); txt(g, 'VCS', 460, 60, 16, C.cream, { align: 'left' }); txt(g, 'aorta', 880, 500, 16, C.cream, { align: 'left' });
       if (b.i === 2) txt(g, 'plămânii fetali:\nrezistență mare', 300, 70, 16, '#ffd0dd');
       bloodKey(g, 990, 905);

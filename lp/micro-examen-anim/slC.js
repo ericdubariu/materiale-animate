@@ -5,7 +5,7 @@ export const GL = [
   ['LP', 'lucrarea practică'], ['CMI', 'concentrația minimă inhibitorie'], ['CMB', 'concentrația minimă bactericidă'],
   ['TSA', 'testarea susceptibilității la antibiotice'], ['S/I/R', 'sensibil / intermediar / rezistent'], ['IS', 'intermediar sensibil'],
   ['CLSI', 'Clinical and Laboratory Standards Institute (standardul american)'], ['CFU', 'unități formatoare de colonii'], ['CO₂', 'dioxid de carbon'],
-  ['MH', 'Mueller-Hinton'], ['AB', 'antibiotic'], ['CEF', 'disc de cefalosporină'], ['AMC', 'disc de amoxicilină + clavulanat'], ['IND', 'disc cu antibiotic inductor'],
+  ['MH', 'Mueller-Hinton'], ['AB', 'antibiotic'], ['CEF', 'disc de cefalosporină'], ['AMC', 'disc de amoxicilină + clavulanat'], ['IND', 'disc cu antibiotic inductor'], ['FOX', 'disc de cefoxitin'],
   ['ESBL', 'β-lactamaze cu spectru extins'], ['MRSA', 'S. aureus rezistent la meticilină'], ['PBP2a', 'proteina care leagă penicilina, varianta 2a (gena mecA)'],
   ['ADN', 'acidul dezoxiribonucleic'], ['ARN', 'acidul ribonucleic'], ['50S', 'subunitatea mare a ribozomului bacterian'], ['30S', 'subunitatea mică a ribozomului bacterian'],
   ['Ag', 'antigen'], ['Ac', 'anticorp'], ['RFC', 'reacția de fixare a complementului'], ['RIF', 'reacția de imunofluorescență'], ['IPO', 'metoda imunoperoxidazică'],
@@ -146,21 +146,32 @@ export const SL = [
     why: 'LP-ul spune pe scurt: !!sinergismul și antagonismul reflectă mecanisme de rezistență!!, iar coloniile izolate din zonă sunt subpopulații rezistente; exemplele concrete sunt din manual. Antibiograma difuzimetrică e o metodă standardizată: diametrul are sens doar dacă toate condițiile sunt cele din standard. Tulpina de referință îți arată dacă au fost respectate.',
     beatDur: 8,
   },
-  // ---------------- p. 44 + 48 ----------------
+  // ---------------- p. 44 ----------------
   {
-    scene: 'c_abx', kick: 'LP 5 · Antibioticele · Rezistența (doar principiul)', title: 'Unde lovesc antibioticele și cum scapă germenul',
-    hud: ['AB = antibiotic'],
+    scene: 'c_abx', kick: 'LP 5 · Antibioticele', title: 'Ce sunt antibioticele și unde lovesc',
+    hud: ['AB = antibiotic', 'perete · ADN · ribozom · membrană'],
     points: [
       { h: 'Peretele celular', d: ['**β-lactamine**: peniciline, cefalosporine, carbapeneme, monobactami', 'vancomicina'] },
       { h: 'Acizii nucleici și acidul folic', d: ['sulfamide + trimetoprim (folat) · chinolone (ADN-giraza)', 'rifampicina (ARN-polimeraza)'] },
       { h: 'Ribozomul', d: ['**50S**: macrolide, clindamicină, cloramfenicol', '**30S**: tetracicline, aminoglicozide'] },
       { h: 'Membrana', d: ['polimixinele'] },
-      { h: 'Rezistența: 4 mecanisme (manual)', d: ['**inactivare enzimatică**: β-lactamaze, ESBL, carbapenemaze distrug inelul β-lactamic; ESBL (E. coli, Klebsiella) → inhibate de clavulanat', '**ținta modificată**: MRSA: PBP2a (gena mecA) → rezistent la toate β-lactaminele clasice; se detectează cu discul de **cefoxitin**', '**permeabilitate scăzută**: pierderea porinelor la Gram-negativi · **pompe de eflux**: antibioticul e scos din celulă'] },
     ],
     why: '!!Antibioticele (definiția din LP) = substanțe cu efect antibacterian produse de microorganisme + substanțe semisintetice și sintetice (chimioterapice)!!. Clasele pe ținte sunt un reper, nu o listă de tocit.',
+    beatDur: 6.5,
+  },
+  // ---------------- p. 48 ----------------
+  {
+    scene: 'c_res', kick: 'LP 5 · Rezistența · Doar principiul', title: 'Patru feluri în care germenul scapă de antibiotic',
+    hud: ['mecanismele: din manual'],
+    points: [
+      { h: 'Inactivare enzimatică', d: ['β-lactamaze, **ESBL**, carbapenemaze distrug inelul β-lactamic', 'ESBL (E. coli, Klebsiella) → inhibate de clavulanat'] },
+      { h: 'Ținta modificată', d: ['**MRSA**: PBP2a (gena mecA) → rezistent la toate β-lactaminele clasice', 'se detectează cu discul de **cefoxitin** (FOX)'] },
+      { h: 'Permeabilitate scăzută', d: ['pierderea **porinelor** la Gram-negativi'] },
+      { h: 'Pompe de eflux', d: ['antibioticul e **scos din celulă**'] },
+    ],
     warn: 'LP-ul spune doar că la tulpinile R „pot fi detectate mecanisme de rezistență specifice”. Cele 4 mecanisme sunt din manual, ca să înțelegi de ce.',
     say: 'Germenul devine rezistent dacă distruge antibioticul, își modifică ținta, nu-l mai lasă să intre sau îl pompează afară. Exemplele clasice sunt !!ESBL și MRSA!!.',
-    beatDur: 7,
+    beatDur: 6.5,
   },
   // ---------------- p. 49 ----------------
   {

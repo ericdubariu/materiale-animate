@@ -121,7 +121,7 @@ export function cover({ spec }) {
 export function timeline() {
   const X = (w) => 200 + (w - 3) * 55;
   const LANES = [['Tubul neural', N.neuro], ['Creasta neurală', N.crest], ['Encefalul', '#4f8fe6'], ['Măduva', '#e0574f'], ['Ochi + ureche', '#c9a227'], ['Pielea', '#e07a3a']];
-  const LY = LANES.map((_, i) => 120 + i * 128);
+  const LY = LANES.map((_, i) => 160 + i * 122);
   // [lane, w0, w1 (= w0 → punct), text, punctul, dx, dy]
   const EV = [
     [0, 3.4, 3.6, 'Z18: placa neurală,\nîncepe neurulația', 0, 70, -40],
@@ -138,7 +138,7 @@ export function timeline() {
   const RANGE = [[3, 3.6], [3.6, 5.0], [5.0, 11], [11, 16.6]];
   return {
     home: HOME,
-    anchors: [[X(3.5), LY[0] - 70], [X(4.8), LY[1] + 52], [X(9), LY[2] + 52], [X(14.5), LY[3] + 52]],
+    anchors: [[X(3.5), LY[0] - 100], [X(4.8), LY[1] + 52], [X(9), LY[2] + 52], [X(14.5), LY[3] + 52]],
     phase: (i) => ['S3 · Z18', 'sfârșitul S4', 'S5 → S10', 'S13 → S16'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -227,7 +227,7 @@ export function neurulation() {
   const cx = 500, y0 = 300, s = 1.25;
   return {
     home: HOME,
-    anchors: [[640, 330], [640, 200], [560, 150], [640, 420], [720, 560]],
+    anchors: [[640, 330], [640, 200], [560, 150], [640, 420], [640, 560]],
     phase: (i) => ['1 · placa neurală (Z18)', '2 · șanțul + plicile', '3 · plicile fuzionează', '4 · tubul se desprinde', '5 · ce devine fiecare'][i] || 'neurulația, în buclă',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 5);
@@ -243,22 +243,19 @@ export function neurulation() {
       // etichete
       const lab = (s2, x, y, col, a, lx, ly) => { if (a <= 0.02) return; if (lx !== undefined) lead(g, x, y, lx, ly, a); txt(g, s2, x, y, 19, col, { alpha: a }); };
       lab('placa neurală', 215, 220, '#d9c6ff', p(0) * (1 - p(1)), cx - 80, y0);
-      lab('notocord', 190, r.notoY, '#ffb0a8', 1, cx - 30, r.notoY);
+      lab(m > 0.05 ? 'notocord →\nnucleul pulpos' : 'notocord', 190, r.notoY, '#ffb0a8', 1, cx - 30, r.notoY);
       lab('șanțul neural', 215, 420, '#d9c6ff', p(1) * (1 - p(3)), cx - 10, y0 - 30);
       lab('plicile neurale', 790, 160, '#d9c6ff', p(1) * (1 - p(2)), r.tipR[0] + 10, r.tipR[1] + 30);
       lab('creasta neurală', 800, 180, '#bff0d2', p(2), cx + 30, b.i >= 3 || (b.i < 0 && d > 0) ? y0 + 30 : r.tipR[1]);
       lab('tubul neural', 170, 480, '#d9c6ff', p(3), cx - R - 10, r.center[1]);
       lab('ectodermul cutanat\n(pielea) se închide', 800, 250, '#cfe0ff', p(3), cx + 120, y0);
-      lab('somită', 880, 470, '#ffb0a8', 1, cx + 260, y0 + R + 80);
+      lab(m > 0.05 ? 'somită → schelet\naxial + mușchi' : 'somită', 860, 470, '#ffb0a8', 1, cx + 250, y0 + R + 80);
       lab('endoderm', 880, y0 + 2 * R + 220, '#ffe9a8', 1);
       // 5 · ce devine fiecare
       if (m > 0.05) {
-        lab('ganglion spinal\n(din creastă, lângă tub)', 800, 560, '#bff0d2', m, cx + R + 45, r.center[1]);
-        lab('→ nucleul pulpos', 250, r.notoY + 70, '#ffb0a8', m);
-        lab('→ schelet axial + mușchi', 235, 560, '#ffb0a8', m, cx - 210, y0 + R + 80);
+        lab('ganglion spinal\n(din creastă, lângă tub)', 820, 600, '#bff0d2', m, cx + R + 45, r.center[1]);
       }
       // bara de etape
-      ['placa', 'șanț + plici', 'fuziune', 'tub', 'derivate'].forEach((s2, k) => { const a = p(k) > 0.5 ? 1 : 0.35; pill(g, 120 + k * 190, 50, 170, 44, k === b.i ? C.hi : '#3a2a26', s2, { size: 17, col: k === b.i ? OUT : '#ffe7d6', alpha: a, ow: 4 }); });
       txt(g, 'dorsal ↑', 935, 120, 17, '#c9b3a6', { w: 700 });
     },
   };
@@ -432,13 +429,13 @@ export function vesicles() {
         ring(g, CX, 370, 40, 52, vent);
       }
       // etichetele 3 vezicule (stânga, mici) și cele 5 (dreapta)
-      txt(g, spP < 0.5 && spR < 0.5 ? 'S4 · 3 vezicule' : 'S5 · 5 vezicule', CX, 40, 21, C.hi);
+      txt(g, spP < 0.5 && spR < 0.5 ? 'S4 · 3 vezicule' : 'S5 · 5 vezicule', 700, 880, 22, C.hi);
       if (spP < 0.4) txt(g, 'prozencefal', CX, yT, 20, OUT, { stroke: false });
       if (spR < 0.4) txt(g, 'rombencefal', CX, yL, 20, OUT, { stroke: false });
       txt(g, 'mezencefal', CX, 370, 17, OUT, { stroke: false });
       ROWS.forEach(([n, d, y, col], i) => {
         const split = i < 2 ? spP : i === 2 ? 1 : i < 5 ? spR : 1;
-        const a = vent > 0 ? 0.35 : split > 0.5 ? 1 : 0.3;
+        const a = vent > 0 ? 0 : split > 0.5 ? 1 : 0.3; if (a <= 0) return;
         lead(g, CX + 140, y, 420, y, a * 0.8);
         pill(g, 570, y - 22, 270, 40, col, n, { size: 18, alpha: a });
         txt(g, d, 790, y + 22, 16, C.cream, { alpha: a, w: 600 });
@@ -506,7 +503,7 @@ export function cord() {
       tube(g, [[VX - 90, tipBirth], [VX - 62, tipBirth]], 6, '#bfa4ff', { ow: 3 }); txt(g, 'naștere', VX - 140, tipBirth, 15, '#d9c6ff');
       tube(g, [[VX - 90, tipAdult], [VX - 62, tipAdult]], 6, '#1a1020', { ow: 3 }); txt(g, 'adult', VX - 130, tipAdult, 15, '#ffffff');
       txt(g, 'unde se termină\nconul medular', VX + 10, 90, 17, '#d8c4b8', { w: 700 });
-      if (b.i === 3) { arr(g, VX + 150, 760, VX + 150, 860, '#fff3e6', 5, u); txt(g, 'coloana\ncrește mai\nrepede', VX + 150, 690, 15, C.cream, { alpha: u }); txt(g, 'S13: forma aproape definitivă', VX + 10, 880, 15, C.hi, { alpha: u }); }
+      if (b.i === 3) { arr(g, VX - 130, 700, VX - 130, 800, '#fff3e6', 5, u); txt(g, 'coloana\ncrește mai\nrepede', VX - 130, 630, 15, C.cream, { alpha: u }); txt(g, 'S13: forma aproape definitivă', VX + 10, 880, 15, C.hi, { alpha: u }); }
     },
   };
 }

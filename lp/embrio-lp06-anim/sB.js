@@ -21,11 +21,11 @@ const STG = [
   ['Mielinizarea', 'naștere → ani după naștere', 9, 11, 'leziuni perinatale · ICH · tumori · infecții ale SNC', '#e0574f'],
 ];
 export function malAxis() {
-  const X = (m) => 330 + (m - 1) * 58; const Y = (k) => 90 + k * 92;
+  const X = (m) => 330 + (m - 1) * 58; const Y = (k) => 100 + k * 92;
   const BEAT = [[0], [1], [2], [3], [4, 5]];
   return {
     home: HOME,
-    anchors: [[60, Y(0)], [60, Y(1)], [60, Y(2)], [60, Y(3)], [60, Y(4) + 40]],
+    anchors: [[28, Y(0)], [28, Y(1)], [28, Y(2)], [28, Y(3)], [28, Y(4) + 46]],
     phase: (i) => ['luna 1', 'luna 2–3', 'luna 3–4', 'luna 3–5', 'luna 5 → ani'][i] || 'ce etapă a fost ratată?',
     draw(g, t, b) {
       bg(g);
@@ -39,8 +39,8 @@ export function malAxis() {
         const gi = k === 5 ? 4 : k; const act = gi === cur; const done = b.i < 0 ? gi <= cur : gi < cur;
         const u = act ? pr : done ? 1 : 0;
         const al = act ? 1 : done ? 0.6 : 0.3;
-        txt(g, n, 170, Y(k) - 14, 17, col === N.neuro ? '#d9c6ff' : col, { alpha: al });
-        txt(g, w, 170, Y(k) + 12, 14, '#d8c4b8', { alpha: al, w: 600 });
+        txt(g, n, 188, Y(k) - 14, 15, col === N.neuro ? '#d9c6ff' : col, { alpha: al });
+        txt(g, w, 188, Y(k) + 12, 13, '#d8c4b8', { alpha: al, w: 600 });
         tube(g, [[X(a), Y(k)], [X(a) + Math.max(4, (X(c) - X(a)) * u), Y(k)]], 18, col, { ow: 4, alpha: Math.max(0.3, al) });
         if (u > 0.5) txt(g, mal, Math.min(X(c) + 10, 760), Y(k) + 30, 14, C.cream, { alpha: al, w: 700, align: Math.min(X(c) + 10, 760) === 760 ? 'right' : 'left' });
       });
@@ -86,19 +86,19 @@ function headSag(g, x, y, s, o = {}) {
   paint(g, face, '#f0dccb', null, null, [x - 130 * s, y + 20 * s, 160 * s, 110 * s], OUT, 5);
 }
 export function malBrain1() {
-  const POS = [[250, 230], [750, 230], [250, 670], [750, 670]];
+  const POS = [[250, 265], [750, 265], [250, 695], [750, 695]];
   const NM = ['Encefalocel', 'Holoprozencefalie', 'Dandy-Walker', 'Stenoza apeductului → hidrocefalie'];
   return {
     home: HOME,
-    anchors: [[50, 70], [550, 70], [50, 510], [550, 510]],
+    anchors: [[40, 90], [540, 90], [40, 520], [540, 520]],
     phase: (i) => ['tub neînchis (neuropor rostral)', 'prozencefalul nu se împarte', 'cerebel + ventriculul IV', 'LCR blocat în apeduct'][i] || '',
     draw(g, t, b) {
       bg(g);
       POS.forEach(([x, y], k) => {
         const act = b.i === k || b.i < 0; const u = b.i === k ? e01(b) : b.i < 0 ? 0.5 + 0.5 * Math.sin(t * 1.2 + k) : 1;
-        panel(g, x - 235, y - 200, 470, 410, { fill: b.i === k ? 'rgba(217,101,42,.18)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
+        panel(g, x - 235, y - 195, 470, 405, { fill: b.i === k ? 'rgba(217,101,42,.18)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
         g.save(); g.globalAlpha = act ? 1 : 0.45;
-        txt(g, NM[k], x, y - 172, 19, C.cream);
+        txt(g, NM[k], x, y - 165, 19, C.cream);
         if (k === 0) {
           headSag(g, x - 20, y + 10, 0.95);
           ell(g, x - 10, y, 92, 80, '#e9b9c9', { ow: 4 }); // encefalul
@@ -153,24 +153,24 @@ export function malBrain1() {
 // 2 colpocefalie: coarnele OCCIPITALE (posterioare) ale ventriculilor laterali se dilată; des cu agenezia corpului calos.
 // 3 agenezia corpului calos: fibrele cresc din fiecare emisferă spre linia mediană; normal o traversează; în boală se opresc la mijloc (total sau parțial).
 export function malBrain2() {
-  const POS = [[250, 230], [750, 230], [250, 670], [750, 670]];
+  const POS = [[250, 265], [750, 265], [250, 695], [750, 695]];
   const NM = ['Lisencefalie (agirie)', 'Schizencefalie', 'Colpocefalie', 'Agenezia corpului calos'];
   return {
     home: HOME,
-    anchors: [[50, 70], [550, 70], [50, 510], [550, 510]],
+    anchors: [[40, 90], [540, 90], [40, 520], [540, 520]],
     phase: (i) => ['defect de migrare', 'fisuri ventricul → scoarță', 'coarnele occipitale dilatate', 'corpul calos lipsește'][i] || '',
     draw(g, t, b) {
       bg(g);
       POS.forEach(([x, y], k) => {
         const act = b.i === k || b.i < 0; const u = b.i === k ? e01(b, 0.8) : b.i < 0 ? loopT(t + k * 0.7, 4) : 1;
-        panel(g, x - 235, y - 200, 470, 410, { fill: b.i === k ? 'rgba(217,101,42,.18)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
+        panel(g, x - 235, y - 195, 470, 405, { fill: b.i === k ? 'rgba(217,101,42,.18)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
         g.save(); g.globalAlpha = act ? 1 : 0.45;
-        txt(g, NM[k], x, y - 172, 19, C.cream);
+        txt(g, NM[k], x, y - 165, 19, C.cream);
         if (k === 0) {
           // două jumătăți: stânga normală (girusuri), dreapta lisencefalie
           [-1, 1].forEach((s) => {
             const cx = x + s * 105, cy = y + 10;
-            const pts = []; for (let a = 0; a <= 40; a++) { const an = Math.PI * (1 + a / 40); const r = 95 + (s < 0 ? 9 * Math.sin(a * 1.6) * clamp(u * 1.4 - 0.4) : 0); pts.push([cx + Math.cos(an) * r, cy + Math.sin(an) * r]); }
+            const pts = []; for (let a = 0; a <= 40; a++) { const an = Math.PI * (1 + a / 40); const r = 95 + (s < 0 ? 6 * Math.sin(a * 1.25) * clamp(u * 1.4 - 0.4) : 0); pts.push([cx + Math.cos(an) * r, cy + Math.sin(an) * r]); }
             pts.push([cx + 95, cy]); pts.push([cx - 95, cy]);
             const pp = new Path2D(); pp.moveTo(pts[0][0], pts[0][1]); pts.forEach((p) => pp.lineTo(p[0], p[1])); pp.closePath();
             paint(g, pp, '#e9b9c9', null, null, [cx - 100, cy - 100, 200, 100], OUT, 4);
@@ -373,7 +373,7 @@ function sagScene(mode) {
     : [null, null, ['mielomeningocel', 'La naștere: masă lombosacrată', CR], ['p13_x147', 'IRM sagital (A, B)', CR], ['p14_x152', 'Înainte și după operație', 'LP: Corpus ID 79152393']];
   return () => ({
     home: HOME,
-    anchors: [[700, 470], [430, 330], [500, 70], [500, 70], [500, 70]],
+    anchors: [[700, 470], [430, 330], [960, 140], [960, 210], [960, 280]],
     phase: (i) => (mode === 0 ? ['sacul: meninge + LCR', 'măduva rămâne în canal', 'IRM', 'la naștere', 'ecografia prenatală'] : ['sacul: meninge + LCR', 'măduva + nervii în sac', 'la naștere', 'IRM sagital', 'înainte / după operație'])[i] || '',
     draw(g, t, b) {
       bg(g);
@@ -381,7 +381,7 @@ function sagScene(mode) {
       const ph = b.i >= 2 ? PH[b.i] : null;
       g.save(); g.globalAlpha = ph ? 0.25 : 1;
       spineSag(g, 430, 160, 1.05, mode, u, t);
-      txt(g, 'CRANIAL ↑', 140, 60, 17, '#c9b3a6', { w: 700 }); txt(g, 'anterior', 230, 880, 16, '#c9b3a6', { w: 700 }); txt(g, 'spatele →', 760, 880, 16, '#c9b3a6', { w: 700 });
+      txt(g, 'CRANIAL ↑', 250, 110, 17, '#c9b3a6', { w: 700 }); txt(g, 'anterior', 230, 880, 16, '#c9b3a6', { w: 700 }); txt(g, 'spatele →', 760, 880, 16, '#c9b3a6', { w: 700 });
       if (mode === 0) { txt(g, 'meninge + LCR\nacoperit de piele', 790, 300, 18, '#ffd0e6'); txt(g, 'măduva și nervii\nrămân în canal', 230, 260, 18, '#d9c6ff'); }
       else { txt(g, 'măduva și nervii\nintră în sac', 790, 280, 18, '#d9c6ff'); txt(g, 'adesea neacoperit\nde piele', 790, 680, 17, '#ffd0e6'); }
       if (b.i === 1) ring(g, mode === 0 ? 430 : 600, mode === 0 ? 250 : 520, 80, 120, e01(b));
@@ -399,7 +399,7 @@ export const mmc = sagScene(1);
 export function micro() {
   return {
     home: HOME,
-    anchors: [[700, 180], [230, 120], [770, 120]],
+    anchors: [[600, 330], [440, 70], [960, 70]],
     phase: (i) => ['neurocraniu mic, față normală', 'primară = genetică', 'secundară = mediu'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -414,13 +414,13 @@ export function micro() {
         txt(g, lab, x, 690, 21, C.cream);
         return r;
       };
-      head(280, 170, 'normal');
+      head(280, 150, 'normal');
       head(720, 100, 'microcefalie');
       txt(g, 'creierul crește → craniul crește', 280, 760, 17, '#d8c4b8', { w: 700 });
       txt(g, 'creierul se oprește → craniul rămâne mic', 720, 760, 17, '#ffd0e6', { w: 700 });
       const box = (x, y, head, lines, col, glow) => { pill(g, x, y, 380, 54 + lines.length * 30, col, '', { glow, r: 18 }); txt(g, head, x, y - (lines.length * 30) / 2, 18, OUT, { stroke: false }); lines.forEach((l, j) => txt(g, l, x, y - (lines.length * 30) / 2 + 32 + j * 28, 16, OUT, { stroke: false, w: 600 })); };
-      box(230, 120, 'PRIMARĂ · boli genetice', ['trisomia 13 (sindromul Patau)', 'trisomia 18 (sindromul Edwards)', 'trisomia 21 (sindromul Down)'], '#cfe0ff', b.i === 1 ? 1 : 0);
-      box(770, 120, 'SECUNDARĂ · factori de mediu', ['toxoplasmoza · CMV', 'rubeola, varicela', 'virusul Zika'], '#ffd3cd', b.i === 2 ? 1 : 0);
+      box(230, 150, 'PRIMARĂ · boli genetice', ['trisomia 13 (sindromul Patau)', 'trisomia 18 (sindromul Edwards)', 'trisomia 21 (sindromul Down)'], '#cfe0ff', b.i === 1 ? 1 : 0);
+      box(770, 150, 'SECUNDARĂ · factori de mediu', ['toxoplasmoza · CMV', 'rubeola, varicela', 'virusul Zika'], '#ffd3cd', b.i === 2 ? 1 : 0);
       if (b.i === 2 || b.i < 0) for (let j = 0; j < 6; j++) { const a = j / 6 * 7 + t * 0.6; const rr = 70 + 10 * Math.sin(t * 2 + j); const x = 720 + Math.cos(a) * rr, y = 420 + Math.sin(a) * rr * 0.8; dot(g, x, y, 9, '#7fd36a', { ow: 3 }); for (let q = 0; q < 6; q++) { const aa = q / 6 * 7; tube(g, [[x + Math.cos(aa) * 9, y + Math.sin(aa) * 9], [x + Math.cos(aa) * 14, y + Math.sin(aa) * 14]], 2, '#7fd36a', { ow: 0 }); } }
       if (b.i === 1) { const x = 720, y = 420; for (let q = 0; q < 3; q++) { tube(g, [[x - 40 + q * 26, y - 22], [x - 30 + q * 26, y + 22]], 7, '#4f8fe6', { ow: 3 }); tube(g, [[x - 30 + q * 26, y - 22], [x - 40 + q * 26, y + 22]], 7, '#4f8fe6', { ow: 3 }); } txt(g, '3 copii', x, y + 50, 15, '#cfe0ff'); }
       if (b.i === 0) { ring(g, 720, 400, 120, 90, e01(b)); }

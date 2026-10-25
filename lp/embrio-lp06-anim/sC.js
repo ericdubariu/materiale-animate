@@ -54,7 +54,7 @@ export function hypoDraw(g, s, t, o = {}) {
 export function hypo() {
   return {
     home: HOME,
-    anchors: [[330, 560], [640, 330], [560, 640], [180, 470]],
+    anchors: [[330, 560], [500, 330], [560, 690], [180, 420]],
     phase: (i) => ['punga Rathke urcă', 'infundibulul coboară', 'canalul de migrare', 'lob anterior + lob posterior'][i] || 'S4–S5 → adult',
     draw(g, t, b) {
       bg(g);
@@ -67,7 +67,7 @@ export function hypo() {
       if (b.i === 0 || b.i < 0 && s < 1) arr(g, 410, 690, 410, 560, '#cfe0ff', 5, 1);
       if (b.i === 1 || b.i < 0 && s < 1) arr(g, 650, 270, 650, 400, '#d9c6ff', 5, 1);
       if (s > 2.5) { txt(g, 'ADENO-\nhipofiza', r.dx - 30, r.py, 18, OUT, { stroke: false }); txt(g, 'NEURO-', r.NX + 8, r.NY, 15, '#ffffff', { stroke: false }); txt(g, 'lob anterior = ectoderm de suprafață\nlob posterior = tub neural', 500, 860, 18, C.hi); }
-      txt(g, '← anterior', 170, 60, 16, '#c9b3a6', { w: 700 }); txt(g, 'CRANIAL ↑', 840, 60, 16, '#c9b3a6', { w: 700 });
+      txt(g, '← anterior · CRANIAL ↑', 760, 120, 16, '#e3d6ff', { w: 700 });
     },
   };
 }
@@ -172,7 +172,7 @@ function eyeDraw(g, s, t) {
 export function eye() {
   return {
     home: HOME,
-    anchors: [[400, 280], [880, 340], [440, 640], [640, 560], [870, 120]],
+    anchors: [[400, 280], [700, 330], [440, 640], [600, 560], [620, 60]],
     phase: (i) => ['sf. S4 (st. 10): vezicula optică', 'placoda cristaliniană', 'cupa optică: 2 foițe', 'vezicula cristaliniană', 'fisura coroidă (S7) → colobom'][i] || 'retina din creier, cristalinul din piele',
     draw(g, t, b) {
       bg(g);
@@ -310,7 +310,7 @@ export function skin() {
         const gl = clamp(pa * 1.3);
         tube(g, [[260, EP[1] - 10], [260, EP[1] + 220 * gl]], 22, N.ecto, { ow: 5 });
         if (gl > 0.8) { g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 26; g.beginPath(); g.arc(260, EP[1] + 240, 26, 0, Math.PI * 2 * (gl - 0.8) * 5); g.stroke(); g.strokeStyle = N.ecto; g.lineWidth = 18; g.stroke(); g.restore(); }
-        txt(g, 'folicul pilos', 820, 560, 17, '#cfe0ff', { alpha: pa }); txt(g, 'glandă', 360, 540, 17, '#cfe0ff', { alpha: pa });
+        txt(g, 'folicul pilos', 820, 560, 18, C.hi, { alpha: pa }); txt(g, 'glandă', 360, 540, 18, C.hi, { alpha: pa });
       }
       // etichete straturi
       txt(g, 'EPIDERM · ectoderm', 960, 235, 17, '#cfe0ff', { align: 'right' });
