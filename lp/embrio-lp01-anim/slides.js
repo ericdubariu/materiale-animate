@@ -82,6 +82,17 @@ export const SLIDES = [
   },
   // ---------------- PARTEA A ----------------
   {
+    scene: 'division', kick: 'Partea A · Generalități · Diviziunea celulară', title: 'Mitoza copiază celula; meioza îi înjumătățește cromozomii',
+    hud: ['roșu = cromozom matern', 'albastru = patern'],
+    points: [
+      { h: 'Mitoza (EN: mitosis)', d: ['1 celulă 2n → **2 celule 2n identice**', 'celulele somatice: creștere, reînnoire · reproducerea asexuată = prin mitoză → copii identice'] },
+      { h: 'Meioza I · reducțională (EN: meiosis)', d: ['înainte, în profaza I: **crossing-over** (schimb de segmente)', 'se separă !!cromozomii omologi → 2n → n!!'] },
+      { h: 'Meioza II · ecvațională', d: ['se separă **cromatidele surori** (ca la mitoză)', 'rezultat: !!4 celule haploide (n = 23)!!, diferite genetic'] },
+    ],
+    why: 'Partea A: cum se face un gamet, cât durează dezvoltarea, când e embrionul cel mai vulnerabil și de ce apar malformațiile. Reproducerea sexuată unește 2 gameți: **n + n → zigot 2n (46)**. Fără meioză, fiecare generație ar dubla cromozomii. Tot în meioză apar anomaliile numerice (nondisjuncția, partea C).',
+    beatDur: 9,
+  },
+  {
     scene: 'devPeriod', kick: 'Partea A · Generalități · Perioada de dezvoltare', title: '9 luni, numărate în două feluri',
     hud: ['sus: SA (clinica)', 'jos: de la fecundație'],
     points: [
@@ -93,17 +104,6 @@ export const SLIDES = [
     why: 'Diferența de 2 săptămâni e o capcană de grilă: !!„săptămâna 8 de dezvoltare” = 10 SA!!. Când LP-ul vorbește de săptămâni de dezvoltare (perioade critice), numără **de la fecundație**.',
     insets: [{ img: 'timeline', cap: 'Figura din LP (UMFST) · după UNSW Embryology' }],
     extraText: WK, beatDur: 6.5,
-  },
-  {
-    scene: 'division', kick: 'Partea A · Generalități · Diviziunea celulară', title: 'Mitoza copiază celula; meioza îi înjumătățește cromozomii',
-    hud: ['roșu = cromozom matern', 'albastru = patern'],
-    points: [
-      { h: 'Mitoza (EN: mitosis)', d: ['1 celulă 2n → **2 celule 2n identice**', 'celulele somatice: creștere, reînnoire · reproducerea asexuată = prin mitoză → copii identice'] },
-      { h: 'Meioza I · reducțională (EN: meiosis)', d: ['înainte, în profaza I: **crossing-over** (schimb de segmente)', 'se separă !!cromozomii omologi → 2n → n!!'] },
-      { h: 'Meioza II · ecvațională', d: ['se separă **cromatidele surori** (ca la mitoză)', 'rezultat: !!4 celule haploide (n = 23)!!, diferite genetic'] },
-    ],
-    why: 'Reproducerea sexuată unește 2 gameți: **n + n → zigot 2n (46)**. Fără meioză, fiecare generație ar dubla cromozomii. Tot în meioză apar anomaliile numerice (nondisjuncția, partea C).',
-    beatDur: 9,
   },
   {
     scene: 'critical', kick: 'Partea A · Generalități · Perioadele critice', title: 'Perioadele critice: contează când lovește teratogenul',
@@ -168,23 +168,23 @@ export const SLIDES = [
     beatDur: 7,
   },
   {
-    scene: 'cycle', kick: 'Ciclul feminin · (manual: în plus față de LP)', title: 'Ovarul și endometrul, pe aceeași axă, comandate de hormoni',
+    scene: 'cycle', kick: 'Partea B · Ciclul feminin · (manual: în plus față de LP)', title: 'Ovarul și endometrul, pe aceeași axă, comandate de hormoni',
     hud: ['ziua 1 → 28'],
     points: [
-      { h: 'Faza foliculară', d: ['**FSH** → foliculii cresc și fac **estrogen**', '→ endometrul **proliferează** (proliferativă 5–14; menstruală 1–4)'] },
+      { h: 'Faza foliculară', d: ['**FSH** → foliculii cresc și fac **estrogen**', '→ endometrul **proliferează**'] },
       { h: 'Ovulația', d: ['vârful de **LH** → ovulația (!!ziua 14!!)'] },
-      { h: 'Faza luteală', d: ['foliculul gol devine **corp galben** → **progesteron**', '→ endometrul **secretor** (15–28), gata de implantare'] },
+      { h: 'Faza luteală', d: ['foliculul gol devine **corp galben** → **progesteron**', '→ endometrul **secretor**, gata de implantare'] },
       { h: 'Fără sarcină', d: ['corpul galben involuează (**corp alb**) → progesteronul scade → **menstruația**'] },
     ],
     why: 'Faza luteală e fixă (!!~14 zile!!); faza foliculară are durată variabilă, așa că !!un ciclu mai lung are faza foliculară mai lungă!!.',
     beatDur: 7,
   },
   {
-    scene: 'fert', kick: 'Fecundația și drumul zigotului · (manual: în plus față de LP)', title: 'De la ovar la uter în 6–7 zile: ziua contează',
+    scene: 'fert', kick: 'Partea B · Fecundația și drumul zigotului · (manual)', title: 'De la ovar la uter în 6–7 zile: ziua contează',
     hud: ['vedere frontală, schematic'],
     points: [
       { h: 'Ovulația', d: ['ovocitul II e prins de **fimbriile trompei**'] },
-      { h: 'Fecundația: în ampulă (ziua 0)', d: ['ovocitul rămâne fecundabil **~24 h**', 'la pătrunderea spermatozoidului, ovocitul II termină meioza II (→ ovul + GP2); pronucleii se unesc → **zigot (2n)**'] },
+      { h: 'Fecundația: în ampulă (ziua 0)', d: ['ovocitul rămâne fecundabil **~24 h**', 'la pătrunderea spermatozoidului, ovocitul II termină meioza II (→ ovul + GP2)', 'pronucleii se unesc → **zigot (2n)**'] },
       { h: 'Segmentarea pe drum', d: ['2 celule (ziua 1–2) → **morula (ziua 3)**', 'morula intră în uter în !!ziua 4!! → blastocist'] },
       { h: 'Implantarea: ziua 6–7', d: ['în **endometrul secretor**, de obicei pe !!peretele posterior al corpului uterin!!'] },
     ],
@@ -209,10 +209,10 @@ export const SLIDES = [
     scene: 'classif', kick: 'Partea C · Anomaliile cromozomiale · Clasificarea', title: 'Două întrebări: ce s-a stricat și pe ce cromozom',
     hud: ['un cariotip: 22 de perechi + XY'],
     points: [
-      { h: 'I.A Numerice', d: ['un cromozom în plus / minus sau un set întreg (poliploidie, aneuploidie)', '!!apar pe parcursul meiozei!!'] },
-      { h: 'I.B Structurale', d: ['cromozomul e rupt: lipsește sau se mută un segment', '**deleții · microdeleții · translocații**'] },
-      { h: 'II.A Autozomale', d: ['cromozomii **1–22**: Down (21), Edwards (18), Patau (13), cri-du-chat (5p−)'] },
-      { h: 'II.B Cromozomii sexuali', d: ['**X și Y**: Turner (XO), Klinefelter (XXY), XXX, XYY'] },
+      { h: 'I.A Numerice', d: ['un cromozom în plus / minus sau un set întreg', '!!apar pe parcursul meiozei!!'] },
+      { h: 'I.B Structurale', d: ['cromozomul e rupt: **lipsește** sau **se mută** un segment'] },
+      { h: 'II.A Autozomale', d: ['cromozomii **1–22** (ex. sindromul Down)'] },
+      { h: 'II.B Cromozomii sexuali', d: ['**X și Y** (ex. sindromul Turner, sindromul Klinefelter)'] },
     ],
     why: 'Factorii cromozomali și genetici dau malformații și avorturi: !!50% dintre produșii de concepție sunt avortați spontan!!. Cele două criterii se combină: **Down = numeric + autozomal; Turner = numeric + sexual; cri-du-chat = structural + autozomal**. Cele mai multe anomalii grave opresc sarcina → de aici avorturile spontane.',
     beatDur: 6.5,
@@ -347,7 +347,7 @@ export const SLIDES = [
       { h: 'Transabdominal', d: ['sonda **pe abdomen**'] },
       { h: 'Transvezical', d: ['prin **vezica plină**, care lasă ultrasunetele să treacă'] },
       { h: 'Endovaginal', d: ['sonda în vagin, aproape de uter → **imagine clară devreme**'] },
-      { h: 'Ce afli (scopurile din LP)', d: ['confirmi sarcina (localizezi embrionul), **sarcina extrauterină** · vârsta gestațională, numărul de embrioni, creșterea', 'oprirea în evoluție, tulburările de dezvoltare; !!ghid pentru biopsie / amniocenteză!!'] },
+      { h: 'Ce afli (scopurile din LP)', d: ['confirmi sarcina (localizezi embrionul), **sarcina extrauterină**', 'vârsta gestațională, numărul de embrioni, creșterea', 'oprirea în evoluție, tulburările de dezvoltare; !!ghid pentru biopsie / amniocenteză!!'] },
     ],
     why: 'Ecografia e **non-invazivă** și efectuată de rutină, de aceea e prima metodă. Tot ea !!ghidează acul la amniocenteză și la biopsia vilozităților coriale!!.',
     beatDur: 6.5,
@@ -382,7 +382,7 @@ export const SLIDES = [
     scene: 'caseClin', kick: 'Partea F · Cazul clinic din LP', title: 'Copil de 5 ani, apatic, cu limba mereu scoasă',
     hud: ['întrebarea 1: diagnosticul'],
     points: [
-      { h: 'Cazul', d: ['o mamă vine la pediatru cu copilul de 5 ani: își ține **mereu limba scoasă**, e **apatic** față de copiii de vârsta lui, iar **ochii par anormali**'] },
+      { h: 'Cazul', d: ['o mamă vine la pediatru cu copilul de 5 ani', 'își ține **mereu limba scoasă**, e **apatic** față de copiii de vârsta lui, iar **ochii par anormali**'] },
       { h: 'Ce găsești', d: ['față rotundă cu **pliuri epicantice** · retard mental', 'copil **hipoton** · un singur pliu transversal palmar'] },
       { h: 'Diagnosticul', d: ['!!sindromul Down (trisomia 21)!!'] },
     ],

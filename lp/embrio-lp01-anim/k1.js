@@ -9,7 +9,8 @@ export { srand, rnd, rr, blobPts };
 export const K = {
   mat: '#ef5a6a', matS: '#b8344a',      // cromozom matern
   pat: '#5b9bf0', patS: '#2f68bd',      // cromozom patern
-  dad: '#4cc27a', dadS: '#23824c',      // cromozomul 21 al tatălui (cazul)
+  dad: '#4cc27a', dadS: '#23824c',      // cromozomul 21 al tatălui (doar în cazul clinic)
+  extra: '#ffa63d', extraS: '#c97414',  // copia în plus (trisomie, 3n) — aceeași culoare în tot deck-ul
   cgp: '#5fd38d', cgpS: '#2f9a5c',      // celulele germinale primordiale
   cyt: '#ffe4cf', cytS: '#f0bf9e', cytL: '#fff6ee',   // citoplasma (celule somatice / spermatogeneză)
   ooc: '#ffd2e1', oocS: '#efa2bf', oocL: '#fff0f6',   // citoplasma ovocitului
@@ -93,6 +94,15 @@ export function dividing(g, x, y, r, f0, t, o = {}) {
   }
 }
 
+// celulă în anafază/telofază: elipsă (rx = axa diviziunii) cu un șanț de clivaj care se strânge la mijloc (f 0 → 1);
+// o.vertical = axa diviziunii verticală. Conținutul rămâne în interiorul conturului (lobii stau la ±rx·0,55).
+export function pinchCell(g, x, y, rx, ry, f, t, o = {}) {
+  const pts = []; const k = ease(clamp(f)) * 0.96; const n = 64;
+  for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2; const c = Math.cos(a), s0 = Math.sin(a); const w = 1 + (REDUCED ? 0 : 0.012 * Math.sin(t * 1.5 + i)); const px = c * rx * w, py = s0 * ry * w * (1 - k * Math.exp(-(c * c) / 0.045)); pts.push(o.vertical ? [x + py, y + px] : [x + px, y + py]); }
+  const p = smooth(pts);
+  paint(g, p, o.fill || K.cyt, o.shade || K.cytS, o.light || K.cytL, o.vertical ? bb(x, y, ry, rx) : bb(x, y, rx, ry), OUT, o.ow ?? 5);
+}
+
 /* ---------- gameții ---------- */
 // spermatozoid: cap ovoid (acrozom), piesa intermediară, coadă ondulată animată; kind: normal | twohead | giant | tiny | coil | twotail | bighead
 export function sperm(g, x, y, s, rot, t, o = {}) {
@@ -139,7 +149,7 @@ export function cleave(g, x, y, r, n, t, o = {}) {
   }
   g.restore();
 }
-// blastocist: trofoblast (inel), embrioblastul (butonul embrionar) sus, cavitatea; hatch = 0..1 ieșirea din zona
+// blastocist: trofoblast (inel), embrioblastul (butonul embrionar) la unghiul o.icmAng (implicit sus), cavitatea
 export function blastocyst(g, x, y, r, t, o = {}) {
   const a = o.alpha ?? 1; if (a <= 0.01) return;
   g.save(); g.globalAlpha = clamp(a);
@@ -148,7 +158,7 @@ export function blastocyst(g, x, y, r, t, o = {}) {
   // trofoblastul: celule turtite pe margine
   for (let k = 0; k < 22; k++) { const q = (k / 22) * Math.PI * 2; ell(g, x + Math.cos(q) * r * 0.9, y + Math.sin(q) * r * 0.9, r * 0.16, r * 0.07, o.troph || K.chor, { rot: q + Math.PI / 2, ow: 2.5 }); }
   // butonul embrionar
-  const ic = o.icm ?? 1; for (let k = 0; k < 7; k++) { const q = Math.PI * 1.5 + (k - 3) * 0.22; const d = k % 2 ? 0.55 : 0.68; ell(g, x + Math.cos(q) * r * d, y + Math.sin(q) * r * d, r * 0.15, r * 0.14, K.emb, { ow: 3, alpha: ic }); }
+  const ic = o.icm ?? 1; const ia = o.icmAng ?? Math.PI * 1.5; for (let k = 0; k < 7; k++) { const q = ia + (k - 3) * 0.22; const d = k % 2 ? 0.55 : 0.68; ell(g, x + Math.cos(q) * r * d, y + Math.sin(q) * r * d, r * 0.15, r * 0.14, K.emb, { ow: 3, alpha: ic }); }
   g.restore();
 }
 
@@ -274,11 +284,14 @@ export function pelvis(g, t, o = {}) {
     tube(g, cordP, 18, K.cord, { ow: 5, raw: true });
     g.save(); g.strokeStyle = '#d84b5b'; g.lineWidth = 3; g.beginPath(); cordP.forEach(([u, v], k) => { const q = Math.sin(k * 1.3) * 5; k ? g.lineTo(u + q, v) : g.moveTo(u + q, v); }); g.stroke(); g.restore();
     pts.cord = [150, -30]; pts.umb = umb; pts.back = F(104, 30); pts.liver = F(40, 30);
+    // drumul cateterului CVS transcervical: vagin → col → pe lângă peretele uterin (în afara sacului amniotic) → în placentă
+    const E = (ang, f) => { const x = Math.cos(ang) * 236 * f, y = Math.sin(ang) * 266 * f, r = 0.08; return [-20 + x * Math.cos(r) - y * Math.sin(r), -40 + x * Math.sin(r) + y * Math.cos(r)]; };
+    pts.cvs = [[80, 470], [60, 400], [12, 262], E(1.38, 1.0), E(1.15, 1.0), E(0.92, 1.0), E(0.7, 0.99), E(0.48, 0.9)];
     // fătul, capul în jos
     fetus(g, -60, 30, 1.1, t, { rot: Math.PI * 0.92, flip: true });
   }
   g.restore();
-  const T = (p) => [X + p[0] * S, Y + p[1] * S]; const out = {}; for (const k in pts) out[k] = T(pts[k]); return out;
+  const T = (p) => [X + p[0] * S, Y + p[1] * S]; const out = {}; for (const k in pts) out[k] = k === 'cvs' ? pts[k].map(T) : T(pts[k]); return out;
 }
 
 /* ---------- silueta umană (față) ---------- */
@@ -306,4 +319,72 @@ export function body(g, x, y, s, t, o = {}) {
   g.save(); g.fillStyle = o.hair || '#5a3a2a'; g.beginPath(); g.ellipse(0, -172, 36, 22, 0, Math.PI, 0); g.fill(); g.restore();
   if (o.fem) { g.save(); g.fillStyle = o.hair || '#5a3a2a'; g.beginPath(); g.roundRect(-38, -176, 14, 64, 8); g.roundRect(24, -176, 14, 64, 8); g.fill(); g.restore(); }
   g.restore();
+}
+
+/* ---------- om întreg, pictat (față): femeie / bărbat, cu trăsături parametrizate ----------
+   (x, y) = punctul dintre tălpi; s = scara (1 → ~400 unități înălțime normală).
+   o: sex 'f'|'m', h (înălțime relativă), limb (membre relativ mai lungi), shortNeck + web (pterigium), broadChest (torace în scut,
+   mameloane depărtate), breasts (0..1), hips (0..1 șolduri late / grăsime ginoidă), beard (0..1 barbă rară), hair (culoare),
+   ghost (doar contur punctat: silueta normală de referință). Întoarce reperele în coordonate globale. */
+export function person(g, x, y, s, t, o = {}) {
+  const a = o.alpha ?? 1; const f = o.sex === 'f'; const H = o.h || 1; const L = o.limb || 1;
+  const leg = 150 * L * H, crotch = -leg, hipY = crotch - 16 * H, waistY = hipY - 58 * H, shY = waistY - 80 * H;
+  const neckL = (o.shortNeck ? 6 : 22) * H, headY = shY - neckL - 36;
+  const shW = (f ? 44 : 54) * (o.broadChest ? 1.16 : 1), waW = f ? 28 : 36, hipW = (f ? 46 : 38) + (o.hips || 0) * 12;
+  const sk = o.skin || K.skin, skS = K.skinS, skL = K.skinL; const ow = 5 / s;
+  const T = (px, py) => [x + px * s, y + py * s];
+  const R = { head: T(0, headY), neck: T(0, shY - neckL / 2), chest: T(0, shY + 34), chestL: T(-shW * 0.45, shY + 34), chestR: T(shW * 0.45, shY + 34), waist: T(0, waistY), hips: T(hipW, hipY), groin: T(0, crotch + 6), feet: T(0, 0), top: T(0, headY - 40), handR: T(shW + 14, 0), legL: T(-hipW * 0.5, crotch * 0.5) };
+  if (a <= 0.01) return R;
+  g.save(); g.globalAlpha = clamp(a); g.translate(x, y); g.scale(s, s);
+  if (o.ghost) {
+    g.setLineDash([8, 7]); g.strokeStyle = 'rgba(255,230,210,.45)'; g.lineWidth = 3 / s; g.lineJoin = 'round';
+    g.beginPath(); g.ellipse(0, headY, 30, 37, 0, 0, 7); g.stroke();
+    g.beginPath(); g.moveTo(-shW, shY); g.lineTo(-waW - 6, waistY); g.lineTo(-hipW, hipY); g.lineTo(-hipW * 0.6, 0); g.lineTo(hipW * 0.6, 0); g.lineTo(hipW, hipY); g.lineTo(waW + 6, waistY); g.lineTo(shW, shY); g.closePath(); g.stroke();
+    g.restore(); return R;
+  }
+  const br = REDUCED ? 0 : Math.sin(t * 1.6) * 0.8;
+  // picioarele (coapsă groasă → gambă → laba piciorului)
+  [-1, 1].forEach((d) => {
+    const hx = d * hipW * 0.52, kx = d * hipW * 0.42, ax = d * hipW * 0.36, ky = crotch * 0.5;
+    tube(g, [[hx, hipY + 10], [kx, ky]], f ? 34 : 32, sk, { ow });
+    tube(g, [[kx, ky], [ax, -16]], 24, sk, { ow });
+    const ft = new Path2D(); ft.ellipse(ax + d * 10, -6, 22, 10, 0, 0, 7); paint(g, ft, sk, skS, null, [ax - 12, -16, 44, 20], OUT, ow);
+  });
+  // brațele (umăr → cot → mână), ușor depărtate
+  const armL = 150 * L * H;
+  [-1, 1].forEach((d) => {
+    const sx = d * (shW - 6), sy = shY + 10, ex = d * (shW + 6), ey = sy + armL * 0.48, hx = d * (shW + 12), hy = sy + armL * 0.95;
+    tube(g, [[sx, sy], [ex, ey]], 20, sk, { ow }); tube(g, [[ex, ey], [hx, hy]], 16, sk, { ow });
+    const hd = new Path2D(); hd.ellipse(hx, hy + 12, 10, 15, 0, 0, 7); paint(g, hd, sk, skS, null, [hx - 10, hy - 3, 20, 30], OUT, ow);
+  });
+  // gâtul (+ pterigium = pliuri gât → umeri)
+  tube(g, [[0, shY + 6], [0, shY - neckL - 8]], f ? 22 : 26, sk, { ow });
+  if (o.web) [-1, 1].forEach((d) => { const w = new Path2D(); w.moveTo(d * 10, shY - neckL - 4); w.quadraticCurveTo(d * 26, shY - 6, d * 40, shY + 4); w.lineTo(d * 8, shY + 6); w.closePath(); paint(g, w, sk, skS, null, [-40, shY - 20, 80, 30], OUT, ow * 0.8); });
+  // trunchiul: umeri → talie → șolduri (forma diferă între sexe)
+  const tr = new Path2D();
+  tr.moveTo(-shW, shY + 4); tr.quadraticCurveTo(-shW - 2, shY - 6, -shW + 14, shY - 8); tr.lineTo(shW - 14, shY - 8); tr.quadraticCurveTo(shW + 2, shY - 6, shW, shY + 4);
+  tr.bezierCurveTo(shW - 2, shY + 40, waW + 2, waistY - 20, waW, waistY); tr.bezierCurveTo(waW + 2, waistY + 22, hipW + 2, hipY - 22, hipW, hipY + 6);
+  tr.lineTo(-hipW, hipY + 6); tr.bezierCurveTo(-hipW - 2, hipY - 22, -waW - 2, waistY + 22, -waW, waistY); tr.bezierCurveTo(-waW - 2, waistY - 20, -shW + 2, shY + 40, -shW, shY + 4); tr.closePath();
+  g.save(); g.translate(0, br * 0.3); paint(g, tr, sk, skS, skL, [-shW, shY - 8, shW * 2, hipY - shY + 14], OUT, ow); g.restore();
+  // sânii / ginecomastia; mameloanele (depărtate la toracele în scut)
+  const bs = o.breasts ?? (f ? 1 : 0); const nx = shW * (o.broadChest ? 0.62 : 0.46), ny = shY + 40;
+  if (bs > 0.05) [-1, 1].forEach((d) => { const bp = new Path2D(); bp.ellipse(d * nx * 0.92, ny + 4, 16 * bs + 6, 13 * bs + 5, 0, 0, Math.PI); g.save(); g.strokeStyle = skS; g.lineWidth = 3.5 / s; g.stroke(bp); g.restore(); });
+  [-1, 1].forEach((d) => dot(g, d * nx, ny + 2 + 8 * bs, 2.6, '#c9786a', { ow: 0 }));
+  // chiloții (femeie: + bustieră doar dacă sânii sunt mari)
+  const bf = new Path2D(); bf.moveTo(-hipW - 1, hipY - 6); bf.lineTo(hipW + 1, hipY - 6); bf.lineTo(hipW * 0.62, crotch + 22); bf.quadraticCurveTo(0, crotch + 34, -hipW * 0.62, crotch + 22); bf.closePath();
+  paint(g, bf, f ? '#f7b8d2' : '#9cc6f2', f ? '#e48db4' : '#6f9fd4', '#ffffff', [-hipW, hipY - 6, hipW * 2, crotch + 34 - hipY], OUT, ow);
+  // capul
+  if (f) { g.save(); g.fillStyle = o.hair || '#6a3a2a'; g.strokeStyle = OUT; g.lineWidth = ow; g.beginPath(); g.moveTo(-34, headY - 6); g.bezierCurveTo(-46, headY + 40, -40, headY + 70, -24, shY + 6); g.lineTo(24, shY + 6); g.bezierCurveTo(40, headY + 70, 46, headY + 40, 34, headY - 6); g.closePath(); g.fill(); g.stroke(); g.restore(); }
+  const hd = new Path2D(); hd.ellipse(0, headY, f ? 29 : 31, f ? 35 : 37, 0, 0, 7); paint(g, hd, sk, skS, skL, [-31, headY - 37, 62, 74], OUT, ow);
+  [-1, 1].forEach((d) => ell(g, d * (f ? 29 : 31), headY + 4, 6, 10, sk, { ow: ow * 0.8 }));
+  g.save(); g.fillStyle = o.hair || (f ? '#6a3a2a' : '#4a3020'); g.strokeStyle = OUT; g.lineWidth = ow;
+  g.beginPath(); if (f) { g.ellipse(0, headY - 14, 33, 27, 0, Math.PI * 0.95, Math.PI * 2.05); } else { g.ellipse(0, headY - 16, 33, 24, 0, Math.PI, 0); g.quadraticCurveTo(28, headY - 22, 22, headY - 20); g.lineTo(-22, headY - 20); g.quadraticCurveTo(-28, headY - 22, -33, headY - 16); }
+  g.fill(); g.stroke(); g.restore();
+  // fața
+  [-1, 1].forEach((d) => { dot(g, d * 11, headY + 2, 3.4, '#2a1a20', { ow: 0 }); g.save(); g.strokeStyle = o.hair || '#4a3020'; g.lineWidth = 2.6 / s; g.lineCap = 'round'; g.beginPath(); g.moveTo(d * 6, headY - 8); g.lineTo(d * 17, headY - 9); g.stroke(); g.restore(); });
+  g.save(); g.strokeStyle = skS; g.lineWidth = 2.6 / s; g.lineCap = 'round'; g.beginPath(); g.moveTo(0, headY + 5); g.lineTo(-3, headY + 14); g.lineTo(2, headY + 15); g.stroke();
+  g.strokeStyle = '#b3545e'; g.lineWidth = 3 / s; g.beginPath(); g.arc(0, headY + 18, 8, 0.25, Math.PI - 0.25); g.stroke(); g.restore();
+  if (o.beard) { srand(41); for (let k = 0; k < 9; k++) { const q = Math.PI * (0.15 + 0.7 * k / 8); dot(g, Math.cos(q) * 22 + rr(-2, 2), headY + 8 + Math.sin(q) * 26 + rr(-2, 2), 1.6, '#4a3020', { ow: 0, alpha: o.beard }); } }
+  g.restore();
+  return R;
 }

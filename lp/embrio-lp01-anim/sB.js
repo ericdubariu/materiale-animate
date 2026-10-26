@@ -30,7 +30,7 @@ export function cgp() {
   const N = 7;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[700, 760], [585, 505], [432, 292], [165, 525]],
+    anchors: [[700, 760], [565, 430], [432, 292], [200, 565]],
     phase: (i) => ['S3–S4: sacul vitelin', 'S4–S5: migrare', 'S5–S6: crestele genitale', 'CGP rătăcite'][i] || 'din sacul vitelin în gonadă',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4); const p0 = p(0), p1 = p(1), p2 = p(2), p3 = p(3);
@@ -83,7 +83,7 @@ export function cgp() {
         cgpCell(g, x, y, 1, t + k, dir, a, k);
       }
       if (p1 > 0 && p1 < 1) tube(g, PATH, 4, K.cgp, { ow: 0, dash: [10, 8], alpha: 0.6 });
-      if (p2 > 0.6) txt(g, '→ spermatogonii / ovogonii', 500, 452, 18, '#c8f5d9', { alpha: sp(p2, 0.6, 1) });
+      if (p2 > 0.6) txt(g, '→ spermatogonii / ovogonii', 760, 178, 18, '#c8f5d9', { alpha: sp(p2, 0.6, 1) });
       if (p3 > 0.6) txt(g, 'rătăcită → teratom', 250, 470, 18, C.hi, { alpha: sp(p3, 0.6, 1) });
       if (on(b, 0)) ring(g, 612, 782, 60, 44, ease(b.bt * 1.4));
       if (on(b, 2)) { ring(g, RIDGE[0][0], RIDGE[0][1], 56, 90, ease(b.bt * 1.4)); ring(g, RIDGE[1][0], RIDGE[1][1], 56, 90, ease(b.bt * 1.4)); }
@@ -131,7 +131,7 @@ export function gameto() {
       if (m1 > 0) {
         // bărbat: 2 celule egale
         SP2.forEach(([x, y], k) => { arr(g, SX + (k ? 30 : -30), Y[1] + 60, x + (k ? -10 : 10), y - 56, '#fff3e6', 4, m1); cellB(g, lerp(SX, x, m1), lerp(Y[1], y, m1), 48, 48, t, { seed: 4 + k, alpha: m1 }); chromo(g, lerp(SX, x, m1), lerp(Y[1], y, m1), 40, k ? K.pat : K.mat, { dup: true, w: 9, alpha: m1 }); });
-        txt(g, 'spermatocite II', SX, Y[2] + 70, 16, '#cfe0ff', { alpha: m1, w: 700 });
+        txt(g, 'spermatocite II', SX, 408, 15, '#cfe0ff', { alpha: m1, w: 700 });
         // femeie: ovocit II mare + GP1 mic (diviziune inegală)
         arr(g, OX - 20, Y[1] + 76, OX - 40, Y[2] - 74, '#fff3e6', 4, m1);
         cellB(g, OX - 40, lerp(Y[1], Y[2], m1), 66, 66, t, { fill: K.ooc, shade: K.oocS, light: K.oocL, seed: 6, alpha: m1 });
@@ -140,7 +140,7 @@ export function gameto() {
         arr(g, OX + 50, Y[1] + 50, gp1[0] - 18, gp1[1] - 28, '#fff3e6', 3, m1);
         polar(g, lerp(OX + 40, gp1[0], m1), lerp(Y[1], gp1[1], m1), 24, t, m1);
         chromo(g, lerp(OX + 40, gp1[0], m1), lerp(Y[1], gp1[1], m1), 26, K.pat, { dup: true, w: 6, alpha: m1 });
-        txt(g, 'ovocit II', OX - 40, Y[2] + 88, 16, '#ffd0e6', { alpha: m1, w: 700 }); txt(g, 'globul polar 1', gp1[0] + 20, gp1[1] + 46, 15, '#ffd0e6', { alpha: m1, w: 700 });
+        txt(g, 'ovocit II', OX - 40, Y[2] + 48, 14, OUT, { alpha: m1, w: 800, stroke: false }); txt(g, 'globul polar 1', gp1[0] + 20, gp1[1] + 46, 15, '#ffd0e6', { alpha: m1, w: 700 });
       }
       /* ---- rândul 4: meioza II ---- */
       const m2 = Math.max(p2, b.i < 0 ? 1 : 0);
@@ -153,12 +153,12 @@ export function gameto() {
         chromo(g, OX - 40, lerp(Y[2], Y[3], m2), 40, K.mat, { w: 9, alpha: m2 });
         polar(g, OX + 70, lerp(Y[2], Y[3] + 40, m2), 20, t, m2); chromo(g, OX + 70, lerp(Y[2], Y[3] + 40, m2), 22, K.mat, { w: 6, alpha: m2 });
         [[OX + 120, Y[3] - 40], [OX + 175, Y[3] - 20]].forEach(([x, y], k) => { polar(g, lerp(OX + 110, x, m2), lerp(Y[2] - 10, y, m2), 17, t, m2); chromo(g, lerp(OX + 110, x, m2), lerp(Y[2] - 10, y, m2), 18, K.pat, { w: 5, alpha: m2 }); });
-        txt(g, 'ovul', OX - 40, Y[3] + 86, 16, '#ffd0e6', { alpha: m2, w: 700 }); txt(g, 'GP2', OX + 70, Y[3] + 82, 15, '#ffd0e6', { alpha: m2, w: 700 }); txt(g, 'GP1 se poate divide', OX + 150, Y[3] + 20, 15, '#ffd0e6', { alpha: m2, w: 700 });
+        txt(g, 'ovul', OX - 40, Y[3] + 46, 14, OUT, { alpha: m2, w: 800, stroke: false }); txt(g, 'GP2', OX + 70, Y[3] + 82, 15, '#ffd0e6', { alpha: m2, w: 700 }); txt(g, 'GP1 se poate divide', OX + 150, Y[3] + 20, 15, '#ffd0e6', { alpha: m2, w: 700 });
       }
       /* ---- rândul 5: diferențierea ---- */
       const m3 = Math.max(p3, b.i < 0 ? 1 : 0);
       if (m3 > 0) {
-        SPT.forEach(([x], k) => { const y = lerp(Y[3], Y[4] - 52, m3); sperm(g, x + 8, y, 0.6, -Math.PI / 2, t + k * 0.3, { alpha: sp(m3, 0.2, 0.7) }); if (m3 < 0.6) { cellB(g, x, y, lerp(36, 18, m3 / 0.6), lerp(36, 22, m3 / 0.6), t, { seed: 30 + k, alpha: 1 - sp(m3, 0.3, 0.6) }); } });
+        SPT.forEach(([x], k) => { const y = lerp(Y[3] - 10, Y[3] + 30, m3); sperm(g, x, y, 0.6, -Math.PI / 2, t + k * 0.3, { alpha: sp(m3, 0.2, 0.7) }); if (m3 < 0.6) { cellB(g, x, y, lerp(36, 18, m3 / 0.6), lerp(36, 22, m3 / 0.6), t, { seed: 30 + k, alpha: 1 - sp(m3, 0.3, 0.6) }); } });
         txt(g, '4 spermatozoizi · 23,X sau 23,Y', SX, Y[4] + 92, 17, C.hi, { alpha: sp(m3, 0.5, 1) });
         oocyte(g, OX - 40, Y[4] + 10, 62, t, { glow: on(b, 3) ? 0.5 + 0.5 * Math.sin(t * 4) : 0, alpha: sp(m3, 0.2, 0.7), inner: (gg) => chromo(gg, 0, 0, 38, K.mat, { w: 9 }) });
         [[OX + 70, Y[4] - 10], [OX + 110, Y[4] + 30], [OX + 150, Y[4] - 6]].forEach(([x, y], k) => polar(g, x, y, 16, t, sp(m3, 0.3, 0.8)));
@@ -175,7 +175,7 @@ export function gameto() {
    Stânga-jos: „rezerva” de ovocite (puncte) care se golește: 7 milioane (luna 5) → < 1 milion (naștere) → ~40 000 (pubertate)
    (manual). Dreapta-jos: UN ovocit mărit: 1 = ovogonii care se divid prin mitoză → ovocit I cu nucleu mare, perechea dublată
    împerecheată (profaza I) și semnul pauză; 2 = același ovocit așteaptă (ani); 3 = la ovulație termină MI → expulzează GP1,
-   cromozomii pe fusul metafazei II, pauză; 4 = intră spermatozoidul → termină MII → GP2 + pronucleii. */
+   cromozomii pe fusul metafazei II, pauză (nefecundat → degenerează); 4 = intră spermatozoidul → abia apoi termină MII → GP2 → pronucleii. */
 export function ovotime() {
   const X0 = 90, X1 = 920; const M = { l3: 0, l5: 0.13, nas: 0.3, pub: 0.52, ov: 0.78, fec: 0.95 };
   const ax = (u) => lerp(X0, X1, u); const AY = 230;
@@ -199,40 +199,46 @@ export function ovotime() {
       panel(g, 50, 470, 360, 420);
       const left = cur < M.l5 ? lerp(0.2, 1, (cur - M.l3) / M.l5) : cur < M.nas ? lerp(1, 0.32, (cur - M.l5) / (M.nas - M.l5)) : cur < M.pub ? lerp(0.32, 0.08, (cur - M.nas) / (M.pub - M.nas)) : lerp(0.08, 0.03, clamp((cur - M.pub) / 0.4));
       DOTS.forEach(([x, y, r]) => { if (r < left) { dot(g, x, y + 20, 7, '#ffd2e1', { ow: 2 }); } else if (r < left + 0.06) dot(g, x, y + 20, 5, '#8f7d74', { ow: 0, alpha: 0.6 }); });
-      const lab = cur < M.l5 + 0.02 ? '7 milioane (luna 5)' : cur < M.nas + 0.04 ? '< 1 milion (naștere)' : cur < M.ov ? '~40 000 (pubertate)' : '~400–500 ajung ovulate';
+      const lab = cur >= M.ov ? '~400–500 ajung ovulate' : cur >= M.pub ? '~40 000 (pubertate)' : cur >= M.nas ? '< 1 milion (naștere)' : cur >= M.l5 ? '7 milioane (luna 5)' : 'ovogonii → ovocite I';
       pill(g, 230, 510, 300, 44, C.hi, lab, { size: 17 });
       txt(g, 'restul degenerează (atrezie) · manual', 230, 905, 15, '#d8c4b8', { w: 600 });
       // ovocitul mărit
       panel(g, 440, 330, 540, 560);
       const nucR = 52;
-      const st = cur < M.l3 + 0.05 ? 0 : cur < M.ov ? 1 : cur < M.fec - 0.02 ? 2 : 3;
+      // fecundația (punctul 4): 0–0.3 spermatozoidul vine · 0.3–0.45 intră · 0.45–0.7 ovocitul termină MII → GP2 · 0.7–1 pronucleii
+      const fz = b.i === 3 ? p3 : b.i < 0 ? 1 : 0;
+      const st = cur < M.l3 + 0.05 ? 0 : cur < M.ov ? 1 : (b.i === 3 || b.i < 0) ? (fz < 0.45 ? 2 : fz < 0.7 ? 2.5 : 3) : 2;
       if (b.i === 0 && p0 < 0.35) {
-        // ovogonii în mitoză
         const f = sp(p0, 0, 0.3); dividing(g, OX, OY, 70, f, t, { fill: K.ooc, shade: K.oocS, light: K.oocL });
         txt(g, 'ovogonii: mitoze', OX, OY - 140, 20, C.cream);
       } else {
-        const ovul = b.i === 3 ? sp(p3, 0.3, 0.7) : b.i < 0 ? 0 : 0;
+        const sepq = st === 2.5 ? sp(fz, 0.45, 0.7) : 0;
         oocyte(g, OX, OY, 120, t, { corona: st >= 2, inner: (gg) => {
           if (st <= 1) { // nucleul mare (vezicula germinativă) cu perechea împerecheată, profaza I
             const q = blob(0, 0, nucR, nucR, 0, t, 0.03, 14, 2); gg.fillStyle = K.nuc; gg.fill(q); gg.strokeStyle = K.nucS; gg.lineWidth = 3; gg.stroke(q);
             chromo(gg, -10, 0, 52, K.mat, { dup: true, w: 9, rot: 0.15 }); chromo(gg, 14, 2, 52, K.pat, { dup: true, w: 9, rot: 0.15 });
-          } else if (st === 2) { // fusul MII cu un omolog dublat pe placă
+          } else if (st === 2) { // fusul MII cu un omolog dublat pe placă (oprit)
             gg.save(); gg.strokeStyle = 'rgba(255,243,230,.6)'; gg.lineWidth = 2; for (let k = -2; k <= 2; k++) { gg.beginPath(); gg.moveTo(0, -60); gg.quadraticCurveTo(k * 18, 0, 0, 60); gg.stroke(); } gg.restore();
             chromo(gg, 0, 0, 46, K.mat, { dup: true, w: 9, rot: Math.PI / 2 });
-          } else { // pronucleii
+          } else if (st === 2.5) { // MII se termină: o cromatidă rămâne, cealaltă pleacă spre GP2 (sus-stânga)
+            chromo(gg, lerp(0, -8, sepq), lerp(0, 20, sepq), 46, K.mat, { w: 9, rot: Math.PI / 2 });
+            chromo(gg, lerp(0, -70, sepq), lerp(0, -76, sepq), 46, K.mat, { w: 9, rot: Math.PI / 2, alpha: 1 - sepq * 0.8 });
+          } else { // pronucleii: matern (stânga) + patern (dreapta)
             ell(gg, -34, 0, 30, 30, '#d9c6ff', { ow: 3 }); ell(gg, 34, 0, 30, 30, '#bfe0ff', { ow: 3 });
             chromo(gg, -34, 0, 30, K.mat, { w: 7 }); chromo(gg, 34, 0, 30, K.pat, { w: 7 });
           }
         } });
         if (st >= 2) { polar(g, OX + 104, OY - 92, 22, t); chromo(g, OX + 104, OY - 92, 24, K.pat, { dup: true, w: 5 }); txt(g, 'GP1', OX + 150, OY - 120, 16, '#ffd0e6', { w: 800 }); }
-        if (st === 3) { polar(g, OX - 100, OY - 100, 18, t); chromo(g, OX - 100, OY - 100, 18, K.mat, { w: 5 }); txt(g, 'GP2', OX - 150, OY - 126, 16, '#ffd0e6', { w: 800 }); }
-        if (b.i === 3) sperm(g, lerp(OX - 330, OX - 150, sp(p3, 0, 0.35)), OY + 60, 1, 0, t, { alpha: 1 - sp(p3, 0.3, 0.45) });
+        const gp2 = st === 3 ? 1 : st === 2.5 ? sepq : 0;
+        if (gp2 > 0.5) { polar(g, OX - 100, OY - 100, 18, t, gp2); chromo(g, OX - 100, OY - 100, 18, K.mat, { w: 5, alpha: gp2 }); txt(g, 'GP2', OX - 150, OY - 126, 16, '#ffd0e6', { w: 800, alpha: gp2 }); }
+        // spermatozoidul: vine (0–0.3), capul intră prin zona pellucida (0.3–0.45) și dispare în ovocit
+        if (b.i === 3 && fz < 0.47) { const u = sp(fz, 0, 0.3), v = sp(fz, 0.3, 0.45); sperm(g, lerp(OX - 330, OX - 150, u) + 50 * v, OY + 60 - 20 * v, 1, -0.12, t, { alpha: 1 - sp(fz, 0.4, 0.47) }); }
         // semnul pauză
         if (st === 1 || st === 2) { g.save(); g.globalAlpha = 0.6 + 0.4 * Math.sin(t * 3); g.fillStyle = C.hi; g.strokeStyle = OUT; g.lineWidth = 4; [[-16], [6]].forEach(([dx]) => { g.beginPath(); g.roundRect(OX + 160 + dx, OY + 90, 14, 44, 4); g.fill(); g.stroke(); }); g.restore(); }
-        const cap = st <= 1 ? 'ovocit I · oprit în profaza I' : st === 2 ? 'ovocit II + GP1 · oprit în metafaza II' : 'ovul + GP2 → zigot';
+        const cap = st <= 1 ? 'ovocit I · oprit în profaza I' : st === 2 ? 'ovocit II + GP1 · oprit în metafaza II' : st === 2.5 ? 'termină meioza II → ovul + GP2' : 'pronucleii → zigot';
         txt(g, cap, OX, OY - 200, 20, C.cream);
         if (b.i === 1) txt(g, 'nicio diviziune', OX, OY + 200, 19, C.hi);
-        if (st === 3 || (b.i === 3 && p3 > 0.6)) txt(g, 'nefecundat → degenerează (~24 h)', OX, OY + 210, 17, '#d8c4b8', { w: 600 });
+        if (b.i === 2) txt(g, 'nefecundat → degenerează (~24 h)', OX, OY + 210, 17, '#d8c4b8', { w: 600, alpha: sp(p2, 0.5, 1) });
       }
       if (on(b, 1)) ring(g, 230, 680, 190, 200, ease(b.bt * 1.4));
     },
@@ -258,7 +264,7 @@ export function cycle() {
   let g0;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[dx(6), 300], [dx(14) + 74, 150], [dx(22.6), 520], [dx(27), 640]],
+    anchors: [[dx(6), 300], [dx(14) + 74, 150], [dx(22.6), 520], [dx(27.7), 730]],
     phase: (i) => ['faza foliculară', 'ovulația: ziua 14', 'faza luteală', 'fără sarcină'][i] || 'ziua 1 → 28',
     draw(g, t, b) {
       g0 = g; bg(g); const p = P(b, t, 4);
@@ -292,7 +298,7 @@ export function cycle() {
       tube(g, [[X0, EB], [X1, EB]], 6, K.myo, { ow: 3 });
       [['menstruală 1–4', 2.5], ['proliferativă 5–14', 9.5], ['secretorie 15–28', 21.5]].forEach(([n, d]) => txt(g, n, dx(d), EB + 30, 15, '#ffd6dc', { w: 800, alpha: day >= d - 1.5 ? 1 : 0.35 }));
       // menstruația la sfârșit (punctul 4): picături noi
-      if (b.i === 3 && p(3) > 0.3) { for (let k = 0; k < 5; k++) { const u = loopT(t + k * 0.35, 1.4); dot(g, dx(26.4 + k * 0.35), EB + 8 + u * 40, 6, '#c8203a', { alpha: 1 - u, ow: 2 }); } txt(g, '→ menstruația', dx(25), EB - 190, 18, C.hi); }
+      if (b.i === 3 && p(3) > 0.3) { for (let k = 0; k < 5; k++) { const u = loopT(t + k * 0.35, 1.4); dot(g, dx(26.4 + k * 0.35), EB + 8 + u * 40, 6, '#c8203a', { alpha: 1 - u, ow: 2 }); } txt(g, '→ menstruația', dx(24.2), EB - 200, 18, C.hi); }
       // cursorul zilei
       g.save(); g.strokeStyle = C.hi; g.lineWidth = 2; g.globalAlpha = 0.6; g.beginPath(); g.moveTo(dx(day), 100); g.lineTo(dx(day), EB); g.stroke(); g.restore();
       pill(g, dx(day), 896, 110, 36, C.hi, `ziua ${Math.min(28, Math.round(day))}`, { size: 16 });
@@ -302,61 +308,82 @@ export function cycle() {
   };
 }
 
-/* =================================================== FECUNDAȚIA + DRUMUL ZIGOTULUI (manual), vedere frontală schematică
-   Uterul stânga, trompa urcă spre dreapta: istm (îngust) → ampulă (largă) → infundibul cu fimbrii deasupra ovarului (dreapta-jos).
-   1 = foliculul din ovar se rupe, ovocitul II e prins de fimbrii; 2 = spermatozoizii urcă din uter prin trompă; în AMPULĂ se
-   întâlnesc (ziua 0) → zigot cu 2 pronuclei; 3 = conceptusul coboară spre uter: 2 celule (ziua 1–2), morula (ziua 3) în istm,
-   intră în uter în ziua 4 → blastocist în cavitate; 4 = implantare în ziua 6–7 în endometrul secretor, pe peretele corpului
-   uterin (posterior). Sensul: ovar → fimbrii → ampulă → istm → uter. */
+/* =================================================== FECUNDAȚIA + DRUMUL ZIGOTULUI (manual), vedere frontală, scară mare
+   Uterul în centru (fund, corp, col) cu endometrul secretor gros; AMBELE trompe (istm îngust lângă uter → ampulă largă →
+   infundibul cu fimbrii) se arcuiesc peste cele două ovare. Drumul se face în trompa dreaptă (a imaginii):
+   1 = foliculul din ovarul drept se rupe, ovocitul II (cu coroana radiată) e prins de fimbrii;
+   2 = spermatozoizii urcă din uter prin istm până în AMPULĂ (nu la infundibul); lupa (sus-dreapta) arată fecundația:
+       spermatozoidul trece prin coroană și zona pellucida → GP2 → 2 pronuclei → zigot (2n), ziua 0;
+   3 = conceptusul coboară spre uter: 2 celule (ziua 1–2), morula (ziua 3, în istm), intră în uter în ziua 4 → blastocist;
+   4 = ziua 6–7: blastocistul se implantează în endometrul secretor de pe peretele POSTERIOR al corpului uterin — în vederea
+       frontală, în centrul corpului uterin, înglobat (endometrul îl acoperă), cu butonul embrionar spre perete.
+   Eticheta etapei stă într-o pastilă fixă jos, ca să nu acopere etichetele trompei. */
 export function fert() {
-  const TUBE = [[330, 395], [420, 360], [520, 330], [620, 330], [720, 360], [800, 420], [850, 500]];
-  const TP = curve(TUBE, 14);
-  const OV = [800, 640];
-  const STOP = { fim: 0.98, amp: 0.66, d12: 0.52, d3: 0.3, d4: 0.02 };
+  const UC = [500, 560];
+  const TR = curve([[618, 420], [700, 372], [790, 345], [870, 380], [905, 470], [880, 540]], 16); // trompa dreaptă: cornul → fimbrii
+  const TL = TR.map(([x, y]) => [1000 - x, y]);
+  const OVR = [860, 625], OVL = [140, 625];
+  const U = { amp: 0.55, d12: 0.4, d3: 0.2, d4: 0.02 };
+  const IMP = [500, 545]; const LX = 500, LY = 190, LR = 104;
+  const tubeDraw = (g, P, glow) => { tube(g, P.slice(0, 38), 20, '#f08aa0', { ow: 5, raw: true, lumen: '#3a1e28', glow }); tube(g, P.slice(34), 44, '#f08aa0', { ow: 5, raw: true, lumen: '#3a1e28', glow }); };
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[OV[0] + 90, OV[1] - 40], [at(TP, STOP.amp)[0] + 100, 250], [at(TP, STOP.d3)[0], 270], [140, 660]],
-    phase: (i) => ['ovulația', 'ziua 0: în ampulă', 'segmentarea pe drum', 'ziua 6–7: implantarea'][i] || 'de la ovar la uter',
+    anchors: [[OVR[0] - 110, OVR[1] + 20], [LX - 135, LY - 40], [at(TR, U.d3)[0], at(TR, U.d3)[1] + 70], [IMP[0] - 105, IMP[1] - 20]],
+    phase: (i) => ['ovulația', 'ziua 0: fecundația în ampulă', 'segmentarea pe drum', 'ziua 6–7: implantarea'][i] || 'de la ovar la uter în 6–7 zile',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4); const p0 = p(0), p1 = p(1), p2 = p(2), p3 = p(3);
-      // uterul (frontal): miometru + endometru gros (secretor) + colul
-      const U = new Path2D(); U.moveTo(110, 360); U.bezierCurveTo(100, 520, 180, 690, 230, 770); U.lineTo(270, 770); U.bezierCurveTo(320, 690, 400, 520, 360, 360); U.bezierCurveTo(300, 330, 170, 330, 110, 360); U.closePath();
-      paint(g, U, K.myo, K.myoS, '#ee96a6', [100, 330, 300, 440], OUT, 6);
-      const Cv = new Path2D(); Cv.moveTo(150, 390); Cv.bezierCurveTo(150, 520, 210, 650, 245, 720); Cv.bezierCurveTo(285, 650, 345, 520, 325, 390); Cv.bezierCurveTo(270, 372, 200, 372, 150, 390); Cv.closePath();
-      paint(g, Cv, K.endo, null, '#f7b3bf', [150, 372, 175, 350], OUT, 4);
-      const cav = new Path2D(); cav.moveTo(190, 415); cav.bezierCurveTo(195, 520, 225, 610, 245, 680); cav.bezierCurveTo(265, 610, 295, 520, 290, 415); cav.bezierCurveTo(260, 405, 220, 405, 190, 415); cav.closePath();
-      g.save(); g.fillStyle = '#3a1e28'; g.fill(cav); g.restore();
-      txt(g, 'uter', 235, 810, 20, C.cream);
-      // trompa: istm îngust → ampulă largă → infundibul + fimbrii
-      tube(g, TP.slice(0, 40), 22, '#f08aa0', { ow: 5, raw: true, lumen: '#3a1e28' });
-      tube(g, TP.slice(36), 42, '#f08aa0', { ow: 5, raw: true, lumen: '#3a1e28' });
-      for (let k = 0; k < 7; k++) { const q = -0.7 + k * 0.28; tube(g, [[850, 500], [850 + Math.cos(q) * 40, 520 + Math.sin(q) * 30 + 20], [850 + Math.cos(q) * 62, 540 + Math.sin(q) * 40 + 20]], 9, '#f08aa0', { ow: 3 }); }
-      txt(g, 'istm', at(TP, 0.2)[0], 300, 18, '#ffd0dc'); txt(g, 'ampulă', at(TP, 0.66)[0], 262, 18, '#ffd0dc'); txt(g, 'fimbrii', 930, 470, 16, '#ffd0dc', { w: 800 });
-      // ovarul cu foliculul care se rupe
-      ell(g, OV[0], OV[1], 92, 58, '#cdb8f2', { ow: 5, shade: '#a98ae6', light: '#efe6ff' }); txt(g, 'ovar', OV[0], OV[1] + 88, 18, '#e9dcff');
+      // ligamentul + ovarele
+      [OVL, OVR].forEach(([x, y]) => { ell(g, x, y, 78, 48, '#cdb8f2', { ow: 5, shade: '#a98ae6', light: '#efe6ff' }); for (let k = 0; k < 4; k++) ell(g, x - 40 + k * 26, y + (k % 2 ? 8 : -8), 9 + k * 2, 9 + k * 2, '#ffd2e1', { ow: 2 }); });
+      tube(g, [[OVL[0] + 70, OVL[1] - 10], [360, 600]], 10, '#e9d6bd', { ow: 3 }); tube(g, [[OVR[0] - 70, OVR[1] - 10], [640, 600]], 10, '#e9d6bd', { ow: 3 });
+      // uterul: miometru + endometru secretor gros + cavitatea
+      const Uo = new Path2D(); Uo.moveTo(360, 420); Uo.bezierCurveTo(350, 560, 420, 700, 455, 780); Uo.lineTo(455, 860); Uo.lineTo(545, 860); Uo.lineTo(545, 780); Uo.bezierCurveTo(580, 700, 650, 560, 640, 420); Uo.bezierCurveTo(600, 375, 400, 375, 360, 420); Uo.closePath();
+      paint(g, Uo, K.myo, K.myoS, '#ee96a6', [350, 375, 300, 485], OUT, 6);
+      const En = new Path2D(); En.moveTo(392, 432); En.bezierCurveTo(388, 560, 440, 690, 480, 770); En.lineTo(520, 770); En.bezierCurveTo(560, 690, 612, 560, 608, 432); En.bezierCurveTo(570, 405, 430, 405, 392, 432); En.closePath();
+      paint(g, En, K.endo, null, '#f7b3bf', [388, 405, 224, 365], OUT, 4);
+      for (let k = 0; k < 7; k++) tube(g, [[420 + k * 27, 430 + Math.abs(k - 3) * 6], [424 + k * 27 + Math.sin(k) * 5, 470], [418 + k * 27, 505]], 4, '#c95a6c', { ow: 0 });
+      const Cv = new Path2D(); Cv.moveTo(440, 448); Cv.bezierCurveTo(445, 560, 478, 680, 494, 760); Cv.lineTo(506, 760); Cv.bezierCurveTo(522, 680, 555, 560, 560, 448); Cv.bezierCurveTo(530, 440, 470, 440, 440, 448); Cv.closePath();
+      g.save(); g.fillStyle = '#4a2030'; g.globalAlpha = 0.55; g.fill(Cv); g.restore();
+      txt(g, 'uter (corp)', 500, 650, 17, '#ffd6dc', { w: 800 }); txt(g, 'col', 500, 835, 16, OUT, { stroke: false, w: 800 });
+      // trompele (cu fimbrii) — trompa dreaptă aprinsă când e drumul
+      [[TL, -1], [TR, 1]].forEach(([P, d]) => { tubeDraw(g, P, d > 0 && (b.i === 1 || b.i === 2) ? 0.35 : 0); const [fx, fy] = P[P.length - 1]; for (let k = 0; k < 7; k++) { const q = -0.9 + k * 0.3; tube(g, [[fx, fy], [fx + d * Math.cos(q) * 30, fy + 26 + Math.sin(q) * 14], [fx + d * Math.cos(q) * 50, fy + 44 + Math.sin(q) * 20]], 9, '#f08aa0', { ow: 3 }); } });
+      [['istm', U.d3 + 0.03, -38], ['ampulă', U.amp + 0.08, -58], ['fimbrii', 0.98, -10]].forEach(([n, u, dy]) => { const q = at(TR, u); txt(g, n, q[0] + (n === 'fimbrii' ? 70 : 0), q[1] + dy, 17, '#ffd0dc', { w: 800 }); });
+      txt(g, 'ovar', OVR[0], OVR[1] + 76, 16, '#e9dcff', { w: 800 }); txt(g, 'ovar', OVL[0], OVL[1] + 76, 16, '#e9dcff', { w: 800 });
+      // foliculul care se rupe (ovarul drept)
       const rup = b.i < 0 ? 1 : b.i === 0 ? sp(p0, 0.1, 0.45) : 1;
-      if (rup < 1) ell(g, OV[0] + 30, OV[1] - 34, 30, 26, '#ffd2e1', { ow: 4 });
+      if (rup < 1) { ell(g, OVR[0] - 10, OVR[1] - 40, 30 + 6 * rup, 26 + 6 * rup, '#ffd2e1', { ow: 4 }); }
+      // reperele zilelor pe trompă
+      [[U.amp, 'ziua 0'], [U.d12, 'ziua 1–2'], [U.d3, 'ziua 3'], [U.d4 + 0.02, 'ziua 4']].forEach(([u, s0]) => { const q = at(TR, u); dot(g, q[0], q[1] + 34, 5, '#fff3e6', { ow: 0, alpha: 0.7 }); txt(g, s0, q[0], q[1] + 54, 14, '#d8c4b8', { w: 700 }); });
       // conceptusul pe drum
       let pos = null, n = 1, lab = '';
-      if (b.i < 0) { const u = loopT(t, 10); const tt = u * 4; if (tt < 1) { pos = at(TP, lerp(1, STOP.amp, ease(tt))); n = 0; } else if (tt < 3) { pos = at(TP, lerp(STOP.amp, STOP.d4, ease((tt - 1) / 2))); n = tt < 1.6 ? 1 : tt < 2.3 ? 2 : 16; } else { pos = [lerp(at(TP, STOP.d4)[0], 214, ease(tt - 3)), lerp(at(TP, STOP.d4)[1], 560, ease(tt - 3))]; n = 99; } }
-      else if (b.i === 0) { const u = sp(p0, 0.35, 1); pos = u < 0.5 ? [lerp(OV[0] + 30, 875, u * 2), lerp(OV[1] - 34, 560, u * 2)] : at(TP, lerp(1, 0.94, (u - 0.5) * 2)); n = 0; lab = 'ovocitul II'; }
-      else if (b.i === 1) { pos = at(TP, lerp(0.94, STOP.amp, sp(p1, 0, 0.4))); n = p1 > 0.75 ? 1 : 0; lab = p1 > 0.75 ? 'zigot (2n) · ziua 0' : 'fecundabil ~24 h'; }
-      else if (b.i === 2) { const u = p2; pos = at(TP, lerp(STOP.amp, STOP.d4, u)); n = u < 0.35 ? 2 : 16; lab = u < 0.35 ? 'ziua 1–2: 2 celule' : u < 0.85 ? 'ziua 3: morula' : 'ziua 4: intră în uter'; }
-      else { const u = sp(p3, 0, 0.6); const s0 = at(TP, STOP.d4); pos = [lerp(s0[0], 214, u), lerp(s0[1], 560, u)]; n = u > 0.4 ? 99 : 16; lab = u > 0.95 ? 'ziua 6–7: implantare' : 'blastocist'; }
-      // spermatozoizii urcă (punctul 2)
-      if (b.i === 1 || b.i < 0) for (let k = 0; k < 6; k++) { const u = b.i === 1 ? clamp(sp(p1, 0, 0.7) - k * 0.05) : loopT(t + k * 0.4, 4); const q = at(TP, lerp(0, STOP.amp - 0.02, u)); sperm(g, q[0] - 18, q[1] + (k - 3) * 4, 0.42, q[2] + 0, t + k, { alpha: b.i === 1 ? 1 - sp(p1, 0.7, 0.85) : Math.sin(u * Math.PI) }); }
+      if (b.i < 0) { const tt = loopT(t, 12) * 4; if (tt < 1) { pos = at(TR, lerp(1, U.amp, ease(tt))); n = 0; } else if (tt < 3) { const u = (tt - 1) / 2; pos = at(TR, lerp(U.amp, U.d4, ease(u))); n = u < 0.25 ? 1 : u < 0.55 ? 2 : 16; } else { const s0 = at(TR, U.d4); const u = ease(tt - 3); pos = [lerp(s0[0], IMP[0], u), lerp(s0[1], IMP[1], u)]; n = 99; } }
+      else if (b.i === 0) { const u = sp(p0, 0.35, 1); pos = u < 0.5 ? [lerp(OVR[0] - 10, 900, u * 2), lerp(OVR[1] - 40, 560, u * 2)] : at(TR, lerp(1, 0.94, (u - 0.5) * 2)); n = 0; lab = 'ovulația: ovocitul II prins de fimbrii'; }
+      else if (b.i === 1) { pos = at(TR, lerp(0.94, U.amp, sp(p1, 0, 0.35))); n = p1 > 0.85 ? 1 : 0; lab = p1 > 0.85 ? 'ziua 0: zigot (2n), în ampulă' : 'fecundabil ~24 h'; }
+      else if (b.i === 2) { pos = at(TR, lerp(U.amp, U.d4, p2)); n = p2 < 0.35 ? 2 : 16; lab = p2 < 0.35 ? 'ziua 1–2: 2 celule' : p2 < 0.85 ? 'ziua 3: morula' : 'ziua 4: morula intră în uter'; }
+      else { const u = sp(p3, 0, 0.55); const s0 = at(TR, U.d4); pos = [lerp(s0[0], IMP[0], u), lerp(s0[1], IMP[1], u)]; n = u > 0.3 ? 99 : 16; lab = p3 > 0.6 ? 'ziua 6–7: implantare în endometrul secretor' : 'blastocist în cavitatea uterină'; }
+      // spermatozoizii urcă din uter prin istm până în ampulă
+      if (b.i === 1 || b.i < 0) for (let k = 0; k < 6; k++) { const u = b.i === 1 ? clamp(sp(p1, 0, 0.6) - k * 0.05) : loopT(t + k * 0.4, 4); const pth = [[500, 780], [500, 520], ...TR.slice(0, Math.floor(TR.length * U.amp))]; const q = at(curve(pth.slice(0, 2).concat(pth.slice(2))), u); sperm(g, q[0], q[1], 0.42, q[2], t + k, { alpha: b.i === 1 ? 1 - sp(p1, 0.6, 0.75) : Math.sin(u * Math.PI) }); }
       if (pos) {
-        if (n === 0) oocyte(g, pos[0], pos[1], 22, t, { corona: true });
-        else if (n === 99) { const imp = b.i === 3 ? sp(p3, 0.6, 1) : 0; blastocyst(g, pos[0] - 18 * imp, pos[1], 22, t, { zona: imp < 0.2 }); }
-        else cleave(g, pos[0], pos[1], 22, n, t);
-        if (lab) txt(g, lab, b.i === 3 ? 470 : pos[0], b.i === 3 ? 600 : pos[1] - 58, 18, C.hi);
-        if (b.i === 3 && p3 > 0.95) { lead(g, 400, 600, pos[0] + 20, pos[1], 1); txt(g, 'în endometrul secretor', 470, 630, 16, '#ffd6dc', { w: 700 }); }
+        if (n === 0) oocyte(g, pos[0], pos[1], 18, t, { corona: true });
+        else if (n === 99) { const imp = b.i === 3 ? sp(p3, 0.55, 1) : b.i < 0 ? 1 : 0; blastocyst(g, pos[0], pos[1], 22, t, { zona: imp < 0.1, icmAng: Math.PI / 2 }); if (imp > 0) { const cov = new Path2D(); cov.ellipse(pos[0], pos[1] + 12, 34, 22 * imp + 2, 0, 0, Math.PI * 2); g.save(); g.globalAlpha = 0.75 * imp; g.fillStyle = K.endo; g.fill(cov); g.restore(); for (let k = 0; k < 5; k++) tube(g, [[pos[0] - 28 + k * 14, pos[1] + 34], [pos[0] - 26 + k * 14, pos[1] + 14 - 6 * imp]], 3, '#c95a6c', { ow: 0, alpha: imp }); } }
+        else cleave(g, pos[0], pos[1], 18, n, t);
       }
-      if (b.i === 1 && p1 > 0.75) { polar(g, pos[0] + 20, pos[1] - 20, 7, t); }
-      // reperele zilelor pe trompă
-      [[STOP.amp, 'ziua 0'], [STOP.d12, 'ziua 1–2'], [STOP.d3, 'ziua 3'], [STOP.d4 + 0.04, 'ziua 4']].forEach(([u, s]) => { const q = at(TP, u); dot(g, q[0], q[1] + 48, 5, '#fff3e6', { ow: 0, alpha: 0.7 }); txt(g, s, q[0], q[1] + 70, 15, '#d8c4b8', { w: 700 }); });
-      if (on(b, 1)) ring(g, at(TP, STOP.amp)[0], at(TP, STOP.amp)[1], 70, 60, ease(b.bt * 1.4));
-      if (on(b, 3)) ring(g, 205, 560, 54, 54, ease(b.bt * 1.4));
+      if (b.i === 3 && p3 > 0.6) { lead(g, IMP[0] - 34, IMP[1], 310, 480, sp(p3, 0.6, 0.9)); txt(g, 'peretele posterior\nal corpului uterin', 235, 470, 16, '#ffd6dc', { alpha: sp(p3, 0.6, 0.9), w: 800 }); }
+      if (lab) pill(g, 500, 905, 470, 40, '#3a2a26', lab, { size: 17, col: C.hi, ow: 3 });
+      // lupa pe fecundație (punctul 2)
+      const la = b.i === 1 ? sp(p1, 0.25, 0.45) : 0;
+      if (la > 0) {
+        const am = at(TR, U.amp); lead(g, am[0], am[1] - 20, LX - 70, LY + 80, la);
+        g.save(); g.globalAlpha = la; ell(g, LX, LY, LR, LR, '#1d1220', { ow: 5, sc: '#ffe7d6' });
+        g.beginPath(); g.arc(LX, LY, LR - 4, 0, 7); g.clip();
+        const f2 = sp(p1, 0.45, 1); // 0 = spermatozoidul la coroană → 0.4 intră → 0.7 GP2 → 1 pronuclei
+        oocyte(g, LX + 10, LY + 10, 62, t, { corona: true, inner: (gg) => { if (f2 > 0.7) { ell(gg, -18, 0, 16, 16, '#d9c6ff', { ow: 3 }); ell(gg, 18, 0, 16, 16, '#bfe0ff', { ow: 3 }); } else chromo(gg, 0, 0, 26, K.mat, { dup: f2 < 0.4, w: 6, rot: Math.PI / 2 }); } });
+        if (f2 > 0.45) { polar(g, LX - 36, LY - 46, 9, t); polar(g, LX + 48, LY - 40, 9, t); }
+        sperm(g, lerp(LX - 140, LX - 52, sp(f2, 0, 0.4)), LY + 20, 0.62, 0, t, { alpha: 1 - sp(f2, 0.38, 0.5) });
+        g.restore();
+        txt(g, f2 > 0.7 ? 'pronucleii → zigot (2n)' : f2 > 0.45 ? 'ovocitul II termină MII → GP2' : 'spermatozoidul pătrunde', LX, LY + LR + 22, 16, C.hi, { alpha: la });
+      }
+      if (on(b, 1)) ring(g, at(TR, U.amp)[0], at(TR, U.amp)[1], 60, 50, ease(b.bt * 1.4));
+      if (on(b, 3)) ring(g, IMP[0], IMP[1] + 6, 56, 50, ease(b.bt * 1.4));
     },
   };
 }
@@ -371,7 +398,7 @@ export function teratoma() {
   srand(23); const HAIR = Array.from({ length: 26 }, (_, k) => { const a = -Math.PI / 2 + (k / 25 - 0.5) * 2.0; const L = rr(170, 330); return { a, L, c: rr(-0.5, 0.5), ph: rr(0, 6) }; });
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[CX + RX - 10, CY - RY + 70], [CX - 40, 240], [NOD[0] + 120, NOD[1] + 20], [120, 290]],
+    anchors: [[CX + RX - 10, CY - RY + 70], [CX - 70, 225], [NOD[0] - 150, NOD[1] + 40], [120, 290]],
     phase: (i) => ['peretele chistului', 'smocul de păr', 'protuberanța Rokitansky', 'originea: celule pluripotente'][i] || 'păr, os și dinți',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4); const p1 = p(1), p2 = p(2), p3 = p(3);
@@ -397,7 +424,7 @@ export function teratoma() {
         const bone = new Path2D(); bone.moveTo(NOD[0] + 20, NOD[1] + 10); bone.bezierCurveTo(NOD[0] + 60, NOD[1] - 6, NOD[0] + 100, NOD[1] + 2, NOD[0] + 110, NOD[1] + 18); bone.bezierCurveTo(NOD[0] + 80, NOD[1] + 32, NOD[0] + 40, NOD[1] + 30, NOD[0] + 20, NOD[1] + 10); g.save(); g.globalAlpha = ta; paint(g, bone, K.bone, K.boneS, '#ffffff', [NOD[0] + 20, NOD[1] - 6, 90, 38], OUT, 4); g.restore(); }
       // etichetele (pe desen)
       txt(g, 'peretele chistului', CX + RX - 60, CY - RY - 10, 18, '#ffe9a8');
-      if (hl > 0.5) txt(g, 'smoc de păr', CX - 150, 230, 18, C.cream);
+      if (hl > 0.5) txt(g, 'smoc de păr', CX + 20, 222, 18, C.cream);
       txt(g, 'protuberanța Rokitansky', NOD[0], NOD[1] + 92, 18, '#ffe9a8');
       if (ta > 0.5) { txt(g, 'dinți', NOD[0] + 128, NOD[1] - 70, 17, C.cream); txt(g, 'os', NOD[0] + 150, NOD[1] + 16, 17, C.cream); }
       // originea: celula pluripotentă → cele 3 foițe

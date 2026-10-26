@@ -10,43 +10,46 @@ import { cover } from './sA.js';
 const sp = (u, a, b) => ease(clamp((u - a) / (b - a)));
 
 /* =================================================== GAMEȚII ANORMALI (figura LP, după Langman)
-   1 = un folicul (celule foliculare în jur) cu DOUĂ ovocite → „gemeni”, dar de obicei degenerează (se estompează);
-   2 = un ovocit primar al cărui nucleu devine 3 nuclei (trinucleat); 3 = jos-dreapta, un șir de spermatozoizi care înoată:
-   cei normali + cei atipici (2 capete, gigant, foarte mic, coadă încolăcită, 2 cozi), unii mai lenți (motilitate redusă). */
+   Sus: 1 = doi foliculi (celule foliculare turtite în jur): unul cu 2 ovocite, altul cu 3 → „se pot naște gemeni”, apoi ambii se
+   estompează („de obicei degenerează”); 2 = un ovocit primar al cărui nucleu devine 3 nuclei (trinucleat).
+   Jos-dreapta (deasupra și în dreapta pozei din LP): 3 = șase spermatozoizi mari, fiecare în căsuța lui, cu eticheta sub el:
+   normal · cap dublu · coadă dublă · gigant · foarte mic · coadă încolăcită + mișcare lentă (motilitate redusă). */
 export function abngam() {
-  const FX = 300, FY = 300, OX = 740, OY = 300;
-  const SP = [['normal', 1], ['twohead', 1], ['normal', 1], ['giant', 1], ['tiny', 1], ['coil', 0.35], ['normal', 1], ['twotail', 1]];
-  const LAB = { twohead: 'cap dublu', giant: 'gigant', tiny: 'foarte mic', coil: 'coadă anormală', twotail: 'coadă dublă' };
+  const F2 = [165, 255], F3 = [430, 255], OX = 760, OY = 255;
+  const SP = [['normal', 'normal', 1], ['twohead', 'cap dublu', 1], ['twotail', 'coadă dublă', 1], ['giant', 'gigant', 1], ['tiny', 'foarte mic', 1], ['coil', 'motilitate redusă', 0.25]];
+  const CELL = (k) => [455 + (k % 3) * 200, 560 + Math.floor(k / 3) * 190];
+  const foll = (g, x, y, n, t, a, deg) => {
+    srand(3 + n); for (let k = 0; k < 30; k++) { const q = (k / 30) * Math.PI * 2; ell(g, x + Math.cos(q) * 118, y + Math.sin(q) * 104, 15, 9, '#f6d8b8', { rot: q + Math.PI / 2, ow: 2.5, alpha: a * (1 - deg * 0.5) }); }
+    const pos = n === 2 ? [[-44, 0], [46, 0]] : [[-46, -26], [46, -26], [0, 46]];
+    pos.forEach(([dx, dy], k) => oocyte(g, x + dx, y + dy, n === 2 ? 46 : 38, t, { zona: false, alpha: a * (1 - deg * 0.5), inner: (gg) => ell(gg, 0, 0, 13, 13, K.nuc, { ow: 3 }) }));
+  };
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[FX - 150, FY - 150], [OX - 150, OY - 150], [420, 560]],
+    anchors: [[F2[0] - 120, F2[1] - 120], [OX - 140, OY - 120], [CELL(0)[0] - 92, CELL(0)[1] - 78]],
     phase: (i) => ['folicul cu 2–3 ovocite', 'ovocit multinucleat', 'spermatozoizi atipici'][i] || 'gameți greșiți ca formă',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 3); const p0 = p(0), p1 = p(1), p2 = p(2);
-      // 1 · foliculul cu 2 ovocite
-      const deg = b.i === 0 ? sp(p0, 0.65, 1) : b.i < 0 ? 0 : 0;
-      srand(3); for (let k = 0; k < 30; k++) { const q = (k / 30) * Math.PI * 2; ell(g, FX + Math.cos(q) * 150, FY + Math.sin(q) * 118, 16, 10, '#f6d8b8', { rot: q + Math.PI / 2, ow: 2.5, alpha: 1 - deg * 0.5 }); }
-      const two = Math.max(p0, b.i < 0 || b.i > 0 ? 1 : 0);
-      oocyte(g, lerp(FX, FX - 58, two), FY, 66, t, { zona: false, alpha: 1 - deg * 0.5, inner: (gg) => ell(gg, 0, 0, 20, 20, K.nuc, { ow: 3 }) });
-      if (two > 0) oocyte(g, FX + 62, FY, 60 * two, t, { zona: false, alpha: two * (1 - deg * 0.5), inner: (gg) => ell(gg, 0, 0, 18 * two, 18 * two, K.nuc, { ow: 3 }) });
-      txt(g, 'folicul cu 2 ovocite', FX, FY + 170, 18, C.cream);
-      if (b.i === 0 && p0 > 0.4) txt(g, deg > 0.3 ? 'de obicei degenerează' : '→ se pot naște gemeni', FX, FY - 160, 18, C.hi);
+      // 1 · foliculii cu 2 și 3 ovocite
+      const a0 = b.i < 0 || b.i === 0 ? 1 : 0.6; const deg = b.i === 0 ? sp(p0, 0.6, 1) : 0;
+      foll(g, ...F2, 2, t, a0, deg); foll(g, ...F3, 3, t, a0, deg);
+      txt(g, 'folicul cu 2 ovocite', F2[0], F2[1] + 140, 17, C.cream, { alpha: a0 }); txt(g, 'folicul cu 3 ovocite', F3[0], F3[1] + 140, 17, C.cream, { alpha: a0 });
+      if (b.i === 0) txt(g, deg > 0.3 ? 'de obicei degenerează' : 'se pot naște gemeni', (F2[0] + F3[0]) / 2, 95, 19, C.hi, { alpha: sp(p0, 0.2, 0.4) });
       // 2 · ovocitul trinucleat
-      const tri = Math.max(p1, b.i < 0 || b.i > 1 ? 1 : 0);
-      oocyte(g, OX, OY, 118, t, { zona: true, inner: (gg) => { const P3 = [[-40, -26], [42, -20], [0, 44]]; P3.forEach(([x, y], k) => ell(gg, lerp(0, x, tri), lerp(0, y, tri), lerp(36, 26, tri), lerp(36, 26, tri), K.nuc, { ow: 3, alpha: k === 0 ? 1 : tri })); } });
-      txt(g, 'ovocit trinucleat', OX, OY + 170, 18, C.cream);
-      // 3 · spermatozoizii
-      panel(g, 380, 470, 590, 430);
-      SP.forEach(([kind, spd], k) => {
-        const y = 520 + k * 46; const u = (loopT(t * spd + k * 0.37, 7) );
-        const x = lerp(460, 940, u);
-        const atyp = kind !== 'normal'; const a = b.i < 0 || b.i === 2 ? 1 : 0.6;
-        sperm(g, x, y, 0.55, 0, t * (spd < 0.6 ? 0.3 : 1) + k, { kind, alpha: a, col: atyp && on(b, 2) ? '#ffe36e' : K.spH });
-        if (atyp && (b.i === 2 && p2 > 0.3)) txt(g, LAB[kind] + (spd < 0.7 ? ' · motilitate redusă' : ''), 520, y, 15, C.hi, { align: 'right', alpha: sp(p2, 0.3, 0.7) });
+      const tri = Math.max(p1, b.i < 0 || b.i > 1 ? 1 : 0); const a1 = b.i < 0 || b.i === 1 ? 1 : 0.6;
+      oocyte(g, OX, OY, 112, t, { zona: true, alpha: a1, inner: (gg) => { [[-38, -26], [40, -20], [0, 42]].forEach(([x, y], k) => ell(gg, lerp(0, x, tri), lerp(0, y, tri), lerp(34, 24, tri), lerp(34, 24, tri), K.nuc, { ow: 3, alpha: k === 0 ? 1 : tri })); } });
+      txt(g, 'ovocit primar trinucleat', OX, OY + 150, 17, C.cream, { alpha: a1 });
+      // 3 · spermatozoizii (mari, fiecare în căsuța lui)
+      const a2 = b.i < 0 || b.i === 2 ? 1 : 0.5;
+      SP.forEach(([kind, lab, spd], k) => {
+        const [cx, cy] = CELL(k); const show = b.i === 2 ? sp(p2, k * 0.1, k * 0.1 + 0.3) : 1;
+        g.save(); g.globalAlpha = a2 * show; g.fillStyle = kind === 'normal' ? 'rgba(92,196,138,.10)' : 'rgba(255,227,110,.08)'; g.strokeStyle = kind === 'normal' ? 'rgba(92,196,138,.5)' : 'rgba(255,227,110,.4)'; g.lineWidth = 3; g.beginPath(); g.roundRect(cx - 92, cy - 76, 184, 150, 18); g.fill(); g.stroke(); g.restore();
+        const sx = cx + (kind === 'giant' ? 78 : 72) + (REDUCED ? 0 : Math.sin(t * 2 * spd + k) * 4);
+        sperm(g, sx, cy - 12, kind === 'giant' ? 0.55 : 0.72, 0, t * spd + k, { kind, alpha: a2 * show, col: kind === 'normal' ? K.spH : '#ffe9a0' });
+        txt(g, lab, cx, cy + 52, 16, kind === 'normal' ? '#bff0d2' : C.hi, { alpha: a2 * show });
       });
-      txt(g, 'spermatozoizii atipici: cei mai frecvenți', 675, 890, 17, '#ffd6c4', { alpha: b.i < 0 || b.i === 2 ? 1 : 0.5 });
-      if (on(b, 0)) ring(g, FX, FY, 180, 150, ease(b.bt * 1.4));
-      if (on(b, 1)) ring(g, OX, OY, 160, 160, ease(b.bt * 1.4));
+      txt(g, 'spermatozoizii atipici: cei mai frecvenți', 655, 905, 17, '#ffd6c4', { alpha: a2 });
+      if (on(b, 0)) ring(g, (F2[0] + F3[0]) / 2, F2[1], 290, 140, ease(b.bt * 1.4));
+      if (on(b, 1)) ring(g, OX, OY, 150, 150, ease(b.bt * 1.4));
     },
   };
 }
@@ -115,7 +118,7 @@ export function prenatal() {
   const X0 = 120, X1 = 930; const wx = (w) => lerp(X0, X1, (w - 8) / 32); const AY = 110;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[wx(30), AY + 104], [150, 470], [wx(28), AY + 146], [895, 360]],
+    anchors: [[230, 520], [150, 470], [640, 800], [895, 360]],
     phase: (i) => ['ecografia', 'sângele matern', 'invazive', 'teste genetice'][i] || '6 metode',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
@@ -143,13 +146,13 @@ export function prenatal() {
       // 3 · invazive: CVS → amniocenteza → cordocenteza
       const q2 = b.i < 0 ? 1 : b.i === 2 ? p(2) : b.i > 2 ? 1 : 0;
       const c1 = sp(q2, 0, 0.33), c2 = sp(q2, 0.33, 0.66), c3 = sp(q2, 0.66, 1);
-      if (c1 > 0) { const P1 = [PT.vagina, PT.cervix, [lerp(PT.cervix[0], PT.plac[0], 0.5) + 20, lerp(PT.cervix[1], PT.plac[1], 0.5) + 10], [PT.plac[0] - 6, PT.plac[1] + 60]]; tube(g, P1, 5, '#e9f0ff', { ow: 3, u1: c1 }); }
+      if (c1 > 0) tube(g, PT.cvs, 5, '#e9f0ff', { ow: 3, u1: c1 });
       if (c2 > 0) { const [fx, fy] = PT.fluid; tube(g, [[fx - 160, fy - 120], [fx, fy]], 4, '#e9f0ff', { ow: 3, u1: c2 }); }
       if (c3 > 0) { const [cx2, cy2] = PT.cord; tube(g, [[cx2 - 260, cy2 - 210], [cx2, cy2]], 4, '#e9f0ff', { ow: 3, u1: c3 }); }
       if (q2 > 0) { txt(g, 'CVS', PT.cervix[0] + 50, PT.cervix[1] + 30, 16, C.hi, { alpha: c1 }); txt(g, 'amniocenteză', PT.fluid[0] - 170, PT.fluid[1] - 140, 16, C.hi, { alpha: c2 }); txt(g, 'cordocenteză', PT.cord[0] - 90, PT.cord[1] - 230, 16, C.hi, { alpha: c3 }); }
       // 4 · testele genetice: probele → cariotip cu trisomie
       const q3 = Math.max(p(3), b.i < 0 ? 1 : 0);
-      if (q3 > 0) { g.save(); g.globalAlpha = q3; panel(g, 805, 380, 185, 150); g.restore(); [0, 1, 2, 3, 4, 5].forEach((k) => chromo(g, 832 + (k % 3) * 22 + (k > 2 ? 72 : 0), 445, 44 - (k > 2 ? 14 : 0), k % 3 === 2 ? K.dad : k % 3 ? K.pat : K.mat, { dup: true, w: 6, alpha: q3 })); txt(g, 'cariotip / teste genetice', 897, 555, 15, C.cream, { alpha: q3 }); txt(g, 'ex. trisomii', 897, 500, 15, C.hi, { alpha: sp(q3, 0.4, 1) }); }
+      if (q3 > 0) { g.save(); g.globalAlpha = q3; panel(g, 805, 380, 185, 150); g.restore(); [0, 1, 2, 3, 4, 5].forEach((k) => chromo(g, 832 + (k % 3) * 22 + (k > 2 ? 72 : 0), 445, 44 - (k > 2 ? 14 : 0), k % 3 === 2 ? K.extra : k % 3 ? K.pat : K.mat, { dup: true, w: 6, alpha: q3 })); txt(g, 'cariotip / teste genetice', 897, 555, 15, C.cream, { alpha: q3 }); txt(g, 'ex. trisomii', 897, 500, 15, C.hi, { alpha: sp(q3, 0.4, 1) }); }
       if (on(b, 0)) ring(g, PT.wall[0] - 20, PT.wall[1], 80, 70, ease(b.bt * 1.4));
       if (on(b, 1)) ring(g, 145, 610, 60, 110, ease(b.bt * 1.4));
     },
@@ -164,7 +167,7 @@ export function echo() {
   const X = 470, Y = 430, S = 0.95; const L = (x, y) => [X + x * S, Y + y * S];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[L(-430, -80)[0], L(-430, -80)[1]], [L(-430, 170)[0], L(-430, 170)[1]], [L(250, 420)[0], L(250, 420)[1]], [840, 150]],
+    anchors: [[L(-430, -80)[0], L(-430, -80)[1]], [L(-430, 170)[0], L(-430, 170)[1]], [L(250, 420)[0], L(250, 420)[1]], [672, 110]],
     phase: (i) => ['transabdominal', 'transvezical', 'endovaginal', 'ce afli'][i] || 'de rutină, non-invaziv',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
@@ -213,7 +216,7 @@ export function blood() {
   const X = 600, Y = 500, S = 0.78;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[300, 250], [880, 200], [60, 625], [900, 640]],
+    anchors: [[700, 575], [790, 300], [215, 470], [640, 250]],
     phase: (i) => ['AFP ↑ → DTN', 'hCG ↑ + inhibină A ↑ → Down', 'restul serului matern', 'sânge fetal · cordocenteză'][i] || 'screening vs. certitudine',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
@@ -247,10 +250,13 @@ export function blood() {
       // 4 · cordocenteza
       const q3 = Math.max(p(3), b.i < 0 ? 1 : 0);
       if (q3 > 0) {
-        const C0 = [930, 470]; tube(g, [C0, PT.cord], 4, '#e9f0ff', { ow: 3, u1: sp(q3, 0, 0.5) });
-        const t2 = new Path2D(); t2.roundRect(905, 500, 56, 170, 24); paint(g, t2, '#f4f1ee', '#d8d2cc', '#ffffff', [905, 500, 56, 170], OUT, 5);
-        const lv = 120 * sp(q3, 0.5, 1); g.save(); g.beginPath(); g.roundRect(911, 664 - lv, 44, lv, 18); g.fillStyle = '#8f1428'; g.fill(); g.restore();
-        txt(g, 'sânge fetal', 933, 700, 16, C.cream, { alpha: q3 }); txt(g, 'izoimunizare Rh ·\nanaliză cromozomală', 900, 755, 15, '#ffd6dc', { alpha: sp(q3, 0.5, 1) });
+        // acul transcutanat prin peretele abdominal anterior (fundul uterului) în cordon; seringa se umple cu sânge fetal
+        const N3 = [580, 200]; tube(g, [N3, PT.cord], 4, '#e9f0ff', { ow: 3, u1: sp(q3, 0, 0.5) });
+        const ang = Math.atan2(PT.cord[1] - N3[1], PT.cord[0] - N3[0]);
+        g.save(); g.translate(N3[0], N3[1]); g.rotate(ang); const sy = new Path2D(); sy.roundRect(-120, -18, 120, 36, 8); paint(g, sy, 'rgba(240,248,255,.92)', null, '#ffffff', [-120, -18, 120, 36], OUT, 4);
+        const lv = sp(q3, 0.5, 1); g.fillStyle = '#8f1428'; g.fillRect(-112 + 104 * (1 - lv), -11, 104 * lv, 22); tube(g, [[-120, 0], [-150, 0]], 8, '#c9b3a6', { ow: 3 }); g.restore();
+        if (b.i === 3 && p(3) > 0.5) for (let k = 0; k < 4; k++) { const u = loopT(t + k * 0.3, 1.4); const q = at([PT.cord, N3], u); dot(g, q[0], q[1], 5, '#8f1428', { ow: 2, alpha: 1 - u }); }
+        txt(g, 'sânge fetal (cordocenteză)', 655, 168, 16, C.cream, { alpha: q3, align: 'left' }); txt(g, 'izoimunizare Rh · analiză cromozomală', 655, 196, 15, '#ffd6dc', { alpha: sp(q3, 0.5, 1), align: 'left' });
       }
       if (on(b, 0)) ring(g, PT.back[0], PT.back[1], 60, 50, ease(b.bt * 1.4));
       if (on(b, 1)) ring(g, PT.plac[0], PT.plac[1], 80, 120, ease(b.bt * 1.4));
@@ -268,7 +274,7 @@ export function invasive() {
   const X = 600, Y = 470, S = 0.8;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[400, 170], [210, 330], [560, 760], [640, 60]],
+    anchors: [[400, 170], [150, 150], [560, 760], [760, 420]],
     phase: (i) => ['amniocenteza · 14–18 săpt.', 'lichidul: cca. 20–30 mL', 'CVS · 10–30 mg', 'cordocenteza'][i] || 'aduc celule fetale',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
@@ -289,16 +295,15 @@ export function invasive() {
       // 3 · CVS transcervical: pe lângă peretele uterin, în afara sacului, până la placentă
       const cv = b.i < 0 ? 1 : b.i === 2 ? sp(p(2), 0, 0.75) : b.i > 2 ? 0.35 : 0;
       if (cv > 0) {
-        // traseul: vagin → col → de-a lungul peretelui posterior (între perete și sac) → marginea placentei
-        const E = (ang) => { const cx = -20, cy = -40, rx = 250, ry = 282, r = 0.08; const x = Math.cos(ang) * rx, y = Math.sin(ang) * ry; return [X + (cx + x * Math.cos(r) - y * Math.sin(r)) * S, Y + (cy + x * Math.sin(r) + y * Math.cos(r)) * S]; };
-        const CP = [[PT.vagina[0] + 20, PT.vagina[1] + 40], PT.vagina, PT.cervix, E(1.45), E(1.1), E(0.75)];
+        // traseul: vagin → col → pe lângă peretele uterin (între perete și sacul amniotic) → vârful în placentă
+        const CP = PT.cvs;
         tube(g, CP, 6, '#e9f0ff', { ow: 3, u1: cv, alpha: b.i === 3 ? 0.4 : 1 });
-        if (b.i === 2 && p(2) > 0.75) { const tip = E(0.75); for (let k = 0; k < 5; k++) { const u = loopT(t + k * 0.3, 1.5); const q = at(curve(CP), 1 - u * 0.5); dot(g, q[0], q[1], 5, K.plac, { ow: 2, alpha: 1 - u }); } pill(g, 820, 860, 260, 44, C.hi, 'țesut corial 10–30 mg', { size: 17 }); txt(g, '~10–13 săpt. (manual)', 820, 905, 15, '#d8c4b8', { w: 600 }); }
+        if (b.i === 2 && p(2) > 0.75) { const CPc = curve(CP); for (let k = 0; k < 6; k++) { const u = loopT(t + k * 0.25, 1.5); const q = at(CPc, 1 - u * 0.55); dot(g, q[0], q[1], 5, K.plac, { ow: 2, alpha: 1 - u }); } const tip = CP[CP.length - 1]; for (let k = 0; k < 5; k++) { const q = k * 1.25 + t; tube(g, [tip, [tip[0] + Math.cos(q) * 14, tip[1] + Math.sin(q) * 14]], 4, K.placS, { ow: 0 }); } pill(g, 790, 820, 260, 44, C.hi, 'țesut corial 10–30 mg', { size: 17 }); txt(g, '~10–13 săpt. (manual)', 790, 866, 15, '#d8c4b8', { w: 600 }); }
         txt(g, 'col', PT.cervix[0] + 40, PT.cervix[1] + 10, 15, '#ffd6dc');
       }
       // 4 · cordocenteza
       const cd = b.i < 0 ? 1 : b.i === 3 ? sp(p(3), 0, 0.7) : 0;
-      if (cd > 0) { const N3 = [X - 40 * S, Y - 470 * S]; tube(g, [N3, PT.cord], 5, '#e9f0ff', { ow: 3, u1: cd }); if (b.i === 3 && p(3) > 0.7) { for (let k = 0; k < 4; k++) { const u = loopT(t + k * 0.3, 1.4); const q = at([PT.cord, N3], u); dot(g, q[0], q[1], 5, '#8f1428', { ow: 2, alpha: 1 - u }); } txt(g, 'sânge fetal din cordon', N3[0] + 150, N3[1] + 10, 16, C.hi); } txt(g, 'cordonul ombilical', PT.cord[0] + 70, PT.cord[1] + 30, 15, '#e9dcf5', { alpha: cd }); }
+      if (cd > 0) { const N3 = [X - 40 * S, Y - 470 * S]; tube(g, [N3, PT.cord], 5, '#e9f0ff', { ow: 3, u1: cd }); if (b.i === 3 && p(3) > 0.7) { for (let k = 0; k < 4; k++) { const u = loopT(t + k * 0.3, 1.4); const q = at([PT.cord, N3], u); dot(g, q[0], q[1], 5, '#8f1428', { ow: 2, alpha: 1 - u }); } txt(g, 'sânge fetal din cordon', N3[0] + 150, N3[1] - 6, 16, C.hi); } txt(g, 'cordonul ombilical', PT.cord[0] + 70, PT.cord[1] + 30, 15, '#e9dcf5', { alpha: cd }); }
       txt(g, 'placenta', PT.plac[0] + 80, PT.plac[1] - 40, 16, '#ffd6dc');
       if (on(b, 0)) ring(g, fx, fy, 60, 50, ease(b.bt * 1.4));
       if (on(b, 2)) ring(g, PT.plac[0], PT.plac[1] + 40, 90, 120, ease(b.bt * 1.4));
@@ -308,45 +313,87 @@ export function invasive() {
 }
 
 /* =================================================== CAZUL (1): copilul și diagnosticul
-   Un copil desenat (fața rotundă, ochi cu pliu epicantic, limba scoasă), cu o pată de „ceață” = apatic; 2 = apar indiciile pe
-   desen: față rotundă + pliuri epicantice, hipoton (corp „moale”), pliul palmar unic (palma), retard; 3 = cariotipul 21 cu trei
-   copii + diagnosticul. Nimic important în stânga-jos (poza din LP). */
+   Un copil de 5 ani, așezat, cu postura „moale” (hipotonie): umeri căzuți, spate rotunjit, capul ușor înclinat, brațele atârnă,
+   mâna dreaptă pe genunchi cu palma în sus. Fața: rotundă și plată, rădăcina nasului turtită, nas mic, ochi migdalați, oblici în
+   sus, cu pliu epicantic la unghiul intern, urechi mici, jos inserate, gura deschisă cu limba scoasă (protruzivă).
+   1 = ce vede mama (apatic, limba scoasă, ochii); 2 = indiciile apar pe structuri: față rotundă + epicant (ochiul), hipotonie
+   (postura), pliul palmar transversal unic (palma), retard; 3 = cariotipul cu trei 21 (al treilea portocaliu) + diagnosticul.
+   Nimic important în stânga-jos (poza din LP). */
 export function caseClin() {
-  const FX = 620, FY = 360;
+  const FX = 600, FY = 300; // centrul feței
+  const HP = [748, 640]; // palma
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[FX - 250, FY - 200], [FX + 260, 560], [FX + 240, 760]],
+    anchors: [[FX - 230, FY - 170], [690, 590], [870, 800]],
     phase: (i) => ['cazul', 'ce găsești', 'diagnosticul'][i] || 'copil de 5 ani',
     draw(g, t, b) {
-      bg(g); const p = P(b, t, 3); const q1 = Math.max(p(1), b.i < 0 ? 1 : 0), q2 = Math.max(p(2), b.i < 0 ? 1 : 0);
-      // trunchiul (moale, hipoton)
-      const tr = new Path2D(); tr.moveTo(FX - 150, FY + 380); tr.bezierCurveTo(FX - 170, FY + 250, FX - 120, FY + 190, FX, FY + 190); tr.bezierCurveTo(FX + 120, FY + 190, FX + 170, FY + 250, FX + 150, FY + 380); tr.closePath();
-      paint(g, tr, '#7fb0ff', '#5b8fe6', '#cfe0ff', [FX - 170, FY + 190, 340, 190], OUT, 6);
-      // capul
-      const hd = new Path2D(); hd.ellipse(FX, FY, 190, 180, 0, 0, 7); paint(g, hd, K.skin, K.skinS, K.skinL, bb(FX, FY, 190, 180), OUT, 6);
-      g.save(); g.fillStyle = '#c99a4a'; g.beginPath(); g.ellipse(FX, FY - 120, 184, 80, 0, Math.PI, 0); g.fill(); g.strokeStyle = OUT; g.lineWidth = 6; g.stroke(); g.restore();
-      [-1, 1].forEach((d) => ell(g, FX + d * 188, FY + 10, 26, 36, K.skin, { ow: 5, shade: K.skinS }));
-      // ochii migdalați, oblici, cu pliu epicantic
-      [-1, 1].forEach((d) => { const ex = FX + d * 70, ey = FY - 10; g.save(); g.translate(ex, ey); g.rotate(-d * 0.22); g.fillStyle = '#ffffff'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.ellipse(0, 0, 34, 16, 0, 0, 7); g.fill(); g.stroke(); dot(g, d * 4, 0, 10, '#4a3020', { ow: 0 }); g.lineWidth = 4; g.beginPath(); g.arc(-d * 30, -2, 16, d > 0 ? Math.PI * 0.6 : -0.4, d > 0 ? Math.PI * 1.4 : 0.4); g.stroke(); g.restore(); });
-      // nasul mic, gura deschisă cu limba scoasă
-      g.save(); g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.moveTo(FX - 14, FY + 46); g.quadraticCurveTo(FX, FY + 60, FX + 14, FY + 46); g.stroke(); g.restore();
-      const m = new Path2D(); m.ellipse(FX, FY + 104, 52, 28, 0, 0, 7); paint(g, m, '#7a2a3a', null, null, bb(FX, FY + 104, 52, 28), OUT, 5);
-      const tg = new Path2D(); tg.ellipse(FX, FY + 128 + (REDUCED ? 0 : Math.sin(t * 2) * 2), 34, 26, 0, 0, 7); paint(g, tg, '#ff8fa3', '#e0607a', '#ffd0da', bb(FX, FY + 128, 34, 26), OUT, 5);
-      // apatic: o ceață cu „…”
-      if (b.i < 0 || b.i === 0) { const a = b.i === 0 ? sp(p(0), 0.3, 0.8) : 1; g.save(); g.globalAlpha = 0.6 * a; for (let k = 0; k < 4; k++) { g.fillStyle = 'rgba(220,210,235,.35)'; g.beginPath(); g.ellipse(FX + 230 + k * 18, FY - 190 - k * 10, 50 - k * 6, 28 - k * 3, 0, 0, 7); g.fill(); } g.restore(); txt(g, 'apatic', FX + 260, FY - 200, 18, C.cream, { alpha: a }); txt(g, 'limba mereu scoasă', FX + 250, FY + 150, 17, C.cream, { alpha: a }); lead(g, FX + 40, FY + 128, FX + 160, FY + 150, a); txt(g, 'ochii par anormali', FX - 270, FY - 120, 17, C.cream, { alpha: a }); lead(g, FX - 100, FY - 18, FX - 220, FY - 100, a); }
-      // 2 · indiciile
-      if (b.i === 1 || (b.i < 0 && false)) {
-        const k = (j) => sp(q1, j * 0.2, j * 0.2 + 0.3);
-        pill(g, FX - 300, FY - 30, 230, 44, '#ffd6c4', 'față rotundă · epicant', { size: 15, alpha: k(0) });
-        pill(g, FX + 300, FY + 300, 150, 44, '#ffd6c4', 'hipoton', { size: 16, alpha: k(1) });
-        pill(g, FX + 300, FY + 30, 160, 44, '#ffd6c4', 'retard mental', { size: 16, alpha: k(3) });
-        // palma cu pliul unic
-        const a = k(2); g.save(); g.globalAlpha = a; g.translate(FX + 300, FY + 160); g.scale(0.45, 0.45); [[-50, -110, 26, 90], [-14, -130, 26, 110], [20, -124, 26, 104], [52, -100, 22, 80]].forEach(([x, y, w, h]) => { const pp = new Path2D(); pp.roundRect(x - w / 2, y, w, h + 30, w / 2); paint(g, pp, K.skin, K.skinS, K.skinL, [x - w / 2, y, w, h], OUT, 8); }); const pa = new Path2D(); pa.roundRect(-74, -40, 148, 150, 50); paint(g, pa, K.skin, K.skinS, K.skinL, [-74, -40, 148, 150], OUT, 8); g.strokeStyle = '#8a3b2a'; g.lineWidth = 10; g.lineCap = 'round'; g.beginPath(); g.moveTo(-66, 10); g.lineTo(66, 14); g.stroke(); g.restore();
-        txt(g, 'pliu palmar unic', FX + 300, FY + 236, 15, C.cream, { alpha: a });
+      bg(g); const p = P(b, t, 3); const q1 = b.i === 1 ? p(1) : b.i < 0 ? 1 : b.i > 1 ? 1 : 0, q2 = Math.max(p(2), b.i < 0 ? 1 : 0);
+      const sway = REDUCED ? 0 : Math.sin(t * 0.9) * 0.02;
+      const sk = K.skin, skS = K.skinS, skL = K.skinL;
+      // scaunul
+      const ch = new Path2D(); ch.roundRect(430, 700, 340, 46, 14); paint(g, ch, '#8a6a52', '#6a4e3a', null, [430, 700, 340, 46], OUT, 5); tube(g, [[450, 746], [450, 890]], 16, '#6a4e3a', { ow: 4 }); tube(g, [[750, 746], [750, 890]], 16, '#6a4e3a', { ow: 4 });
+      // picioarele (așezat, gambele în jos)
+      [-1, 1].forEach((d) => { tube(g, [[FX + d * 40, 690], [FX + d * 70 + 40, 705], [FX + d * 70 + 60, 712]], 46, '#5b7fc0', { ow: 5 }); tube(g, [[FX + d * 70 + 60, 712], [FX + d * 70 + 66, 850]], 34, sk, { ow: 5 }); ell(g, FX + d * 70 + 80, 862, 30, 14, '#f4f1ee', { ow: 4 }); });
+      // trunchiul: spate rotunjit, umeri căzuți (hipotonie)
+      g.save(); g.translate(FX, 600); g.rotate(sway);
+      const tr = new Path2D(); tr.moveTo(-120, -150); tr.bezierCurveTo(-150, -80, -150, 40, -110, 100); tr.lineTo(110, 100); tr.bezierCurveTo(150, 40, 150, -80, 120, -150); tr.bezierCurveTo(70, -175, -70, -175, -120, -150); tr.closePath();
+      paint(g, tr, '#7fb0ff', '#5b8fe6', '#cfe0ff', [-150, -175, 300, 275], OUT, 6);
+      // brațul stâng atârnă; brațul drept sprijinit pe genunchi, palma în sus
+      tube(g, [[-120, -130], [-150, -20], [-140, 80]], 34, '#7fb0ff', { ow: 5 }); ell(g, -138, 104, 20, 24, sk, { ow: 4 });
+      tube(g, [[120, -130], [150, -30], [140, 30]], 34, '#7fb0ff', { ow: 5 }); tube(g, [[140, 30], [148, 40]], 30, sk, { ow: 5 });
+      g.restore();
+      // palma în sus cu pliul transversal unic
+      g.save(); g.translate(HP[0], HP[1]); g.rotate(-0.25);
+      [[-32, -78, 18, 52], [-10, -92, 18, 64], [12, -88, 18, 60], [33, -70, 16, 46]].forEach(([x, y, w, h]) => { const pp = new Path2D(); pp.roundRect(x - w / 2, y, w, h + 20, w / 2); paint(g, pp, sk, skS, skL, [x - w / 2, y, w, h], OUT, 4); });
+      const pa = new Path2D(); pa.roundRect(-46, -30, 92, 82, 30); paint(g, pa, sk, skS, skL, [-46, -30, 92, 82], OUT, 4);
+      tube(g, [[-44, 20], [-70, -4], [-80, -30]], 20, sk, { ow: 4 });
+      const cr = b.i === 1 ? sp(p(1), 0.45, 0.65) : b.i < 0 ? 1 : b.i > 1 ? 1 : 0.35;
+      g.save(); g.globalAlpha = cr; g.strokeStyle = '#8a3b2a'; g.lineWidth = 5; g.lineCap = 'round'; g.beginPath(); g.moveTo(-40, 4); g.bezierCurveTo(-14, -4, 14, -2, 42, 4); g.stroke(); g.restore();
+      g.restore();
+      // gâtul scurt + capul (ușor înclinat)
+      g.save(); g.translate(FX, FY); g.rotate(-0.08 + sway);
+      tube(g, [[0, 150], [0, 190]], 70, sk, { ow: 5 });
+      const hd = new Path2D(); hd.ellipse(0, 0, 168, 158, 0, 0, 7); paint(g, hd, sk, skS, skL, [-168, -158, 336, 316], OUT, 6);
+      // părul
+      g.fillStyle = '#c99a4a'; g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.ellipse(0, -66, 166, 96, 0, Math.PI * 1.02, Math.PI * 1.98); g.quadraticCurveTo(120, -100, 60, -98); g.quadraticCurveTo(0, -120, -60, -98); g.quadraticCurveTo(-120, -100, -166, -70); g.fill(); g.stroke();
+      // urechile mici, jos inserate
+      [-1, 1].forEach((d) => ell(g, d * 166, 46, 18, 26, sk, { ow: 5, shade: skS }));
+      // ochii migdalați, oblici în sus, cu pliul epicantic la unghiul intern
+      [-1, 1].forEach((d) => {
+        g.save(); g.translate(d * 66, -6); g.rotate(-d * 0.28);
+        const ey = new Path2D(); ey.moveTo(-34, 0); ey.quadraticCurveTo(0, -20, 34, 0); ey.quadraticCurveTo(0, 16, -34, 0); ey.closePath();
+        g.fillStyle = '#ffffff'; g.fill(ey); g.strokeStyle = OUT; g.lineWidth = 4.5; g.stroke(ey);
+        dot(g, d * 2, -1, 9, '#4a3020', { ow: 0 }); dot(g, d * 4, -4, 3, '#ffffff', { ow: 0 });
+        // pliul epicantic: o cută de piele care acoperă colțul intern (spre nas)
+        const ep = new Path2D(); ep.moveTo(-d * 36, -6); ep.quadraticCurveTo(-d * 18, -2, -d * 30, 12); ep.quadraticCurveTo(-d * 40, 6, -d * 36, -6); ep.closePath();
+        g.fillStyle = sk; g.fill(ep); g.strokeStyle = skS; g.lineWidth = 3; g.stroke(ep);
+        g.restore();
+        g.save(); g.strokeStyle = '#a8763a'; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(d * 40, -44); g.quadraticCurveTo(d * 70, -56, d * 100, -46); g.stroke(); g.restore();
+      });
+      // rădăcina nasului turtită, nas mic
+      g.save(); g.strokeStyle = skS; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(-14, 44); g.quadraticCurveTo(0, 54, 14, 44); g.stroke(); g.restore(); dot(g, -8, 44, 4, '#c9786a', { ow: 0 }); dot(g, 8, 44, 4, '#c9786a', { ow: 0 });
+      // gura deschisă + limba scoasă
+      const m = new Path2D(); m.ellipse(0, 96, 46, 24, 0, 0, 7); paint(g, m, '#7a2a3a', null, null, bb(0, 96, 46, 24), OUT, 5);
+      const tg = new Path2D(); tg.ellipse(0, 116 + (REDUCED ? 0 : Math.sin(t * 2) * 2), 30, 26, 0, 0, 7); paint(g, tg, '#ff8fa3', '#e0607a', '#ffd0da', bb(0, 116, 30, 26), OUT, 5);
+      g.save(); g.strokeStyle = '#e0607a'; g.lineWidth = 3; g.beginPath(); g.moveTo(0, 104); g.lineTo(0, 128); g.stroke(); g.restore();
+      g.restore();
+      // 1 · ce vede mama
+      if (b.i < 0 || b.i === 0) { const a = b.i === 0 ? sp(p(0), 0.3, 0.8) : 1; g.save(); g.globalAlpha = 0.55 * a; for (let k = 0; k < 4; k++) { g.fillStyle = 'rgba(220,210,235,.35)'; g.beginPath(); g.ellipse(FX + 250 + k * 16, FY - 180 - k * 10, 52 - k * 6, 28 - k * 3, 0, 0, 7); g.fill(); } g.restore();
+        txt(g, 'apatic', FX + 270, FY - 192, 18, C.cream, { alpha: a });
+        lead(g, FX + 30, FY + 128, FX + 210, FY + 140, a); txt(g, 'limba mereu scoasă', FX + 300, FY + 140, 17, C.cream, { alpha: a });
+        lead(g, FX - 100, FY - 16, FX - 230, FY - 90, a); txt(g, 'ochii par anormali', FX - 300, FY - 104, 17, C.cream, { alpha: a }); }
+      // 2 · indiciile, pe structuri
+      if (b.i === 1) {
+        const k = (j) => sp(p(1), j * 0.2, j * 0.2 + 0.25);
+        lead(g, FX - 104, FY - 2, FX - 250, FY - 60, k(0)); pill(g, FX - 330, FY - 70, 250, 40, '#ffd6c4', 'față rotundă · pliu epicantic', { size: 15, alpha: k(0) });
+        lead(g, FX - 150, 590, FX - 240, 520, k(1)); pill(g, FX - 290, 505, 210, 40, '#ffd6c4', 'hipoton: postură „moale”', { size: 15, alpha: k(1) });
+        lead(g, HP[0] + 20, HP[1] - 10, 880, 560, k(2)); pill(g, 880, 540, 200, 40, '#ffd6c4', 'pliu palmar unic', { size: 15, alpha: k(2) });
+        pill(g, FX + 300, FY - 30, 160, 40, '#ffd6c4', 'retard mental', { size: 15, alpha: k(3) });
       }
       // 3 · diagnosticul
-      if (q2 > 0) { panel(g, FX - 200, 740, 400, 150, { fill: 'rgba(255,227,110,.10)', stroke: 'rgba(255,227,110,.6)' }); [K.mat, K.pat, K.dad].forEach((c, j) => chromo(g, FX - 140 + j * 34, 815, 54, c, { dup: true, w: 9, cen: 0.18, alpha: sp(q2, j * 0.2, j * 0.2 + 0.4) })); txt(g, 'sindromul Down\n(trisomia 21)', FX + 70, 815, 21, C.hi, { alpha: sp(q2, 0.5, 1) }); }
-      if (on(b, 1)) ring(g, FX, FY + 40, 240, 250, ease(b.bt * 1.4));
+      if (q2 > 0) { panel(g, 760, 720, 230, 170, { fill: 'rgba(255,227,110,.10)', stroke: 'rgba(255,227,110,.6)' }); [K.mat, K.pat, K.extra].forEach((c, j) => chromo(g, 820 + j * 36, 780, 56, c, { dup: true, w: 9, cen: 0.18, alpha: sp(q2, j * 0.2, j * 0.2 + 0.4) })); txt(g, 'sindromul Down\n(trisomia 21)', 875, 850, 18, C.hi, { alpha: sp(q2, 0.5, 1) }); }
+      if (on(b, 0)) ring(g, FX, FY, 200, 190, ease(b.bt * 1.4));
+      if (on(b, 2)) ring(g, 875, 805, 125, 95, ease(b.bt * 1.4));
     },
   };
 }
@@ -357,10 +404,10 @@ export function caseClin() {
    ovocitul termină MII: în ovul rămân câte o cromatidă din fiecare 21 (roșu + albastru), restul în GP2 → zigotul are trei 21:
    47,XX,+21; 4 = zigotul se divide: toate celulele au trei copii ale lui 21. */
 export function caseEmb() {
-  const A = [175, 300], B = [550, 300], Z = [550, 660];
+  const A = [168, 300], B = [560, 300], Z = [560, 660];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[A[0] - 150, A[1] - 150], [B[0] - 150, B[1] - 150], [880, 300], [820, 560]],
+    anchors: [[A[0] - 110, A[1] - 120], [B[0] + 50, B[1] - 176], [B[0] + 150, B[1] + 70], [Z[0] + 145, Z[1] - 95]],
     phase: (i) => ['ovocitul I · mamă de 40 de ani', 'nondisjuncție în MI', 'fecundația', '47,XX,+21'][i] || 'de unde vine al treilea 21',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
@@ -373,7 +420,7 @@ export function caseEmb() {
       // 2 · nondisjuncția în MI
       const q1 = q(1);
       if (q1 > 0) {
-        arr(g, A[0] + 140, A[1], B[0] - 140, B[1], '#fff3e6', 5, q1); txt(g, 'MI:\nnondisjuncție', 357, A[1] - 52, 16, '#ffb0a8', { alpha: q1 });
+        arr(g, A[0] + 140, A[1], B[0] - 140, B[1], '#fff3e6', 5, q1); txt(g, 'MI:\nnondisjuncție', 352, A[1] - 44, 15, '#ffb0a8', { alpha: q1 });
         const fert = q(2);
         oocyte(g, B[0], B[1], 104, t, { corona: true, alpha: q1, inner: (gg) => {
           if (fert < 0.55) { chromo(gg, -16, 0, 66, K.mat, { dup: true, w: 11, cen: 0.18 }); chromo(gg, 18, 0, 66, K.pat, { dup: true, w: 11, cen: 0.18 }); }
@@ -411,17 +458,17 @@ export function caseEmb() {
    1 = MI vs. MII (4 gameți anormali vs. 2); 2 = profaza I → metafaza II; 3 = 15q: lipsă paternă = Prader-Willi;
    4 = 22q11.2 (DiGeorge) și 5p− (cri-du-chat); 5 = 13/14 și 9/22; 6 = markerii serului matern. */
 export function traps() {
-  const CELL = [[255, 170], [745, 170], [255, 460], [745, 460], [255, 750], [745, 750]];
+  const CELL = [[255, 215], [745, 215], [255, 490], [745, 490], [255, 765], [745, 765]];
   const T = ['MI vs. MII', 'unde stă ovocitul', 'Angelman vs. Prader-Willi', 'DiGeorge · cri-du-chat', 'translocațiile', 'serul matern'];
   return {
     home: HOME, cams: CELL.map(() => HOME),
-    anchors: CELL.map(([x, y]) => [x - 205, y - 105]),
+    anchors: CELL.map(([x, y]) => [x - 238, y]),
     phase: (i) => T[i] || 'ce se confundă',
     draw(g, t, b) {
       bg(g);
       CELL.forEach(([x, y], k) => {
         const act = b.i === k || b.i < 0; const a = act ? 1 : 0.55;
-        panel(g, x - 230, y - 125, 460, 250, { fill: b.i === k ? 'rgba(217,101,42,.16)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
+        panel(g, x - 222, y - 122, 444, 244, { fill: b.i === k ? 'rgba(217,101,42,.16)' : 'rgba(255,240,228,.05)', stroke: b.i === k ? 'rgba(255,180,138,.7)' : 'rgba(255,230,210,.14)' });
         txt(g, T[k], x, y - 96, 18, b.i === k ? C.hi : '#ffd6c4', { alpha: a });
         g.save(); g.globalAlpha = a;
         if (k === 0) { // 4 gameți: MI (toți anormali) vs. MII (2 din 4)
@@ -451,4 +498,6 @@ export function traps() {
 const KARc = '#e9dcff';
 
 /* =================================================== RECAPITULAREA: drumul de pe copertă, cu rândul tabelului aprins */
-export function recap({ spec }) { return cover({ spec: { ...spec, sceneOpts: { map: [0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 2] } } }); }
+// rândurile tabelului: Diviziunea · Perioada de dezvoltare · Perioadele critice · Cauzele · CGP + teratoame · numerice ·
+// structurale · sexuali · Gameți anormali · Diagnostic prenatal · Avorturile spontane
+export function recap({ spec }) { return cover({ spec: { ...spec, sceneOpts: { map: [['div'], ['crit'], ['crit'], ['crit', 'chr'], ['gam'], ['chr'], ['chr'], ['chr'], ['abn'], ['pren'], ['chr']] } } }); }
