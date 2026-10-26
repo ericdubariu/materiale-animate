@@ -137,6 +137,18 @@
    "updated": "2026-10-26",
    "tip": "lp",
    "ord": 10
+  },
+  {
+   "id": "embrio-lp02-anim",
+   "subj": "embrio",
+   "title": "LP 2 · Arcurile faringiene",
+   "sub": "Aparatul faringian · Cele 5 arcuri și derivatele · Nervi, artere, mușchi, schelet · Șanțuri și sinusul cervical · Pungi, timus, paratiroide · Fistula branhială · Treacher Collins, Pierre Robin, DiGeorge",
+   "slides": 26,
+   "path": "lp/embrio-lp02-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "tip": "lp",
+   "ord": 20
   }
  ]
 }
