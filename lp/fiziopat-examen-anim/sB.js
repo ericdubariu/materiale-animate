@@ -77,8 +77,9 @@ export function q10({ spec }) {
       thermometer(g, 430, 700, 230, (curL - 35) / 7);
       txt(g, `${curL.toFixed(1)}°C`, 430, 800, 24, '#ff8a95');
       if (cyc < 0.35) { [[170, 520], [230, 545], [290, 520]].forEach(([x, y], k) => { paint(g, blob(x, y - 50 * clamp(cyc / 0.3), 14, 14, 0, t, 0.05, 10, k), '#ffe36e', null, null, bb(x, y, 14, 14), OUT, 3); }); txt(g, 'pirogeni → set-point ↑', 250, 600, 22, '#ffe36e'); }
-      else if (cyc < 0.72) { shiver(g, 230, 500, 1, t); txt(g, 'frison, vasoconstricție', 250, 570, 22, '#7fe8ff'); txt(g, 'feedback normal', 250, 602, 22, '#9dff8a'); }
-      else { capsule(g, 230, 505, 1.3, -0.4); txt(g, 'antipiretic → ↓ PGE₂', 250, 590, 22, '#ff8a95'); }
+      // frisonul doar cât temperatura reală e sub noul set-point; apoi echilibru; după antipiretic set-point ↓ → vasodilatație + sudorație
+      else if (cyc < 0.72) { if (curL < setL - 0.05) { shiver(g, 230, 500, 1, t); txt(g, 'frison, vasoconstricție', 250, 570, 22, '#7fe8ff'); } else txt(g, 'echilibru la nivel ↑', 250, 570, 22, '#9dff8a'); txt(g, 'feedback normal', 250, 602, 22, '#9dff8a'); }
+      else { capsule(g, 230, 505, 1.3, -0.4); txt(g, 'antipiretic → ↓ PGE₂', 250, 590, 22, '#ff8a95'); if (curL > setL + 0.05) txt(g, 'vasodilatație, sudorație', 250, 624, 20, '#7fe8ff'); }
       // ---- dreapta: hipertermia
       const fR = b.i === 1 ? clamp(b.bt / (b.bd * 0.95)) : 1; const cycR = b.i === 1 ? fR : (t * 0.12 + 0.5) % 1;
       const curR = 37 + 3.5 * ease(clamp(cycR / 0.6)) - 3.5 * ease(clamp((cycR - 0.75) / 0.22));
@@ -129,7 +130,9 @@ export function q11({ spec }) {
       const sp = 37 + 2 * clamp(st - 3);
       const tu = b.i === 4 ? clamp(b.bt / (b.bd * 0.85)) * 0.42 : b.i === 5 ? 0.42 + clamp(b.bt / (b.bd * 0.85)) * 0.58 : b.i < 0 ? 1 : 0;
       const realT = 37 + 2 * clamp((CY0 - curveY(Math.max(0.0001, tu))) / (CY0 - CY1));
-      dial(g, DIAL[0], DIAL[1], 95, b.i === 5 && tu > 0.72 ? 37 : sp, b.i >= 4 || b.i < 0 ? realT : 37, '', b.i === 3);
+      // revenirea (defervescența): set-point-ul coboară primul la 37°C, temperatura reală îl urmează (vasodilatație, sudorație)
+      const setNow = tu > 0.72 ? lerp(sp, 37, ease(clamp((tu - 0.72) / 0.06))) : sp;
+      dial(g, DIAL[0], DIAL[1], 95, setNow, b.i >= 4 || b.i < 0 ? realT : 37, '', b.i === 3);
       txt(g, 'set-point', DIAL[0], DIAL[1] - 125, 20, '#ffe36e', 'center', 700);
       if (st > 2.6) { arrow(g, 740, 420, 772, 420, '#ffe36e', 5); txt(g, 'AMPc', 752, 395, 17, '#ffe36e', 'center', 700); }
       // 5–6 · curba febrei
@@ -155,7 +158,9 @@ export function q12({ spec }) {
     phase: (i) => ['consecințele (costurile)', 'efectele benefice'][i] || '',
     draw(g, t, b) {
       bgFill(g);
-      const tilt = b.i === 0 ? 0.12 : b.i === 1 ? -0.12 : 0.04 * Math.sin(t);
+      // talerul despre care vorbește punctul se încarcă și coboară: costuri (stânga) în beat 0, câștig (dreapta) în beat 1
+      const bp = b.i >= 0 ? clamp(b.bt / (b.bd * 0.75)) : 0;
+      const tilt = b.i === 0 ? -0.12 * ease(bp) : b.i === 1 ? lerp(-0.12, 0.12, ease(bp)) : 0.04 * Math.sin(t);
       const ax = Math.cos(tilt), ay = Math.sin(tilt);
       const L = [PIV[0] - 250 * ax, PIV[1] - 250 * ay], R = [PIV[0] + 250 * ax, PIV[1] + 250 * ay];
       // suportul
@@ -278,7 +283,7 @@ export function q15({ spec }) {
       // ---- cine
       { const x = C[0]; const glow = 0.5 + 0.5 * Math.sin(t * 3);
         g.save(); g.shadowColor = '#ffe36e'; g.shadowBlur = 18 * glow; rod(g, x - 30, 175, 0.9, 0.2, t, '#ff8fb3', true); g.restore(); txt(g, 'LPZ · Gram −', x + 40, 225, 19, '#ffe36e', 'center', 700); txt(g, '(cel mai puternic)', x + 40, 250, 17, '#ffe36e', 'center', 700);
-        coccus(g, x - 60, 310, 0.9, t, 4); txt(g, 'acid lipoteicoic, peptidoglicani', x + 20, 355, 16, '#9fb3ff', 'center', 700); txt(g, '(Gram +)', x + 20, 377, 16, '#9fb3ff', 'center', 700);
+        coccus(g, x - 60, 310, 0.9, t, 4, '#6a48c9'); txt(g, 'acid lipoteicoic, peptidoglicani', x + 20, 355, 16, '#9fb3ff', 'center', 700); txt(g, '(Gram +)', x + 20, 377, 16, '#9fb3ff', 'center', 700);
         virus(g, x - 60, 430, 0.8, t); paint(g, blob(x + 20, 430, 26, 18, 0.5, t, 0.08, 10, 6), '#d8c47a', null, '#fff3c0', bb(x + 20, 430, 26, 18), OUT, 4); capsule(g, x + 90, 430, 0.8, 0.3);
         txt(g, 'virusuri · fungi · medicamente', x + 10, 478, 16, '#d9c8e4', 'center', 700);
         antibody(g, x - 20, 530, 1.6, 0, '#ffe08a'); g.save(); g.fillStyle = '#ff6b7a'; g.strokeStyle = OUT; g.lineWidth = 2.5; g.beginPath(); g.arc(x - 20, 508, 8, 0, 7); g.fill(); g.stroke(); g.restore(); txt(g, 'complexe Ag-Ac', x + 60, 538, 17, '#d9c8e4', 'center', 700); }

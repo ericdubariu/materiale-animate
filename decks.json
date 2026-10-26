@@ -50,7 +50,7 @@
    "slides": 29,
    "path": "lp/histo-lp07-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 70
   },
@@ -62,7 +62,7 @@
    "slides": 19,
    "path": "lp/recap-histo-02-05-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 902
   },
@@ -74,7 +74,7 @@
    "slides": 43,
    "path": "lp/anatopat-z1-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 101
   },
@@ -86,7 +86,7 @@
    "slides": 40,
    "path": "lp/anatopat-z2-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 106
   },
@@ -98,7 +98,7 @@
    "slides": 33,
    "path": "lp/anatopat-z3-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 113
   },
@@ -110,7 +110,7 @@
    "slides": 46,
    "path": "lp/fiziopat-examen-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 500
   },
@@ -122,9 +122,33 @@
    "slides": 23,
    "path": "lp/embrio-lp05-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-25",
+   "updated": "2026-10-26",
    "tip": "lp",
    "ord": 50
+  },
+  {
+   "id": "embrio-lp01-anim",
+   "subj": "embrio",
+   "title": "LP 1 · Reproducerea",
+   "sub": "Mitoza și meioza · perioadele critice · CGP și teratomul · anomaliile cromozomiale · gemenii · diagnosticul prenatal · cazul Down",
+   "slides": 30,
+   "path": "lp/embrio-lp01-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "tip": "lp",
+   "ord": 10
+  },
+  {
+   "id": "embrio-lp02-anim",
+   "subj": "embrio",
+   "title": "LP 2 · Arcurile faringiene",
+   "sub": "Aparatul faringian · Cele 5 arcuri și derivatele · Nervi, artere, mușchi, schelet · Șanțuri și sinusul cervical · Pungi, timus, paratiroide · Fistula branhială · Treacher Collins, Pierre Robin, DiGeorge",
+   "slides": 26,
+   "path": "lp/embrio-lp02-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "tip": "lp",
+   "ord": 20
   }
  ]
 }

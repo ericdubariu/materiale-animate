@@ -86,8 +86,8 @@ export const SLIDES = [
     hud: ['<b>HE</b> · ob. mare'],
     points: [
       { h: 'Fibrele de colagen', d: ['**palid roz**, izolate sau în fascicule', '!!orientare variabilă!!'] },
-      { h: 'Fibroblastul', d: ['nucleu alungit-ovalar, !!hipocrom!!, nucleol vizibil = celulă activă'] },
-      { h: 'Fibrocitul', d: ['nucleu alungit, subțire, !!în bastonaș, hipercrom!! = celulă în repaus; lângă fascicule'] },
+      { h: 'Fibroblastul', d: ['nucleu alungit, în bastonaș, !!hipocrom!!, nucleol vizibil = celulă activă'] },
+      { h: 'Fibrocitul', d: ['nucleu alungit, subțire, în bastonaș, !!hipercrom!! = celulă în repaus; lângă fascicule'] },
       { h: 'Celule migrate din sânge', d: ['**limfocite, plasmocite**'] },
     ],
     why: 'Fibrele elastice și de reticulină există și aici, dar **nu se văd în HE**. Lângă fibre stau fibroblastele/fibrocitele, care le fabrică. **Schema din îndrumător:** 1 fibre colagene · 2 fibrocit · 3 fibroblast · 4 plasmocit · 5 adipocit · 6 limfocit · 7–8 capilare (longitudinal, transversal).',

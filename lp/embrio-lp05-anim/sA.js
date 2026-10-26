@@ -15,7 +15,7 @@ export function srcIcon(g, k, x, y, t, a = 1) {
     ell(g, x, y + 36, 16, 13, C.blast, { ow: 3 });
   } else if (k === 1) { // cloaca + septul care coboară
     ell(g, x, y + 6, 46, 40, C.sinus, { ow: 5 });
-    const s = 0.5 + 0.5 * Math.sin(t * 1.6);
+    const s = ease(clamp(loopT(t, 3) * 1.4)); // septul urorectal doar COBOARĂ (spre membrana cloacală), apoi bucla repornește
     tube(g, [[x, y - 34], [x + 2, y - 34 + 70 * s]], 9, C.septum, { ow: 4 });
   } else if (k === 2) { // gonada + celule germinale care intră
     ell(g, x, y, 42, 30, C.gonad, { ow: 5 });

@@ -163,7 +163,7 @@ export function q3() {
       txt(g, 'ereditară · mediu normal', mx - 20, 580, 18, '#e6dcff', 'center', 700);
       // 3 · mialgie, insolație, arsuri
       const ax = 830; txt(g, 'mialgie: doar apa refăcută', ax, 165, 18, '#e6dcff', 'center', 700);
-      const na = b.i === 2 ? clamp(b.bt / 2) : 1; ['Na⁺', 'Cl⁻'].forEach((s, k) => { const y = 215 + k * 40 - 30 * na; pill(g, s + ' ↓', ax - 60 + k * 120, y, '#3a6ab0', 18); });
+      const na = b.i === 2 ? clamp(b.bt / 2) : 1; ['Na⁺', 'Cl⁻'].forEach((s, k) => { const y = 185 + k * 40 + 30 * na; /* Na⁺, Cl⁻ ↓: pastilele coboară */ pill(g, s + ' ↓', ax - 60 + k * 120, y, '#3a6ab0', 18); });
       // insolația: soare pe cap → creier
       g.save(); g.fillStyle = SKIN; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.arc(ax, 360, 46, 0, 7); g.fill(); g.stroke(); g.restore();
       for (let k = 0; k < 3; k++) { const u = (t * 0.6 + k / 3) % 1; arrow(g, ax - 90 + k * 60, 270 + u * 20, ax - 30 + k * 25, 320, '#ffd34d', 5); }
