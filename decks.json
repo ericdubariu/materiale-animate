@@ -125,6 +125,18 @@
    "updated": "2026-10-26",
    "tip": "lp",
    "ord": 50
+  },
+  {
+   "id": "embrio-lp01-anim",
+   "subj": "embrio",
+   "title": "LP 1 · Reproducerea",
+   "sub": "Mitoza și meioza · perioadele critice · CGP și teratomul · anomaliile cromozomiale · gemenii · diagnosticul prenatal · cazul Down",
+   "slides": 24,
+   "path": "lp/embrio-lp01-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "tip": "lp",
+   "ord": 10
   }
  ]
 }
