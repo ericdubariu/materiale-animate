@@ -298,7 +298,7 @@ export function traps() {
   const T0 = ['arc vs. șanț vs. pungă', 'câte sunt', 'paratiroidele', 'oscioarele și hioidul', 'nervii', 'ce supraviețuiește'];
   return {
     home: HOME, cams: CELL.map(() => HOME),
-    anchors: CELL.map(([x, y]) => [x - 238, y]),
+    anchors: CELL.map(([x, y]) => [x - 215, y - 118]),
     phase: (i) => T0[i] || 'ce se confundă',
     draw(g, t, b) {
       BI = b.i;

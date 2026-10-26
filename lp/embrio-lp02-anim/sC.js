@@ -24,7 +24,7 @@ export function sinusScene(mode) {
   const persist = mode === 'persist';
   return () => { let BI = -1; return {
     home: HOME, cams: (persist ? [0, 1, 2] : [0, 1, 2, 3]).map(() => HOME),
-    anchors: persist ? [[250, 722], [346, 575], () => (BI === 2 || BI < 0 ? [470, 440] : OFF)] : [[250, 300], [240, 420], [250, 720], [250, 600]],
+    anchors: persist ? [[250, 722], [300, 520], () => (BI === 2 || BI < 0 ? [470, 440] : OFF)] : [[250, 300], [240, 420], [250, 720], [250, 600]],
     phase: (i) => (persist ? ['orificiul extern', 'sinusul cervical persistent', 'comunicarea → fistulă'][i] || 'baza embriologică' : ['4 șanțuri de ectoderm', 'arcul 2 crește în jos', 'fuziune → sinusul cervical', 'sinusul dispare'][i] || 'arcul 2 închide șanțurile 2–4'),
     draw(g, t, b) {
       bg(g); BI = b.i;
