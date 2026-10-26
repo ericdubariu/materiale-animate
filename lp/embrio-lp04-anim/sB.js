@@ -16,7 +16,7 @@ export function atrial() {
   const L = 120, R = 880, T = 170, BOT = 740; const XS = 430, XP = 560; // linia septum secundum / primum
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[XP + 50, 230], [XP + 50, 760], [XS - 50, 230], [XS - 210, 700]],
+    anchors: [[XP + 50, 310], [XP + 50, 760], [XS - 50, 230], [XS - 210, 700]],
     phase: (i) => ['st. 13: septum primum', 'ostium primum se închide', 'st. 18–21: septum secundum', 'supapa: făt → naștere'][i] || 'septarea atrială',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4, 0.55);
@@ -295,7 +295,7 @@ export function arches2() {
       tube(g, RCC, 22, '#3db06c', { ow: 5 }); tube(g, LCC, 22, '#3db06c', { ow: 5 }); txt(g, 'carotidele (III)', 525, 90, 17, '#bff0d2');
       // IV
       tube(g, ARC.slice(0, 4), 48, '#d2524a', { ow: 6, glow: hi(0) }); txt(g, 'arcul aortei (IV stg.)', 640, 300, 18, '#ffd0cc');
-      tube(g, BCT, 28, '#d2524a', { ow: 5 });
+      tube(g, BCT, 28, G, { ow: 5 }); // trunchiul brahiocefalic = din sacul aortic (cornul drept), NU din arcul IV → gri
       tube(g, RSUBp, 26, '#d2524a', { ow: 5, glow: hi(1) }); txt(g, 'subclavia dr.\n(IV dr., proximal)', 250, 240, 16, '#ffd0cc');
       // VI
       tube(g, LPA, 30, B.dx, { ow: 5, glow: hi(2) }); txt(g, 'a. pulmonară stg.', 880, 690, 16, '#c9d8ff');

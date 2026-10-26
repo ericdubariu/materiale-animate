@@ -31,7 +31,7 @@ export function veins3() {
       // septul transvers (ficatul crește aici)
       g.save(); g.fillStyle = 'rgba(244,195,79,.18)'; g.fillRect(60, 400, 880, 90); g.restore(); txt(g, 'septul transvers (→ ficat)', 500, 445, 17, '#ffe9a8');
       ell(g, 500, 800, 66, 50, '#f4c34f', { ow: 5 }); txt(g, 'sac vitelin', 500, 800, 15, OUT, { stroke: false });
-      txt(g, '← dreapta embrionului', 160, 40, 16, C.cream);
+      txt(g, '← dreapta embrionului', 150, 905, 16, C.cream);
       const dim = (k) => (b.i < 0 || b.i === k || b.i === 3 ? 1 : 0.4);
       side.forEach(([s, x]) => {
         const fade = s > 0 ? rem : 0; // venele din stânga (dreapta ecranului) se închid / își trimit sângele spre dreapta

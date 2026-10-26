@@ -149,6 +149,42 @@
    "updated": "2026-10-26",
    "tip": "lp",
    "ord": 20
+  },
+  {
+   "id": "micro-examen-anim",
+   "subj": "micro",
+   "tip": "lp",
+   "title": "Principiile LP 1–6 + atlasul mediilor",
+   "sub": "Controlul creșterii · microscopie · medii · însămânțări · antibiograma (Kirby-Bauer, CMI) · reacții Ag–Ac · parazitologie · 25 de medii din poze",
+   "slides": 82,
+   "path": "lp/micro-examen-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "ord": 500
+  },
+  {
+   "id": "embrio-lp04-anim",
+   "subj": "embrio",
+   "tip": "lp",
+   "title": "LP 4 · Sistemul cardiovascular",
+   "sub": "Tubul cardiac · septările · arcurile aortice · venele · circulația fetală · DSV, DSA, Fallot, canal arterial, Eisenmenger",
+   "slides": 26,
+   "path": "lp/embrio-lp04-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "ord": 40
+  },
+  {
+   "id": "embrio-lp06-anim",
+   "subj": "embrio",
+   "tip": "lp",
+   "title": "LP 6 · Sistemul nervos, organele de simț, tegumentul",
+   "sub": "Neurulația · veziculele · creasta neurală · spina bifida · hipofiza · ochiul · urechea · pielea",
+   "slides": 26,
+   "path": "lp/embrio-lp06-anim/index.html",
+   "added": "2026-10-26",
+   "updated": "2026-10-26",
+   "ord": 60
   }
  ]
 }

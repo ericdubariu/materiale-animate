@@ -98,7 +98,7 @@ export function timeline() {
   const NOW = [12.4, 12.6, 18, 24, 24]; // linia „acum” pe tabel (în stadii) la sfârșitul fiecărui punct
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[AX.S3 - 40, AY - 30], [AX.S4 - 40, AY - 30], [370, RY(2)], [370, RY(10)], [AX.N - 40, AY - 30]],
+    anchors: [[AX.S3 - 40, AY - 30], [AX.S4 - 40, AY + 34], [370, RY(2)], [370, RY(10)], [AX.N - 40, AY - 30]],
     phase: (i) => ['S3', 'S4', 'S5–S6 · st. 13–17', 'S7–S8 · st. 18–23', 'nașterea'][i] || 'S3 → naștere',
     draw(g, t, b) {
       bg(g);
@@ -147,7 +147,7 @@ export function tubeForm() {
   const cells = []; for (let k = 0; k < 22; k++) cells.push([k % 2 ? 1 : -1, 0]);
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[DX + 150, 205], [SX - 200, 520], [SX + 120, 640], [SX + 120, 360]],
+    anchors: [[DX - 145, 255], [SX - 200, 520], [SX + 120, 640], [SX + 120, 360]],
     phase: (i) => ['aria cardiogenă (S3)', 'cordul primordial: 2 tuburi', 'tub unic · bate (21–23 zile)', 'mezocardul dorsal'][i] || 'S3 → S4',
     draw(g, t, b) {
       bg(g); const p = P(b, t, 4);
