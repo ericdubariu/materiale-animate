@@ -1,406 +1,404 @@
-// Partea C + E + F: anomaliile cromozomiale, diagnosticul prenatal, cazul, capcanele, recapitularea.
-import { HOME, C, bg, panel, txt, pill, tube, flow, dot, ell, arr, at, curve, loopT, OUT, clamp, lerp, ease, REDUCED } from './ek.js';
-import { chromo, cell, card, vis, act, pulse, MAT, PAT, GRN, RED, AMB, OK } from './k1.js';
+// Partea C: anomaliile cromozomiale — clasificarea (cariotip), ploidia, nondisjuncția, trisomiile, anomaliile structurale,
+// microdeleția 15q, cromozomii sexuali, Turner vs. Klinefelter.
+import {
+  cam, HOME, C, K, bg, panel, P, on, loopT, txt, pill, curve, at, tube, flow, dot, ell, arr, ring, lead,
+  OUT, clamp, lerp, ease, paint, blob, bb, smooth, REDUCED,
+  chromo, cellB, dividing, sperm, oocyte, polar, body, srand, rr,
+} from './k1.js';
 
-const pr = (b, k, f = 0.65) => (b.i < 0 ? 1 : b.i > k ? 1 : b.i < k ? 0 : ease(clamp(b.bt / (b.bd * f))));
-const glowBox = (g, x, y, w, h, a) => { if (a <= 0) return; g.save(); g.globalAlpha = a; g.strokeStyle = C.hi; g.lineWidth = 5; g.shadowColor = C.hi; g.shadowBlur = 20; g.beginPath(); g.roundRect(x, y, w, h, 18); g.stroke(); g.restore(); };
+const sp = (u, a, b) => ease(clamp((u - a) / (b - a)));
+const KAR = '#e9dcff', KARS = '#b9a3ea';
 
-/* ============ CLASIFICAREA + PLOIDIA ============ */
+/* =================================================== CLASIFICAREA, pe un cariotip (22 de perechi + XY)
+   Se vede: cariotipul normal 46,XY (perechile 1–22 în ordinea mărimii, apoi X și Y). 1 = numeric: un al treilea 21 cade în
+   perechea 21 → 47 (trisomie); 2 = structural: un segment din brațul scurt al lui 5 se rupe și pleacă (5p−);
+   3 = autozomale: se aprind perechile 1–22 (Down 21, Edwards 18, Patau 13, cri-du-chat 5p−);
+   4 = sexuali: se aprinde perechea XY (Turner XO, Klinefelter XXY, XXX, XYY). Jos, cele 2 întrebări. */
 export function classif() {
-  const BR = [[260, 300, 'A. Numerice', 'apar în meioză', '#ffd6c4'], [260, 470, 'B. Structurale', 'deleții · microdeleții\ntranslocații', '#ffe9a8'], [740, 300, 'A. Autozomale', 'Down 21 · Edwards 18\nPatau 13 · cri-du-chat 5p−', '#e3d6ff'], [740, 470, 'B. Sexuali', 'Turner XO · Klinefelter XXY\nXXX · XYY', '#c8f0d8']];
-  // ploidia: câte copii are fiecare din 3 cromozomi reprezentativi
-  const PL = [['haploid · n', [1, 1, 1], '23'], ['diploid · 2n', [2, 2, 2], '46'], ['triploid · 3n', [3, 3, 3], '69'], ['trisomie · 2n+1', [2, 3, 2], '47'], ['monosomie · 2n−1', [2, 1, 2], '45']];
+  const ROWS = [[1, 5], [6, 12], [13, 18], [19, 22]]; const RY = [170, 330, 480, 620];
+  const len = (k) => 74 - k * 2.3; const cenOf = (k) => ([13, 14, 15, 21, 22].includes(k) ? 0.14 : k <= 3 ? 0.45 : 0.33);
+  const POS = {};
+  ROWS.forEach(([a, c], r) => { const n = c - a + 1 + (r === 3 ? 1 : 0); const w = 860 / n; for (let k = a; k <= c; k++) POS[k] = [90 + w * (k - a + 0.5), RY[r]]; if (r === 3) POS.XY = [90 + w * (n - 0.5), RY[r]]; });
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: BR.map(([x, y]) => [x - 150, y - 50]),
+    anchors: [[POS[21][0] + 60, POS[21][1] - 60], [POS[5][0] - 62, POS[5][1] - 40], [POS[1][0] - 60, POS[1][1] - 60], [POS.XY[0] - 70, POS.XY[1] - 60]],
+    phase: (i) => ['I.A numerice', 'I.B structurale', 'II.A autozomale', 'II.B sexuali'][i] || '46,XY',
     draw(g, t, b) {
-      bg(g);
-      card(g, 500, 80, 360, 70, 'Anomalii cromozomiale', '', '#ffb48a', { ts: 22 });
-      [['I. după tipul anomaliei', 260], ['II. după cromozom', 740]].forEach(([s, x]) => { txt(g, s, x, 190, 18, '#ffe7d6'); arr(g, 500, 118, x, 168, '#fff3e6', 4, 1); });
-      BR.forEach(([x, y, n, s, col], k) => card(g, x, y, 330, 120, n, s, col, { alpha: vis(b, k, 0.35), glow: act(b, k) ? 1 : 0, ts: 20, ss: 15 }));
-      // ploidia (sub numerice)
-      const a0 = b.i < 0 || b.i === 0 ? 1 : 0.25;
-      panel(g, 30, 560, 940, 300, { fill: 'rgba(255,240,228,.05)' });
-      txt(g, '3 cromozomi reprezentativi; fiecare bară = o copie', 500, 585, 15, '#cdb8ab', { alpha: a0, w: 600 });
-      const cyc = b.i === 0 ? Math.min(4, Math.floor(b.bt / (b.bd / 5))) : b.i < 0 ? Math.floor((REDUCED ? 0 : t) / 1.6) % 5 : -1;
-      PL.forEach(([n, cp, num], j) => {
-        const x = 120 + j * 190; const on = j === cyc; const odd = j >= 3;
-        cp.forEach((m, c) => { for (let q = 0; q < m; q++) { const extra = odd && ((j === 3 && c === 1 && q === 2) || (j === 4 && c === 1)); tube(g, [[x - 40 + c * 40 + q * 10 - 5, 640], [x - 40 + c * 40 + q * 10 - 5, 720]], 8, extra ? AMB : ['#e8505b', '#7fb6e6', '#9dff8a'][c], { ow: 3, alpha: a0 }); } });
-        txt(g, n, x, 760, 15, on ? C.hi : '#ffe7d6', { alpha: a0 }); txt(g, num, x, 800, 22, on ? C.hi : '#ffb48a', { alpha: a0 });
-        glowBox(g, x - 85, 615, 170, 205, on ? a0 * 0.9 : 0);
+      bg(g); const p = P(b, t, 4); const p0 = p(0), p1 = p(1);
+      const auto = on(b, 2) ? 1 : 0, sex = on(b, 3) ? 1 : 0;
+      for (let k = 1; k <= 22; k++) {
+        const [x, y] = POS[k]; const h = len(k);
+        const hot = auto || (b.i < 0 && [21, 18, 13, 5].includes(k));
+        if (auto) { g.save(); g.globalAlpha = 0.18 + 0.1 * Math.sin(t * 3 + k); g.fillStyle = C.hi; g.beginPath(); g.roundRect(x - 26, y - h / 2 - 12, 52, h + 24, 12); g.fill(); g.restore(); }
+        const del = k === 5 ? p1 : 0;
+        [-1, 1].forEach((s, j) => {
+          if (k === 5 && j === 1 && del > 0) {
+            // cromozomul 5 cu brațul scurt rupt: rămâne partea de jos; fragmentul pleacă
+            const cut = 0.2; chromo(g, x + s * 11, y + h * cut / 2, h * (1 - cut), KAR, { dup: true, w: 7, cen: (cenOf(k) - cut) / (1 - cut), sc: KARS });
+            const fx = x + s * 11 + 40 * del, fy = y - h / 2 + h * cut / 2 - 30 * del;
+            chromo(g, fx, fy, h * cut, '#ffb15c', { dup: true, w: 7, cen: 0.99, alpha: 1 - sp(del, 0.6, 1), rot: del });
+          } else chromo(g, x + s * 11, y, h, KAR, { dup: true, w: 7, cen: cenOf(k), sc: KARS });
+        });
+        txt(g, String(k), x, y + h / 2 + 18, 14, hot ? C.hi : '#d8c4b8', { w: 700 });
+      }
+      // al treilea 21 (numeric)
+      if (p0 > 0) { const [x, y] = POS[21]; chromo(g, x + 34, lerp(y - 140, y, sp(p0, 0, 0.6)), len(21), K.dad, { dup: true, w: 7, cen: cenOf(21), glow: on(b, 0) ? 1 : 0 }); }
+      // XY
+      const [xx, xy] = POS.XY;
+      if (sex) { g.save(); g.globalAlpha = 0.25 + 0.1 * Math.sin(t * 3); g.fillStyle = C.hi; g.beginPath(); g.roundRect(xx - 32, xy - 46, 64, 92, 12); g.fill(); g.restore(); }
+      chromo(g, xx - 12, xy, 56, '#ffd0e6', { dup: true, w: 7, cen: 0.4 }); chromo(g, xx + 14, xy + 10, 26, '#bfe0ff', { dup: true, w: 7, cen: 0.3 });
+      txt(g, 'X  Y', xx, xy + 52, 14, sex ? C.hi : '#d8c4b8', { w: 700 });
+      // contorul
+      pill(g, 870, 795, 170, 46, p0 > 0.5 ? K.dad : '#3a2a26', p0 > 0.5 ? '47 → trisomie' : '46 de cromozomi', { size: 17, col: p0 > 0.5 ? OUT : C.cream });
+      // etichetele punctelor (pe desen)
+      if (on(b, 0) || (b.i < 0 && p0 > 0.6)) txt(g, '+1 copie a lui 21', POS[21][0] - 10, POS[21][1] - 80, 17, '#bff0d2');
+      if (p1 > 0.5) txt(g, '5p− (deleție)', POS[5][0], POS[5][1] - 88, 17, '#ffc98a', { alpha: sp(p1, 0.5, 1) });
+      if (auto) [[21, 'Down'], [18, 'Edwards'], [13, 'Patau'], [5, 'cri-du-chat']].forEach(([k, n]) => { const [x, y] = POS[k]; pill(g, x, y - len(k) / 2 - 30, n.length * 9 + 26, 30, C.hi, n, { size: 14 }); });
+      if (sex) txt(g, 'Turner XO · Klinefelter XXY · XXX · XYY', 600, 700, 17, '#ffd0e6');
+      // cele 2 întrebări
+      const Q = [['ce s-a stricat?', [['numeric', 0], ['structural', 1]]], ['pe ce cromozom?', [['autozomal (1–22)', 2], ['sexual (X, Y)', 3]]]];
+      Q.forEach(([q, opts], r) => {
+        const y = 760 + r * 70; txt(g, q, 180, y, 18, C.cream, { align: 'right' });
+        opts.forEach(([o, k], j) => pill(g, 330 + j * 260, y, 230, 46, b.i === k ? C.hi : '#3a2a26', o, { size: 17, col: b.i === k ? OUT : C.cream, glow: b.i === k ? 0.8 : 0 }));
       });
-      txt(g, 'euploidie (seturi întregi)', 310, 845, 15, '#cdb8ab', { alpha: a0 }); txt(g, 'aneuploidie (1 cromozom)', 785, 845, 15, '#cdb8ab', { alpha: a0 });
-      txt(g, '50% dintre produșii de concepție sunt avortați spontan', 500, 905, 17, '#ff9a8a', { alpha: b.i < 0 ? 1 : 0.7 });
+      txt(g, '50% dintre produșii de concepție → avort spontan', 700, 900, 16, '#d8c4b8', { w: 700 });
+      if (on(b, 0)) ring(g, POS[21][0] + 10, POS[21][1], 60, 56, ease(b.bt * 1.4));
+      if (on(b, 1)) ring(g, POS[5][0] + 20, POS[5][1] - 10, 60, 64, ease(b.bt * 1.4));
     },
   };
 }
 
-/* ============ NONDISJUNCȚIA ============ */
-// o pereche de omologi: roșu = matern, albastru = patern. MI separă omologii, MII separă cromatidele.
+/* =================================================== PLOIDIA (3 cromozomi reprezentativi; fiecare bară = o copie)
+   Sus, euploidie: n (un set: roșu) · 2n (setul albastru vine lângă cel roșu) · 3n (al treilea set, verde, intră → avort).
+   Fiecare tip de cromozom are grupul lui; copiile stau una lângă alta. Jos, aneuploidie: 2n+1 (o copie verde în plus la
+   UN singur cromozom → 47) · 2n−1 (o copie a unui cromozom pleacă → 45; viabil doar 45,X). */
+export function ploidy() {
+  const L = [64, 50, 36]; const GX = [-70, 0, 70];
+  const NUC = { n: [180, 290], d: [500, 290], t: [820, 290], tri: [330, 700], mono: [670, 700] };
+  const COLS = [K.mat, K.pat, K.dad];
+  // copies[k] = câte copii are cromozomul k; enter = animația copiei care intră (index copie → [dx, dy, a])
+  const grp = (g, x, y, copies, mv = () => [0, 0, 1]) => copies.forEach((n, k) => { for (let c = 0; c < n; c++) { const [dx, dy, a] = mv(k, c); chromo(g, x + GX[k] + (c - (n - 1) / 2) * 17 + dx, y + dy, L[k], COLS[c], { w: 9, alpha: a }); } });
+  return {
+    home: HOME, cams: [HOME, HOME, HOME, HOME],
+    anchors: [[NUC.n[0], NUC.n[1] - 140], [NUC.d[0], NUC.d[1] - 140], [NUC.t[0], NUC.t[1] - 140], [500, 640]],
+    phase: (i) => ['haploid: n', 'diploid: 2n', 'poliploid: 3n', 'aneuploid: 2n ± 1'][i] || 'câte seturi',
+    draw(g, t, b) {
+      bg(g); const p = P(b, t, 4);
+      const A = (k) => Math.max(p(k), b.i < 0 ? 1 : 0);
+      txt(g, 'EUPLOIDIE · seturi întregi', 500, 115, 20, '#ffd6c4'); txt(g, 'ANEUPLOIDIE · un cromozom', 500, 545, 20, '#ffd6c4');
+      const nuc = (x, y, a, glow) => { if (a < 0.05) { ell(g, x, y, 128, 108, 'rgba(0,0,0,0)', { dash: [10, 8], ow: 3, sc: 'rgba(255,230,210,.35)' }); return; } cellB(g, x, y, 128, 108, t, { fill: K.nuc, shade: '#d6c8f5', light: '#ffffff', ow: 5, glow, alpha: Math.min(1, a * 1.5), seed: x }); };
+      const tag = (x, y, s, a, sub, sc) => { pill(g, x, y + 150, 220, 44, '#ffd6c4', s, { size: 17, alpha: Math.max(0.35, a) }); if (sub) txt(g, sub, x, y + 196, 16, sc || C.cream, { alpha: Math.max(0.35, a) }); };
+      // n
+      nuc(...NUC.n, A(0), on(b, 0) ? 0.8 : 0); if (A(0) > 0.05) grp(g, ...NUC.n, [1, 1, 1], () => [0, 0, A(0)]); tag(...NUC.n, 'n = 23', A(0), 'gameții');
+      // 2n: copiile albastre vin lângă cele roșii
+      nuc(...NUC.d, A(1), on(b, 1) ? 0.8 : 0); if (A(1) > 0.05) grp(g, ...NUC.d, [2, 2, 2], (k, c) => (c === 1 ? [lerp(90, 0, A(1)), lerp(-80, 0, A(1)), A(1)] : [0, 0, A(1)])); tag(...NUC.d, '2n = 46', A(1), 'celulele somatice');
+      // 3n
+      nuc(...NUC.t, A(2), on(b, 2) ? 0.8 : 0); if (A(2) > 0.05) grp(g, ...NUC.t, [3, 3, 3], (k, c) => (c === 2 ? [lerp(80, 0, A(2)), lerp(-90, 0, A(2)), A(2)] : [0, 0, A(2)])); tag(...NUC.t, '3n = 69', A(2), '→ de regulă avort', K.bad);
+      // aneuploidii
+      const a3 = A(3);
+      nuc(...NUC.tri, Math.max(0.5, a3), on(b, 3) ? 0.6 : 0); grp(g, ...NUC.tri, [2, 3, 2], (k, c) => (k === 1 && c === 2 ? [0, lerp(-170, 0, a3), a3] : [0, 0, 1]));
+      nuc(...NUC.mono, Math.max(0.5, a3), on(b, 3) ? 0.6 : 0); grp(g, ...NUC.mono, [2, 2, 2], (k, c) => (k === 1 && c === 1 ? [70 * a3, 150 * a3, 1 - a3] : [0, 0, 1]));
+      tag(...NUC.tri, 'trisomie · 2n+1 = 47', Math.max(0.5, a3), 'Down 21 · Edwards 18 · Patau 13');
+      tag(...NUC.mono, 'monosomie · 2n−1 = 45', Math.max(0.5, a3), 'viabilă doar 45,X (Turner)', C.hi);
+    },
+  };
+}
+
+/* =================================================== NONDISJUNCȚIA (o pereche: roșu matern + albastru patern, dublați)
+   Același arbore, 3 moduri: 1 = normal: MI separă omologii (sus roșu, jos albastru), MII separă cromatidele → 4 gameți n;
+   2 = în MI omologii NU se separă: o celulă primește ambii, cealaltă niciunul → gameții: n+1, n+1, n−1, n−1;
+   3 = MI normal, în MII cromatidele unei celule NU se separă → n, n, n+1, n−1; 4 = gametul n+1 + spermatozoid n → zigot 47
+   (trisomie); gametul n−1 + n → 45 (monosomie). */
 export function nondis() {
-  const COLX = [170, 500, 830];
-  // gameții: listă de cromozomi (culori) per gamet
-  const G = [[[MAT], [MAT], [PAT], [PAT]], [[MAT, PAT], [MAT, PAT], [], []], [[MAT], [MAT], [PAT, PAT], []]];
-  const MI = [[[MAT], [PAT]], [[MAT, PAT], []], [[MAT], [PAT]]];
-  const lab = (n) => (n === 1 ? 'n' : n === 2 ? 'n+1' : 'n−1');
+  const M = [500, 165]; const D = [[300, 405], [700, 405]]; const G = [[190, 650], [410, 650], [590, 650], [810, 650]];
   return {
-    home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[COLX[0] - 120, 70], [COLX[1] - 120, 70], [COLX[2] - 120, 70], [80, 740]],
+    home: HOME, cams: [HOME, HOME, HOME, cam(500, 560, 1.05)],
+    anchors: [[M[0] - 130, M[1] - 40], [D[0][0] - 110, D[0][1] - 60], [D[1][0] + 110, D[1][1] - 60], [500, 760]],
+    phase: (i) => ['meioza normală', 'nondisjuncție în MI', 'nondisjuncție în MII', 'fecundația'][i] || 'o pereche nu se desparte',
     draw(g, t, b) {
-      bg(g);
-      [['normal', 0], ['nondisjuncție\nîn meioza I', 1], ['nondisjuncție\nîn meioza II', 2]].forEach(([s, k]) => txt(g, s, COLX[k], 80, 18, act(b, k) ? C.hi : '#ffe7d6', { alpha: b.i === 3 ? 0.5 : vis(b, k, 0.35) }));
-      COLX.forEach((x, k) => {
-        const a = b.i === 3 ? 0.45 : vis(b, k, 0.3); const p = b.i === k ? ease(clamp(b.bt / (b.bd * 0.7))) : b.i < 0 || b.i > k ? 1 : 0;
-        cell(g, x, 180, 48, '#3a2a26', { alpha: a }); chromo(g, x - 12, 180, 46, MAT, { dup: true, alpha: a }); chromo(g, x + 12, 180, 46, PAT, { dup: true, alpha: a });
-        const p1 = clamp(p * 2), p2 = clamp(p * 2 - 1);
-        MI[k].forEach((cs, j) => { const cx = x + (j ? 70 : -70); arr(g, x, 230, cx, 290, '#fff3e6', 4, a * p1); cell(g, cx, 330, 40, '#3a2a26', { alpha: a * p1, glow: k === 1 && act(b, 1) ? p1 : 0 }); cs.forEach((c, q) => chromo(g, cx + (q - (cs.length - 1) / 2) * 22, 330, 38, c, { dup: true, alpha: a * p1 })); });
-        G[k].forEach((cs, j) => {
-          const gx = x - 105 + j * 70; const from = x + (j < 2 ? -70 : 70);
-          arr(g, from, 372, gx, 440, '#fff3e6', 3, a * p2);
-          const bad = cs.length !== 1; cell(g, gx, 480, 30, bad ? '#5a2a2a' : '#2f4a36', { alpha: a * p2, glow: bad && (b.i === k) ? p2 * 0.8 : 0 });
-          cs.forEach((c, q) => chromo(g, gx + (q - (cs.length - 1) / 2) * 14, 480, 30, c, { alpha: a * p2 }));
-          txt(g, lab(cs.length === 0 ? 0 : cs.length), gx, 530, 16, bad ? '#ff9a8a' : '#b8f0c8', { alpha: a * p2 });
+      bg(g); const p = P(b, t, 4);
+      const mode = b.i < 0 ? Math.floor((REDUCED ? 0 : t) / 5) % 3 : b.i === 3 ? 2 : b.i;
+      const u = b.i < 0 ? clamp(((REDUCED ? 4.9 : t) % 5) / 3.6) : b.i === 3 ? 1 : p(b.i);
+      const s1 = sp(u, 0.05, 0.45), s2 = sp(u, 0.5, 0.88), lab = sp(u, 0.85, 1);
+      // celula-mamă
+      cellB(g, M[0], M[1], 92, 84, t, { seed: 1 });
+      chromo(g, M[0] - 20, M[1], 64, K.mat, { dup: true, w: 10 }); chromo(g, M[0] + 22, M[1], 64, K.pat, { dup: true, w: 10 });
+      txt(g, '2n', M[0] + 120, M[1], 20, C.cream);
+      txt(g, 'meioza I', 500, 290, 18, '#ffd6c4'); txt(g, 'meioza II', 500, 535, 18, '#ffd6c4');
+      // conținutul celulelor după MI
+      const dCont = mode === 1 ? [[K.mat, K.pat], []] : [[K.mat], [K.pat]];
+      D.forEach(([x, y], j) => {
+        if (s1 <= 0) return;
+        arr(g, M[0] + (j ? 60 : -60), M[1] + 70, lerp(M[0], x, 0.82), lerp(M[1], y, 0.78), '#fff3e6', 4, s1);
+        const X = lerp(M[0], x, s1), Y = lerp(M[1], y, s1);
+        cellB(g, X, Y, 70, 66, t, { seed: 3 + j, alpha: s1 });
+        dCont[j].forEach((c, k) => chromo(g, X + (dCont[j].length > 1 ? (k ? 18 : -18) : 0), Y, 56, c, { dup: true, w: 9, alpha: s1 }));
+      });
+      // gameții
+      const gc = mode === 0 ? [[K.mat], [K.mat], [K.pat], [K.pat]]
+        : mode === 1 ? [[K.mat, K.pat], [K.mat, K.pat], [], []]
+          : [[K.mat], [K.mat], [K.pat, K.pat], []];
+      const gl = mode === 0 ? ['n', 'n', 'n', 'n'] : mode === 1 ? ['n+1', 'n+1', 'n−1', 'n−1'] : ['n', 'n', 'n+1', 'n−1'];
+      const bad = (k) => gl[k] !== 'n';
+      G.forEach(([x, y], k) => {
+        if (s2 <= 0) return;
+        const par = D[k >> 1];
+        arr(g, par[0] + (k % 2 ? 40 : -40), par[1] + 62, lerp(par[0], x, 0.85), lerp(par[1], y, 0.8), '#fff3e6', 4, s2);
+        const X = lerp(par[0], x, s2), Y = lerp(par[1], y, s2);
+        cellB(g, X, Y, 60, 58, t, { seed: 6 + k, alpha: s2, fill: lab > 0.5 && bad(k) ? '#ffd0c8' : K.cyt });
+        gc[k].forEach((c, j) => chromo(g, X + (gc[k].length > 1 ? (j ? 14 : -14) : 0), Y, 50, c, { w: 9, alpha: s2 }));
+        if (lab > 0) pill(g, x, y + 92, 84, 38, bad(k) ? K.bad : K.ok, gl[k], { size: 19, alpha: lab });
+      });
+      if (lab > 0 && mode === 1) txt(g, 'toți 4 gameții sunt anormali', 500, 800, 20, C.hi, { alpha: lab });
+      if (lab > 0 && mode === 2 && b.i !== 3) txt(g, '2 normali · 1 × n+1 · 1 × n−1', 500, 800, 20, C.hi, { alpha: lab });
+      // fecundația (punctul 4)
+      if (b.i === 3) {
+        const q = p(3);
+        [[G[2], '+ n → zigot 47 = TRISOMIE', 0], [G[3], '+ n → zigot 45 = MONOSOMIE', 1]].forEach(([[x], s, k]) => {
+          const y0 = 830 + k * 0; const xx = k ? 690 : 310;
+          sperm(g, lerp(xx - 200, xx - 70, sp(q, 0.1 + k * 0.2, 0.5 + k * 0.2)), y0, 0.5, 0, t, { alpha: sp(q, 0.05 + k * 0.2, 0.3 + k * 0.2) });
+          cellB(g, xx, y0, 40, 38, t, { seed: 30 + k, alpha: sp(q, 0.4 + k * 0.2, 0.6 + k * 0.2), fill: '#ffd0c8' });
+          txt(g, k ? '45' : '47', xx, y0, 22, OUT, { stroke: false, alpha: sp(q, 0.5 + k * 0.2, 0.7 + k * 0.2) });
+          txt(g, k ? 'n−1 + n → MONOSOMIE' : 'n+1 + n → TRISOMIE', xx + (k ? 0 : 0), y0 + 64, 18, C.hi, { alpha: sp(q, 0.55 + k * 0.2, 0.8 + k * 0.2) });
+          lead(g, x, 760, xx - 30, y0 - 40, sp(q, 0, 0.3));
         });
-      });
-      txt(g, 'MI', 40, 255, 15, '#cdb8ab'); txt(g, 'MII', 40, 405, 15, '#cdb8ab');
-      // fecundația: n+1 + n → 47 ; n−1 + n → 45
-      const a3 = b.i < 0 || b.i === 3 ? 1 : 0.2; const p3 = b.i === 3 ? ease(clamp(b.bt / (b.bd * 0.6))) : 1;
-      panel(g, 40, 590, 920, 300, { fill: 'rgba(255,240,228,.05)' });
-      [[680, 'n+1', [MAT, PAT], 'zigot 47 = TRISOMIE'], [810, 'n−1', [], 'zigot 45 = MONOSOMIE']].forEach(([y, s, cs, res], r) => {
-        cell(g, 160, y - r * 0, 32, '#5a2a2a', { alpha: a3 }); cs.forEach((c, q) => chromo(g, 160 + (q - 0.5) * 14, y, 30, c, { alpha: a3 })); txt(g, s, 160, y + 50, 15, '#ff9a8a', { alpha: a3 });
-        txt(g, '+', 240, y, 30, '#fff3e6', { alpha: a3 });
-        cell(g, 320, y, 32, '#2f4a36', { alpha: a3 }); chromo(g, 320, y, 30, GRN, { alpha: a3 }); txt(g, 'n (normal)', 320, y + 50, 15, '#b8f0c8', { alpha: a3 });
-        arr(g, 370, y, lerp(380, 540, p3), y, '#fff3e6', 5, a3);
-        const n = cs.length + 1; cell(g, 610, y, 44, '#3a2a26', { alpha: a3 * p3, glow: act(b, 3) ? p3 : 0 });
-        [...cs, GRN].forEach((c, q) => chromo(g, 610 + (q - (n - 1) / 2) * 16, y, 34, c, { alpha: a3 * p3 }));
-        txt(g, res, 800, y, 19, r ? '#9ad0f0' : '#ff9a8a', { alpha: a3 * p3 });
-      });
+      }
+      if (on(b, 1)) ring(g, D[0][0], D[0][1], 100, 90, ease(b.bt * 1.4));
+      if (on(b, 2)) ring(g, (G[2][0] + G[3][0]) / 2, G[2][1], 200, 90, ease(b.bt * 1.4));
     },
   };
 }
 
-/* ============ TRISOMIILE: Down, Edwards, Patau ============ */
-function palm(g, x, y, a) { g.save(); g.globalAlpha = a; ell(g, x, y + 20, 48, 56, '#f3c29b', { ow: 5 }); for (let k = 0; k < 4; k++) tube(g, [[x - 33 + k * 22, y - 22], [x - 33 + k * 22, y - 78]], 18, '#f3c29b', { ow: 5 }); tube(g, [[x + 44, y + 20], [x + 74, y - 18]], 18, '#f3c29b', { ow: 5 }); tube(g, [[x - 44, y + 6], [x + 44, y + 2]], 4, '#8a4a2a', { ow: 0 }); g.restore(); }
-function fist(g, x, y, a) { g.save(); g.globalAlpha = a; ell(g, x, y, 54, 46, '#f3c29b', { ow: 5 }); tube(g, [[x - 34, y - 10], [x + 30, y - 4]], 14, '#e9b087', { ow: 4 }); tube(g, [[x - 30, y + 12], [x + 34, y + 2]], 14, '#e9b087', { ow: 4 }); tube(g, [[x - 40, y - 26], [x + 14, y + 22]], 13, '#f3c29b', { ow: 4 }); g.restore(); }
-function cleft(g, x, y, a) { g.save(); g.globalAlpha = a; ell(g, x, y, 50, 56, '#f3c29b', { ow: 5 }); dot(g, x - 18, y - 12, 5, OUT); dot(g, x + 18, y - 12, 5, OUT); tube(g, [[x - 22, y + 26], [x - 4, y + 22]], 5, '#b03a3a', { ow: 0 }); tube(g, [[x + 6, y + 22], [x + 22, y + 26]], 5, '#b03a3a', { ow: 0 }); tube(g, [[x, y + 22], [x - 2, y + 6]], 7, '#7a2222', { ow: 0 }); g.restore(); }
+/* =================================================== TRISOMIILE AUTOZOMALE: 21 / 18 / 13 + semnul-cheie
+   Sus: cele 3 perechi cu copia în plus (verde). În centru, semnul de recunoaștere din LP, mare: 1 = Down: palma cu UN pliu
+   palmar transversal; 2 = Edwards: pumnul strâns, degetul arătător suprapus peste mijlociu; 3 = Patau: buza superioară cu
+   despicătură care urcă spre nas. */
 export function trisomy() {
-  const K = [[21, 'Down', 'trisomia 21', palm, 'pliu palmar unic'], [18, 'Edwards', 'trisomia 18', fist, 'pumni strânși,\ndegete suprapuse'], [13, 'Patau', 'trisomia 13', cleft, 'despicătură buză /\npalat + cap mic']];
+  const TRI = [[21, 230, 40, 0.16, 'trisomia 21 · Down'], [18, 500, 52, 0.3, 'trisomia 18 · Edwards'], [13, 770, 58, 0.16, 'trisomia 13 · Patau']];
+  const HX = 600, HY = 560;
+  const hand = (g, s, crease) => {
+    g.save(); g.translate(HX, HY); g.scale(s, s);
+    const sk = K.skin; const ow = 6;
+    [[-78, -150, 34, 120], [-28, -190, 34, 150], [22, -180, 34, 142], [70, -140, 30, 112]].forEach(([x, y, w, h]) => { const p = new Path2D(); p.roundRect(x - w / 2, y, w, h + 40, w / 2); paint(g, p, sk, K.skinS, K.skinL, [x - w / 2, y, w, h], OUT, ow); });
+    const palm = new Path2D(); palm.moveTo(-100, -40); palm.bezierCurveTo(-110, 80, -70, 160, 0, 170); palm.bezierCurveTo(80, 170, 104, 80, 96, -50); palm.bezierCurveTo(60, -70, -60, -70, -100, -40); palm.closePath();
+    paint(g, palm, sk, K.skinS, K.skinL, [-110, -70, 210, 240], OUT, ow);
+    tube(g, [[-96, 40], [-150, -10], [-176, -70]], 40, sk, { ow });
+    // pliul palmar transversal unic (Down)
+    if (crease > 0) { g.save(); g.globalAlpha = crease; g.strokeStyle = '#8a3b2a'; g.lineWidth = 6; g.lineCap = 'round'; g.beginPath(); g.moveTo(-96, 10); g.bezierCurveTo(-40, -4, 30, -2, 94, 6); g.stroke(); g.restore(); }
+    g.restore();
+  };
+  const fist = (g, s) => {
+    g.save(); g.translate(HX, HY + 30); g.scale(s, s); const sk = K.skin; const ow = 6;
+    // pumnul (fața palmară): degetele flectate se văd ca 4 perne verticale, sub ele policele culcat
+    const f = new Path2D(); f.roundRect(-118, -70, 236, 180, 64); paint(g, f, sk, K.skinS, K.skinL, [-118, -70, 236, 180], OUT, ow);
+    const pad = (x, y, w, h, r = 0) => { g.save(); g.translate(x, y); g.rotate(r); const p = new Path2D(); p.roundRect(-w / 2, -h / 2, w, h, w / 2); paint(g, p, sk, K.skinS, K.skinL, [-w / 2, -h / 2, w, h], OUT, ow); g.restore(); };
+    pad(88, -40, 50, 100); pad(32, -62, 54, 118); pad(-26, -66, 54, 122);
+    // degetul arătător (stânga) suprapus PESTE mijlociu
+    pad(-62, -60, 54, 116, 0.42);
+    tube(g, [[-110, 60], [-40, 70], [20, 48]], 46, sk, { ow });
+    g.restore();
+  };
+  const lip = (g, s, cleft) => {
+    g.save(); g.translate(HX, HY); g.scale(s, s); const ow = 6;
+    [-1, 1].forEach((d) => ell(g, d * 206, 70, 30, 46, K.skin, { ow, shade: K.skinS, rot: d * 0.2 }));
+    const face = new Path2D(); face.ellipse(0, -10, 210, 230, 0, 0, 7); paint(g, face, K.skin, K.skinS, K.skinL, [-210, -240, 420, 460], OUT, ow);
+    // nasul
+    const n = new Path2D(); n.moveTo(-40, -40); n.bezierCurveTo(-46, 10, -20, 30, 0, 30); n.bezierCurveTo(20, 30, 46, 10, 40, -40); g.save(); g.strokeStyle = OUT; g.lineWidth = ow; g.stroke(n); g.restore();
+    dot(g, -18, 22, 7, '#8a3b2a', { ow: 0 }); dot(g, 18, 22, 7, '#8a3b2a', { ow: 0 });
+    // gura cu buza superioară despicată (stânga), despicătura urcă spre nară
+    const up = new Path2D(); up.moveTo(-90, 110); up.bezierCurveTo(-60, 80, -36, 86, -26, 96); up.lineTo(-26 + 4 * cleft, 96 - 60 * cleft); up.lineTo(-10 + 4 * cleft, 96 - 60 * cleft); up.lineTo(-6, 96); up.bezierCurveTo(10, 84, 60, 80, 90, 110); up.bezierCurveTo(40, 120, -40, 120, -90, 110); up.closePath();
+    paint(g, up, '#e8848a', '#c45c64', null, [-90, 36, 180, 84], OUT, ow);
+    const low = new Path2D(); low.moveTo(-80, 118); low.bezierCurveTo(-40, 160, 40, 160, 80, 118); low.bezierCurveTo(40, 130, -40, 130, -80, 118); low.closePath();
+    paint(g, low, '#e8848a', '#c45c64', null, [-80, 118, 160, 42], OUT, ow);
+    if (cleft > 0) { g.save(); g.fillStyle = '#5a1e2a'; g.globalAlpha = cleft; g.beginPath(); g.moveTo(-24, 100); g.lineTo(-24 + 4 * cleft, 100 - 58 * cleft); g.lineTo(-12 + 4 * cleft, 100 - 58 * cleft); g.lineTo(-8, 100); g.closePath(); g.fill(); g.restore(); }
+    // ochii închiși
+    [[-80, -80], [80, -80]].forEach(([x, y]) => { g.save(); g.strokeStyle = OUT; g.lineWidth = ow; g.lineCap = 'round'; g.beginPath(); g.arc(x, y, 26, 0.3, Math.PI - 0.3); g.stroke(); g.restore(); });
+    g.restore();
+  };
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[400, 70], [400, 330], [400, 590]],
+    anchors: [[TRI[0][1] - 90, 150], [TRI[1][1] - 90, 150], [TRI[2][1] - 90, 150]],
+    phase: (i) => ['Down · trisomia 21', 'Edwards · trisomia 18', 'Patau · trisomia 13'][i] || 'un cromozom în plus',
     draw(g, t, b) {
-      bg(g);
-      K.forEach(([n, name, s, icon, sign], k) => {
-        const y = 150 + k * 260; const a = vis(b, k, 0.3); const on = b.i === k || (b.i < 0 && Math.floor((REDUCED ? 0 : t) / 2.5) % 3 === k);
-        panel(g, 380, y - 110, 590, 225, { fill: on ? 'rgba(217,101,42,.16)' : 'rgba(255,240,228,.05)' });
-        txt(g, name + ' · ' + s, 560, y - 80, 20, on ? C.hi : '#ffe7d6', { alpha: a });
-        // trei copii ale cromozomului; a treia apare (pulsează)
-        const p3 = on ? 0.55 + 0.45 * pulse(t, 3) : 1;
-        chromo(g, 440, y + 5, 70, MAT, { dup: false, alpha: a }); chromo(g, 485, y + 5, 70, PAT, { alpha: a }); chromo(g, 530, y + 5, 70, AMB, { alpha: a * p3 });
-        txt(g, String(n), 485, y + 72, 18, '#ffb48a', { alpha: a });
-        icon(g, 680, y + 15, a);
-        txt(g, sign, 860, y + 10, 16, '#ffe7d6', { alpha: a });
-        txt(g, `47,XX,+${n} / 47,XY,+${n}`, 700, y + 92, 15, '#cdb8ab', { alpha: a, w: 600 });
+      bg(g); const p = P(b, t, 3);
+      const show = b.i < 0 ? Math.floor((REDUCED ? 0 : t) / 3.2) % 3 : b.i;
+      TRI.forEach(([n, x, h, cen, name], k) => {
+        const act = k === show; const a = act ? 1 : 0.45;
+        chromo(g, x - 40, 200, h * 1.4, K.mat, { dup: true, w: 11, cen, alpha: a }); chromo(g, x, 200, h * 1.4, K.pat, { dup: true, w: 11, cen, alpha: a });
+        const drop = act ? (b.i < 0 ? 1 : sp(p(k), 0, 0.4)) : 1;
+        chromo(g, x + 40, lerp(110, 200, drop), h * 1.4, K.dad, { dup: true, w: 11, cen, alpha: a, glow: act ? 0.8 : 0 });
+        txt(g, name, x, 290, 18, act ? C.hi : '#d8c4b8');
       });
+      const u = b.i < 0 ? 1 : sp(p(show), 0.2, 0.9);
+      if (show === 0) { hand(g, 1.15, u); if (u > 0.5) { lead(g, HX + 60, HY + 12, 860, 470, 1); txt(g, 'pliu palmar\ntransversal unic', 860, 430, 19, C.cream); } }
+      if (show === 1) { fist(g, 1.2); if (u > 0.4) { lead(g, HX - 40, HY - 120, 860, 420, 1); txt(g, 'pumn strâns,\ndegete suprapuse', 860, 380, 19, C.cream); } }
+      if (show === 2) { lip(g, 1.0, u); if (u > 0.5) { lead(g, HX - 20, HY + 70, 870, 760, 1); txt(g, 'despicătură\nde buză / palat', 870, 800, 19, C.cream); } }
+      if (b.i >= 0) ring(g, TRI[b.i][1], 200, 90, 80, ease(b.bt * 1.4));
     },
   };
 }
 
-/* ============ ANOMALIILE STRUCTURALE ============ */
+/* =================================================== ANOMALIILE STRUCTURALE (patru panouri, zoom pe fiecare)
+   1 = deleția 5p−: vârful brațului scurt al lui 5 (sus) se rupe și pleacă. 2 = microdeleția 15q: un segment mic din brațul lung
+   al lui 15, sub centromer, dispare; o lupă arată că se vede doar la rezoluție înaltă. 3 = translocația reciprocă t(9;22):
+   vârful MIC al 9q (mov) trece pe 22, partea MARE a 22q (verde) trece pe 9 → der(9) mai lung, der(22) = Philadelphia, mai scurt.
+   4 = translocația 13/14 (robertsoniană): brațele scurte se pierd, brațele lungi se unesc la centromer într-UN cromozom → 45. */
 export function struct() {
+  const Q = [[250, 270], [750, 270], [250, 700], [750, 700]];
+  const C9 = '#b9a3ea', C22 = '#7fe0a8', C13 = '#ffd166', C14 = '#7fc8ff';
   return {
-    home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[50, 70], [530, 70], [50, 500], [530, 500]],
+    home: HOME, cams: Q.map(([x, y]) => cam(x, y, 2.0)),
+    anchors: [[Q[0][0] - 190, Q[0][1] - 160], [Q[1][0] - 190, Q[1][1] - 160], [Q[2][0] - 190, Q[2][1] - 160], [Q[3][0] - 190, Q[3][1] - 160]],
+    phase: (i) => ['deleție · 5p−', 'microdeleție · 15q', 'translocație · t(9;22)', 'translocație 13/14'][i] || 'cromozomul se rupe',
     draw(g, t, b) {
-      bg(g);
-      const P = [[30, 50, 'Deleție', 'cri-du-chat · 5p−'], [510, 50, 'Microdeleție', 'Angelman / Prader-Willi · 15q'], [30, 480, 'Translocație reciprocă', 'Philadelphia · t(9;22)'], [510, 480, 'Translocație 13/14', 'cea mai frecventă']];
-      P.forEach(([x, y, n, s], k) => { const a = vis(b, k, 0.35); panel(g, x, y, 460, 400, { fill: act(b, k) ? 'rgba(217,101,42,.15)' : 'rgba(255,240,228,.05)' }); txt(g, n, x + 230, y + 36, 20, act(b, k) ? C.hi : '#ffe7d6', { alpha: a }); txt(g, s, x + 230, y + 66, 16, '#cdb8ab', { alpha: a, w: 600 }); });
-      const q = (k) => (b.i === k ? ease(clamp(b.bt / (b.bd * 0.6))) : b.i < 0 ? loopT(t, 4) : b.i > k ? 1 : 0);
-      // 1. deleție: brațul scurt (p) al lui 5 pierde un segment
-      { const a = vis(b, 0, 0.35), u = q(0); chromo(g, 170, 270, 200, '#7fb6e6', { alpha: a, cen: -40 }); txt(g, '5 normal', 170, 400, 15, '#cdb8ab', { alpha: a });
-        chromo(g, 340, 270, 200, '#7fb6e6', { alpha: a, cen: -40 }); g.save(); g.globalAlpha = a; g.fillStyle = '#1e1310'; g.fillRect(320, 165, 40, 40 + 0 * u); g.restore();
-        dot(g, lerp(340, 420, u), lerp(185, 140, u), 14, '#7fb6e6', { alpha: a * (1 - u) }); txt(g, '5p− (lipsește din p)', 360, 400, 15, '#ff9a8a', { alpha: a }); }
-      // 2. microdeleție: segment mic din q, vizibil doar la rezoluție înaltă (lupă)
-      { const a = vis(b, 1, 0.35); chromo(g, 740, 270, 200, '#f08ab8', { alpha: a, cen: -60 }); const blink = 0.4 + 0.6 * pulse(t, 4);
-        g.save(); g.globalAlpha = a * blink; g.fillStyle = '#1e1310'; g.fillRect(722, 225, 36, 14); g.restore();
-        g.save(); g.globalAlpha = a; g.strokeStyle = '#fff3e6'; g.lineWidth = 6; g.beginPath(); g.arc(860, 230, 46, 0, 7); g.stroke(); tube(g, [[893, 263], [930, 300]], 10, '#fff3e6', { ow: 3 }); g.restore();
-        txt(g, 'doar la\nrezoluție înaltă', 860, 340, 15, '#ffd0e4', { alpha: a }); txt(g, '15q', 740, 400, 15, '#cdb8ab', { alpha: a }); }
-      // 3. translocația reciprocă t(9;22)(q34;q11): vârful MIC al lui 9q (roșu) trece pe 22; partea MARE din 22q (verde) trece pe 9
-      //    → der(9) mai lung, der(22) = cromozomul Philadelphia, vizibil mai scurt
-      { const a = vis(b, 2, 0.35), u = q(2); const x9 = 170, x22 = 330, y = 720;
-        const rod = (x, y0, y1, col) => tube(g, [[x, y0], [x, y1]], 22, col, { ow: 4, alpha: a, cap: 'butt' });
-        rod(x9, y - 115, y + 75, '#e8505b'); dot(g, x9, y - 55, 9, '#fff3e6', { alpha: a });
-        rod(x22, y - 35, y + 5, '#9dff8a'); dot(g, x22, y - 15, 8, '#fff3e6', { alpha: a });
-        // piesele care se schimbă (se mută între capete)
-        const t9 = [lerp(x9, x22, u), lerp(y + 75, y + 5, u)]; rod(t9[0], t9[1], t9[1] + 20, '#e8505b');
-        const t22 = [lerp(x22, x9, u), lerp(y + 5, y + 75, u)]; rod(t22[0], t22[1], t22[1] + 80, '#9dff8a');
-        txt(g, u > 0.9 ? 'der(9) · mai lung' : '9', x9, 880, 16, '#ffb48a', { alpha: a }); txt(g, u > 0.9 ? 'der(22) = Ph · scurt' : '22', x22 + 20, 880, 16, '#ffb48a', { alpha: a }); }
-      // 4. translocația robertsoniană 13/14: brațele scurte se pierd, brațele lungi se unesc la centromer → UN cromozom; 45 de cromozomi
-      { const a = vis(b, 3, 0.35), u = q(3); const L = 150;
-        const c13 = [lerp(650, 730, u), lerp(630, 720, u)], c14 = [lerp(810, 730, u), lerp(630, 720, u)];
-        const an13 = lerp(Math.PI / 2, -Math.PI / 2, u);
-        tube(g, [c13, [c13[0] + L * Math.cos(an13), c13[1] + L * Math.sin(an13)]], 24, '#f4c34f', { ow: 5, alpha: a });
-        tube(g, [c14, [c14[0], c14[1] + L]], 24, '#9ad0f0', { ow: 5, alpha: a });
-        dot(g, c13[0], c13[1] - 14, 8, '#f4c34f', { alpha: a * (1 - u) }); dot(g, c14[0], c14[1] - 14, 8, '#9ad0f0', { alpha: a * (1 - u) });
-        dot(g, c14[0], c14[1], 9, '#fff3e6', { alpha: a });
-        txt(g, '13q', c13[0] - 40, c13[1] - 60, 15, '#ffe9a8', { alpha: a }); txt(g, '14q', c14[0] + 40, c14[1] + 70, 15, '#cde4ff', { alpha: a });
-        txt(g, '45 cromozomi\npurtător echilibrat', 870, 640, 14, '#cdb8ab', { alpha: a * u }); }
+      bg(g); const p = P(b, t, 4);
+      Q.forEach(([x, y]) => panel(g, x - 230, y - 200, 460, 400));
+      const u = (k) => (b.i < 0 ? p(k) : b.i === k ? p(k) : b.i > k ? 1 : 0);
+      /* 1 · 5p− */
+      { const [x, y] = Q[0]; const d = u(0); const h = 170, cut = 0.16, cen = 0.3;
+        chromo(g, x - 70, y, h, KAR, { dup: true, w: 14, cen, sc: KARS, label: '5 normal', ls: 16 });
+        chromo(g, x + 70, y + h * cut / 2 * d, h * (1 - cut * d), KAR, { dup: true, w: 14, cen: (cen - cut * d) / (1 - cut * d), sc: KARS });
+        chromo(g, x + 70 + 70 * d, y - h / 2 + h * cut / 2 - 40 * d, h * cut, '#ffb15c', { dup: true, w: 14, cen: 0.99, alpha: 1 - sp(d, 0.7, 1), rot: 0.8 * d });
+        txt(g, '5p−', x + 70, y + h / 2 + 22, 18, d > 0.5 ? C.hi : C.cream);
+        txt(g, 'DELEȚIE', x, y - 172, 18, '#ffd6c4'); }
+      /* 2 · microdeleția 15q */
+      { const [x, y] = Q[1]; const d = u(1); const h = 160, cen = 0.14;
+        chromo(g, x - 60, y, h, KAR, { dup: true, w: 14, cen, sc: KARS, segL: [[0.2, 0.3, '#ffb15c']], segR: [[0.2, 0.3, '#ffb15c']] });
+        chromo(g, x + 40, y, h, KAR, { dup: true, w: 14, cen, sc: KARS, segL: [[0.2, 0.3, d > 0.5 ? '#1a1018' : '#ffb15c']], segR: [[0.2, 0.3, d > 0.5 ? '#1a1018' : '#ffb15c']] });
+        // lupa
+        const lx = x + 150, ly = y - 60; const la = sp(d, 0.3, 0.8);
+        if (la > 0) { g.save(); g.globalAlpha = la; lead(g, x + 52, y - 50, lx - 50, ly, 1); ell(g, lx, ly, 56, 56, '#1d1220', { ow: 5, sc: '#ffe7d6' }); g.restore(); chromo(g, lx, ly + 10, 110, KAR, { dup: true, w: 12, cen: 0.05, sc: KARS, alpha: la, segL: [[0.18, 0.4, '#1a1018']], segR: [[0.18, 0.4, '#1a1018']] }); tube(g, [[lx + 52, ly + 52], [lx + 80, ly + 80]], 12, '#c9b3a6', { ow: 4, alpha: la }); }
+        txt(g, '15q11–q13', x - 10, y + 110, 17, C.cream); txt(g, 'MICRODELEȚIE', x, y - 172, 18, '#ffd6c4');
+        if (d > 0.6) txt(g, 'doar la rezoluție înaltă', x + 120, y + 150, 16, C.hi); }
+      /* 3 · t(9;22) */
+      { const [x, y] = Q[2]; const d = u(2); const h9 = 170, h22 = 80; const tip9 = 0.12, keep22 = 0.42;
+        txt(g, 'TRANSLOCAȚIE RECIPROCĂ', x, y - 172, 18, '#ffd6c4');
+        const m = sp(d, 0.25, 0.75);
+        // cromozomul 9: pierde vârful q (jos), primește partea mare a 22q
+        const L9 = h9 * (1 - tip9) + h22 * (1 - keep22) * m; const L22 = h22 * keep22 + h9 * tip9 * m;
+        chromo(g, x - 70, y + (L9 - h9) / 2, L9 * (m > 0 ? 1 : 1), C9, { dup: true, w: 14, cen: 0.35 * h9 / L9, segL: m > 0 ? [[h9 * (1 - tip9) / L9, 1, C22]] : [], segR: m > 0 ? [[h9 * (1 - tip9) / L9, 1, C22]] : [] });
+        chromo(g, x + 70, y - (h22 - L22) / 2, L22, C22, { dup: true, w: 14, cen: 0.22 * h22 / L22, segL: m > 0 ? [[h22 * keep22 / L22, 1, C9]] : [], segR: m > 0 ? [[h22 * keep22 / L22, 1, C9]] : [] });
+        // piesele în zbor
+        if (d > 0 && d < 0.75) { const f = sp(d, 0, 0.5) * (1 - sp(d, 0.5, 0.75));
+          chromo(g, lerp(x - 70, x + 70, sp(d, 0.1, 0.6)), lerp(y + h9 / 2 - h9 * tip9 / 2, y + 40, sp(d, 0.1, 0.6)) + 30 * Math.sin(d * 6), h9 * tip9, C9, { dup: true, w: 14, cen: 0.01, alpha: f });
+          chromo(g, lerp(x + 70, x - 70, sp(d, 0.1, 0.6)), lerp(y + h22 / 2, y + 110, sp(d, 0.1, 0.6)) - 30 * Math.sin(d * 6), h22 * (1 - keep22), C22, { dup: true, w: 14, cen: 0.01, alpha: f }); }
+        txt(g, m > 0.9 ? 'der(9) · mai lung' : '9', x - 70, y + 150, 17, C.cream); txt(g, m > 0.9 ? 'Ph = 22 scurtat' : '22', x + 70, y + 150, 17, m > 0.9 ? C.hi : C.cream); }
+      /* 4 · 13/14 */
+      { const [x, y] = Q[3]; const d = u(3); const h = 140, cen = 0.1; const f = sp(d, 0.35, 0.85);
+        txt(g, 'TRANSLOCAȚIE 13/14', x, y - 172, 18, '#ffd6c4');
+        if (f < 0.98) {
+          chromo(g, lerp(x - 60, x - 6, f), lerp(y, y + 30, f), h, C13, { dup: true, w: 14, cen, rot: lerp(0, -0.25, f), segL: [[0, cen, d > 0.2 ? 'rgba(0,0,0,0)' : C13]], segR: [[0, cen, C13]] });
+          chromo(g, lerp(x + 60, x + 6, f), lerp(y, y - 30, f), h, C14, { dup: true, w: 14, cen, rot: lerp(0, Math.PI + 0.25, f) });
+          // brațele scurte se pierd
+          [[x - 60, y - h / 2 + 4, C13], [x + 60, y - h / 2 + 4, C14]].forEach(([px, py, c], k) => { const q = sp(d, 0.05, 0.4); dot(g, px + (k ? 40 : -40) * q, py - 50 * q, 9, c, { alpha: 1 - q }); });
+        } else {
+          chromo(g, x, y, h * 1.8, C13, { dup: true, w: 14, cen: 0.46, segL: [[0, 0.46, C14]], segR: [[0, 0.46, C14]] });
+        }
+        txt(g, f > 0.98 ? '1 cromozom: 13q + 14q' : '13      14', x, y + 150, 17, C.cream);
+        if (f > 0.98) txt(g, '45 de cromozomi · purtător echilibrat (manual)', x, y + 180, 15, C.hi); }
     },
   };
 }
 
-/* ============ ANGELMAN vs. PRADER-WILLI ============ */
+/* =================================================== MICRODELEȚIA 15q: același loc, alt părinte
+   Perechea 15 mare: roșu = copia maternă, albastru = copia paternă; regiunea 15q11–q13 (sub centromer) marcată, cu un „bec”
+   pe fiecare copie (gene active doar pe copia unui părinte — amprentare, manual). 1 = lipsește regiunea de pe copia MATERNĂ →
+   becul matern se stinge → Angelman; 2 = lipsește regiunea de pe copia PATERNĂ → Prader-Willi; 3 = lupa pe aceeași regiune. */
 export function imprint() {
+  const MX = 480, PX = 700, Y = 430, H = 380, R0 = 0.22, R1 = 0.36;
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[344, 124], [664, 124], [400, 700]],
+    anchors: [[MX - 90, 200], [PX + 90, 200], [870, 430]],
+    phase: (i) => ['Angelman: lipsă maternă', 'Prader-Willi: lipsă paternă', '15q11–q13'][i] || 'aceeași regiune, alt părinte',
     draw(g, t, b) {
-      bg(g);
-      txt(g, 'perechea 15: de la mamă și de la tată', 640, 60, 18, '#ffe7d6');
-      const COLS = [[470, 'Angelman', 'lipsește copia MATERNĂ', 0], [790, 'Prader-Willi', 'lipsește copia PATERNĂ', 1]];
-      COLS.forEach(([x, n, s, k]) => {
-        const a = b.i < 0 || b.i === k || b.i === 2 ? 1 : 0.3; const on = b.i === k || (b.i < 0 && Math.floor((REDUCED ? 0 : t) / 3) % 2 === k);
-        panel(g, x - 150, 100, 300, 520, { fill: on ? 'rgba(217,101,42,.16)' : 'rgba(255,240,228,.05)' });
-        txt(g, n, x, 135, 21, on ? C.hi : '#ffe7d6', { alpha: a });
-        // cromozomul matern și cel patern; regiunea 15q11–q13
-        [[x - 50, MAT, 'mamă'], [x + 50, PAT, 'tată']].forEach(([cx, col, who], j) => {
-          chromo(g, cx, 360, 280, col, { alpha: a, cen: -90 });
-          const missing = (k === 0 && j === 0) || (k === 1 && j === 1);
-          const blink = missing && on ? 0.35 + 0.65 * pulse(t, 4) : 1;
-          g.save(); g.globalAlpha = a * blink; g.fillStyle = missing ? '#1e1310' : C.hi; g.fillRect(cx - 16, 300, 32, 34); g.restore();
-          txt(g, who, cx, 530, 15, '#cdb8ab', { alpha: a });
-        });
-        txt(g, s, x, 580, 16, k ? '#cde4ff' : '#ffc0b8', { alpha: a });
-      });
-      const a2 = b.i < 0 || b.i === 2 ? 1 : 0.35;
-      pill(g, 640, 700, 520, 70, '#ffe9a8', 'aceeași regiune: 15q11–q13 (brațul lung)', { alpha: a2, size: 18, glow: act(b, 2) ? 1 : 0 });
-      txt(g, 'galben = regiunea 15q11–q13 · negru = microdeleția', 640, 790, 15, '#cdb8ab', { w: 600 });
-      txt(g, 'P = patern → Prader-Willi', 640, 840, 18, '#cde4ff', { alpha: a2 });
+      bg(g); const p = P(b, t, 3);
+      const delM = b.i === 0 ? sp(p(0), 0.2, 0.7) : 0, delP = b.i === 1 ? sp(p(1), 0.2, 0.7) : 0;
+      const reg = (d, c) => [[R0, R1, d > 0.5 ? '#1a1018' : c]];
+      chromo(g, MX, Y, H, K.mat, { dup: true, w: 24, cen: 0.14, segL: reg(delM, '#ffb15c'), segR: reg(delM, '#ffb15c') });
+      chromo(g, PX, Y, H, K.pat, { dup: true, w: 24, cen: 0.14, segL: reg(delP, '#ffb15c'), segR: reg(delP, '#ffb15c') });
+      txt(g, 'copia MATERNĂ', MX, Y + H / 2 + 34, 19, '#ffb0b8'); txt(g, 'copia PATERNĂ', PX, Y + H / 2 + 34, 19, '#bfe0ff');
+      // becurile (gene active doar de pe un părinte)
+      const bulb = (x, y, on1, col) => { g.save(); if (on1) { g.shadowColor = col; g.shadowBlur = 26; } ell(g, x, y, 18, 18, on1 ? col : '#4a3a3a', { ow: 4 }); g.restore(); };
+      const yR = Y - H / 2 + H * (R0 + R1) / 2;
+      bulb(MX - 80, yR, delM < 0.5, '#ffe36e'); bulb(PX + 80, yR, delP < 0.5, '#ffe36e');
+      lead(g, MX - 62, yR, MX - 34, yR, 1); lead(g, PX + 62, yR, PX + 34, yR, 1);
+      txt(g, '15q11–q13', 590, yR, 17, '#ffc98a');
+      if (b.i === 0) { const a = sp(p(0), 0.5, 1); pill(g, 590, 140, 380, 50, C.hi, 'lipsește copia maternă → Angelman', { size: 18, alpha: a }); }
+      if (b.i === 1) { const a = sp(p(1), 0.5, 1); pill(g, 590, 140, 400, 50, C.hi, 'lipsește copia paternă → Prader-Willi', { size: 18, alpha: a }); }
+      if (b.i < 0) pill(g, 590, 140, 300, 50, '#3a2a26', 'P = patern → Prader-Willi', { size: 18, col: C.cream });
+      if (b.i === 2) { const a = sp(p(2), 0.1, 0.6); g.save(); g.globalAlpha = a; ell(g, 870, 430, 90, 90, '#1d1220', { ow: 5, sc: '#ffe7d6' }); g.restore(); chromo(g, 870, 470, 200, KAR, { dup: true, w: 16, cen: 0.0, sc: KARS, alpha: a, segL: [[0.08, 0.3, '#ffb15c']], segR: [[0.08, 0.3, '#ffb15c']] }); tube(g, [[935, 495], [975, 535]], 14, '#c9b3a6', { ow: 4, alpha: a }); txt(g, 'rezoluție înaltă', 870, 555, 17, C.hi, { alpha: a }); lead(g, PX + 40, yR, 790, 420, a); }
+      if (on(b, 0)) ring(g, MX, yR, 70, 50, ease(b.bt * 1.4));
+      if (on(b, 1)) ring(g, PX, yR, 70, 50, ease(b.bt * 1.4));
     },
   };
 }
 
-/* ============ CROMOZOMII SEXUALI: tabelul din LP ============ */
-function xy(g, x, y, s, a) { // literele ca mini-cromozomi
-  const L = s.split(''); L.forEach((c, k) => { const cx = x + (k - (L.length - 1) / 2) * 34; if (c === 'X') { g.save(); g.globalAlpha = a; tube(g, [[cx - 12, y - 24], [cx + 12, y + 24]], 9, '#f08ab8', { ow: 4 }); tube(g, [[cx + 12, y - 24], [cx - 12, y + 24]], 9, '#f08ab8', { ow: 4 }); g.restore(); } else if (c === 'Y') { g.save(); g.globalAlpha = a; tube(g, [[cx - 12, y - 22], [cx, y]], 9, '#7fb6e6', { ow: 4 }); tube(g, [[cx + 12, y - 22], [cx, y]], 9, '#7fb6e6', { ow: 4 }); tube(g, [[cx, y], [cx, y + 24]], 9, '#7fb6e6', { ow: 4 }); g.restore(); } else txt(g, 'O', cx, y, 30, '#a8968c', { alpha: a }); });
-}
+/* =================================================== CROMOZOMII SEXUALI: tabelul din LP
+   6 coloane: XX femeie · XY bărbat · XO Turner · XXY Klinefelter · XXX · XYY. Pe fiecare: cromozomii sexuali (X mare roz,
+   Y mic albastru), silueta (cu Y → bărbat, fără Y → femeie), două bare: abilitatea verbală și spațială (lungă verde = normală,
+   scurtă portocalie = întârziată / scăzută), numărul cromozomilor sexuali. Punctele aprind Turner, Klinefelter, XXX, XYY. */
 export function sexchr() {
-  const COL = [['XX', 'femeie', 2, 'normal', 'normal', -1], ['XY', 'bărbat', 2, 'normal', 'normal', -1], ['XO', 'Turner', 1, 'normal', 'scăzută', 0], ['XXY', 'Klinefelter', 3, 'întârziată', 'normal', 1], ['XXX', 'triplo X', 3, 'întârziată', 'normal', 2], ['XYY', 'XYY', 3, 'întârziată', 'normal', 3]];
-  const X = (c) => 340 + c * 112;
+  const COL = [['XX', 'femeie', ['X', 'X'], 1, 1, true], ['XY', 'bărbat', ['X', 'Y'], 1, 1, false], ['XO', 'Turner', ['X'], 1, 0, true], ['XXY', 'Klinefelter', ['X', 'X', 'Y'], 0, 1, false], ['XXX', 'triplo X', ['X', 'X', 'X'], 0, 1, true], ['XYY', 'XYY', ['X', 'Y', 'Y'], 0, 1, false]];
+  const cx = (k) => 228 + k * 140;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[X(2), 60], [X(3), 60], [X(4), 60], [X(5), 60]],
+    anchors: [[cx(2) + 46, 300], [cx(3) + 46, 300], [cx(4) + 46, 300], [cx(5) + 46, 300]],
+    phase: (i) => ['Turner · 45,X', 'Klinefelter · 47,XXY', 'triplo X · 47,XXX', '47,XYY'][i] || 'cu Y → bărbat',
     draw(g, t, b) {
-      bg(g);
-      const hi = b.i < 0 ? 2 + Math.floor((REDUCED ? 0 : t) / 2.2) % 4 : b.i + 2;
-      [['nr. cromozomi sexuali', 330], ['abilitatea verbală', 410], ['abilitatea spațială', 490]].forEach(([s, y]) => txt(g, s, 270, y, 16, '#ffe7d6', { align: 'right' }));
-      COL.forEach(([k, n, nr, ve, sp], c) => {
-        const x = X(c); const on = c === hi; const a = on || c < 2 ? 1 : 0.55;
-        panel(g, x - 52, 90, 104, 440, { fill: on ? 'rgba(217,101,42,.22)' : 'rgba(255,240,228,.05)', stroke: on ? 'rgba(255,227,110,.8)' : undefined });
-        xy(g, x, 160, k, a); txt(g, n, x, 225, 14, hasY(k) ? '#cde4ff' : '#ffd0e4', { alpha: a });
-        txt(g, String(nr), x, 330, 20, '#ffe7d6', { alpha: a });
-        txt(g, ve, x, 410, 14, ve === 'normal' ? '#b8f0c8' : '#ff9a8a', { alpha: a, w: 700 });
-        txt(g, sp, x, 490, 14, sp === 'normal' ? '#b8f0c8' : '#ff9a8a', { alpha: a, w: 700 });
+      bg(g); const p = P(b, t, 4);
+      [['abilitatea\nverbală', 640], ['abilitatea\nspațială', 720], ['nr. cromozomi\nsexuali', 820]].forEach(([n, y]) => txt(g, n, 95, y, 15, '#d8c4b8', { w: 800 }));
+      COL.forEach(([kar, name, chs, verb, spat, fem], k) => {
+        const act = b.i === k - 2; const a = b.i < 0 || act || k < 2 ? 1 : 0.6; const x = cx(k);
+        if (act) { g.save(); g.globalAlpha = 0.12; g.fillStyle = C.hi; g.beginPath(); g.roundRect(x - 68, 100, 136, 770, 20); g.fill(); g.restore(); }
+        txt(g, name, x, 125, 18, act ? C.hi : C.cream, { alpha: a });
+        const u = act ? sp(p(k - 2), 0, 0.5) : 1;
+        chs.forEach((c, j) => { const isNew = act && j === chs.length - 1 && chs.length === 3; const dx = (j - (chs.length - 1) / 2) * 34; chromo(g, x + dx, c === 'X' ? 210 : 222, c === 'X' ? 62 : 32, c === 'X' ? '#ffd0e6' : '#bfe0ff', { dup: true, w: 9, cen: c === 'X' ? 0.42 : 0.3, alpha: a * (isNew ? u : 1) }); });
+        if (k === 2 && act) chromo(g, x + 24, 210 + 60 * u, 62, '#ffd0e6', { dup: true, w: 9, cen: 0.42, alpha: (1 - u) * 0.8 });
+        txt(g, kar, x, 270, 16, '#d8c4b8', { alpha: a, w: 800 });
+        body(g, x, 450, 0.42, t, { fem, h: k === 2 ? 0.86 : k === 3 ? 1.08 : 1, alpha: a, hair: fem ? '#6a3a2a' : '#3a2a20' });
+        // barele
+        [[verb, 640], [spat, 720]].forEach(([v, y]) => { const L = (v ? 110 : 48) * (act ? sp(p(k - 2), 0.3, 0.9) : 1); const pp = new Path2D(); pp.roundRect(x - 55, y - 14, Math.max(4, L), 28, 10); g.save(); g.globalAlpha = a; paint(g, pp, v ? K.ok : '#ff9a3d', null, null, [x - 55, y - 14, 110, 28], OUT, 3); g.restore(); txt(g, v ? 'normal' : (y === 640 ? 'întârziată' : 'scăzută'), x, y + 30, 13, v ? '#bff0d2' : '#ffc08a', { alpha: a * (act || b.i < 0 || k < 2 ? 1 : 0), w: 700 }); });
+        txt(g, String(chs.length), x, 820, 22, act ? C.hi : C.cream, { alpha: a });
       });
-      // regula: cu Y → bărbat, fără Y → femeie
-      const u = loopT(t, 4);
-      pill(g, 640, 600, 600, 60, '#e3d6ff', 'cu Y (SRY) → bărbat · fără Y → femeie', { size: 18 });
-      dot(g, lerp(360, 920, u), 632, 8, C.hi, { ow: 3 });
-      txt(g, '(regula: manual)', 640, 645, 14, '#a8968c', { w: 600 });
-    },
-  };
-}
-const hasY = (k) => k.includes('Y');
-
-/* ============ DIAGNOSTICUL PRENATAL: harta + ecografia ============ */
-export function prenatal() {
-  const X = (w) => 120 + (w - 8) * 25; // săpt. 8 → 120 ; 40 → 920
-  const BARS = [['Ecografia', 8, 40, OK, 'de rutină, toată sarcina', 0], ['Sânge matern (LP nu dă interval)', 8, 40, OK, 'AFP, hCG, inhibină A, infecții', 2], ['CVS', 10, 13, RED, '(manual)', 3], ['Amniocenteza', 14, 18, RED, '14–18 (LP)', 3], ['Cordocenteza', 18, 40, RED, 'sânge fetal din cordon (manual)', 3]];
-  return {
-    home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[330, 500], [620, 480], [70, 200], [70, 300], [960, 380]],
-    draw(g, t, b) {
-      bg(g);
-      for (let w = 8; w <= 40; w += 4) { txt(g, String(w), X(w), 100, 15, '#cdb8ab', { w: 700 }); tube(g, [[X(w), 116], [X(w), 410]], 2, '#4a3a34', { ow: 0 }); }
-      txt(g, 'săptămâni de sarcină', 760, 70, 15, '#cdb8ab', { w: 600 });
-      BARS.forEach(([n, w0, w1, col, s, k], i) => {
-        const y = 145 + i * 56; const a = b.i < 0 || b.i === k || (k === 0 && b.i === 1) ? 1 : 0.3;
-        const p = b.i === k ? ease(clamp(b.bt / (b.bd * 0.6))) : 1;
-        tube(g, [[X(w0), y], [lerp(X(w0), X(w1), p), y]], 26, col, { ow: 4, alpha: a, cap: 'butt' });
-        txt(g, n, X(w0) + 8, y, 15, OUT, { stroke: false, align: 'left', alpha: a }); txt(g, s, Math.min(X(w1) + 10, 760), y + 26, 13, '#cdb8ab', { align: 'left', alpha: a, w: 600 });
-      });
-      const ag = b.i < 0 || b.i === 4 ? 1 : 0.3;
-      pill(g, 860, 435, 200, 44, '#e3d6ff', 'teste genetice', { alpha: ag, size: 16, glow: act(b, 4) ? 1 : 0 });
-      arr(g, X(16), 350, 780, 428, '#fff3e6', 4, ag);
-      // jos: secțiune sagitală, anterior = stânga; cele 3 căi ale ecografiei
-      const ae = b.i < 0 || b.i <= 1 ? 1 : 0.35;
-      tube(g, [[230, 470], [230, 900]], 16, '#f3c29b', { ow: 5, alpha: ae }); txt(g, 'perete\nabdominal', 170, 520, 13, '#ffd6c4', { alpha: ae });
-      ell(g, 330, 790, 70, 52, '#f6dc8a', { ow: 5, alpha: ae }); txt(g, 'vezica plină', 330, 790, 14, OUT, { stroke: false, alpha: ae });
-      ell(g, 470, 640, 120, 100, '#f3c29b', { ow: 6, alpha: ae }); ell(g, 470, 630, 60, 50, '#2a1c18', { ow: 4, alpha: ae }); ell(g, 470, 635, 16, 22, '#ff9a4a', { ow: 3, alpha: ae });
-      txt(g, 'sac gestațional', 470, 560, 13, '#ffe7d6', { alpha: ae });
-      tube(g, [[460, 740], [440, 820], [420, 900]], 24, '#e9a0a0', { ow: 5, alpha: ae }); txt(g, 'vagin', 500, 880, 14, '#ffd6c4', { alpha: ae });
-      const which = b.i === 0 ? Math.min(2, Math.floor(b.bt / (b.bd / 3))) : b.i < 0 ? Math.floor((REDUCED ? 0 : t) / 2) % 3 : 1;
-      const PR = [[205, 600, 0, 'transabdominal'], [205, 770, 0, 'transvezical'], [425, 860, -1.4, 'endovaginal']];
-      PR.forEach(([x, y, r, s], k) => {
-        const on = k === which; const a = ae * (on ? 1 : 0.35);
-        g.save(); g.globalAlpha = a; g.translate(x, y); g.rotate(r); tube(g, [[-40, 0], [-6, 0]], 22, '#cde4ff', { ow: 4 }); g.restore();
-        if (on) { for (let q = 0; q < 3; q++) { const rr = ((REDUCED ? 0 : t) * 120 + q * 60) % 180 + 20; g.save(); g.globalAlpha = a * (1 - rr / 200); g.strokeStyle = '#9ad0f0'; g.lineWidth = 4; g.beginPath(); const ang = k === 2 ? -Math.PI / 2 + 0.1 : 0; g.arc(x, y, rr, ang - 0.4, ang + 0.4); g.stroke(); g.restore(); } }
-        txt(g, s, k === 2 ? 600 : 90, k === 2 ? 760 : y, 15, on ? C.hi : '#cde4ff', { alpha: ae });
-      });
-      // scopurile (punctul 1)
-      const a1 = b.i === 1 ? 1 : b.i < 0 ? 0.8 : 0.25;
-      ['confirmi sarcina / extrauterină', 'vârsta gestațională, nr. embrioni', 'creșterea, oprirea în evoluție', 'tulburările de dezvoltare', 'ghid pentru biopsie / amniocenteză'].forEach((s, k) => { pill(g, 800, 520 + k * 72, 330, 58, '#c8f0d8', s, { alpha: a1, size: 15, glow: b.i === 1 && Math.floor(b.bt / (b.bd / 5)) === k ? 1 : 0 }); });
-      txt(g, 'secțiune sagitală, anterior = stânga', 330, 925, 13, '#a8968c', { w: 600 });
+      txt(g, 'cu Y → bărbat · fără Y → femeie (manual)', 600, 905, 16, '#d8c4b8', { w: 700 });
     },
   };
 }
 
-/* ============ TESTELE DE SÂNGE ============ */
-// mecanismul AFP: ficatul fetal → (tub neural deschis) → lichid amniotic → sângele mamei
-export function blood() {
-  const LEAK = curve([[330, 470], [300, 420], [380, 330], [520, 300], [640, 260], [760, 220]]);
+/* =================================================== TURNER vs. KLINEFELTER (siluete față în față, cu o riglă de înălțime)
+   Stânga: Turner (femeie scundă, gât scurt, torace lat); 2 = ovarele nedezvoltate (benzi albe subțiri lângă uter).
+   Dreapta: Klinefelter (bărbat înalt, brațe și picioare lungi, ginecomastie, barbă rară); 4 = testicule mici (atrofie),
+   distribuție feminină a grăsimii. Etichetele: Turner în stânga, Klinefelter în dreapta; nimic sub poza din stânga-jos. */
+export function turnKlin() {
+  const TX = 400, KX = 700, FY = 470;
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[600, 290], [600, 460], [600, 620], [62, 668]],
+    anchors: [[TX - 150, 300], [TX - 70, 610], [KX + 140, 110], [KX + 90, 560]],
+    phase: (i) => ['Turner · 45,X', 'Turner: ovarele', 'Klinefelter · 47,XXY', 'Klinefelter: testiculul'][i] || 'X lipsă vs. X în plus',
     draw(g, t, b) {
-      bg(g);
-      const a0 = vis(b, 0, 0.3);
-      // uter + lichid amniotic + făt cu tub neural deschis
-      ell(g, 330, 420, 230, 190, '#f3c29b', { ow: 7 }); ell(g, 330, 420, 195, 160, '#bfe0f0', { ow: 4 }); txt(g, 'lichid amniotic', 330, 285, 15, '#2a4a5a', { stroke: false });
-      ell(g, 330, 440, 70, 95, '#ffb07a', { ow: 5 }); ell(g, 330, 345, 46, 42, '#ffb07a', { ow: 5 });
-      ell(g, 300, 450, 20, 14, '#a8522a', { ow: 3 }); txt(g, 'ficatul\nfetal', 250, 520, 13, '#5a2a10', { stroke: false });
-      // defectul de tub neural (deschis, pe spate)
-      g.save(); g.globalAlpha = a0; tube(g, [[392, 400], [398, 470]], 10, '#e0443e', { ow: 3 }); g.restore(); txt(g, 'tub neural\ndeschis', 460, 480, 13, '#ff9a8a', { alpha: a0 });
-      // vasul matern + eprubeta
-      tube(g, [[620, 160], [960, 160]], 30, '#c9473f', { ow: 5 }); txt(g, 'sângele mamei', 790, 115, 16, '#ffc0b8');
-      if (b.i < 0 || b.i === 0) flow(g, LEAK, t, '#ffe36e', 7, 0.18, 8, { alpha: a0 });
-      // markerii
-      const M = [['AFP ↑', '→ defect de tub neural', 230, '#ffe9a8', 0], ['hCG ↑ + inhibină A ↑', '→ sindrom Down', 400, '#e3d6ff', 1], ['diabet gestațional · grup + anticorpi', 'infecții: sifilis, rubeolă, VHB, VHC, HIV', 560, '#c8f0d8', 2]];
-      M.forEach(([a, s, y, col, k]) => { const al = vis(b, k, 0.3); pill(g, 790, y + 60, 340, 100, col, '', { alpha: al, glow: act(b, k) ? 1 : 0, ow: 4 }); txt(g, a, 790, y + 40, 17, OUT, { stroke: false, alpha: al }); txt(g, s, 790, y + 80, 14, '#3b2a24', { stroke: false, alpha: al, w: 600 }); });
-      txt(g, '(AFP ↓ sugerează Down: manual)', 790, 345, 13, '#a8968c', { alpha: a0, w: 600 });
-      // sângele fetal prin cordocenteză
-      const a3 = vis(b, 3, 0.3);
-      panel(g, 40, 650, 520, 240, { fill: act(b, 3) ? 'rgba(217,101,42,.16)' : 'rgba(255,240,228,.05)' });
-      txt(g, 'SÂNGE FETAL (prin cordocenteză)', 300, 685, 17, '#ffe7d6', { alpha: a3 });
-      const CORD = curve([[90, 790], [180, 750], [270, 800], [360, 760], [450, 800], [520, 770]]);
-      tube(g, CORD, 30, '#d9c6ff', { raw: true, ow: 5, alpha: a3 }); flow(g, CORD, t, '#c9473f', 6, 0.2, 7, { alpha: a3 });
-      txt(g, 'izoimunizarea Rh · analiza cromozomală', 300, 860, 15, '#ffd0e4', { alpha: a3 });
-      txt(g, 'ser matern = screening → anormal? se confirmă invaziv', 790, 900, 14, '#cdb8ab', { w: 600 });
-    },
-  };
-}
-
-/* ============ METODELE INVAZIVE ============ */
-export function invasive() {
-  return {
-    home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[410, 60], [560, 50], [880, 760], [860, 100]],
-    draw(g, t, b) {
-      bg(g);
-      // uter (secțiune), placenta pe peretele posterior (dreapta), cordon, făt
-      ell(g, 600, 470, 300, 270, '#f3c29b', { ow: 7 }); ell(g, 600, 470, 262, 232, '#bfe0f0', { ow: 4 });
-      g.save(); g.fillStyle = '#b8405a'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.ellipse(600, 470, 262, 232, 0, -0.9, 0.9); g.lineTo(600 + 200, 470); g.closePath(); g.fill(); g.stroke(); g.restore();
-      txt(g, 'placenta\n(vilozități coriale)', 880, 220, 14, '#ffc0d0');
-      const CORD = curve([[790, 470], [720, 430], [660, 500], [600, 480]]);
-      tube(g, CORD, 16, '#d9c6ff', { raw: true, ow: 4 });
-      ell(g, 540, 500, 80, 110, '#ffb07a', { ow: 5 }); ell(g, 540, 380, 56, 52, '#ffb07a', { ow: 5 });
-      txt(g, 'lichid amniotic', 470, 300, 14, '#2a4a5a', { stroke: false });
-      // col + vagin (jos)
-      tube(g, [[600, 735], [600, 900]], 30, '#e9a0a0', { ow: 5 }); txt(g, 'col → vagin', 680, 880, 14, '#ffd6c4');
-      // sonda eco pe abdomen (sus-stânga) — ghidează toate
-      tube(g, [[330, 150], [370, 200]], 26, '#cde4ff', { ow: 4 }); txt(g, 'sonda eco', 270, 130, 14, '#cde4ff');
-      const p = (k) => (b.i === k ? ease(clamp(b.bt / (b.bd * 0.6))) : b.i < 0 ? 1 : 0);
-      // 1+2. amniocenteza: acul transabdominal în lichid; seringa se umple 20–30 mL
-      const am = Math.max(p(0), p(1)); const aA = b.i < 0 || b.i <= 1 ? 1 : 0.25;
-      const nx = lerp(475, 450, am), ny = lerp(150, 300, am);
-      g.save(); g.globalAlpha = aA; tube(g, [[480, 120], [nx, ny]], 5, '#e6e6e6', { ow: 3 }); g.fillStyle = '#e9f4fb'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(445, 50, 70, 70, 10); g.fill(); g.stroke();
-      const fill = b.i === 1 ? p(1) : b.i < 0 ? 1 : 0; g.fillStyle = '#f2e6a0'; g.fillRect(451, 114 - 58 * fill, 58, 58 * fill); g.restore();
-      txt(g, fill > 0.1 ? 'amniocenteză · 20–30 mL' : 'amniocenteză', 530, 85, 15, '#ffe9a8', { alpha: aA, align: 'left' });
-      // 3. CVS transcervical: cateterul urcă prin col spre placentă; 10–30 mg
-      const cv = p(2); const aC = b.i < 0 || b.i === 2 ? 1 : 0.25;
-      const CV = curve([[600, 920], [600, 750], [680, 728], [770, 660], [830, 580]]); // prin col, pe lângă peretele uterin, în afara sacului amniotic, spre placentă
-      tube(g, CV, 6, '#e6e6e6', { raw: true, ow: 3, u1: Math.max(0.05, cv), alpha: aC });
-      txt(g, 'CVS · 10–30 mg', 790, 700, 16, '#ffc0d0', { alpha: aC });
-      // 4. cordocenteza: ac transcutanat în cordon; sânge fetal
-      const co = p(3); const aK = b.i < 0 || b.i === 3 ? 1 : 0.25;
-      const [cx, cy] = at(CORD, 0.45);
-      tube(g, [[cx - 80, 120], [lerp(cx - 80, cx, co), lerp(120, cy, co)]], 5, '#e6e6e6', { ow: 3, alpha: aK });
-      if (co > 0.95) flow(g, [[cx, cy], [cx - 80, 120]], t, '#c9473f', 4, 0.4, 6, { alpha: aK });
-      txt(g, 'cordocenteză', cx - 50, 100, 15, '#d9c6ff', { alpha: aK, align: 'left' });
-    },
-  };
-}
-
-/* ============ CAZUL: sindromul Down ============ */
-export function caseDown() {
-  return {
-    home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[380, 90], [740, 90], [80, 400], [580, 640]],
-    draw(g, t, b) {
-      bg(g);
-      // copilul: limba scoasă, hipoton (stă moale)
-      const a0 = vis(b, 0, 0.4);
-      ell(g, 480, 200, 96, 100, '#f3c29b', { ow: 6, alpha: a0 });
-      g.save(); g.globalAlpha = a0; tube(g, [[435, 180], [460, 188]], 5, OUT, { ow: 0 }); tube(g, [[500, 188], [525, 180]], 5, OUT, { ow: 0 }); g.restore();
-      const tg = REDUCED ? 1 : 0.8 + 0.2 * Math.sin(t * 2); ell(g, 480, 262, 22 * tg, 16 * tg, '#e86a7a', { ow: 4, alpha: a0 });
-      txt(g, 'limba mereu scoasă · apatic · ochi „anormali”', 480, 340, 16, '#ffe7d6', { alpha: a0 });
-      const a1 = vis(b, 1, 0.3);
-      pill(g, 860, 200, 220, 170, '#e3d6ff', '', { alpha: a1, glow: act(b, 1) ? 1 : 0, ow: 4 });
-      txt(g, 'Sindromul Down\n(trisomia 21)\n\nepicant · retard\nhipotonie\npliu palmar unic', 860, 200, 15, OUT, { stroke: false, alpha: a1 });
-      // baza embriologică: ovocit I (mama 40 de ani) → nondisjuncție MI → ovocit II cu două 21 + spermatozoid cu un 21 → 47
-      const a2 = vis(b, 2, 0.3), a3 = vis(b, 3, 0.3);
-      const p2 = b.i === 2 ? ease(clamp(b.bt / (b.bd * 0.6))) : 1; const p3 = b.i === 3 ? ease(clamp(b.bt / (b.bd * 0.6))) : 1;
-      cell(g, 160, 480, 70, '#f08ab8', { alpha: a2 }); chromo(g, 145, 480, 60, MAT, { dup: true, alpha: a2 }); chromo(g, 178, 480, 60, PAT, { dup: true, alpha: a2 });
-      txt(g, 'ovocit I\n(mamă de 40 de ani)', 160, 575, 14, '#ffe7d6', { alpha: a2 });
-      arr(g, 240, 480, lerp(250, 340, p2), 480, '#fff3e6', 5, a2); txt(g, 'nondisjuncție\nîn meioza I', 300, 420, 14, '#ff9a8a', { alpha: a2 });
-      cell(g, 420, 480, 64, '#f08ab8', { alpha: a2 * p2, glow: act(b, 2) ? p2 : 0 }); chromo(g, 405, 480, 54, MAT, { dup: true, alpha: a2 * p2 }); chromo(g, 438, 480, 54, PAT, { dup: true, alpha: a2 * p2 });
-      txt(g, 'ovocit II: două 21', 420, 570, 14, '#ffe7d6', { alpha: a2 * p2 }); cell(g, 470, 415, 16, '#f08ab8', { alpha: a2 * p2, ow: 4 }); txt(g, 'GP1 (fără 21)', 470, 385, 13, '#ffd0e4', { alpha: a2 * p2 });
-      // spermatozoidul
-      const sx = lerp(700, 500, p3);
-      g.save(); g.globalAlpha = a3; tube(g, [[sx + 20, 480], [sx + 60, 470 + (REDUCED ? 0 : Math.sin(t * 9) * 8)], [sx + 100, 480]], 4, '#cde4ff', { ow: 2 }); ell(g, sx, 480, 20, 14, '#7fb6e6', { ow: 4 }); g.restore();
-      chromo(g, sx, 480, 18, GRN, { alpha: a3 }); txt(g, 'spermatozoid: un 21', 720, 440, 14, '#b8f0c8', { alpha: a3 });
-      // zigotul 47,XX,+21
-      cell(g, 690, 720, 80, '#3a2a26', { alpha: a3 * p3, glow: act(b, 3) ? p3 : 0 });
-      chromo(g, 655, 720, 54, MAT, { alpha: a3 * p3 }); chromo(g, 690, 720, 54, PAT, { alpha: a3 * p3 }); chromo(g, 725, 720, 54, GRN, { alpha: a3 * p3 });
-      txt(g, '47,XX,+21', 690, 830, 20, '#ffb48a', { alpha: a3 * p3 });
-      txt(g, 'roșu + albastru = cei doi 21 ai mamei · verde = 21 al tatălui', 600, 900, 14, '#cdb8ab', { w: 600 });
-    },
-  };
-}
-
-/* ============ CAPCANELE ============ */
-export function traps() {
-  const T = [['MI vs. MII', 'MI strică 4/4 gameți\nMII doar 2/4'], ['Ovocitul blocat', 'fetal → profaza I\novulat → metafaza II'], ['Angelman vs. PW', 'PW = patern lipsă\nAngelman = matern'], ['DiGeorge · cri-du-chat', '22q11.2 (nu „2”)\n5p− = deleție'], ['Translocațiile', '13/14 = cea mai frecventă\nPh = 9;22'], ['Serul matern', 'AFP ↑ → DTN\nhCG + inhibină ↑ → Down']];
-  return {
-    home: HOME, cams: T.map(() => HOME),
-    anchors: T.map((_, k) => [(k % 2) * 480 + 62, 82 + Math.floor(k / 2) * 290]),
-    draw(g, t, b) {
-      bg(g);
-      T.forEach(([n, s], k) => {
-        const x = 260 + (k % 2) * 480, y = 180 + Math.floor(k / 2) * 290; const on = b.i === k || (b.i < 0 && Math.floor((REDUCED ? 0 : t) / 2) % 6 === k);
-        const sc = on ? 1 + 0.03 * pulse(t, 4) : 1;
-        card(g, x, y, 420 * sc, 220 * sc, n, s, on ? '#ffe9a8' : '#e9d6bd', { glow: on ? 1 : 0, ts: 22, ss: 18, alpha: b.i < 0 || on ? 1 : 0.55 });
-      });
-    },
-  };
-}
-
-/* ============ RECAPITULAREA: rândul tabelului → partea LP-ului ============ */
-export function recap() {
-  const PARTS = [['A', 'Generalități'], ['B', 'CGP + teratom'], ['C', 'Cromozomii'], ['D', 'Gameți + gemeni'], ['E', 'Diagnostic prenatal'], ['F', 'Cazul Down']];
-  const MAP = [0, 0, 0, 0, 1, 2, 2, 2, 3, 4, 2];
-  return {
-    home: HOME, cams: MAP.map(() => HOME), anchors: [],
-    draw(g, t, b) {
-      bg(g);
-      const hi = b.i < 0 ? Math.floor((REDUCED ? 0 : t) / 1.8) % 6 : MAP[b.i];
-      PARTS.forEach(([L, n], k) => {
-        const x = 180 + (k % 3) * 320, y = 280 + Math.floor(k / 3) * 380; const on = k === hi;
-        ell(g, x, y, 110, 110, on ? '#ffb48a' : '#3a2a26', { ow: 6, glow: 0 });
-        if (on) { g.save(); g.globalAlpha = 0.6 * pulse(t); g.strokeStyle = C.hi; g.lineWidth = 7; g.beginPath(); g.arc(x, y, 124, 0, 7); g.stroke(); g.restore(); }
-        txt(g, L, x, y, 70, on ? OUT : '#ffe7d6', { stroke: !on });
-        txt(g, n, x, y + 160, 19, on ? C.hi : '#ffe7d6');
-      });
+      bg(g); const p = P(b, t, 4);
+      // rigla
+      tube(g, [[555, 130], [555, 880]], 6, '#6b5650', { ow: 3 }); for (let k = 0; k <= 8; k++) { g.save(); g.strokeStyle = '#8f7d74'; g.lineWidth = 2; g.beginPath(); g.moveTo(545, 130 + k * 93); g.lineTo(565, 130 + k * 93); g.stroke(); g.restore(); }
+      const aT = b.i < 0 || b.i <= 1 ? 1 : 0.6, aK = b.i < 0 || b.i >= 2 ? 1 : 0.6;
+      body(g, TX, FY + 70, 1.05, t, { fem: true, h: 0.82, shortNeck: true, broadChest: true, alpha: aT, hair: '#6a3a2a' });
+      body(g, KX, FY - 20, 1.0, t, { h: 1.12, longLimbs: true, gyneco: true, hipFat: true, alpha: aK, hair: '#3a2a20' });
+      txt(g, '45,X · Turner', TX, 300, 22, '#ffd0e6', { alpha: aT }); txt(g, '47,XXY · Klinefelter', KX, 110, 22, '#bfe0ff', { alpha: aK });
+      const T = (s, x, y, a) => txt(g, s, x, y, 17, C.cream, { alpha: a, align: 'right' });
+      const R = (s, x, y, a) => txt(g, s, x, y, 17, C.cream, { alpha: a, align: 'left' });
+      // 1 · Turner
+      const q0 = b.i < 0 ? 1 : b.i === 0 ? sp(p(0), 0.2, 0.8) : 0;
+      if (q0 > 0) { lead(g, TX - 10, FY - 52, 270, FY - 90, q0); T('gât scurt', 262, FY - 92, q0); lead(g, TX - 70, FY + 10, 270, FY, q0); T('torace lat', 262, FY, q0); lead(g, TX - 30, FY + 360, 300, 520, 0); T('statură mică', 262, FY + 70, q0); }
+      // 2 · ovarele nedezvoltate
+      const q1 = b.i === 1 ? sp(p(1), 0.1, 0.7) : b.i < 0 ? 1 : 0;
+      if (q1 > 0) { g.save(); g.globalAlpha = q1; const ux = TX, uy = FY + 125; ell(g, ux, uy, 22, 28, K.endo, { ow: 4 }); [-1, 1].forEach((s) => { tube(g, [[ux + s * 18, uy - 14], [ux + s * 50, uy - 22]], 6, K.endo, { ow: 3 }); tube(g, [[ux + s * 52, uy - 8], [ux + s * 72, uy - 4]], 6, '#f3ede4', { ow: 3 }); }); g.restore(); lead(g, TX - 72, FY + 121, 270, FY + 150, q1); T('ovare nedezvoltate', 262, FY + 150, q1); }
+      // 3 · Klinefelter
+      const q2 = b.i < 0 ? 1 : b.i === 2 ? sp(p(2), 0.2, 0.8) : 0;
+      if (q2 > 0) { lead(g, KX + 30, FY - 64, 800, FY - 120, q2); R('ginecomastie', 808, FY - 120, q2); lead(g, KX + 90, FY + 150, 800, FY + 40, q2); R('brațe lungi', 808, FY + 40, q2); R('statură înaltă', 808, FY - 220, q2); for (let k = 0; k < 7; k++) dot(g, KX - 14 + (k % 4) * 9, FY - 200 + (k > 3 ? 8 : 0), 2.5, '#3a2a20', { ow: 0, alpha: q2 }); lead(g, KX + 20, FY - 196, 800, FY - 170, q2); R('barbă rară', 808, FY - 170, q2); }
+      // 4 · testicule mici + grăsimea
+      const q3 = b.i === 3 ? sp(p(3), 0.1, 0.7) : b.i < 0 ? 1 : 0;
+      if (q3 > 0) { [-1, 1].forEach((s) => ell(g, KX + s * 9, FY + 140, 7, 8, '#f6a35c', { ow: 3, alpha: q3 })); lead(g, KX + 18, FY + 140, 800, FY + 200, q3); R('atrofie\ntesticulară', 808, FY + 200, q3); lead(g, KX + 55, FY + 100, 800, FY + 110, q3); R('grăsime: distribuție\nfeminină', 808, FY + 110, q3); }
+      if (on(b, 1)) ring(g, TX, FY + 120, 100, 60, ease(b.bt * 1.4));
+      if (on(b, 3)) ring(g, KX, FY + 130, 80, 60, ease(b.bt * 1.4));
     },
   };
 }

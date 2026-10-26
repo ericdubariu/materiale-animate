@@ -1,0 +1,278 @@
+// Conținutul slide-urilor Embrio LP 2 (Arcurile faringiene): textul vine din deck-ul LP 2 (lucrarea practică UMFST, 31 de pagini).
+// Ce e marcat „(manual)” nu apare în LP (vine din Langman, cum notează și deck-ul sursă: „în plus față de LP”).
+
+export const GLOS = [
+  ['LP', 'lucrarea practică'], ['S3, S4…', 'săptămâna 3, 4… de dezvoltare (de la fecundație)'], ['EN', 'termenul în engleză'], ['LA', 'termenul în latină'],
+  ['UMFST', 'Universitatea de Medicină, Farmacie, Științe și Tehnologie Târgu Mureș'], ['UNSW', 'University of New South Wales'],
+  ['a.', 'artera'], ['n.', 'nervul'], ['lig.', 'ligamentul'], ['proc.', 'procesul'], ['cav.', 'cavitatea'], ['stg', 'stânga'], ['dr', 'dreapta'],
+  ['sup.', 'superioară / superior'], ['inf.', 'inferioară'], ['ant.', 'anterior'], ['post.', 'posterior'],
+  ['V', 'nervul trigemen (perechea a 5-a de nervi cranieni)'], ['V2', 'ramura maxilară a trigemenului'], ['V3', 'ramura mandibulară a trigemenului'],
+  ['VII', 'nervul facial'], ['IX', 'nervul glosofaringian'], ['X', 'nervul vag'],
+  ['SCM', 'mușchiul sternocleidomastoidian'], ['PTH', 'parathormonul'], ['UB', 'corpul ultimobranhial'], ['TC', 'sindromul Treacher Collins'], ['PR', 'secvența Pierre Robin'],
+];
+export const TERMS = [
+  ['mezenchim', 'mezenchimul', 'țesut embrionar lax din care se fac cartilaje, oase, mușchi, vase'],
+  ['creasta neural', 'creasta neurală', 'celule de la marginea tubului neural care migrează în tot corpul (aici în arcuri)'],
+  ['ectoderm', 'ectodermul', 'foița externă: pielea, sistemul nervos'],
+  ['endoderm', 'endodermul', 'foița internă: căptușește tubul digestiv și glandele lui'],
+  ['mezoderm', 'mezodermul', 'foița mijlocie: mușchi, vase, schelet'],
+  ['primordi', 'primordiul', 'grupul de celule din care se va forma o structură'],
+  ['sinusul cervical', 'sinusul cervical', 'cavitatea în care rămân închise șanțurile 2–4 sub arcul 2'],
+  ['creasta epicardic', 'creasta epicardică', 'proeminența de deasupra inimii cu care fuzionează arcul 2'],
+  ['oblitera', 'obliterat', 'închis complet, dispărut'],
+  ['osifică membranos', 'osificare membranoasă', 'osul se formează direct din mezenchim, fără model cartilaginos'],
+  ['hipoplazi', 'hipoplazie', 'organ format, dar prea mic'],
+  ['micrognați', 'micrognație', 'mandibulă mică, bărbie retrasă'],
+  ['conotrunc', 'conotruncal', 'al tractului de ejecție al inimii (conul + trunchiul arterial)'],
+  ['ectopic', 'ectopic', 'aflat în alt loc decât cel normal'],
+  ['secvenț', 'secvența', 'o singură anomalie inițială care produce în lanț restul'],
+  ['tetani', 'tetania', 'contracturi musculare din cauza calciului scăzut'],
+  ['ogival', 'palat ogival', 'bolta palatină foarte înaltă, ascuțită'],
+  ['fistul', 'fistula', 'canal anormal care deschide o cavitate spre piele sau spre alt organ'],
+];
+
+const WK = 'S3, S4…';
+const cap = (s) => `${s} (figura din LP, UMFST)`;
+
+export const SLIDES = [
+  // ---------------- COPERTA ----------------
+  {
+    deckName: 'Anatomie-Embriologie · LP 2 · Arcurile faringiene',
+    scene: 'cover', kick: 'Anatomie-Embriologie · LP 2 · Modulul 1 · Grilă', title: 'Arcurile faringiene: câteva „felii” din S4 dau gâtul și jumătate din față',
+    hud: ['LP 2', '4 componente + derivate'],
+    points: [
+      { h: 'Aparatul faringian: 4 componente', d: ['**arc** · **șanț** · **membrană** · **pungă**, așezate în „felii” cranio-caudale'] },
+      { h: 'Cele 5 arcuri și derivatele lor', d: ['fiecare arc dă: **nerv · arteră · cartilaj-os · mușchi · ligament**'] },
+      { h: 'Șanțurile, membranele, pungile', d: ['**sinusul cervical** · **urechea** · **timusul și paratiroidele**'] },
+      { h: 'Malformații + cazul clinic', d: ['**fistula branhială** · **Treacher Collins** · **Pierre Robin** · **DiGeorge**'] },
+    ],
+    why: 'Aproape tot gâtul și jumătate din față vin din câteva „felii” de țesut apărute în !!S4!!. Dacă vezi o felie (arc, șanț, membrană, pungă) și știi ce dă fiecare, malformațiile și cazul din LP se explică singure. Ordinea din LP: aparatul și cronologia → arcurile → derivatele lor → șanțurile și membranele → pungile → malformațiile → cazul.',
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- HARTA LP-ULUI ----------------
+  {
+    scene: 'apparatus', kick: 'Harta LP-ului · Aparatul faringian · S4–S5', title: 'Aparatul faringian = 4 componente, așezate în „felii”',
+    hud: ['secțiune frontală', 'cranial ↑'],
+    points: [
+      { h: 'Arcul (EN: pharyngeal arch; LA: arcus pharyngeus)', d: ['**mezoderm** + **creasta neurală**', '!!5 arcuri: 1, 2, 3, 4, 6!! → cartilaje, mușchi, nervi, vase'] },
+      { h: 'Șanțul (EN: cleft)', d: ['**ectoderm**, pe fața **externă**, între arcuri', '!!4 șanțuri; doar primul rămâne!!'] },
+      { h: 'Membrana (EN: membrane)', d: ['unde se ating șanțul și punga', '**3 straturi**: ecto · mezo · endo'] },
+      { h: 'Punga (EN: pouch)', d: ['**endoderm**, pe fața **internă** (spre faringe)', '!!4 perechi!!, numerotate cranio-caudal'] },
+      { h: 'Embrionul la ~32 de zile (stadiul 14, S4–S5)', d: ['arcurile = **benzi** pe lateralul gâtului, numerotate 1, 2, 3, 4 de sus în jos → structurile capului și gâtului', 'arcul 1 are **2 procese**: maxilar (sus) + mandibular (jos) · între benzi, **șanțurile** (adâncituri de ectoderm, vizibile din exterior)', '**inima**, imediat sub arcuri: arterele arcurilor pleacă din **sacul aortic**'] },
+    ],
+    why: 'Aparatul faringian participă la **viscerocraniu**, față, cavitățile orală și nazală, limbă, laringe, faringe; din el vin și **urechea** și unele **glande endocrine** (timus, paratiroide). Arcul 6 nu se vede din exterior: e ascuns caudal, lângă arcul 4.',
+    insets: [null, null, null, null, { img: 'embryo_s4', cap: 'Embrion de 32 de zile, stadiul 14 (LP, UMFST · UNSW Embryology)' }],
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- CRONOLOGIA ----------------
+  {
+    scene: 'chrono', kick: 'Cronologie · figura „Timeline” din LP', title: 'Arcurile apar în S4, sunt gata în S5, iar până în S8 totul e la locul lui',
+    hud: ['axa = săptămâni de dezvoltare'],
+    points: [
+      { h: 'S3: placa trilaminară', d: ['**ecto · mezo · endo**: foițele din care se vor face arcurile'] },
+      { h: 'S4: apar arcurile faringiene', d: ['se rupe **membrana bucofaringiană** (sfârșitul S4)', 'figura LP: arcurile la !!4–5 săptămâni!!'] },
+      { h: 'S5: arcurile aproape complet dezvoltate', d: ['arcul 2 acoperă șanțurile 2–4 → **sinusul cervical** (manual)'] },
+      { h: 'S6–S7: țesuturile arcurilor migrează și se diferențiază', d: ['se formează **pavilionul urechii**, iar sinusul cervical dispare (manual)'] },
+      { h: 'S8: totul e la locul lui', d: ['**nervii, mușchii, glandele și scheletul** sunt la locul lor', 'se încheie **perioada embrionară** (!!S3–S8!!)'] },
+    ],
+    why: 'Reține: arcurile se formează între **S4 și S5**, în plină **perioadă embrionară (S3–S8)**, când se formează toate organele. Cronologia vine din figura „Timeline” din LP.',
+    extraText: WK, beatDur: 5.5,
+  },
+  // ---------------- PARTEA A · DIN CE E FĂCUT UN ARC ----------------
+  {
+    scene: 'origin', kick: 'Partea A · Arcurile · De unde vin + rețeta unui arc', title: 'Mezodermul și creasta neurală umplu fiecare arc cu aceleași 4 primordii',
+    hud: ['sus: embrion · jos: un arc'],
+    points: [
+      { h: 'Placa embrionară trilaminară (S3–S8)', d: ['**ectoderm** (+ tubul neural) · **mezoderm** · **endoderm**', 'mezodermul are 3 părți: **paraxial (somitic)** · **intermediar** · **al plăcii laterale** → mușchii, vasele și scheletul axial/apendicular'] },
+      { h: 'Creasta neurală (EN: neural crest)', d: ['celulele migrează **dorso-ventral** în arcurile faringiene', 'din creasta din arcuri: !!cartilaje, oase, conjunctivul feței!! → **scheletul craniofacial**'] },
+      { h: 'Primordiul cartilaginos + primordiul muscular', d: ['cartilaginos: din **creasta neurală** → cartilaje, oase, ligamente', 'muscular: din !!mezoderm!! → mușchii arcului'] },
+      { h: 'Primordiul nervos + primordiul arterial', d: ['un **nerv cranian** propriu fiecărui arc', 'artera arcului (**arcul aortic**), din **sacul aortic**'] },
+    ],
+    why: 'Toate arcurile au **origine comună** și aceeași structură, dar produsul final e diferit. Mezenchimul arcului = **mezoderm + creasta neurală**. Nervul rămâne „legat” de mușchii arcului lui, chiar dacă mușchii migrează departe. Dacă creasta nu ajunge în arcul 1 → **sindroamele primului arc**.',
+    insets: [{ img: 'origin', cap: cap('Foițele și creasta neurală') }, { img: 'origin', cap: cap('Foițele și creasta neurală') }, null, null],
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- PARTEA B · HARTA ARCURILOR ----------------
+  {
+    scene: 'archmap', kick: 'Partea B · Harta arcurilor · tabelul din LP', title: 'La om se formează 5 arcuri: 1, 2, 3, 4 și 6, fiecare cu nervul, artera, scheletul și mușchii lui',
+    hud: ['rând = arc', 'coloane = derivate'],
+    points: [
+      { h: 'Arcul 1 (proces maxilar + mandibular) → fața', d: ['**V2 + V3** (trigemen) · a. maxilară (o parte)', 'cartilajul Meckel: **ciocan, nicovală** · **masticatorii**'] },
+      { h: 'Arcul 2 → fața', d: ['**VII facial** · a. hioidă + a. stapedială', '**scărița**, proc. stiloid, hioidul sus · **mimica**'] },
+      { h: 'Arcul 3 → gâtul', d: ['**IX glosofaringian** · a. carotidă comună + internă', 'hioidul jos (cornul mare) · **stilofaringianul** · fără ligament'] },
+      { h: 'Arcul 4 → gâtul · arcul 5 lipsește', d: ['X: **n. laringeu superior** · stg arcul aortei, dr a. subclavie dr.', '!!arcul 5 nu se formează la om (sau regresează imediat)!!'] },
+      { h: 'Arcul 6, fuzionat cu arcul 4', d: ['X: **n. laringeu recurent** · stg ductus arteriosus, dr a. pulmonară dr.', 'arcurile 4 + 6 → !!cartilajele laringelui!! + mușchii faringelui și ai laringelui'] },
+    ],
+    why: '**Arcurile 1 și 2 → fața** (fălci, oasele urechii medii, mușchii masticatori și ai mimicii); **arcurile 3 și 4 → gâtul** (hioid, faringe, laringe). Sunt esențiale pentru cap și gât (cartilaje, mușchi, nervi, vase): de aceea un singur arc afectat strică o regiune întreagă a feței.',
+    warn: 'LP-ul pune **chorda tympani** la arcul 1. Anatomic e ramură a n. facial (VII, arcul 2) care ajunge în teritoriul arcului 1. La grilă: !!nervul arcului 1 = trigemenul (V2 + V3)!!.',
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'nervemuscle', kick: 'Partea B · Derivate · Nervii și mușchii', title: 'Un nerv cranian pe arc (V, VII, IX, X), iar mușchii arcului îl iau cu ei',
+    hud: ['galben 1 · roz 2 · albastru 3 · mov 4+6'],
+    points: [
+      { h: 'Arcul 1 → trigemenul (V): V2 maxilar + V3 mandibular', d: ['V3 → **masticatorii** (temporal, maseter, pterigoidieni)', '+ milohioid, pântecul ant. al digastricului, tensorul vălului palatin, tensorul timpanului'] },
+      { h: 'Arcul 2 → facialul (VII)', d: ['→ **mușchii mimicii**, pântecul post. al digastricului', '+ stilohioid, **stapedius**'] },
+      { h: 'Arcul 3 → glosofaringianul (IX)', d: ['un singur mușchi: !!stilofaringianul!!'] },
+      { h: 'Arcurile 4 și 6 → vagul (X)', d: ['arcul 4: !!n. laringeu superior!! · arcul 6: !!n. laringeu recurent!!', 'mușchii 4 + 6: cricotiroidian, ridicătorul vălului palatin, constrictorii faringelui, intrinsecii laringelui'] },
+    ],
+    why: 'Mușchiul își păstrează **nervul arcului** din care vine, oriunde ar migra. De aceea mușchii mimicii (de pe frunte până pe gât) sunt toți inervați de !!VII!!, iar masticatorii de **V3**.',
+    warn: 'LP-ul pune toți mușchii 4 + 6 pe un rând. În Langman: arcul 4 → **cricotiroidian, ridicătorul vălului palatin, constrictorii**; arcul 6 → **intrinsecii laringelui** (de aceea îi inervează n. laringeu recurent).',
+    insets: [{ img: 'muscles', cap: cap('Mușchii: galben/roz/albastru/mov = 1/2/3/4+6') }, { img: 'muscles', cap: cap('Mușchii: galben/roz/albastru/mov = 1/2/3/4+6') }, { img: 'nerves', cap: cap('Nervii arcurilor') }, { img: 'nerves', cap: cap('Nervii arcurilor') }],
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'arteries', kick: 'Partea B · Derivate · Arterele (arcurile aortice)', title: 'Arcurile aortice 1 și 2 aproape dispar; 3, 4 și 6 dau vasele mari',
+    hud: ['vedere ventrală', 'stânga embrionului = dreapta imaginii'],
+    points: [
+      { h: 'Arcurile 1 și 2 regresează', d: ['arcul 1 → o parte din **a. maxilară**', 'arcul 2 → **a. hioidă + a. stapedială**'] },
+      { h: 'Arcul 3 → carotidele', d: ['!!a. carotidă comună + prima parte a carotidei interne!!'] },
+      { h: 'Arcul 4 → diferit stânga / dreapta', d: ['stânga: !!arcul aortei!! (o parte)', 'dreapta: **a. subclavie dreaptă** (partea proximală)'] },
+      { h: 'Arcul 6 → circulația pulmonară', d: ['stânga: !!ductus arteriosus!!', 'dreapta: **a. pulmonară dreaptă** (proximal)'] },
+    ],
+    why: 'Arterele arcurilor pleacă din **sacul aortic** și se varsă în **aortele dorsale**. Asimetria (4 și 6) explică de ce **n. laringeu recurent stâng** ocolește arcul aortei, iar cel **drept** ocolește subclavia dreaptă (manual).',
+    insets: [{ img: 'arteries', cap: cap('A = arcurile primitive, B = după remodelare') }, null, null, null],
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'skeleton', kick: 'Partea B · Derivate · Cartilaje, oase, ligamente', title: 'Scheletul arcurilor, de la urechea medie până la laringe',
+    hud: ['vedere laterală, schematic'],
+    points: [
+      { h: 'Arcul 1: cartilajul Meckel', d: ['→ !!ciocanul, nicovala!!; lig. anterior al ciocanului, **lig. sfenomandibular**', '+ **maxila**, **zigomaticul**, o parte din **temporal**', 'mandibula se osifică **membranos** în jurul cartilajului Meckel (manual)'] },
+      { h: 'Arcul 2: cartilajul Reichert (manual)', d: ['→ !!scărița!!, **proc. stiloid**, **lig. stilohioid**', '→ **cornul mic** + partea sup. a corpului hioid'] },
+      { h: 'Arcul 3', d: ['→ **cornul mare** + partea inf. a corpului hioid'] },
+      { h: 'Arcurile 4 + 6', d: ['→ **cartilajele laringelui** (tiroid, cricoid, aritenoizi…)'] },
+    ],
+    why: '**Hioidul** e „cusut” din două arcuri: !!sus 2, jos 3!!. Urechea medie la fel: **ciocan + nicovală = 1, scărița = 2**.',
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- PARTEA C · ȘANȚURILE ȘI MEMBRANELE ----------------
+  {
+    scene: 'clefts', kick: 'Partea C · Șanțurile și membranele (EN: pharyngeal clefts, membranes)', title: 'Arcul 2 închide șanțurile 2–4 în sinusul cervical; prima membrană devine timpanul',
+    hud: ['secțiune frontală · exteriorul în stânga'],
+    points: [
+      { h: '4 șanțuri de ectoderm', d: ['invaginări de **ectoderm** pe fața externă, între arcuri', 'doar !!șanțul 1 → meatul acustic extern!!'] },
+      { h: 'Mezenchimul arcului 2 proliferează', d: ['crește în jos, **peste arcurile 3, 4, 6**'] },
+      { h: 'Fuzionează cu creasta epicardică', d: ['șanțurile 2–4 rămân închise într-o cavitate: **sinusul cervical** (LA: sinus cervicalis)'] },
+      { h: 'Sinusul dispare', d: ['→ șanțurile 2–4 sunt **obliterate**', 'dacă rămâne → !!chist / fistulă branhială!!'] },
+      { h: 'Membrana 1 → timpanul', d: ['**ectoderm** pe exterior: fundul șanțului 1 (meatul) · **mezoderm** la mijloc: membrana stă între arcuri, unde șanțul atinge punga, și e subțire · **endoderm** pe interior: din punga 1', 'punga 1 → cavitatea timpanică + tuba · timpanul = !!3 straturi: ecto (ext) · mezo · endo (int)!!'] },
+    ],
+    why: 'Urechea e locul unde se întâlnesc toate cele 4 componente ale primei „felii”: **șanțul 1** (meatul), **membrana 1** (timpanul), **punga 1** (cavitatea + tuba) și **oscioarele** din arcurile 1 și 2. Restul șanțurilor dispar în sinusul cervical.',
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- PARTEA D · PUNGILE ----------------
+  {
+    scene: 'pouches', kick: 'Partea D · Pungile faringiene (EN: pharyngeal pouches)', title: 'Fiecare pungă dă ceva diferit: ureche, amigdală, timus, paratiroide',
+    hud: ['interiorul aparatului', 'cranial ↑'],
+    points: [
+      { h: 'Punga 1', d: ['→ **tubul faringotimpanic** (tuba auditivă, EN: Eustachian tube)', '→ **cavitatea timpanică** (primitivă)'] },
+      { h: 'Punga 2', d: ['→ !!amigdala palatină!! (LA: tonsilla palatina)'] },
+      { h: 'Punga 3', d: ['→ !!paratiroida inferioară + timusul!!'] },
+      { h: 'Punga 4', d: ['→ !!paratiroida superioară + complexul faringian caudal!!', '(corpul ultimobranhial → celulele C ale tiroidei, manual)'] },
+    ],
+    why: 'Pungile sunt **în interior**, între arcuri, din **endoderm**, **4 perechi**: glandele care vin de aici au epiteliu endodermal, la fel ca tubul digestiv. Pe figura din LP vezi și **tiroida**: coboară din **foramen cecum** (de la baza limbii), nu dintr-o pungă; paratiroidele și corpul ultimobranhial se lipesc de ea pe drum.',
+    insets: [{ img: 'pouch_final', cap: cap('Poziția finală a derivatelor') }],
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'parathyroid', kick: 'Partea D · Pungile · De ce se inversează paratiroidele', title: 'Timusul coboară și trage paratiroida III sub paratiroida IV',
+    hud: ['S5–S6 → S7–S8', 'cranial ↑'],
+    points: [
+      { h: 'La început, III e mai sus (S5–S6)', d: ['punga 3 e **craniană** față de punga 4', 'paratiroida III stă lângă primordiul **timusului**'] },
+      { h: 'Timusul migrează caudal', d: ['coboară spre **mediastin** și trage după el paratiroida III'] },
+      { h: 'III ajunge INFERIOARĂ (S7–S8)', d: ['se oprește la !!polul inferior al tiroidei!!'] },
+      { h: 'IV rămâne SUPERIOARĂ', d: ['nu e trasă de nimic → !!polul superior al tiroidei!!'] },
+    ],
+    why: 'Punga 3 dă paratiroida **inferioară**, punga 4 pe cea **superioară**: numerotarea pare „invers” doar pentru că **timusul** (tot din punga 3) a cărat-o pe III în jos. O paratiroidă inferioară **ectopică** poate fi găsită chiar în timus (manual).',
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- PARTEA E · MALFORMAȚII ----------------
+  {
+    scene: 'fistula', kick: 'Partea E · Malformații · Chistul și fistula branhială', title: 'Un sinus cervical care nu dispare lasă un chist sau o fistulă',
+    hud: ['secțiune prin gât', 'piele în stânga · faringe în dreapta'],
+    points: [
+      { h: 'Chistul branhial (EN: branchial cyst)', d: ['sinusul cervical nu dispare → rămâne o **cavitate închisă**', 'apare ca **tumefacție laterală**, sub unghiul mandibulei'] },
+      { h: 'Fistula spre exterior', d: ['restul comunică cu pielea: orificiu pe !!marginea anterioară a SCM!!'] },
+      { h: 'Fistula completă (EN: branchial fistula)', d: ['traiectul merge de la **piele** până în **faringe**'] },
+      { h: 'Deschiderea în faringe', d: ['de obicei în **fosa amigdaliană** (punga 2, manual)'] },
+    ],
+    why: 'LP-ul: !!chist = sinusul cervical nu dispare; fistulă = există comunicare!! cu exteriorul sau cu faringele. Restul e căptușit cu **epiteliu** → secretă, se infectează periodic.',
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'firstarch', kick: 'Partea E · Sindroamele primului arc · Treacher Collins, Pierre Robin', title: 'Creasta neurală nu ajunge în arcul 1: fața nu are din ce se construi',
+    hud: ['stânga: mecanismul', 'dreapta: fața'],
+    points: [
+      { h: 'Creasta neurală migrează în arcuri', d: ['stă la marginea **tubului neural**; celulele ei trebuie să migreze', 'ajung în mezenchimul arcurilor → **scheletul feței**'] },
+      { h: 'Arcul 1 sărac în creastă', d: ['arcul 1 normal dă: mandibula, maxila, zigomaticul, ciocanul, nicovala, urechea externă', 'fără creastă → !!anomalii faciale: maxilar și mandibulă mici, urechi malformate!!'] },
+      { h: 'Sindromul Treacher Collins: fața și urechea', d: ['**ochi înclinați în jos** (fantele palpebrale coboară lateral, manual) · **pomeți mici, turtiți** (zigomatic hipoplazic)', '**mandibulă mică** · **urechi mici, malformate** (urechea externă și oscioarele, arcurile 1–2) · ± palat despicat'] },
+      { h: 'Secvența Pierre Robin: mandibula mică → limba înapoi', d: ['!!hipoplazia mandibulei!! (derivat al arcului 1): bărbie mică, retrasă (**micrognație**)', 'limba nu are loc în cavitatea bucală mică → **obstrucția căilor aeriene** → dificultăți respiratorii'] },
+      { h: 'Pierre Robin: palat despicat, ogival', d: ['limba stă între lamele palatine și împiedică închiderea (manual)', '→ **dificultăți de alimentare**'] },
+    ],
+    why: 'LP-ul: în sindroamele primului arc **celulele crestei neurale nu migrează în acest arc**, deci tot ce e „cartilaj/os” în arcul 1 iese mic sau lipsește. Pierre Robin e o **secvență**: o singură greșeală (!!mandibula mică!!) produce în lanț restul; de aceea LP-ul dă două semne clinice: respirator + alimentar. Linia punctată = anatomia normală.',
+    warn: 'LP-ul scrie „Teacher Collins”; numele corect este **Treacher Collins**.',
+    insets: [null, null, { img: 'treacher', cap: 'Treacher Collins (LP, UMFST · ilustrație Cleveland Clinic)' }, { img: 'robin', cap: 'Pierre Robin (LP, UMFST · ilustrație Cleveland Clinic)' }, { img: 'robin', cap: 'Pierre Robin (LP, UMFST · ilustrație Cleveland Clinic)' }],
+    extraText: WK, beatDur: 6,
+  },
+  {
+    scene: 'digeorge', kick: 'Partea E · Malformații · Sindromul DiGeorge', title: 'Deleția 22q11.2: timus, paratiroide și inimă afectate împreună',
+    hud: ['un defect → 3 organe'],
+    points: [
+      { h: 'Deleția !!22q11.2!!', d: ['pe cromozomul 22; afectează **creasta neurală** din regiune → pungile 3 și 4 (+ arcurile 3, 4) se dezvoltă anormal'] },
+      { h: 'Hipoplazia timusului', d: ['timusul vine din punga 3 → **imunodeficiență celulară** (limfocite T ↓ → infecții repetate, manual)'] },
+      { h: 'Hipoplazia paratiroidelor', d: ['din pungile 3 și 4 → PTH ↓ → !!hipocalcemie severă!! (tetanie, manual)'] },
+      { h: 'Defecte conotruncale ale inimii', d: ['septul **tractului de ejecție** e făcut de creasta neurală (ex. tetralogia Fallot, manual)'] },
+      { h: 'Fața (figura din LP)', d: ['**micrognație**, gură mică, **urechi jos inserate**', 'fante palpebrale oblice, ± despicătură de buză / palat · statură mică'] },
+    ],
+    why: 'Un singur defect explică toate trei: **timusul** și **paratiroidele** vin din pungile 3 și 4, iar septul tractului de ejecție e făcut tot de **creasta neurală** afectată de deleție.',
+    warn: 'LP-ul îl trece la „sindroamele primului arc” și scrie „dezvoltarea anormală a arcurilor 3 și 4”. În Langman, DiGeorge e un defect al **pungilor 3 și 4** (+ creasta neurală), nu al arcului 1. La grilă sunt adevărate: !!„pungile 3 și 4”, „timus + paratiroide + inimă”, „hipocalcemie”!!.',
+    extraText: WK, beatDur: 6,
+  },
+  // ---------------- PARTEA F · CAZUL ----------------
+  {
+    scene: 'caseFistula', kick: 'Partea F · Cazul clinic din LP', title: 'Copil de 1,5 ani cu puroi dintr-un orificiu lateral pe gât',
+    hud: ['diagnostic + baza embriologică'],
+    points: [
+      { h: 'Cazul', d: ['mama vine la pediatru cu un copil de **1,5 ani**: **secreție intermitentă de puroi** dintr-o mică deschidere pe partea laterală a gâtului'] },
+      { h: 'Ce găsești → fistulă branhială (cervicală laterală) infectată', d: ['o mică adâncitură pe gât, la !!joncțiunea 1/3 mijlocii cu 1/3 inferioară a marginii anterioare a SCM!!', 'zona din jur e umflată și roșie'] },
+      { h: 'Baza embriologică 1: orificiul extern', d: ['pe marginea anterioară a SCM, 1/3 inferioară = locul unde s-a închis **sinusul cervical**'] },
+      { h: 'Baza embriologică 2: traiectul = sinusul cervical persistent', d: ['!!arcul 2 a acoperit șanțurile 2–4, dar sinusul nu a dispărut!!'] },
+      { h: 'Baza embriologică 3: comunicarea', d: ['cu exteriorul (± cu faringele) → **fistulă**', 'epiteliul secretă → se infectează **intermitent**'] },
+    ],
+    why: 'Mezenchimul **arcului 2** proliferează, fuzionează cu **creasta epicardică** și închide șanțurile 2–4 în **sinusul cervical**; dacă sinusul persistă și comunică → fistulă.',
+    extraText: WK, beatDur: 6.5,
+  },
+  // ---------------- CAPCANE + RECAPITULARE ----------------
+  {
+    scene: 'traps', kick: 'LP 2 · Capcane', title: 'Ce se confundă ușor la grilă',
+    hud: ['6 perechi'],
+    points: [
+      { h: 'Arc vs. șanț vs. pungă', d: ['arc = **mezoderm + creasta neurală** · șanț = **ectoderm, extern** · pungă = **endoderm, intern** · membrana = toate 3'] },
+      { h: 'Câte sunt', d: ['!!5 arcuri (1, 2, 3, 4, 6), 4 șanțuri, 4 perechi de pungi!!; arcul 5 nu există la om'] },
+      { h: 'Paratiroidele', d: ['punga 3 → **inferioară** (+ timus) · punga 4 → **superioară**; inversarea vine din migrarea timusului'] },
+      { h: 'Oscioarele și hioidul', d: ['ciocan + nicovală = arc 1; scărița = arc 2', 'hioid: sus + cornul mic = 2; jos + cornul mare = 3'] },
+      { h: 'Nervii', d: ['1 = V2/V3, 2 = VII, 3 = IX, 4 = laringeu sup., 6 = laringeu recurent', '!!mimica = VII, nu V!!'] },
+      { h: 'Ce supraviețuiește', d: ['doar **șanțul 1** (meatul acustic extern) și **membrana 1** (timpanul); restul șanțurilor dispar în sinusul cervical'] },
+    ],
+    extraText: WK, beatDur: 5.5,
+  },
+  {
+    scene: 'recap', kick: 'LP 2 · Recapitulare', title: 'Tot LP-ul într-un tabel',
+    hud: ['rândul aprinde structura'],
+    table: {
+      head: ['Structura', 'Din ce', 'Câte / când', 'Ce reții'],
+      rows: [
+        ['Arcurile faringiene', 'mezoderm + creasta neurală', '!!5 (1, 2, 3, 4, 6)!! · S4–S5', 'cartilaj + mușchi + nerv + arteră; 1–2 fața, 3–4 gâtul; 4 + 6 fuzionează'],
+        ['Arcul 1', 'proces maxilar + mandibular', '—', 'V2/V3 · a. maxilară · Meckel, ciocan, nicovală · masticatori'],
+        ['Arcul 2', '—', '—', 'VII · a. hioidă + stapedială · scăriță, stiloid, hioid sus · mimica, stapedius'],
+        ['Arcurile 3 / 4 / 6', '—', '—', 'IX, carotida, hioid jos, stilofaringian / X sup., arcul aortei / X recurent, ductus; laringele'],
+        ['Șanțurile', 'ectoderm, extern', '4', 'doar 1 → meatul acustic extern; restul → sinusul cervical, care dispare'],
+        ['Membranele', 'ecto + mezo + endo', 'între arcuri', 'subțiri; prima → membrana timpanică'],
+        ['Pungile', 'endoderm, intern', '4 perechi', '1 tubă + cav. timpanică · 2 amigdala · !!3 paratiroida inf. + timus · 4 paratiroida sup. + UB!!'],
+        ['Chist / fistulă branhială', 'sinusul cervical', '—', 'nu dispare → chist; comunică cu pielea / faringele → fistulă (margine ant. SCM)'],
+        ['Sindroamele (TC, PR, DiGeorge)', 'creasta neurală', '—', 'TC: față + urechi · PR: mandibulă mică → respirație + alimentație · DiGeorge !!22q11.2!!: timus, paratiroide, inimă + micrognație, urechi jos inserate'],
+      ],
+    },
+    extraText: WK, beatDur: 5,
+  },
+];
