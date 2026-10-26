@@ -1,250 +1,292 @@
-// Partea B: derivatele arcurilor — harta (tabelul din LP), nervii + mușchii, arterele (arcurile aortice), scheletul.
-import { HOME, C, bg, panel, txt, pill, tube, flow, dot, ell, arr, OUT, clamp, lerp, ease, REDUCED,
-  ARC, ARCN, ECTO, MESO, CREST, ENDO, NERVE, ART, A, prog, cyc, ringAt, poly, line, arcTag, head, pulse } from './k2.js';
+// Partea B: derivatele arcurilor (harta, nervii, arterele, mușchii, scheletul). Culoarea = arcul de origine (ARC), ca în LP.
+import {
+  cam, HOME, C, bg, P, on, loopT, txt, pill, curve, at, sub, tube, flow, dot, ell, arr, ring, lead, OUT, clamp, lerp, ease, paint, smooth, REDUCED, srand, rr,
+  ARC, ARCS, ARCS_, ARCL, L, G, sp, nerve, artery, bar, muscle, embryoLat, childHead, skullLat, ARCH_LAT,
+} from './ka.js';
+import { lupa } from './sA.js';
 
-/* ============ HARTA ARCURILOR = tabelul din LP, desenat ============
-   Rânduri de sus (cranial) în jos: arcurile 1, 2, 3, 4, apoi un rând punctat „arcul 5 nu se formează”, apoi arcul 6.
-   Coloane: NERV · ARTERĂ · SCHELET · MUȘCHI. Banda din stânga are culoarea arcului (aceeași în tot deck-ul) + regiunea (fața 1–2,
-   gâtul 3–4). Pentru 4 + 6, celulele SCHELET și MUȘCHI sunt unite (LP: „arcurile 4 + 6 fuzionate”).
-   Fiecare punct aprinde rândul arcului lui: celulele apar de la stânga la dreapta, iar un punct luminos curge pe rând. */
-export function archmap() {
-  const COLX = [118, 296, 492, 690, 880], COLW = [124, 172, 200, 186, 180];
-  const ROWS = [
-    { k: 0, y: 196, h: 118, cells: ['V2 maxilar +\nV3 mandibular\n(+ chorda tympani*)', 'a. maxilară\n(o parte)', 'Meckel:\nciocan, nicovală', 'masticatorii'], reg: 'fața' },
-    { k: 1, y: 326, h: 112, cells: ['VII facial', 'a. hioidă +\na. stapedială', 'scăriță, stiloid,\nhioidul sus', 'mimica,\nstapedius'], reg: 'fața' },
-    { k: 2, y: 450, h: 106, cells: ['IX\nglosofaringian', 'a. carotidă\ncomună + internă', 'hioidul jos\n(cornul mare)', 'stilofaringian'], reg: 'gâtul' },
-    { k: 3, y: 570, h: 104, cells: ['X · n. laringeu\nsuperior', 'stg: arcul aortei\ndr: a. subclavie dr.', null, null], reg: 'gâtul' },
-    { k: 4, y: 760, h: 104, cells: ['X · n. laringeu\nrecurent', 'stg: ductus arteriosus\ndr: a. pulmonară dr.', null, null], reg: '' },
-  ];
-  const HEAD = ['NERV', 'ARTERĂ', 'SCHELET', 'MUȘCHI'];
+const T = (x, y, s) => (px, py) => [x + px * s, y + py * s]; // coordonate locale → scenă
+
+/* =================================================== HARTA ARCURILOR: tabelul din LP, arc cu arc
+   Se vede: stânga, embrionul lateral (arcurile colorate pe ARC); arcul punctului se aprinde, restul rămân vizibile, mai stinse.
+   Arcul 6 nu se vede din exterior: apare punctat, caudal de arcul 4, doar pe punctul lui. Dreapta, o lupă legată de arc: secțiunea
+   prin acel arc (mezenchim în culoarea arcului) cu cele 4 primordii, toate în culoarea arcului: nervul (sus-stânga), artera (sus-dreapta),
+   cartilajul (centru), mușchiul (jos), fiecare cu derivatul lui din tabelul LP. Intro: lupa trece prin arcuri pe rând. */
+const MAPTX = {
+  1: { n: 'V2 + V3 (trigemen)', a: 'a. maxilară (o parte)', c: 'Meckel → ciocan, nicovală\nmaxila, zigomatic, temporal', m: 'masticatori, milohioid,\npântec ant. digastric, tensorii', l: 'lig. sfenomandibular' },
+  2: { n: 'VII facial', a: 'a. hioidă + a. stapedială', c: 'scăriță, proc. stiloid,\ncornul mic + hioid sus', m: 'mimica, pântec post. digastric,\nstilohioid, stapedius', l: 'lig. stilohioid' },
+  3: { n: 'IX glosofaringian', a: 'a. carotidă comună + internă', c: 'cornul mare + hioid jos', m: 'stilofaringian', l: '' },
+  4: { n: 'X: n. laringeu superior', a: 'stg: arcul aortei\ndr: a. subclavie dr.', c: 'cartilajele laringelui (4 + 6)', m: 'cricotiroidian, ridicătorul vălului,\nconstrictorii faringelui', l: '' },
+  6: { n: 'X: n. laringeu recurent', a: 'stg: ductus arteriosus\ndr: a. pulmonară dr.', c: 'cartilajele laringelui (4 + 6)', m: 'intrinsecii laringelui (4 + 6)', l: '' },
+};
+export function archMap() {
+  const EX = 250, EY = 470, ES = 0.6; const LX = 690, LY = 470, LR = 268;
+  const R0 = embryoLat(null, EX, EY, ES, 0, { alpha: 0 });
+  const arc6 = [[EX - 70 * ES, EY + 156 * ES], [EX + 20 * ES, EY + 166 * ES], [EX + 100 * ES, EY + 160 * ES]];
+  const apos = (k) => (k === 6 ? arc6[1] : R0.arch(k));
   return {
-    home: HOME, cams: ROWS.map(() => HOME),
-    anchors: ROWS.map((r) => [COLX[0] + 70, r.y - r.h / 2 + 4]),
+    home: HOME, cams: ARCS.map(() => HOME),
+    anchors: ARCS.map((k) => { const p = apos(k); return [p[0] - 130 * ES - 26, p[1]]; }),
+    phase: (i) => (i >= 0 ? `arcul ${ARCS[i]}` : 'arc cu arc'),
     draw(g, t, b) {
       bg(g);
-      HEAD.forEach((h, j) => txt(g, h, COLX[j + 1], 112, 18, '#ffb48a'));
-      const lit = (k) => (b.i < 0 ? cyc(t, 5, 2.4) === k : b.i === k);
-      const rv = (k, j) => (b.i < 0 ? 1 : b.i === k ? clamp(b.bt * 1.8 - j * 0.45) : 1);
-      ROWS.forEach((r) => {
-        const on = lit(r.k); const a = b.i < 0 || on ? 1 : 0.42;
-        pill(g, COLX[0], r.y, COLW[0], r.h - 10, ARC[r.k], '', { alpha: a, glow: on ? 1 : 0, r: 16 });
-        txt(g, 'Arcul ' + ARCN[r.k], COLX[0], r.y - (r.reg ? 12 : 0), 20, OUT, { stroke: false, alpha: a });
-        if (r.reg) txt(g, r.reg, COLX[0], r.y + 18, 16, OUT, { stroke: false, alpha: a, w: 700 });
-        r.cells.forEach((c, j) => {
-          if (c === null) return; const ca = a * rv(r.k, j + 1);
-          pill(g, COLX[j + 1], r.y, COLW[j + 1], r.h - 10, '#3a2a26', '', { alpha: ca, ow: 3, r: 14 });
-          if (on) { g.save(); g.globalAlpha = ca; g.strokeStyle = ARC[r.k]; g.lineWidth = 4; g.beginPath(); g.roundRect(COLX[j + 1] - COLW[j + 1] / 2 + 3, r.y - (r.h - 10) / 2 + 3, COLW[j + 1] - 6, r.h - 16, 12); g.stroke(); g.restore(); }
-          txt(g, c, COLX[j + 1], r.y, c.split('\n').length > 2 ? 15 : 16, '#ffe7d6', { alpha: ca, w: 700 });
-        });
-        if (on && !REDUCED) { const u = (t * 0.45) % 1; dot(g, lerp(COLX[0] + 60, COLX[4] + 80, u), r.y + r.h / 2 - 8, 6, ARC[r.k], { ow: 2 }); }
+      const k = b.i >= 0 ? ARCS[b.i] : ARCS[Math.floor(t / 3.2) % 5];
+      const q = b.i >= 0 ? ease(clamp(b.bt / (b.bd * 0.45))) : ease(clamp((t % 3.2) / 0.8));
+      embryoLat(g, EX, EY, ES, t, { col: true, hi: [k === 6 ? 4 : k], dimArc: 0.4 });
+      [1, 2, 3, 4].forEach((n) => { const [x, y] = R0.archV(n); txt(g, String(n), x - 16, y, 18, OUT, { stroke: false, w: 900 }); });
+      if (k === 6) { g.save(); g.globalAlpha = q; g.setLineDash([8, 7]); tube(g, arc6, 22, 'rgba(181,131,90,.55)', { ow: 3 }); g.restore(); txt(g, '6 (ascuns)', arc6[2][0] + 20, arc6[2][1] + 20, 15, ARCL[6], { alpha: q, align: 'left' }); }
+      const ap = apos(k);
+      lead(g, ap[0] + 40, ap[1], LX - LR + 4, LY, 1);
+      lupa(g, LX, LY, LR, 1, () => {
+        const ox = LX, oy = LY + 6; const RX = 178, RY = 128;
+        const ov = new Path2D(); ov.ellipse(ox, oy, RX, RY, 0, 0, 7); paint(g, ov, ARCL[k], null, null, [ox - RX, oy - RY, RX * 2, RY * 2], OUT, 0);
+        g.save(); g.lineWidth = 18; g.strokeStyle = OUT; g.beginPath(); g.ellipse(ox, oy, RX, RY, 0, Math.PI * 0.62, Math.PI * 1.62); g.stroke(); g.strokeStyle = L.ecto; g.lineWidth = 11; g.stroke(); g.strokeStyle = OUT; g.lineWidth = 18; g.beginPath(); g.ellipse(ox, oy, RX, RY, 0, -Math.PI * 0.38, Math.PI * 0.62); g.stroke(); g.strokeStyle = L.endo; g.lineWidth = 11; g.stroke(); g.restore();
+        const s1 = sp(q, 0, 0.4), s2 = sp(q, 0.15, 0.55), s3 = sp(q, 0.3, 0.7), s4 = sp(q, 0.45, 0.85);
+        g.save(); g.globalAlpha = s1; const cb = new Path2D(); cb.roundRect(ox - 86, oy - 24, 172, 48, 24); paint(g, cb, ARC[k], ARCS_[k], ARCL[k], [ox - 86, oy - 24, 172, 48], OUT, 4); g.restore();
+        g.save(); g.globalAlpha = s2; ell(g, ox - 108, oy - 62, 34, 31, ARC[k], { shade: ARCS_[k], ow: 4 }); [[-11, -8], [11, -10], [0, 11], [-14, 12], [14, 10]].forEach(([dx, dy]) => ell(g, ox - 108 + dx, oy - 62 + dy, 7, 7, ARCL[k], { ow: 2 })); g.restore();
+        g.save(); g.globalAlpha = s3; ell(g, ox + 104, oy - 62, 34, 34, ARC[k], { shade: ARCS_[k], ow: 4 }); ell(g, ox + 104, oy - 62, 16, 16, L.lum, { ow: 2 }); g.restore();
+        muscle(g, ox + 20, oy + 72, 170, 56, -0.06, ARC[k], { alpha: s4, shade: ARCS_[k] });
+        const X = MAPTX[k];
+        txt(g, 'nerv: ' + X.n, ox - 96, oy - 122, 17, ARCL[k], { alpha: s2 });
+        txt(g, X.a, ox + 120, oy - 128, 16, ARCL[k], { alpha: s3 });
+        txt(g, X.c, ox - 10, oy + 166, 16, ARCL[k], { alpha: s1 });
+        txt(g, X.m, ox + 10, oy + 220, 15, ARCL[k], { alpha: s4 });
+        if (X.l) txt(g, X.l, ox - 168, oy + 74, 15, '#ffd6c4', { alpha: s1 });
+        txt(g, 'cartilaj', ox, oy, 16, OUT, { stroke: false, alpha: s1 });
+        txt(g, `ARCUL ${k}`, ox, oy - 196, 22, ARC[k], { w: 900 });
       });
-      // celulele unite 4 + 6 (schelet, mușchi)
-      const on46 = lit(3) || lit(4); const a46 = b.i < 0 || on46 ? 1 : 0.42; const yM = (570 + 760) / 2, hM = 760 - 570 + 94;
-      [[2, 'cartilajele\nlaringelui\n(4 + 6 fuzionate)'], [3, 'cricotiroidian,\nridicătorul vălului,\nconstrictorii,\nintrinsecii laringelui']].forEach(([j, s]) => {
-        const ca = a46 * (b.i === 3 ? rv(3, j + 1) : 1);
-        pill(g, COLX[j + 1], yM, COLW[j + 1], hM, '#3a2a26', '', { alpha: ca, ow: 3, r: 14 });
-        if (on46) { g.save(); g.globalAlpha = ca; g.strokeStyle = ARC[3]; g.lineWidth = 4; g.setLineDash([10, 7]); g.beginPath(); g.roundRect(COLX[j + 1] - COLW[j + 1] / 2 + 3, yM - hM / 2 + 3, COLW[j + 1] - 6, hM - 6, 12); g.stroke(); g.restore(); }
-        txt(g, s, COLX[j + 1], yM, 15, '#ffe7d6', { alpha: ca, w: 700 });
-      });
-      // rândul punctat: arcul 5
-      const a5 = b.i < 0 || b.i === 3 ? 1 : 0.35;
-      g.save(); g.globalAlpha = a5; g.setLineDash([9, 8]); g.strokeStyle = '#cdb8ab'; g.lineWidth = 3; g.beginPath(); g.roundRect(COLX[0] - COLW[0] / 2, 642, 430, 44, 12); g.stroke(); g.restore();
-      txt(g, 'arcul 5 · nu se formează la om', COLX[0] - COLW[0] / 2 + 215, 664, 16, b.i === 3 ? C.hi : '#cdb8ab', { alpha: a5 });
-      txt(g, '* LP; anatomic = ramură a VII', COLX[1] + 10, 880, 15, '#cdb8ab', { w: 600, alpha: A(b, 0, 0.5) });
+      ring(g, ap[0], ap[1], 120 * ES + 20, 40, ease(b.bt * 1.4) * (b.i >= 0 ? 1 : 0));
     },
   };
 }
 
-/* ============ NERVII + MUȘCHII ============
-   Capul din profil (fața spre dreapta). Fiecare arc colorează mușchii lui și nervul lui (aceeași culoare):
-   arcul 1 (galben) = temporal + maseter, nervul V (V2 spre maxilă, V3 spre masticatori); arcul 2 (roz) = mușchii mimicii (frunte,
-   ochi, gură, platisma pe gât), nervul VII; arcul 3 (albastru) = stilofaringianul, nervul IX; arcurile 4 + 6 = faringele și laringele,
-   nervul X: laringeul superior (mov, arcul 4) și laringeul recurent (maro, arcul 6), care coboară și urcă înapoi la laringe.
-   Nervii pleacă toți din trunchiul cerebral (în spatele urechii). Colțul stânga-jos e liber (pozele din LP). */
-export function nervemuscle() {
-  const X0 = 470, Y0 = 410, s = 1.0;
-  const P = (x, y) => [X0 + x * s, Y0 + y * s];
-  const BS = P(-80, -10);
-  const NV = [
-    [[BS, P(-10, -30), P(40, -40), P(130, -40), P(215, -25)], [P(40, -40), P(90, 0), P(125, 55)], [P(40, -40), P(50, -90), P(60, -125)]],
-    [[BS, P(-40, 20), P(10, 40), P(90, 0), P(160, -60)], [P(10, 40), P(120, -100), P(165, -175)], [P(10, 40), P(150, 40), P(228, 72)], [P(10, 40), P(50, 160), P(90, 250)]],
-    [[BS, P(-50, 60), P(0, 110), P(35, 150)]],
-    [[BS, P(-60, 80), P(-40, 200), P(10, 270), P(95, 290)]],
-    [[BS, P(-60, 80), P(-45, 240), P(-30, 400), P(10, 425), P(60, 370), P(105, 330)]],
-  ];
+/* =================================================== NERVII: un nerv cranian pentru fiecare arc (embrionul lateral, ventral = dreapta)
+   Se vede: embrionul mare; pe spate (dorsal), prin transparență, rombencefalul, din care ies nervii spre arcuri, fiecare în culoarea
+   arcului lui: V (ganglionul trigeminal) → V2 în procesul maxilar, V3 în procesul mandibular (V1 oftalmic, punctat, spre ochi:
+   nu e nerv de arc); VII → arcul 2; IX → arcul 3; X coboară spre torace și dă n. laringeu superior → arcul 4 și n. laringeu recurent
+   → arcul 6 (ascuns, punctat, caudal de 4). Pe punctul lui, nervul crește din trunchiul cerebral până în arc; apoi impulsuri curg
+   spre arc. Ceilalți nervi rămân vizibili, mai stinși. */
+const NV = {
+  V0: [[-176, -176], [-96, -142]], V1: [[-96, -142], [0, -196], [66, -204]], V2: [[-96, -142], [20, -134], [150, -134]], V3: [[-96, -142], [0, -104], [100, -84], [196, -68]],
+  VII: [[-196, -104], [-110, -54], [40, -12], [176, 6]], IX: [[-206, -56], [-120, 8], [30, 50], [150, 62]],
+  X: [[-210, -12], [-150, 40], [-140, 130], [-120, 260], [-92, 370]], XS: [[-148, 72], [-40, 100], [110, 108]], XR: [[-132, 200], [-40, 172], [70, 156]],
+};
+export function nerves() {
+  const EX = 610, EY = 440, ES = 1.0; const TT = T(EX, EY, ES);
+  const NP = Object.fromEntries(Object.entries(NV).map(([k, v]) => [k, v.map(([x, y]) => TT(x, y))]));
+  const ARC6 = [[-60, 150], [20, 160], [100, 154]].map(([x, y]) => TT(x, y));
+  const LAB = [[TT(150, -134), 'V2'], [TT(196, -68), 'V3'], [TT(176, 6), 'VII'], [TT(150, 62), 'IX']];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [P(-150, -150), P(250, -230), P(-190, 130), [790, 640]],
+    anchors: [TT(-60, -230), TT(-40, -48), TT(-60, 40), TT(-196, 140)],
+    phase: (i) => ['arcul 1 → V (V2, V3)', 'arcul 2 → VII', 'arcul 3 → IX', 'arcurile 4, 6 → X'][i] || 'V · VII · IX · X',
     draw(g, t, b) {
       bg(g);
-      const am = (k) => A(b, k === 4 ? 3 : k, 0.28);
-      head(g, X0, Y0, s, { fill: '#f3c9a6' });
-      // trunchiul cerebral
-      ell(g, BS[0] - 10, BS[1], 30, 46, '#cdb8ab', { ow: 4 });
-      // mușchii arcului 1
-      ell(g, ...P(60, -120), 92, 66, ARC[0], { alpha: am(0) * 0.9, ow: 4 });
-      g.save(); g.globalAlpha = am(0); g.translate(...P(125, 60)); g.rotate(0.25); pill(g, 0, 0, 66, 110, ARC[0], '', { r: 24 }); g.restore();
-      // mușchii arcului 2 (mimica + platisma)
-      ell(g, ...P(160, -178), 46, 26, ARC[1], { alpha: am(1), ow: 4, rot: 0.5 });
-      g.save(); g.globalAlpha = am(1); g.strokeStyle = ARC[1]; g.lineWidth = 12; g.beginPath(); g.ellipse(...P(182, -70), 42, 30, 0, 0, 7); g.stroke(); g.beginPath(); g.ellipse(...P(236, 74), 26, 30, 0, 0, 7); g.stroke(); g.restore();
-      for (let k = 0; k < 5; k++) line(g, [P(20 + k * 24, 205), P(10 + k * 30, 400)], ARC[1], 7, { alpha: am(1) * 0.85 });
-      // arcul 3: stilofaringianul (de la procesul stiloid la faringe)
-      line(g, [P(10, 70), P(45, 150), P(60, 225)], ARC[2], 14, { alpha: am(2), ow: 6 });
-      // arcurile 4 + 6: constrictorii faringelui + laringele
-      pill(g, ...P(30, 300), 44, 130, ARC[3], '', { alpha: am(3), r: 16 });
-      for (let k = 0; k < 4; k++) line(g, [P(10, 250 + k * 30), P(50, 262 + k * 30)], '#6b4aa0', 4, { alpha: am(3) });
-      pill(g, ...P(110, 320), 56, 76, ARC[3], '', { alpha: am(3), r: 14 }); pill(g, ...P(110, 372), 48, 24, ARC[4], '', { alpha: am(3), r: 10 });
-      // nervii
-      NV.forEach((L, k) => L.forEach((pts) => {
-        const al = am(k); const on = b.i === (k === 4 ? 3 : k);
-        const u = on ? ease(clamp(b.bt / (b.bd * 0.55))) : 1;
-        tube(g, pts, 7, ARC[k], { ow: 5, alpha: al, u1: u, glow: on ? 0.6 : 0 });
-        if (on) flow(g, pts, t, '#fff3b0', 3, 0.5, 5);
-      }));
-      // etichetele nervilor (lângă traseu) și ale mușchilor
-      const NL = [['V', P(-20, -62)], ['VII', P(-50, 46)], ['IX', P(-108, 92)], ['X', P(-110, 210)]];
-      NL.forEach(([s0, [x, y]], k) => { const a = am(k); pill(g, x, y, 52, 32, ARC[k], s0, { alpha: a, size: 18, r: 12 }); });
-      const ML = [
-        [0, 'temporal', P(60, -128)], [0, 'maseter', P(125, 60)], [0, 'V2 → maxila', P(235, -50)],
-        [1, 'frontal', P(160, -222)], [1, 'orbicularul ochiului', P(250, -112)], [1, 'orbicularul gurii', P(300, 118)], [1, 'platisma', P(140, 380)],
-        [2, 'stilofaringian', P(-60, 180)],
-        [3, 'constrictorii', P(-10, 232)], [3, 'laringe', P(205, 320)], [3, 'laringeu sup. (4)', P(215, 268)], [3, 'laringeu recurent (6)', P(210, 440)],
-      ];
-      ML.forEach(([k, s0, [x, y]]) => { const a = b.i < 0 ? 0 : A(b, k, 0); if (a > 0) txt(g, s0, x, y, 16, '#fff3e6', { alpha: a }); });
-      if (b.i < 0) txt(g, 'fiecare culoare = un arc: mușchii + nervul lui', 640, 880, 17, '#ffe7d6', { w: 700 });
+      const hi = b.i < 0 ? [] : [[1, 'max'], [2], [3], [4]][b.i];
+      embryoLat(g, EX, EY, ES, t, { col: true, hi, dimArc: 0.55 });
+      // rombencefalul (prin transparență)
+      g.save(); g.globalAlpha = 0.55; tube(g, [TT(-150, -230), TT(-200, -150), TT(-214, -40), TT(-212, 30)], 30, '#e7a2b4', { ow: 3 }); g.restore();
+      txt(g, 'rombencefal', ...TT(-238, -250), 15, '#ffd6e0', { align: 'left' });
+      if (b.i === 3 || b.i < 0) { g.save(); g.globalAlpha = 0.9; g.setLineDash([8, 7]); tube(g, ARC6, 22, 'rgba(181,131,90,.6)', { ow: 3 }); g.restore(); txt(g, 'arcul 6 (ascuns)', ARC6[0][0] - 10, ARC6[0][1] + 34, 15, ARCL[6], { align: 'left' }); }
+      const grow = (k) => (b.i < 0 ? 1 : b.i === k ? ease(clamp(b.bt / (b.bd * 0.55))) : 1);
+      const al = (k) => (b.i < 0 || b.i === k ? 1 : 0.45);
+      const N = (pts, col, w, k, o = {}) => { const P0 = nerve(g, pts, w, col, { u1: grow(k), alpha: al(k), fib: OUT, ...o }); if (b.i === k && grow(k) > 0.98) flow(g, curve(pts), t, '#ffffff', 3, 0.5, 4.5, { alpha: 0.9 }); return P0; };
+      // V: rădăcina + ganglionul + ramurile
+      N(NP.V0, ARCL[1], 13, 0); ell(g, NP.V0[1][0], NP.V0[1][1], 22 * grow(0), 16 * grow(0), ARCL[1], { ow: 4, alpha: al(0), shade: ARC[1] });
+      g.save(); g.setLineDash([6, 6]); nerve(g, NP.V1, 6, '#d8c4b8', { u1: grow(0), alpha: al(0) * 0.8, ow: 3 }); g.restore();
+      N(NP.V2, ARCL[1], 9, 0); N(NP.V3, ARCL[1], 9, 0);
+      N(NP.VII, ARCL[2], 9, 1); N(NP.IX, ARCL[3], 9, 2);
+      N(NP.X, '#f2dcb8', 12, 3); N(NP.XS, ARCL[4], 8, 3); N(NP.XR, ARCL[6], 8, 3);
+      if (grow(0) > 0.6) { txt(g, 'V1 (oftalmic)', NP.V1[2][0] + 10, NP.V1[2][1] - 24, 14, '#d8c4b8', { alpha: al(0) }); txt(g, 'ganglionul V', NP.V0[1][0] - 20, NP.V0[1][1] - 34, 14, ARCL[1], { alpha: al(0) }); }
+      LAB.forEach(([p, s], j) => { const k = j < 2 ? 0 : j - 1; if (grow(k) > 0.8) txt(g, s, p[0] + 26, p[1] - 2, 19, [ARCL[1], ARCL[1], ARCL[2], ARCL[3]][j], { alpha: al(k), align: 'left' }); });
+      if (grow(3) > 0.8) { txt(g, 'X', NP.X[3][0] - 28, NP.X[3][1], 19, '#ffe6c4', { alpha: al(3) }); txt(g, 'n. laringeu sup.', NP.XS[2][0] + 18, NP.XS[2][1] - 4, 15, ARCL[4], { alpha: al(3), align: 'left' }); txt(g, 'n. laringeu recurent', NP.XR[2][0] + 18, NP.XR[2][1] + 46, 15, ARCL[6], { alpha: al(3), align: 'left' }); }
+      const e = ease(b.bt * 1.4);
+      if (b.i === 0) ring(g, ...TT(40, -120), 190, 80, e, -0.1);
+      if (b.i === 1) ring(g, ...TT(10, -24), 210, 50, e, 0.12);
+      if (b.i === 2) ring(g, ...TT(-10, 30), 200, 50, e, 0.18);
+      if (b.i === 3) ring(g, ...TT(-80, 150), 170, 130, e);
     },
   };
 }
 
-/* ============ ARTERELE: arcurile aortice ============
-   Vedere VENTRALĂ: dreapta embrionului = stânga imaginii (etichete „dr.” în stânga, „stg.” în dreapta).
-   Sacul aortic jos la mijloc → rădăcinile ventrale urcă → arcurile aortice 1, 2, 3, 4, 6 (cranial → caudal) merg lateral spre cele două
-   aorte dorsale verticale, care fuzionează caudal în aorta descendentă. Remodelarea pe puncte:
-   pt0: 1 și 2 se subțiază (resturi: a. maxilară; a. hioidă + stapedială). pt1: arcul 3 = carotida comună + începutul carotidei interne;
-   aorta dorsală dintre 3 și 4 dispare; rădăcina ventrală de deasupra 3 = carotida externă. pt2: arcul 4 stg. = arcul aortei; dr. = subclavia dr.
-   (aorta dorsală dr. sub ea dispare). pt3: arcul 6 stg. = ductus arteriosus, dr. = a. pulmonară dr. proximal (segmentul distal dr. dispare).
-   Galben punctat: nervii laringei recurenți agățați sub subclavia dr. și sub arcul aortei/ductus (manual). Colțul stânga-jos liber pe intro/pt0. */
+/* =================================================== ARTERELE: arcurile aortice, înainte (A) și după remodelare (B) — vedere ventrală
+   Orientare: vedere ventrală, cranial ↑; STÂNGA embrionului = DREAPTA ecranului. Jos-centru sacul aortic; din el urcă cele 2 aorte
+   ventrale; arterele arcurilor (1, 2, 3, 4, 6; colorate pe ARC) merg din aorta ventrală spre lateral, în cele 2 aorte dorsale, care coboară
+   și se unesc într-o singură aortă descendentă. Sângele curge: sac → arcuri → aortele dorsale → aorta descendentă.
+   1 = arcurile 1 și 2 regresează: rămân doar ciotul a. maxilare (1) și al a. hioide + stapediale (2); 2 = arcul 3 → a. carotidă comună +
+   prima parte a carotidei interne (segmentul de aortă dorsală dintre 3 și 4 dispare; aorta ventrală de deasupra = carotida externă);
+   3 = arcul 4: stânga → arcul aortei (gros), dreapta → partea proximală a a. subclavii drepte (aorta dorsală dreaptă de sub ea dispare);
+   4 = arcul 6: stânga → ductus arteriosus (spre aortă), dreapta → partea proximală a a. pulmonare drepte (partea distală dispare);
+   vagii coboară lateral, iar laringeul recurent stâng ocolește ductusul/arcul aortei, cel drept ocolește subclavia dreaptă (manual). */
 export function arteries() {
-  const cx = 500, XD = 250, XV = 50, YS = [168, 250, 336, 426, 528], SAC = [cx, 612];
-  const arcPts = (d, k) => [[cx + d * XV, YS[k] + 22], [cx + d * 150, YS[k] - 26], [cx + d * XD, YS[k]]];
+  const X0 = 600, DA = 215, VA = 48; const Y = { 1: 200, 2: 290, 3: 380, 4: 480, 6: 580 }; const SAC = [X0, 690];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[cx - 160, YS[0] - 56], [cx + 160, YS[2] - 60], [cx + 160, YS[3] - 60], [cx + 160, YS[4] - 58]],
+    anchors: [[X0 - DA - 60, (Y[1] + Y[2]) / 2], [X0 + DA + 50, Y[3] - 40], [X0 - DA - 50, Y[4] + 10], [X0 + DA + 50, Y[6] + 30]],
+    phase: (i) => ['arcurile 1 și 2 regresează', 'arcul 3 → carotidele', 'arcul 4: stânga ≠ dreapta', 'arcul 6 → circulația pulmonară'][i] || 'A → B',
     draw(g, t, b) {
-      bg(g);
-      const r = [0, 1, 2, 3].map((k) => prog(b, t, k, 0.7, 9));
-      const hi = (k) => (b.i === k ? 0.7 : 0);
-      txt(g, 'dreapta embrionului', 150, 92, 16, '#cdb8ab', { w: 700 }); txt(g, 'stânga embrionului', 850, 92, 16, '#cdb8ab', { w: 700 });
-      // aorta descendentă (în spate)
-      tube(g, [[cx + 20, 640], [cx + 20, 880]], 26, '#c9473f', { ow: 6 });
-      txt(g, 'aorta\ndescendentă', cx + 120, 830, 16, '#ffc0b8');
-      // aortele dorsale
-      for (const d of [-1, 1]) {
-        const x = cx + d * XD;
-        tube(g, [[x, 120], [x, YS[2]]], 20, '#c9473f', { ow: 6 });
-        const gapA = 1 - r[1]; // ductus caroticus 3–4 dispare
-        tube(g, [[x, YS[2]], [x, YS[3]]], 20, '#c9473f', { ow: 6, alpha: Math.max(0.08, gapA) });
-        const lowA = d < 0 ? 1 - r[2] : 1; // aorta dorsală dreaptă caudală dispare
-        tube(g, [[x, YS[3]], [x, 560], [cx + d * 120, 630], [cx + 20, 660]], 20, '#c9473f', { ow: 6, alpha: Math.max(0.08, lowA) });
+      bg(g); const p = P(b, t, 4, 0.7);
+      const r12 = p(0), r3 = p(1), r4 = p(2), r6 = p(3);
+      // aortele dorsale (sus → jos), cu segmentele care dispar
+      [-1, 1].forEach((s) => {
+        const x = X0 + s * DA;
+        artery(g, [[x, 130], [x, Y[3]]], 26, t, { flow: 0.0 });
+        artery(g, [[x, Y[3]], [x, Y[4]]], 26, t, { alpha: 1 - r3 * 0.92 }); // ductus caroticus dispare
+        const lowA = s < 0 ? 1 - r4 * 0.92 : 1; // aorta dorsală dreaptă, sub arcul 4, dispare
+        artery(g, [[x, Y[4]], [x, 690], [X0 + s * 120, 800], [X0, 830]], 26, t, { alpha: lowA, flow: lowA > 0.5 ? 0.2 : 0 });
+      });
+      artery(g, [[X0, 830], [X0, 930]], 30, t, { flow: 0.25 });
+      // aortele ventrale (din sac în sus)
+      [-1, 1].forEach((s) => { artery(g, [[X0 + s * 30, SAC[1] - 30], [X0 + s * VA, Y[6]], [X0 + s * VA, Y[3]]], 24, t); artery(g, [[X0 + s * VA, Y[3]], [X0 + s * VA, 140]], 20, t, { col: r3 > 0.5 ? '#e05a4a' : L.art }); });
+      // arterele arcurilor
+      const loop = (k, s) => [[X0 + s * VA, Y[k]], [X0 + s * (VA + DA) / 2 + s * 14, Y[k] - 30], [X0 + s * DA, Y[k]]];
+      [-1, 1].forEach((s) => {
+        artery(g, loop(1, s), 18, t, { col: ARC[1], alpha: 1 - 0.85 * r12, flow: 0.3 * (1 - r12) });
+        artery(g, loop(2, s), 18, t, { col: ARC[2], alpha: 1 - 0.85 * r12, flow: 0.3 * (1 - r12) });
+        if (r12 > 0.5) { artery(g, loop(1, s), 18, t, { col: ARC[1], u0: 0.72, alpha: sp(r12, 0.5, 1) }); artery(g, loop(2, s), 18, t, { col: ARC[2], u0: 0.72, alpha: sp(r12, 0.5, 1) }); }
+        artery(g, loop(3, s), 24, t, { col: ARC[3], flow: 0.3 });
+        artery(g, loop(4, s), s > 0 ? lerp(24, 34, r4) : 24, t, { col: ARC[4], flow: 0.3 });
+        const d6 = s < 0 ? 1 - r6 * 0.9 : 1; // dreapta: partea distală dispare
+        artery(g, loop(6, s), 22, t, { col: ARC[6], u1: 0.5, flow: 0.25 });
+        artery(g, loop(6, s), 22, t, { col: ARC[6], u0: 0.5, alpha: d6, flow: d6 > 0.5 ? 0.25 : 0 });
+      });
+      // sacul aortic
+      ell(g, SAC[0], SAC[1], 70, 46, L.art, { shade: L.artS, light: '#ff8a8a' }); txt(g, 'sacul aortic', SAC[0], SAC[1] + 72, 17, '#ffc0b6');
+      // ramurile noi: carotida externă (sus), subclavia dreaptă (a 7-a intersegmentară), arterele pulmonare
+      if (r3 > 0.3) { [-1, 1].forEach((s) => { txt(g, 'a. carotidă\nexternă', X0 + s * (VA + 4), 112, 14, '#ffd0c8', { alpha: sp(r3, 0.3, 1) }); }); txt(g, 'a. carotidă\ninternă', X0 + DA + 70, 160, 14, '#ffd0c8', { alpha: sp(r3, 0.3, 1) }); txt(g, 'a. carotidă\ncomună', X0 + VA + 76, Y[3] + 58, 14, ARCL[3], { alpha: sp(r3, 0.3, 1) }); }
+      if (r4 > 0.3) { const ya = sp(r4, 0.3, 1); artery(g, [[X0 - DA, Y[4] + 70], [X0 - DA - 70, Y[4] + 100], [X0 - DA - 120, Y[4] + 96]], 16, t, { alpha: ya, u1: ya }); txt(g, 'a. subclavie dr.', X0 - DA - 30, Y[4] + 140, 15, ARCL[4], { alpha: ya }); txt(g, 'arcul aortei', X0 + DA + 56, Y[4] + 44, 16, ARCL[4], { alpha: ya, align: 'left' }); }
+      if (r6 > 0.3) { const ya = sp(r6, 0.3, 1); [-1, 1].forEach((s) => artery(g, [[X0 + s * (VA + 40), Y[6] - 8], [X0 + s * (VA + 70), Y[6] + 50], [X0 + s * (VA + 60), Y[6] + 100]], 14, t, { col: ARC[6], alpha: ya, u1: ya })); txt(g, 'ductus\narteriosus', X0 + DA - 10, Y[6] + 64, 15, ARCL[6], { alpha: ya }); txt(g, 'a. pulmonară dr.', X0 - VA - 150, Y[6] + 90, 15, ARCL[6], { alpha: ya }); }
+      if (r12 > 0.5) { txt(g, 'a. maxilară', X0 - DA - 70, Y[1] - 30, 14, ARCL[1], { alpha: sp(r12, 0.5, 1) }); txt(g, 'a. hioidă +\nstapedială', X0 - DA - 76, Y[2] + 6, 14, ARCL[2], { alpha: sp(r12, 0.5, 1) }); }
+      // vagii + laringeii recurenți (manual): stânga sub ductus / arcul aortei, dreapta sub subclavie
+      if (r6 > 0.6) {
+        const ya = sp(r6, 0.6, 1);
+        nerve(g, [[X0 + DA + 70, 120], [X0 + DA + 62, Y[6] + 70], [X0 + DA + 50, 760]], 7, L.nerve, { alpha: ya, ow: 3 });
+        nerve(g, [[X0 + DA + 62, Y[6] + 40], [X0 + DA - 20, Y[6] + 46], [X0 + DA - 40, Y[6] - 10], [X0 + DA + 30, Y[4] + 30], [X0 + DA + 100, 300]], 6, L.nerve, { alpha: ya, ow: 3, u1: ya });
+        nerve(g, [[X0 - DA - 70, 120], [X0 - DA - 62, Y[4] + 160], [X0 - DA - 50, 760]], 7, L.nerve, { alpha: ya, ow: 3 });
+        nerve(g, [[X0 - DA - 64, Y[4] + 120], [X0 - DA - 140, Y[4] + 130], [X0 - DA - 150, Y[4] + 60], [X0 - DA - 100, 300]], 6, L.nerve, { alpha: ya, ow: 3, u1: ya });
+        txt(g, 'n. laringeu recurent', X0 + DA + 20, 260, 13, L.nerve, { alpha: ya, align: 'left' });
       }
-      // rădăcinile ventrale + sacul aortic
-      for (const d of [-1, 1]) {
-        tube(g, [[cx + d * 30, SAC[1] - 20], [cx + d * XV, YS[3] + 20], [cx + d * XV, YS[2] + 22]], 18, '#e0443e', { ow: 6 });
-        tube(g, [[cx + d * XV, YS[2] + 22], [cx + d * XV, 120]], 14, '#e0443e', { ow: 6, alpha: 1 - 0.3 * r[1] });
-      }
-      ell(g, SAC[0], SAC[1], 70, 40, '#e0443e', { ow: 6 });
-      txt(g, 'sacul aortic', SAC[0], SAC[1] + 66, 17, '#ffc0b8');
-      // arcurile aortice
-      for (const d of [-1, 1]) for (let k = 0; k < 5; k++) {
-        let w = 16, a = 1;
-        if (k <= 1) { w = lerp(16, 7, r[0]); a = lerp(1, 0.55, r[0]); }
-        const pts = arcPts(d, k);
-        if (k === 4 && d < 0) { // arcul 6 drept: rămâne doar porțiunea proximală
-          tube(g, [pts[0], pts[1]], 16, ARC[4], { ow: 6, glow: hi(3) });
-          tube(g, [pts[1], pts[2]], 16, ARC[4], { ow: 6, alpha: Math.max(0.08, 1 - r[3]) });
-          continue;
-        }
-        tube(g, pts, w, ARC[k], { ow: 6, alpha: a, glow: hi([0, 0, 1, 2, 3][k]) });
-      }
-      // subclavia dreaptă (din arcul 4 dr. + a 7-a intersegmentară), crește pe pt2
-      if (r[2] > 0.01) tube(g, [[cx - XD, YS[3]], [cx - XD - 60, YS[3] + 30], [cx - XD - 150, YS[3] + 20]], 14, ARC[3], { ow: 6, u1: r[2] });
-      // arterele pulmonare (din porțiunea proximală a arcului 6), cresc pe pt3
-      for (const d of [-1, 1]) if (r[3] > 0.01) tube(g, [[cx + d * 150, YS[4] - 26], [cx + d * 170, YS[4] + 50], [cx + d * 210, YS[4] + 90]], 12, ARC[4], { ow: 5, u1: r[3] });
-      // nervii laringei recurenți (manual)
-      const nr = (d, y, a) => { if (a <= 0.01) return; const x = cx + d * (XD + 40); line(g, [[x + d * 30, 110], [x + d * 30, y - 30], [x - d * 10, y + 36], [x - d * 60, y + 30], [x - d * 90, y - 40], [x - d * 100, 150]], NERVE, 4, { dash: [8, 6], alpha: a }); };
-      nr(-1, YS[3], b.i < 0 ? 0 : b.i >= 2 ? 1 : 0); nr(1, YS[4], b.i < 0 ? 0 : b.i >= 3 ? 1 : 0);
-      // numerele arcurilor (pe arcul stâng al imaginii, partea dreaptă a embrionului)
-      for (let k = 0; k < 5; k++) arcTag(g, cx - 150, YS[k] - 26, k, 16, 1);
-      // etichetele derivatelor
-      const L = [
-        [0, 'a. maxilară', 860, YS[0] - 4], [0, 'a. hioidă +\na. stapedială', 870, YS[1] + 6],
-        [1, 'a. carotidă internă', 150, 150], [1, 'carotida\nexternă', 500, 140], [1, 'a. carotidă comună', 870, YS[2] - 8],
-        [2, 'arcul aortei', 880, YS[3] - 6], [2, 'a. subclavie dr.', 118, YS[3] + 64], [2, 'n. recurent dr.\n(manual)', 125, YS[3] - 80],
-        [3, 'ductus\narteriosus', 870, YS[4] - 10], [3, 'a. pulmonară dr.', 230, YS[4] + 128], [3, 'n. recurent stg.\n(manual)', 880, YS[4] + 80],
-      ];
-      L.forEach(([k, s0, x, y]) => { const a = b.i < 0 ? 0 : b.i >= k ? (b.i === k ? 1 : 0.55) : 0; if (a > 0.01) txt(g, s0, x, y, 16, b.i === k ? C.hi : '#ffe7d6', { alpha: a * (k === b.i ? clamp(r[k] * 1.6) : 1) }); });
-      if (b.i < 0) { txt(g, '5 perechi de arcuri aortice → remodelare', 650, 735, 17, '#ffe7d6', { w: 700 }); txt(g, 'aorta dorsală', cx + XD + 90, 200, 16, '#ffc0b8'); }
+      ARCS.forEach((k) => txt(g, String(k), X0, Y[k] - (k === 6 ? 2 : 0), 20, [ARCL[k]][0], { w: 900 }));
+      txt(g, 'dreapta', X0 - DA, 96, 18, '#ffd6c4'); txt(g, 'stânga', X0 + DA, 96, 18, '#ffd6c4');
+      txt(g, 'aortele\ndorsale', X0 + DA + 70, 690, 14, '#ffc0b6');
+      const e = ease(b.bt * 1.4);
+      if (b.i === 0) ring(g, X0, (Y[1] + Y[2]) / 2, DA + 30, 90, e);
+      if (b.i === 1) ring(g, X0, Y[3], DA + 40, 70, e);
+      if (b.i === 2) ring(g, X0, Y[4], DA + 40, 70, e);
+      if (b.i === 3) ring(g, X0, Y[6] + 20, DA + 40, 80, e);
     },
   };
 }
 
-/* ============ SCHELETUL ARCURILOR (vedere laterală, fața spre dreapta) ============
-   Sus-stânga urechea medie: ciocan + nicovală (galben, arcul 1), scărița (roz, arcul 2). Din ciocan coboară cartilajul Meckel (galben)
-   spre bărbie, în interiorul mandibulei (contur punctat: osificare membranoasă, manual); lig. sfenomandibular și lig. anterior al
-   ciocanului = resturi ale lui Meckel. Tot arcul 1: maxila, zigomaticul, o parte din temporal (contururi galbene).
-   Sub ureche: procesul stiloid (roz) → lig. stilohioid (roz punctat) → cornul mic. Hioidul: sus + cornul mic = roz (2),
-   jos + cornul mare = albastru (3). Dedesubt: cartilajul tiroid + cricoid (+ aritenoizi) = arcurile 4 + 6 (mov). */
-export function skeleton() {
+/* =================================================== MUȘCHII: pe capul copilului (profil, fața spre stânga), colorați pe arcul de origine
+   Arcul 1 (teal): temporalul (evantai pe tâmplă) + maseterul (de la arcada zigomatică la unghiul mandibulei).
+   Arcul 2 (roz): mușchii mimicii — frontalul, orbicularul ochiului, orbicularul gurii, buccinatorul, platisma pe gât.
+   Arcul 3 (verde): stilofaringianul — profund, de la procesul stiloid (sub ureche) în jos, spre faringe (contur punctat = profund).
+   Arcurile 4 + 6: constrictorii faringelui (portocaliu, profund, în spatele gâtului) + cricotiroidianul pe laringe (portocaliu);
+   intrinsecii laringelui (maro, arcul 6, manual), în lupă pe laringe. Pe punctul lui, grupul crește; cei de dinainte rămân. */
+export function muscles() {
+  const HX = 610, HY = 330, HS = 1.05; const TT = T(HX, HY, HS);
+  const sh = (pts) => smooth(pts.map(([x, y]) => TT(x, y)));
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[110, 300], [250, 450], [280, 770], [440, 850]],
+    anchors: [TT(110, -150), TT(-200, -100), TT(140, 180), TT(-170, 290)],
+    phase: (i) => ['arcul 1: masticatori', 'arcul 2: mimica', 'arcul 3: stilofaringian', 'arcurile 4 + 6: faringe, laringe'][i] || 'mușchii arcurilor',
     draw(g, t, b) {
-      bg(g);
-      const a = (k) => A(b, k, 0.25);
-      // conturul feței (ghid, foarte palid)
-            // arcul 1: temporal (o parte), zigomatic, maxila
-      g.save(); g.globalAlpha = a(0);
-      ell(g, 560, 130, 100, 44, 'rgba(242,179,61,.25)', { ow: 4, sc: ARC[0], dash: [8, 6] }); txt(g, 'temporal (o parte)', 560, 130, 15, '#ffe7b0');
-      tube(g, [[400, 252], [520, 240], [600, 262]], 18, ARC[0], { ow: 5 }); txt(g, 'zigomatic', 500, 212, 15, '#ffe7b0');
-      ell(g, 680, 340, 84, 56, 'rgba(242,179,61,.35)', { ow: 4, sc: ARC[0] }); txt(g, 'maxila', 680, 340, 16, '#ffe7b0');
-      g.restore();
-      // mandibula (contur punctat, osificare membranoasă în jurul Meckel)
-      const mand = [[330, 300], [350, 420], [380, 560], [520, 580], [700, 570], [790, 540], [780, 470], [600, 480], [430, 470], [400, 330]];
-      g.save(); g.globalAlpha = a(0); poly(g, mand, 'rgba(255,240,220,.08)', { stroke: '#fff3e6', lw: 3, dash: [9, 7] }); g.restore();
-      txt(g, 'mandibula: osificare membranoasă (manual)', 600, 548, 15, '#ffe7d6', { alpha: a(0) });
-      // cartilajul Meckel
-      const meck = [[262, 246], [330, 340], [400, 470], [560, 520], [760, 512]];
-      const um = b.i === 0 ? ease(clamp(b.bt / 2.5)) : 1;
-      tube(g, meck, 22, ARC[0], { ow: 6, alpha: a(0), u1: um, glow: b.i === 0 ? 0.5 : 0 });
-      txt(g, 'cartilajul Meckel', 560, 470, 16, OUT, { stroke: false, alpha: a(0) * um });
-      line(g, [[440, 215], [425, 455]], ARC[0], 6, { dash: [8, 6], alpha: a(0) }); txt(g, 'lig. sfeno-\nmandibular', 520, 380, 15, '#ffe7b0', { alpha: a(0) });
-      line(g, [[256, 206], [300, 158]], ARC[0], 5, { dash: [6, 5], alpha: a(0) }); txt(g, 'lig. ant. al ciocanului', 300, 136, 15, '#ffe7b0', { alpha: a(0) });
-      // urechea medie
-      ell(g, 240, 230, 22, 32, ARC[0], { alpha: a(0), ow: 5 }); ell(g, 278, 214, 20, 22, ARC[0], { alpha: a(0), ow: 5 });
-      txt(g, 'ciocan · nicovală', 160, 190, 16, '#ffe7b0', { alpha: a(0) });
-      g.save(); g.globalAlpha = a(1); g.strokeStyle = OUT; g.lineWidth = 12; g.beginPath(); g.moveTo(304, 240); g.lineTo(338, 222); g.lineTo(338, 262); g.closePath(); g.stroke(); g.strokeStyle = ARC[1]; g.lineWidth = 7; g.stroke(); g.restore();
-      txt(g, 'scărița', 382, 240, 16, '#ffd0e4', { alpha: a(1) });
-      // arcul 2: stiloid, lig. stilohioid, cornul mic + hioid sus
-      tube(g, [[300, 300], [330, 360], [355, 420]], 12, ARC[1], { ow: 5, alpha: a(1) }); txt(g, 'proc. stiloid', 230, 380, 16, '#ffd0e4', { alpha: a(1) });
-      const us = b.i === 1 ? ease(clamp(b.bt / 2)) : 1;
-      tube(g, [[355, 420], [410, 540], [470, 640]], 6, ARC[1], { ow: 3, alpha: a(1), dash: [10, 8], u1: us }); txt(g, 'lig. stilohioid', 300, 560, 16, '#ffd0e4', { alpha: a(1) });
-      // hioidul (văzut din lateral): corpul în 2 jumătăți + cornul mic (2) + cornul mare (3)
-      pill(g, 560, 652, 140, 22, ARC[1], '', { alpha: a(1), r: 10, glow: b.i === 1 ? 0.6 : 0 });
-      pill(g, 560, 676, 140, 22, ARC[2], '', { alpha: a(2), r: 10, glow: b.i === 2 ? 0.6 : 0 });
-      tube(g, [[490, 652], [474, 640]], 14, ARC[1], { ow: 5, alpha: a(1) });
-      tube(g, [[500, 680], [420, 704], [360, 712]], 12, ARC[2], { ow: 5, alpha: a(2) });
-      txt(g, 'partea sup. + cornul mic', 648, 646, 16, '#ffd0e4', { alpha: a(1), align: 'left' });
-      txt(g, 'partea inf. + cornul mare', 648, 684, 16, '#c8dcff', { alpha: a(2), align: 'left' }); txt(g, 'HIOIDUL', 560, 614, 16, '#ffe7d6');
-      txt(g, 'cornul mare', 380, 744, 15, '#c8dcff', { alpha: a(2) });
-      // laringele: tiroid + cricoid (+ aritenoizi) = arcurile 4 + 6
-      g.save(); g.globalAlpha = a(3);
-      poly(g, [[490, 730], [630, 730], [612, 800], [560, 824], [508, 800]], ARC[3], { stroke: OUT, lw: 5 });
-      pill(g, 560, 860, 120, 32, ARC[4], '', { r: 14 }); dot(g, 600, 836, 9, ARC[3], { ow: 3 });
-      g.restore();
-      txt(g, 'cartilaj tiroid', 560, 765, 15, OUT, { stroke: false, alpha: a(3) });
-      txt(g, 'cricoid (+ aritenoizi…)', 760, 860, 16, '#e3ccff', { alpha: a(3) });
-      txt(g, 'arcurile 4 + 6', 760, 780, 16, '#e3ccff', { alpha: a(3) });
-      [0, 1, 2, 3].forEach((k) => arcTag(g, [800, 388, 330, 462][k], [512, 412, 712, 770][k], k, 16, a(k)));
+      bg(g); const p = P(b, t, 4);
+      childHead(g, HX, HY, HS, t, { neck: true });
+      const M = (path, k, a, o = {}) => { if (a <= 0.01) return; g.save(); g.globalAlpha = a * (o.alpha ?? 0.92); paint(g, path, ARC[k], ARCS_[k], ARCL[k], [0, 0, 1000, 934], OUT, 3.5); if (o.str !== false) { g.save(); g.clip(path); g.strokeStyle = 'rgba(40,10,20,.28)'; g.lineWidth = 2; for (let q = -20; q < 20; q++) { const [x, y] = TT(q * 14, -260); g.beginPath(); g.moveTo(x, y); g.lineTo(x + (o.sl ?? 60), y + 700); g.stroke(); } g.restore(); } if (o.dash) { g.setLineDash([7, 6]); g.strokeStyle = '#ffffff'; g.lineWidth = 2.5; g.stroke(path); } g.restore(); };
+      const a1 = p(0), a2 = p(1), a3 = p(2), a4 = p(3);
+      // arcul 1: temporalul + maseterul
+      M(sh([[-40, -170], [40, -196], [118, -160], [120, -80], [60, -24], [10, 24], [-20, -40], [-50, -110]]), 1, a1, { sl: 10 });
+      M(sh([[-40, 38], [30, 30], [50, 90], [30, 150], [-20, 156], [-44, 96]]), 1, a1, { sl: 20 });
+      // arcul 2: mimica
+      M(sh([[-150, -150], [-100, -210], [-20, -200], [-40, -140], [-110, -120]]), 2, a2, { sl: 0 });
+      { const [x, y] = TT(-92, -28); const r = new Path2D(); r.ellipse(x, y, 44 * HS, 32 * HS, 0.1, 0, 7); r.ellipse(x, y, 30 * HS, 16 * HS, 0.1, 0, 7, true); M(r, 2, a2, { str: false }); }
+      { const [x, y] = TT(-150, 86); const r = new Path2D(); r.ellipse(x, y, 30 * HS, 22 * HS, 0, 0, 7); r.ellipse(x, y, 18 * HS, 7 * HS, 0, 0, 7, true); M(r, 2, a2, { str: false }); }
+      M(sh([[-120, 50], [-80, 40], [-60, 80], [-90, 110], [-120, 100]]), 2, a2, { sl: 0, alpha: 0.75 });
+      M(sh([[-90, 190], [40, 176], [120, 240], [140, 330], [-90, 330], [-110, 250]]), 2, a2 * 0.8, { sl: 30 });
+      // arcul 3: stilofaringianul (profund)
+      M(sh([[70, 80], [80, 86], [40, 200], [26, 230], [16, 224], [54, 120]]), 3, a3, { str: false, dash: true });
+      if (a3 > 0.2) { g.save(); g.globalAlpha = a3; tube(g, [TT(80, 72), TT(64, 130)], 7, L.bone, { ow: 3 }); g.restore(); }
+      // arcurile 4 + 6: constrictorii (profund, în spate), cricotiroidianul; intrinsecii (arcul 6)
+      M(sh([[30, 190], [90, 200], [110, 300], [60, 320], [20, 280]]), 4, a4, { dash: true, sl: 0 });
+      { const [lx, ly] = TT(-70, 268); g.save(); g.globalAlpha = a4; const lp = new Path2D(); lp.moveTo(lx - 30, ly - 22); lp.lineTo(lx + 26, ly - 22); lp.lineTo(lx + 18, ly + 26); lp.lineTo(lx - 22, ly + 26); lp.closePath(); paint(g, lp, '#e9dcc8', '#c9b79a', null, [lx - 30, ly - 22, 56, 48], OUT, 3); muscle(g, lx - 2, ly + 30, 46, 16, 0.1, ARC[4], { ow: 3 }); g.restore(); }
+      lead(g, ...TT(-70, 290), 640, 770, a4);
+      lupa(g, 720, 830, 96, a4, () => {
+        const cx = 720, cy = 834; const lar = new Path2D(); lar.ellipse(cx, cy, 66, 74, 0, 0, 7); paint(g, lar, '#3a2228', null, null, [cx - 80, cy - 92, 160, 184], OUT, 3);
+        [[-1, 1]].forEach(() => {}); [-1, 1].forEach((s) => { muscle(g, cx + s * 28, cy - 4, 74, 22, s * 1.3, ARC[6], { ow: 3 }); });
+        muscle(g, cx, cy + 40, 66, 18, 0, ARC[6], { ow: 3 });
+        txt(g, 'intrinsecii laringelui', cx, cy - 58, 13, ARCL[6]); txt(g, '(arcul 6, manual)', cx, cy + 70, 12, '#d8c4b8');
+      });
+      const lb = (s0, x, y, k, a, al = 'center') => txt(g, s0, x, y, 16, ARCL[k], { alpha: a, align: al });
+      lb('temporal', ...TT(150, -170), 1, a1, 'left'); lb('maseter', ...TT(90, 120), 1, a1, 'left');
+      lb('frontal', ...TT(-110, -236), 2, a2); lb('orbicularul ochiului', ...TT(-215, -60), 2, a2, 'right'); lb('orbicularul gurii', ...TT(-210, 130), 2, a2, 'right'); lb('platisma', ...TT(200, 310), 2, a2, 'left');
+      lb('stilofaringian\n(profund)', ...TT(190, 150), 3, a3, 'left');
+      lb('constrictorii\nfaringelui', ...TT(190, 250), 4, a4, 'left'); lb('cricotiroidian', ...TT(-120, 340), 4, a4, 'right');
+      const e = ease(b.bt * 1.4);
+      if (b.i === 0) ring(g, ...TT(40, -40), 140, 210, e);
+      if (b.i === 1) ring(g, ...TT(-110, -10), 120, 230, e);
+      if (b.i === 2) ring(g, ...TT(50, 150), 70, 100, e, 0.3);
+      if (b.i === 3) ring(g, ...TT(10, 270), 160, 90, e);
+    },
+  };
+}
+
+/* =================================================== SCHELETUL: craniul în profil (fața spre stânga) + hioidul și laringele pe gât
+   Arcul 1 (teal): cartilajul Meckel (bară) de la urechea medie, pe fața internă a mandibulei, până la bărbie; din capătul lui dorsal
+   ciocanul + nicovala (în lupă, sus-dreapta); lig. sfenomandibular (punctat); maxila, zigomaticul, o parte din temporal colorate teal;
+   mandibula = contur punctat teal (se osifică în jurul lui Meckel, manual). Arcul 2 (roz): scărița (lupă), procesul stiloid (sub ureche),
+   lig. stilohioid până la cornul mic al hioidului + partea sup. a corpului hioid. Arcul 3 (verde): cornul mare + partea inf. a corpului.
+   Arcurile 4 + 6: cartilajele laringelui (tiroid, cricoid), portocaliu → maro. */
+export function skeleton() {
+  const SX = 540, SY = 290, SS = 1.45; const TT = T(SX, SY, SS);
+  const HY = 600, HXc = 500; const LY = 700;
+  return {
+    home: HOME, cams: [HOME, HOME, HOME, HOME],
+    anchors: [TT(-130, 140), [700, 470], [HXc + 140, HY + 34], [HXc - 110, LY + 30]],
+    phase: (i) => ['arcul 1: Meckel', 'arcul 2: Reichert (manual)', 'arcul 3: hioidul jos', 'arcurile 4 + 6: laringele'][i] || 'scheletul arcurilor',
+    draw(g, t, b) {
+      bg(g); const p = P(b, t, 4);
+      const a1 = p(0), a2 = p(1), a3 = p(2), a4 = p(3);
+      // craniul: fața în teal pe măsură ce apare arcul 1
+      skullLat(g, SX, SY, SS, { face: a1 > 0.5 ? ARC[1] : L.bone, faceS: a1 > 0.5 ? ARCS_[1] : L.boneS, mand: '#f4ecdc', mandS: L.boneS, alpha: 1 });
+      // mandibula: contur punctat teal (manual)
+      if (a1 > 0.3) { g.save(); g.globalAlpha = sp(a1, 0.3, 1); g.setLineDash([9, 7]); g.strokeStyle = ARC[1]; g.lineWidth = 4; g.beginPath(); const md = curve([TT(-118, 70), TT(-120, 112), TT(-70, 124), TT(20, 116), TT(60, 102), TT(74, 50), TT(86, 16)], 8); g.moveTo(md[0][0], md[0][1]); md.forEach((q) => g.lineTo(q[0], q[1])); g.stroke(); g.restore(); }
+      // Meckel: de la urechea medie (lângă meat) la bărbie, pe fața internă a mandibulei
+      bar(g, [TT(84, 30), TT(40, 70), TT(-40, 96), TT(-110, 96)], 13, ARC[1], ARCS_[1], { u1: a1, cells: true });
+      if (a1 > 0.5) { g.save(); g.globalAlpha = sp(a1, 0.5, 1); g.setLineDash([6, 6]); tube(g, [TT(78, 24), TT(60, 60)], 5, ARC[1], { ow: 2 }); g.restore(); }
+      // arcul 2: procesul stiloid + lig. stilohioid + cornul mic
+      if (a2 > 0) { g.save(); g.globalAlpha = a2; const s1 = TT(90, 40), s2 = TT(70, 112); bar(g, [s1, s2], 10, ARC[2], ARCS_[2], { u1: a2 }); g.setLineDash([7, 6]); tube(g, [s2, [HXc + 74, HY - 20]], 5, ARC[2], { ow: 2, u1: a2 }); g.restore(); }
+      // hioidul: corpul (sus = 2, jos = 3), cornul mic (2), cornul mare (3)
+      { const x0 = HXc - 40, x1 = HXc + 50; const top = new Path2D(); top.roundRect(x0, HY - 14, x1 - x0, 14, 6); const bot = new Path2D(); bot.roundRect(x0, HY, x1 - x0, 14, 6);
+        paint(g, top, a2 > 0.3 ? ARC[2] : L.bone, null, null, [x0, HY - 14, x1 - x0, 14], OUT, 3); paint(g, bot, a3 > 0.3 ? ARC[3] : L.bone, null, null, [x0, HY, x1 - x0, 14], OUT, 3);
+        bar(g, [[x1 - 4, HY - 6], [x1 + 18, HY - 26]], 10, a2 > 0.3 ? ARC[2] : L.bone, ARCS_[2], { light: false });
+        bar(g, [[x1 - 4, HY + 6], [x1 + 60, HY - 2], [x1 + 110, HY - 18]], 11, a3 > 0.3 ? ARC[3] : L.bone, ARCS_[3], { light: false }); }
+      // laringele: cartilajul tiroid + cricoidul
+      { const gr = g.createLinearGradient(0, LY - 40, 0, LY + 90); gr.addColorStop(0, ARC[4]); gr.addColorStop(1, ARC[6]); const fill = a4 > 0.3 ? gr : L.bone;
+        const th = new Path2D(); th.moveTo(HXc - 60, LY - 36); th.lineTo(HXc + 50, LY - 36); th.lineTo(HXc + 40, LY + 30); th.quadraticCurveTo(HXc - 6, LY + 44, HXc - 52, LY + 30); th.closePath(); paint(g, th, fill, null, null, [HXc - 60, LY - 36, 110, 80], OUT, 4);
+        const cr = new Path2D(); cr.roundRect(HXc - 44, LY + 52, 80, 26, 12); paint(g, cr, fill, null, null, [HXc - 44, LY + 52, 80, 26], OUT, 4);
+        tube(g, [[HXc - 4, LY + 80], [HXc - 4, 900]], 40, '#e9dcc8', { ow: 4, alpha: 0.6 }); }
+      // lupa: oscioarele (ciocan + nicovală = 1, scărița = 2)
+      const la = Math.max(a1, a2, b.i < 0 ? 1 : 0);
+      lupa(g, 860, 180, 112, la, () => {
+        const ox = 860, oy = 186;
+        g.save(); g.globalAlpha = Math.max(0.25, a1); const ml = new Path2D(); ml.moveTo(ox - 70, oy - 10); ml.quadraticCurveTo(ox - 60, oy - 50, ox - 30, oy - 40); ml.lineTo(ox - 20, oy + 40); ml.lineTo(ox - 36, oy + 44); ml.closePath(); paint(g, ml, ARC[1], ARCS_[1], ARCL[1], [ox - 70, oy - 50, 50, 94], OUT, 4);
+        const ic = new Path2D(); ic.moveTo(ox - 24, oy - 40); ic.quadraticCurveTo(ox + 10, oy - 50, ox + 14, oy - 20); ic.lineTo(ox + 4, oy + 30); ic.lineTo(ox - 6, oy - 10); ic.closePath(); paint(g, ic, ARC[1], ARCS_[1], ARCL[1], [ox - 24, oy - 50, 38, 80], OUT, 4); g.restore();
+        g.save(); g.globalAlpha = Math.max(0.25, a2); const sp1 = new Path2D(); sp1.moveTo(ox + 4, oy + 30); sp1.lineTo(ox + 60, oy + 14); sp1.lineTo(ox + 64, oy + 50); sp1.closePath(); paint(g, sp1, ARC[2], ARCS_[2], ARCL[2], [ox, oy + 10, 66, 44], OUT, 4); g.restore();
+        txt(g, 'ciocan', ox - 50, oy - 66, 14, ARCL[1], { alpha: Math.max(0.3, a1) }); txt(g, 'nicovală', ox + 30, oy - 56, 14, ARCL[1], { alpha: Math.max(0.3, a1) }); txt(g, 'scărița', ox + 40, oy + 72, 14, ARCL[2], { alpha: Math.max(0.3, a2) });
+      });
+      lead(g, 760, 230, TT(88, 26)[0], TT(88, 26)[1], la);
+      const lb = (s0, x, y, c, a, al = 'center') => txt(g, s0, x, y, 16, c, { alpha: a, align: al });
+      lb('cartilajul Meckel', ...TT(-60, 150), ARCL[1], a1); lb('mandibula (manual)', ...TT(-150, 140), ARCL[1], a1, 'right'); lb('maxila, zigomaticul', ...TT(-150, -10), ARCL[1], a1, 'right'); lb('lig. sfeno-\nmandibular', ...TT(-10, 52), ARCL[1], sp(a1, 0.5, 1));
+      lb('proc. stiloid', ...TT(124, 84), ARCL[2], a2, 'left'); lb('lig. stilohioid', HXc + 160, HY - 80, ARCL[2], a2, 'left');
+      lb('cornul mic', HXc + 74, HY - 44, ARCL[2], a2, 'left'); lb('hioid', HXc - 60, HY, '#ffd6c4', 1, 'right'); lb('cornul mare', HXc + 170, HY - 20, ARCL[3], a3, 'left');
+      lb('cartilajul tiroid', HXc + 70, LY, ARCL[4], a4, 'left'); lb('cricoid (+ aritenoizi…)', HXc + 50, LY + 66, ARCL[6], a4, 'left');
+      const e = ease(b.bt * 1.4);
+      if (b.i === 0) ring(g, ...TT(-10, 70), 160, 80, e, 0.2);
+      if (b.i === 1) ring(g, 640, 470, 80, 150, e, -0.3);
+      if (b.i === 2) ring(g, HXc + 40, HY + 4, 120, 40, e);
+      if (b.i === 3) ring(g, HXc - 4, LY + 22, 90, 80, e);
     },
   };
 }
