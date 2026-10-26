@@ -270,35 +270,31 @@ export function pharynxSec(g, t, o = {}) {
    normal punctat al bărbiei). Întoarce reperele globale. */
 export function childHead(g, x, y, s, t, o = {}) {
   const a = o.alpha ?? 1; const m = clamp(o.mand ?? 0); const T = (px, py) => [x + px * s, y + py * s];
-  const chin = [-150 + 46 * m, 142 - 16 * m];
-  const R = { chin: T(...chin), eye: T(-92, -28), zyg: T(-62, 22), ear: T(78, 8 + 46 * (o.low ?? 0)), jaw: T(10 - 6 * m, 150 - 18 * m), mouth: T(-158 + 18 * m, 84), scmTop: T(96, 74), scmBot: T(-58, 330), throat: T(-70, 220) };
+  const chin = [-150 + 70 * m, 142 - 26 * m];
+  const R = { chin: T(...chin), eye: T(-92, -28), zyg: T(-62, 22), ear: T(78, 8 + 46 * (o.low ?? 0)), jaw: T(10 - 8 * m, 150 - 24 * m), mouth: T(-158 + 26 * m, 84), scmTop: T(96, 74), scmBot: T(-58, 330), throat: T(-70, 220) };
   if (a <= 0.01) return R;
   g.save(); g.globalAlpha = clamp(a); g.translate(x, y); g.scale(s, s);
   const ow = 5 / s; const sk = o.skin || '#f2c2a0', skS = '#d89a78', skL = '#ffe4d2';
-  const lipX = 26 * m, mo = clamp(o.mouth ?? 0);
+  const lipX = 34 * m, mo = clamp(o.mouth ?? 0);
   // gâtul + umărul (în spatele capului)
   if (o.neck) {
     const nk = new Path2D(); nk.moveTo(-96, 170 - 10 * m); nk.bezierCurveTo(-104, 240, -110, 300, -150, 370); nk.lineTo(250, 370); nk.bezierCurveTo(200, 320, 150, 250, 140, 150); nk.closePath();
     paint(g, nk, sk, skS, skL, [-150, 150, 400, 220], OUT, ow);
-    if ((o.scm ?? 0) > 0.01) { // mușchiul sternocleidomastoidian: de la mastoidă (după ureche) la stern, oblic în jos și înainte
-      g.save(); g.globalAlpha *= clamp(o.scm); const sc = new Path2D(); sc.moveTo(84, 56); sc.bezierCurveTo(70, 160, 10, 260, -70, 350); sc.lineTo(-30, 356); sc.bezierCurveTo(46, 270, 112, 170, 128, 70); sc.closePath();
-      paint(g, sc, '#e48a7c', '#c0645a', '#ffc4b8', [-70, 56, 200, 300], OUT, 4 / s);
-      g.save(); g.clip(sc); g.strokeStyle = 'rgba(120,30,30,.35)'; g.lineWidth = 2.5 / s; for (let k = 0; k < 12; k++) { g.beginPath(); g.moveTo(80 + k * 6, 40); g.bezierCurveTo(60 + k * 6, 160, 0 + k * 5, 260, -80 + k * 5, 360); g.stroke(); } g.restore(); g.restore();
-    }
   }
   // capul: craniu + fața (contur unic)
-  const pts = [[30, -244], [150, -214], [218, -122], [228, -12], [204, 92], [150, 166], [60, 186], [10 - 6 * m, 156 - 18 * m], [-60 + 30 * m, 166 - 14 * m], [-110 + 40 * m, 164 - 16 * m], chin, [-160 + lipX, 106], [-152 + lipX * 0.6 - mo * 4, 88], [-168 + lipX * 0.3, 72], [-160, 54], [-192, 32], [-164, -18], [-160, -62], [-152, -142], [-92, -216]];
+  const pts = [[30, -244], [150, -214], [218, -122], [228, -12], [204, 92], [150, 166], [60, 186], [10 - 8 * m, 156 - 24 * m], [-60 + 44 * m, 166 - 22 * m], [-110 + 60 * m, 164 - 26 * m], chin, [-160 + lipX, 106], [-152 + lipX * 0.6 - mo * 4, 88], [-168 + lipX * 0.3, 72], [-160, 54], [-192, 32], [-164, -18], [-160, -62], [-152, -142], [-92, -216]];
   const head = smooth(pts);
   paint(g, head, sk, skS, skL, [-190, -244, 418, 430], OUT, ow);
   if (o.ghost) { g.save(); g.setLineDash([9, 8]); g.strokeStyle = 'rgba(255,240,228,.75)'; g.lineWidth = 3.5 / s; g.beginPath(); const gh = curve([[10, 156], [-60, 166], [-110, 164], [-150, 142], [-160, 106], [-152, 88]], 8); g.moveTo(gh[0][0], gh[0][1]); gh.forEach((p) => g.lineTo(p[0], p[1])); g.stroke(); g.restore(); }
   // părul
   g.save(); g.clip(head); const hair = new Path2D(); hair.moveTo(-150, -120); hair.bezierCurveTo(-120, -250, 120, -280, 230, -110); hair.lineTo(240, 60); hair.bezierCurveTo(200, -40, 120, -120, 40, -150); hair.bezierCurveTo(-40, -170, -110, -150, -150, -120); hair.closePath(); paint(g, hair, '#4a3022', '#33201a', '#7a5040', [-150, -260, 390, 320], OUT, 0); g.restore();
   // pometele (zigomaticul): proeminență sub ochi; zyg → turtit
-  const zy = 1 - clamp(o.zyg ?? 0);
-  g.save(); g.globalAlpha *= 0.5 + 0.3 * zy; g.fillStyle = '#ffd3bc'; g.beginPath(); g.ellipse(-70, 26, 34 * (0.5 + 0.5 * zy), 18 * (0.5 + 0.5 * zy), -0.3, 0, 7); g.fill(); g.restore();
-  g.save(); g.strokeStyle = skS; g.lineWidth = 3.5 / s; g.lineCap = 'round'; g.globalAlpha *= 0.4 + 0.6 * zy; g.beginPath(); g.moveTo(-104, 46); g.quadraticCurveTo(-60, 54 - 16 * zy, -22, 40); g.stroke(); g.restore();
+  const zy = 1 - clamp(o.zyg ?? 0); const zf = 0.3 + 0.7 * zy;
+  if (o.zygGhost) { g.save(); g.setLineDash([7, 6]); g.strokeStyle = 'rgba(255,240,228,.8)'; g.lineWidth = 3 / s; g.beginPath(); g.ellipse(-66, 24, 38, 22, -0.3, 0, 7); g.stroke(); g.restore(); }
+  g.save(); const zp = new Path2D(); zp.ellipse(-66, 24 + 8 * (1 - zy), 38 * (0.6 + 0.4 * zy), 22 * zf, -0.3, 0, 7); g.fillStyle = '#ffd6c2'; g.fill(zp); g.strokeStyle = skS; g.lineWidth = 3 / s; g.stroke(zp); g.restore();
+  g.save(); g.strokeStyle = skS; g.lineWidth = 3.5 / s; g.lineCap = 'round'; g.beginPath(); g.moveTo(-108, 50); g.quadraticCurveTo(-62, 60 - 20 * zy, -20, 44); g.stroke(); g.restore();
   // ochiul: fanta palpebrală; slant → unghiul lateral (spre ureche) coboară
-  const sl = clamp(o.slant ?? 0) * 0.42; g.save(); g.translate(-92, -28); g.rotate(sl);
+  const sl = clamp(o.slant ?? 0) * 0.65; g.save(); g.translate(-92, -28); g.rotate(sl);
   const eye = new Path2D(); eye.moveTo(-26, 0); eye.quadraticCurveTo(0, -18, 24, 2); eye.quadraticCurveTo(2, 14, -26, 0); eye.closePath();
   g.fillStyle = '#ffffff'; g.fill(eye); g.save(); g.clip(eye); dot(g, -6, 0, 9, '#4a2e22', { ow: 0 }); dot(g, -8, -2, 3, '#ffffff', { ow: 0 }); g.restore();
   g.strokeStyle = OUT; g.lineWidth = 3.5 / s; g.stroke(eye);
@@ -307,6 +303,14 @@ export function childHead(g, x, y, s, t, o = {}) {
   // nasul (nara), gura
   g.save(); g.strokeStyle = skS; g.lineWidth = 3.5 / s; g.lineCap = 'round'; g.beginPath(); g.arc(-172, 40, 8, -0.2, 2.6); g.stroke();
   g.strokeStyle = '#b3545e'; g.lineWidth = 4 / s; g.beginPath(); g.moveTo(-160 + lipX * 0.5, 88); g.quadraticCurveTo(-140 + lipX * 0.4, 92, -126 + lipX * 0.3 - mo * 18, 86); g.stroke(); g.restore();
+  // SCM peste cap și gât: de la mastoidă (după ureche) până la stern, ca să se vadă tot mușchiul
+  if (o.neck) {
+    if ((o.scm ?? 0) > 0.01) { // mușchiul sternocleidomastoidian: de la mastoidă (după ureche) la stern, oblic în jos și înainte
+      g.save(); g.globalAlpha *= clamp(o.scm); const sc = new Path2D(); sc.moveTo(84, 56); sc.bezierCurveTo(70, 160, 10, 260, -70, 350); sc.lineTo(-30, 356); sc.bezierCurveTo(46, 270, 112, 170, 128, 70); sc.closePath();
+      paint(g, sc, '#e48a7c', '#c0645a', '#ffc4b8', [-70, 56, 200, 300], OUT, 4 / s);
+      g.save(); g.clip(sc); g.strokeStyle = 'rgba(120,30,30,.35)'; g.lineWidth = 2.5 / s; for (let k = 0; k < 12; k++) { g.beginPath(); g.moveTo(80 + k * 6, 40); g.bezierCurveTo(60 + k * 6, 160, 0 + k * 5, 260, -80 + k * 5, 360); g.stroke(); } g.restore(); g.restore();
+    }
+  }
   // urechea: pavilion în C; ear → mică, mototolită; low → coborâtă și rotită
   const er = clamp(o.ear ?? 0), lw = clamp(o.low ?? 0);
   g.save(); g.translate(78, 8 + 46 * lw); g.rotate(0.12 + 0.3 * lw); g.scale(1 - 0.42 * er, 1 - 0.5 * er);

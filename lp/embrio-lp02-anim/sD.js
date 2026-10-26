@@ -5,6 +5,9 @@ import {
 } from './ka.js';
 import { lupa } from './sA.js';
 
+// punctul curent al scenei desenate (pentru badge-urile care apar doar când structura lor e desenată)
+let BI = -1; const OFF = [-9999, -9999];
+
 /* =================================================== CHISTUL ȘI FISTULA BRANHIALĂ (secțiune schematică prin gât)
    Se vede: stânga pielea (ECTODERM albastru), dreapta faringele (ENDODERM galben) cu fosa amigdaliană (amigdala, orhidee) sus;
    între ele țesutul gâtului; sus-stânga unghiul mandibulei (os), jos-stânga SCM (bandă oblică, coral). Restul sinusului cervical
@@ -16,9 +19,10 @@ export function fistula() {
   const SK = 250, PH = 800; const CY = [430, 470]; const OPN = [SK, 720]; const INN = [PH, 300];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[CY[0] + 20, CY[1] - 110], [SK - 50, OPN[1] - 40], [620, 300], [PH + 60, INN[1] - 70]],
+    anchors: [[CY[0] - 20, CY[1] - 96], () => (BI < 0 || BI >= 1 ? [SK - 50, OPN[1] - 40] : OFF), () => (BI < 0 || BI >= 2 ? [600, 318] : OFF), [PH + 60, INN[1] - 70]],
     phase: (i) => ['chist (închis)', 'fistulă spre exterior', 'fistulă completă', 'deschiderea: fosa amigdaliană'][i] || 'sinusul cervical care nu dispare',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 4);
       const cy = b.i < 0 ? 1 : b.i === 0 ? p(0) : 1; const ex = b.i < 0 ? 1 : b.i >= 1 ? (b.i === 1 ? p(1) : 1) : 0; const ix = b.i < 0 ? 1 : b.i >= 2 ? (b.i === 2 ? p(2) : 1) : 0;
       // țesutul gâtului
@@ -39,7 +43,8 @@ export function fistula() {
       const r = lerp(16, 60, cy) * (1 - 0.55 * ex);
       ell(g, CY[0], CY[1], r * 1.2, r, '#3a2a44', { ow: 0 }); g.save(); g.strokeStyle = OUT; g.lineWidth = 12; g.beginPath(); g.ellipse(CY[0], CY[1], r * 1.2, r, 0, 0, 7); g.stroke(); g.strokeStyle = L.ecto; g.lineWidth = 7; g.stroke(); g.restore();
       // traiectul extern (spre piele, marginea anterioară a SCM) + intern (spre fosa amigdaliană)
-      const tE = curve([[CY[0], CY[1] + r * 0.8], [CY[0] - 40, 600], [OPN[0] + 30, OPN[1] - 10], OPN], 10);
+      // traiectul extern coboară pe MARGINEA ANTERIOARĂ a SCM (în fața lui, spre piele), nu prin mușchi
+      const tE = curve([[CY[0], CY[1] + r * 0.8], [322, 520], [262, 600], [255, 680], OPN], 10);
       const tI = curve([[CY[0] + r, CY[1] - 10], [560, 380], [700, 320], INN], 10);
       const tract = (P0, u1, a) => { if (u1 <= 0.01) return; tube(g, P0, 22, L.ecto, { raw: true, u1, ow: 5, alpha: a }); tube(g, P0, 10, '#3a2a44', { raw: true, u1, ow: 0, alpha: a }); };
       tract(tE, ex, 1); tract(tI, ix, 1);
@@ -47,7 +52,7 @@ export function fistula() {
       if (ix > 0.95) flow(g, tI, t, '#f4e27a', 3, -0.0001 + 0.3, 5, { alpha: 0.6 });
       // etichete
       txt(g, 'piele (ectoderm)', SK - 20, 120, 15, L.ectoL, { align: 'right' }); txt(g, 'faringe\n(endoderm)', PH + 100, 860, 15, L.endo);
-      txt(g, 'fosa amigdaliană', PH + 100, INN[1] - 70, 15, '#ffc8f4');
+      txt(g, 'fosa amigdaliană', PH + 100, INN[1] + 90, 15, '#ffc8f4');
       if (b.i === 0 || b.i < 0) { txt(g, 'chist', CY[0], CY[1], 18, '#bcd4ff', { alpha: cy }); txt(g, 'tumefacție\nlaterală', SK - 70, CY[1], 15, '#ffd6c4', { alpha: cy }); }
       if (ex > 0.5) { txt(g, 'orificiu: marginea\nanterioară a SCM', SK - 30, OPN[1] + 80, 15, C.hi, { alpha: sp(ex, 0.5, 1), align: 'right' }); }
       if (ix > 0.5) txt(g, 'traiect complet:\npiele → faringe', 590, 470, 16, '#bcd4ff', { alpha: sp(ix, 0.5, 1) });
@@ -73,6 +78,7 @@ export function crestMech() {
     anchors: [[EX - 230, EY - 200], [EX - 60, EY - 160], [LX - LR + 10, LY - 150], [EX + 30, EY - 60]],
     phase: (i) => ['creasta neurală', 'migrarea în arcuri', 'arcul 1 normal', 'arcul 1 sărac în creastă'][i] || 'creasta → arcul 1 → fața',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 4);
       const mig = b.i < 0 ? 1 : b.i === 0 ? 0 : b.i === 1 ? p(1) : 1; const poor = b.i === 3 ? p(3) : 0;
       const R = embryoLat(g, EX, EY, ES, t, { col: true, tube: 1, nc: mig > 0.02 ? mig : 0.001, nc1: 1 - 0.75 * poor, a1: 1 - 0.38 * poor, hi: b.i === 3 ? [1] : [], dimArc: 0.6 });
@@ -109,25 +115,26 @@ export function treacher() {
   const K0 = childHead(null, HX, HY, HS, 0, { alpha: 0 });
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[K0.eye[0] - 20, K0.eye[1] - 70], [K0.zyg[0] - 40, K0.zyg[1] + 70], [K0.chin[0] - 50, K0.chin[1] + 40], [K0.ear[0] + 80, K0.ear[1] - 60]],
+    anchors: [[K0.eye[0] - 20, K0.eye[1] - 70], [K0.zyg[0] - 104, K0.zyg[1] + 30], [K0.chin[0] + 74, K0.chin[1] + 6], [K0.ear[0] + 80, K0.ear[1] - 60]],
     phase: (i) => ['ochi înclinați în jos', 'pometele turtit', 'mandibula mică', 'urechea malformată'][i] || 'arcul 1 afectat',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 4);
-      const K = childHead(g, HX, HY, HS, t, { slant: p(0), zyg: p(1), mand: 0.85 * p(2), ear: p(3), low: 0.3 * p(3), ghost: p(2) > 0.05 });
+      const K = childHead(g, HX, HY, HS, t, { slant: p(0), zyg: p(1), mand: p(2), ear: p(3), low: 0.8 * p(3), ghost: p(2) > 0.05, zygGhost: p(1) > 0.05 });
       const lb = (s0, x, y, a, al = 'center') => txt(g, s0, x, y, 17, '#ffd6c4', { alpha: a, align: al });
       lb('fanta coboară lateral', K.eye[0] - 40, K.eye[1] - 120, p(0)); if (p(0) > 0.1) lead(g, K.eye[0] - 20, K.eye[1] - 104, K.eye[0] + 10, K.eye[1] - 8, p(0));
-      lb('zigomatic hipoplazic', K.zyg[0] - 170, K.zyg[1] + 120, p(1), 'center'); if (p(1) > 0.1) lead(g, K.zyg[0] - 110, K.zyg[1] + 104, K.zyg[0] - 10, K.zyg[1] + 4, p(1));
-      lb('hipoplazie mandibulară', K.chin[0] + 170, K.chin[1] + 120, p(2)); lb('punctat = normal', K.chin[0] + 170, K.chin[1] + 146, p(2) * 0.8);
+      lb('zigomatic hipoplazic', K.zyg[0] + 24, K.zyg[1] + 40, p(1), 'center');
+      lb('hipoplazie mandibulară', K.chin[0] + 110, K.chin[1] + 130, p(2)); lb('punctat = normal', K.chin[0] + 110, K.chin[1] + 156, p(2) * 0.8);
       lb('urechi mici, malformate', K.ear[0] + 40, K.ear[1] + 110, p(3));
       // lupa: palatul despicat (± , inserția din figură)
       const la = b.i < 0 ? 0.8 : b.i === 3 ? p(3) : 0;
-      lupa(g, 850, 170, 110, la, () => {
-        const x = 850, y = 176; const pal = new Path2D(); pal.moveTo(x - 80, y + 70); pal.bezierCurveTo(x - 90, y - 40, x - 40, y - 90, x, y - 92); pal.bezierCurveTo(x + 40, y - 90, x + 90, y - 40, x + 80, y + 70); pal.closePath();
+      lupa(g, 880, 800, 92, la, () => {
+        const x = 880, y = 806; g.translate(x, y); g.scale(0.85, 0.85); g.translate(-x, -y); const pal = new Path2D(); pal.moveTo(x - 80, y + 70); pal.bezierCurveTo(x - 90, y - 40, x - 40, y - 90, x, y - 92); pal.bezierCurveTo(x + 40, y - 90, x + 90, y - 40, x + 80, y + 70); pal.closePath();
         paint(g, pal, '#ef8a96', '#c95f6e', '#ffc4cc', [x - 90, y - 92, 180, 162], OUT, 4);
         const cl = new Path2D(); cl.moveTo(x - 10, y - 30); cl.quadraticCurveTo(x - 20, y + 40, x, y + 72); cl.quadraticCurveTo(x + 20, y + 40, x + 10, y - 30); cl.closePath(); paint(g, cl, '#3a1a22', null, null, [x - 20, y - 30, 40, 102], OUT, 3);
         for (let k = 0; k < 8; k++) { const a = Math.PI * (0.15 + 0.7 * k / 7); dot(g, x - Math.cos(a) * 74, y - Math.sin(a) * 78 + 10, 7, '#fff8ec', { ow: 2 }); }
       });
-      if (la > 0.3) txt(g, '± palat despicat', 850, 304, 16, '#ffc4cc', { alpha: la });
+      if (la > 0.3) txt(g, '± palat despicat', 880, 686, 16, '#ffc4cc', { alpha: la });
       const e = ease(b.bt * 1.4);
       if (b.i === 0) ring(g, K.eye[0], K.eye[1], 56, 40, e);
       if (b.i === 1) ring(g, K.zyg[0], K.zyg[1], 60, 40, e);
@@ -146,9 +153,10 @@ export function robin() {
   const HX = 620, HY = 380, HS = 1.12;
   return {
     home: HOME, cams: [HOME, HOME, HOME],
-    anchors: [[HX - 190 * HS, HY + 180 * HS], [HX + 120, HY + 110], [330, 170]],
+    anchors: [[HX - 190 * HS, HY + 180 * HS], [HX + 120, HY + 110], () => (BI < 0 || BI === 2 ? [330, 170] : OFF)],
     phase: (i) => ['mandibula mică', 'limba cade înapoi', 'palatul despicat'][i] || 'secvența Pierre Robin',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 3);
       const m = p(0), tg = p(1);
       const R = sagHead(g, HX, HY, HS, t, { mand: 0.85 * m, tongue: tg, ghost: m > 0.05 });
@@ -159,7 +167,7 @@ export function robin() {
       if (tg > 0.5) { const [x, y] = at(air, lim); g.save(); g.globalAlpha = sp(tg, 0.5, 1); g.strokeStyle = '#ff6b5e'; g.lineWidth = 6; g.lineCap = 'round'; g.beginPath(); g.moveTo(x + 18, y - 14); g.lineTo(x + 42, y + 10); g.moveTo(x + 42, y - 14); g.lineTo(x + 18, y + 10); g.stroke(); g.restore(); }
       const lb = (s0, x, y, c, a, al = 'center') => txt(g, s0, x, y, 16, c, { alpha: a, align: al });
       lb('mandibula mică (micrognație)', HX - 110, HY + 300, '#ffd6c4', Math.max(0.6, m)); lb('punctat = normal', HX - 110, HY + 326, '#d8c4b8', m);
-      lb('limba', HX - 40, HY + 160, '#ffc4cc', 1); lb('palat', HX - 70, HY + 22, OUT, 0.9); lb('cavitatea nazală', HX - 60, HY - 24, '#ffd6c4', 0.9);
+      lb('limba', R.tongue[0] + 4, R.tongue[1] - 4, '#fff0f2', 1); lb('palat', HX - 70, HY + 22, OUT, 0.9); lb('cavitatea nazală', HX - 60, HY - 24, '#ffd6c4', 0.9);
       if (tg > 0.3) { lb('limba cade înapoi → obstrucția căilor aeriene', 690, 830, '#ff9a90', sp(tg, 0.3, 0.8)); lb('→ dificultăți respiratorii', 690, 860, '#ffd6c4', sp(tg, 0.5, 1)); }
       lb('trahee', HX + 40, HY + 390, '#d8c4b8', 1); lb('esofag', HX + 150, HY + 390, '#d8c4b8', 1);
       // lupa: palatul despicat (secțiune frontală prin gură): limba între lamele palatine
@@ -191,9 +199,10 @@ export function digeorge() {
   const CX = 560; const THY = [CX, 300], THM = [CX, 520], HRT = [CX + 10, 760];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME, HOME],
-    anchors: [[60, 200], [CX - 150, THM[1] - 40], [CX + 140, THY[1] - 60], [CX + 150, HRT[1] - 60], [730, 120]],
+    anchors: [[60, 200], [THM[0] - 72, THM[1] - 10], [CX + 140, THY[1] - 60], [CX + 150, HRT[1] - 60], [730, 120]],
     phase: (i) => ['deleția 22q11.2', 'timusul hipoplazic', 'paratiroidele hipoplazice', 'defecte conotruncale', 'fața'][i] || 'timus + paratiroide + inimă',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 5);
       const del = p(0), th = p(1), pt = p(2), ht = p(3), fc = p(4);
       // cromozomii 22
@@ -256,9 +265,10 @@ export function caseClin() {
   const OP = f(2 / 3);
   return {
     home: HOME, cams: [HOME, cam(OP[0] + 10, OP[1] - 40, 1.6), HOME],
-    anchors: [[OP[0] + 60, OP[1] - 24], [OP[0] - 60, OP[1] - 70], [HX - 170, HY + 40]],
+    anchors: [[OP[0] + 40, OP[1] - 40], [OP[0] + 62, OP[1] + 36], () => (BI < 0 || BI === 2 ? [OP[0] - 34, OP[1] - 96] : OFF)],
     phase: (i) => ['secreție intermitentă de puroi', 'marginea anterioară a SCM, 1/3 inferioară', 'fistulă branhială infectată'][i] || 'copil de 1,5 ani',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 3);
       childHead(g, HX, HY, HS, t, { neck: true, scm: 1 });
       const red = b.i < 0 ? 1 : b.i >= 1 ? (b.i === 1 ? p(1) : 1) : 0.35;
@@ -268,7 +278,7 @@ export function caseClin() {
       const pu = b.i === 0 ? p(0) : 1;
       for (let k = 0; k < 2; k++) { const u = loopT(t + k * 1.4, 2.8); if (u < 0.55) { const uu = u / 0.55; dot(g, OP[0] - 2, OP[1] + 6 + uu * 26, 5 + 2 * (1 - uu), '#f2df6e', { alpha: pu * (1 - uu * 0.6), ow: 1.5 }); } }
       // rigla pe marginea anterioară: cele 3 treimi
-      if (b.i === 1 || b.i < 0) { const a = b.i < 0 ? 0.7 : p(1); [0, 1 / 3, 2 / 3, 1].forEach((u, k) => { const [x, y] = f(u); g.save(); g.globalAlpha = a; g.strokeStyle = C.hi; g.lineWidth = 3; g.beginPath(); g.moveTo(x - 12, y + 4); g.lineTo(x + 4, y - 10); g.stroke(); g.restore(); }); ['1/3 sup.', '1/3 mijl.', '1/3 inf.'].forEach((s, k) => { const [x, y] = f((k + 0.5) / 3); txt(g, s, x - 40, y, 13, C.hi, { alpha: a, align: 'right' }); }); txt(g, 'marginea anterioară a SCM', OP[0] + 30, OP[1] + 64, 13, '#ffd6c4', { alpha: a }); }
+      if (b.i === 1 || b.i < 0) { const a = b.i < 0 ? 0.7 : p(1); [0, 1 / 3, 2 / 3, 1].forEach((u, k) => { const [x, y] = f(u); g.save(); g.globalAlpha = a; g.strokeStyle = C.hi; g.lineWidth = 3; g.beginPath(); g.moveTo(x - 12, y + 4); g.lineTo(x + 4, y - 10); g.stroke(); g.restore(); }); ['1/3 sup.', '1/3 mijl.', '1/3 inf.'].forEach((s, k) => { const [x, y] = f((k + 0.5) / 3); txt(g, s, x - 40, y, 13, C.hi, { alpha: a, align: 'right' }); }); txt(g, 'marginea anterioară a SCM', OP[0] + 46, OP[1] + 92, 13, '#ffd6c4', { alpha: a }); }
       // traiectul (diagnosticul)
       const tr = b.i < 0 ? 0.8 : b.i === 2 ? p(2) : 0;
       if (tr > 0) { const P0 = curve([OP, [OP[0] + 20, OP[1] - 80], [HX - 50, HY + 120], [HX - 70, HY + 90]], 10); g.save(); g.globalAlpha = tr; g.setLineDash([9, 7]); g.strokeStyle = '#bcd4ff'; g.lineWidth = 4.5; g.beginPath(); P0.slice(0, Math.max(2, Math.round(P0.length * tr))).forEach((q, k) => (k ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]))); g.stroke(); g.restore(); tonsil(g, HX - 74, HY + 86, 14, 22, 0, { alpha: tr * 0.85 }); txt(g, 'fosa amigdaliană', HX - 250, HY + 150, 15, '#ffc8f4', { alpha: tr }); lead(g, HX - 200, HY + 140, HX - 84, HY + 90, tr); txt(g, 'fistulă branhială\n(cervicală laterală)', OP[0] - 150, OP[1] + 120, 17, '#bcd4ff', { alpha: tr }); }
@@ -288,9 +298,10 @@ export function traps() {
   const T0 = ['arc vs. șanț vs. pungă', 'câte sunt', 'paratiroidele', 'oscioarele și hioidul', 'nervii', 'ce supraviețuiește'];
   return {
     home: HOME, cams: CELL.map(() => HOME),
-    anchors: CELL.map(([x, y]) => [x - 238, y]),
+    anchors: CELL.map(([x, y]) => [x - 215, y - 118]),
     phase: (i) => T0[i] || 'ce se confundă',
     draw(g, t, b) {
+      BI = b.i;
       bg(g);
       CELL.forEach(([x, y], k) => {
         const act = b.i === k || b.i < 0; const a = act ? 1 : 0.55;
@@ -314,7 +325,7 @@ export function traps() {
           const t1 = new Path2D(); t1.roundRect(x + 10, y - 16, 160, 18, 8); paint(g, t1, ARC[2], null, null, [x + 10, y - 16, 160, 18], OUT, 3); const t2 = new Path2D(); t2.roundRect(x + 10, y + 2, 160, 18, 8); paint(g, t2, ARC[3], null, null, [x + 10, y + 2, 160, 18], OUT, 3);
           txt(g, 'hioid: sus 2, jos 3', x + 90, y + 66, 13, '#d8c4b8');
         } else if (k === 4) {
-          [['V2/V3', 1], ['VII', 2], ['IX', 3], ['X sup.', 4], ['X rec.', 6]].forEach(([s, n], j) => pill(g, x - 176 + j * 88, y + 4, 80, 40, ARC[n], s, { size: 15 }));
+          [['V2/V3', 1], ['VII', 2], ['IX', 3], ['X sup.', 4], ['X rec.', 6]].forEach(([s, n], j) => pill(g, x - 162 + j * 84, y + 4, 76, 40, ARC[n], s, { size: 14 }));
           txt(g, 'mimica = VII (nu V)', x, y + 66, 15, '#ff9a90');
         } else {
           const sk = new Path2D(); sk.rect(x - 200, y - 50, 30, 120); paint(g, sk, L.mes, null, null, [x - 200, y - 50, 30, 120], OUT, 0);

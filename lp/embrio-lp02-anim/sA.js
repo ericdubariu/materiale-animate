@@ -74,7 +74,7 @@ export function apparatus() {
   const G0 = pharynxGeo({ step: 124, y0: 150 }); const mx = G0.cx - (G0.cTip[0] + G0.pTip[0]) / 2, my = G0.yB[0];
   return {
     home: HOME, cams: [HOME, HOME, cam(mx, my, 2.6), HOME],
-    anchors: [[G0.cx - G0.out[0] - 30, G0.yA[0] - 50], [G0.cx - G0.out[1] - 36, G0.yB[1]], [mx, my - 48], [G0.cx + G0.pTip[2] - 10, G0.yB[2] - 40]],
+    anchors: [[G0.cx - G0.out[0] - 30, G0.yA[0] - 50], [G0.cx - G0.out[1] - 36, G0.yB[1]], [G0.cx - G0.cTip[0] - 46, G0.yB[0] - 18], [G0.cx + 30, G0.yB[2]]],
     phase: (i) => ['arcul: mezoderm + creasta neurală', 'șanțul: ectoderm, extern', 'membrana: 3 straturi', 'punga: endoderm, intern'][i] || 'aparatul faringian = 4 componente',
     draw(g, t, b) {
       bg(g);
@@ -110,18 +110,20 @@ export function apparatus() {
    format, arcurile colorate = derivatele la locul lor. */
 export function chrono() {
   const X0 = 90, X1 = 930; const wx = (w) => lerp(X0, X1, (w - 3) / 7);
-  const RANGE = [[3, 3.9], [4, 4.92], [5, 5.92], [6, 7.9], [8, 8.95]];
-  const STG = [[3, 'S3: placa trilaminară'], [4, 'S4: apar arcurile faringiene'], [5, 'S5: arcurile aproape complet dezvoltate'], [6, 'S6–S7: țesuturile migrează, se diferențiază'], [8, 'S8: totul e la locul lui']];
+  // cursorul pornește de la tick-ul punctului anterior și se oprește PE tick-ul punctului (S3, S4, S5, ~S6,5 din figura LP, S8)
+  const TICK = [3, 4, 5, 6.5, 8]; const RANGE = TICK.map((c, k) => [k ? TICK[k - 1] : 3, c]);
+  const STG = [[3, 'S3: placa trilaminară'], [4, 'S4: apar arcurile faringiene'], [5, 'S5: arcurile aproape complet dezvoltate'], [6.5, 'țesuturile arcurilor migrează, se diferențiază'], [8, 'S8: totul e la locul lui']];
   const EX = 540, EY = 370; const AY = 790;
   return {
     home: HOME, cams: RANGE.map(() => HOME),
-    anchors: RANGE.map(([a, c]) => [wx((a + c) / 2), AY + 96]),
-    phase: (i) => ['S3', 'S4', 'S5', 'S6–S7', 'S8'][i] || 'S3 → S8',
+    anchors: TICK.map((c) => [wx(c), AY + 96]),
+    phase: (i) => ['S3', 'S4', 'S5', 'S5 → S8: migrare, diferențiere', 'S8'][i] || 'S3 → S8',
     draw(g, t, b) {
       bg(g);
-      let w; if (b.i < 0) w = 3 + 6.95 * loopT(t, 20); else { const [a, c] = RANGE[b.i]; w = lerp(a, c, ease(clamp(b.bt / (b.bd * 0.8)))); }
-      let si = 0; STG.forEach(([s0], k) => { if (w >= s0) si = k; });
-      const ain = ease(clamp((w - STG[si][0]) / 0.12));
+      let si, e, ain;
+      if (b.i < 0) { const ph = REDUCED ? 4.99 : (t % 20) / 4; si = Math.floor(ph); e = ease(clamp((ph - si) * 1.4)); ain = ease(clamp((ph - si) * 6)); }
+      else { si = b.i; e = ease(clamp(b.bt / (b.bd * 0.6))); ain = ease(clamp(b.bt / 0.35)); }
+      const w = lerp(RANGE[si][0], RANGE[si][1], e);
       if (si === 0) {
         // placa trilaminară în secțiune
         g.save(); g.globalAlpha = ain; const disc = new Path2D(); disc.ellipse(EX, EY, 300, 90, 0, 0, 7); g.save(); g.clip(disc);
@@ -130,12 +132,12 @@ export function chrono() {
         g.restore(); g.strokeStyle = OUT; g.lineWidth = 6; g.stroke(disc); g.restore();
         [['ectoderm', -60, L.ectoL], ['mezoderm', 0, '#ffc0b6'], ['endoderm', 60, L.endo]].forEach(([n, dy, c]) => txt(g, n, EX + 320, EY + dy, 19, c, { alpha: ain, align: 'left' }));
       } else {
-        const archP = si === 1 ? ease(clamp((w - 4) / 0.6)) : 1;
-        const over = si <= 1 ? 0 : si === 2 ? 0.45 * ease(clamp((w - 5.3) / 0.6)) : si === 3 ? lerp(0.45, 1, ease(clamp((w - 6) / 1.2))) : 1;
-        const ear = si >= 3 ? ease(clamp((w - 6.6) / 0.9)) : 0;
+        const archP = si === 1 ? lerp(0.1, 1, e) : 1;
+        const over = si <= 1 ? 0 : si === 2 ? 0.45 * e : si === 3 ? lerp(0.45, 1, e) : 1;
+        const ear = si === 3 ? sp(e, 0.3, 1) : si > 3 ? 1 : 0;
         g.save(); g.globalAlpha = ain; const R = embryoLat(g, EX, EY + 10, 0.68, t, { col: false, archP, over, ear }); g.restore();
         if (si === 1) { // membrana bucofaringiană se rupe la sfârșitul S4
-          const rp = ease(clamp((w - 4.6) / 0.25)); const [mx, my] = [EX + 192 * 0.68, EY + 10 - 104 * 0.68];
+          const rp = sp(e, 0.6, 0.95); const [mx, my] = [EX + 192 * 0.68, EY + 10 - 104 * 0.68];
           g.save(); g.globalAlpha = ain; g.setLineDash([5, 5]); g.strokeStyle = C.hi; g.lineWidth = 3; g.beginPath(); g.arc(mx, my, 16 + rp * 10, 0.4 + rp, Math.PI * 2 - 0.4 - rp); g.stroke(); g.restore();
           txt(g, rp > 0.5 ? 'membrana bucofaringiană\ns-a rupt' : 'membrana\nbucofaringiană', mx + 70, my - 70, 16, C.hi, { alpha: ain, align: 'left' }); lead(g, mx + 66, my - 56, mx + 14, my - 8, ain);
         }
@@ -146,8 +148,8 @@ export function chrono() {
       pill(g, EX, 92, 560, 46, '#3a2a26', '', { ow: 3 }); txt(g, STG[si][1], EX, 92, 20, C.cream, { stroke: false });
       // axa
       const band = (a, c, col, lab, act) => { const p = new Path2D(); p.roundRect(wx(a) + 2, AY - 42, wx(c) - wx(a) - 4, 30, 10); g.save(); g.globalAlpha = act; paint(g, p, col, null, null, [wx(a), AY - 42, wx(c) - wx(a), 30], OUT, 3); g.restore(); txt(g, lab, (wx(a) + wx(c)) / 2, AY - 27, 15, OUT, { stroke: false, alpha: act }); };
-      band(3, 9, '#f7c3a8', 'perioada embrionară = S3–S8', 1);
-      { const act = b.i === 1 || b.i === 2 || b.i < 0 ? 1 : 0.5; const p2 = new Path2D(); p2.roundRect(wx(4) + 2, AY - 78, wx(6) - wx(4) - 4, 28, 10); g.save(); g.globalAlpha = act; paint(g, p2, ARC[2], null, null, [wx(4), AY - 78, wx(6) - wx(4), 28], OUT, 3); g.restore(); txt(g, 'arcurile: S4–S5', (wx(4) + wx(6)) / 2, AY - 64, 15, OUT, { stroke: false, alpha: act }); }
+      band(3, 8, '#f7c3a8', 'perioada embrionară = S3–S8', 1);
+      { const act = b.i === 1 || b.i === 2 || b.i < 0 ? 1 : 0.5; const p2 = new Path2D(); p2.roundRect(wx(4) + 2, AY - 78, wx(5) - wx(4) - 4, 28, 10); g.save(); g.globalAlpha = act; paint(g, p2, ARC[2], null, null, [wx(4), AY - 78, wx(5) - wx(4), 28], OUT, 3); g.restore(); txt(g, 'arcurile S4–S5', (wx(4) + wx(5)) / 2, AY - 64, 13, OUT, { stroke: false, alpha: act }); }
       tube(g, [[X0, AY], [X1, AY]], 6, '#6b5650', { ow: 3 });
       for (let k = 3; k <= 10; k++) { g.save(); g.strokeStyle = '#d8c4b8'; g.lineWidth = 3; g.beginPath(); g.moveTo(wx(k), AY - 8); g.lineTo(wx(k), AY + 8); g.stroke(); g.restore(); txt(g, 'S' + k, wx(k), AY + 32, 18, '#ffe7d6', { w: 700 }); }
       txt(g, 'săptămâni de dezvoltare →', X1, AY + 62, 16, '#d8c4b8', { w: 600, align: 'right' });
@@ -166,7 +168,7 @@ export function embryo() {
   const R0 = embryoLat(null, EX, EY, ES, 0, { alpha: 0 });
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
-    anchors: [[R0.archD(2)[0] - 46, R0.archD(2)[1] - 4], [R0.max[0] - 40, R0.max[1] - 40], [R0.cleft(1)[0] - 80, R0.cleft(1)[1] + 30], [R0.heart[0] + 40, R0.heart[1] + 96]],
+    anchors: [[R0.archD(2)[0] - 46, R0.archD(2)[1] - 4], [R0.max[0] - 40, R0.max[1] - 40], [R0.cleft(1)[0] - 80, R0.cleft(1)[1] + 30], [R0.heart[0] + 86, R0.heart[1] + 70]],
     phase: (i) => ['benzi pe fața externă', 'arcul 1: maxilar + mandibular', 'șanțurile', 'inima → sacul aortic'][i] || 'stadiul 14 · ~32 de zile',
     draw(g, t, b) {
       bg(g);
@@ -181,7 +183,7 @@ export function embryo() {
       if (b.i === 2 || b.i < 0) { const q = b.i < 0 ? 1 : p(2); [0, 1, 2].forEach((j) => { const c = R.cleft(j); dot(g, c[0] - 30, c[1], 7, L.ecto, { alpha: q * (0.5 + 0.5 * Math.abs(Math.sin(t * 3 + j))), ow: 2 }); }); txt(g, 'șanțuri (ectoderm)', R.cleft(1)[0] - 150, R.cleft(1)[1] + 120, 17, L.ectoL, { alpha: q }); lead(g, R.cleft(1)[0] - 130, R.cleft(1)[1] + 104, R.cleft(1)[0] - 40, R.cleft(1)[1] + 6, q); }
       // inima → sacul aortic → arcuri
       const q4 = b.i === 3 ? p(3) : b.i < 0 ? 1 : 0;
-      if (q4 > 0) { [1, 2, 3, 4].forEach((k, j) => { const v = R.archV(k); const path = curve([R.sac, [lerp(R.sac[0], v[0], 0.5) + 30, lerp(R.sac[1], v[1], 0.5)], [v[0] - 6, v[1]]], 10); tube(g, path, 6, L.art, { raw: true, ow: 3, alpha: q4, u1: q4 }); flow(g, path, t + j * 0.3, '#ffd0d0', 3, 0.5, 4, { alpha: q4, u1: q4 }); }); txt(g, 'sacul\naortic', 940, R.sac[1] + 30, 17, '#ffc0b6', { alpha: q4 }); lead(g, 920, R.sac[1] + 30, R.sac[0] + 20, R.sac[1] + 6, q4); txt(g, 'inima', R.heart[0] + 60, R.heart[1] + 110, 17, '#ffc0b6', { alpha: q4 }); }
+      if (q4 > 0) { [1, 2, 3, 4].forEach((k, j) => { const v = R.archV(k); const path = curve([R.sac, [lerp(R.sac[0], v[0], 0.5) + 30, lerp(R.sac[1], v[1], 0.5)], [v[0] - 6, v[1]]], 10); tube(g, path, 6, L.art, { raw: true, ow: 3, alpha: q4, u1: q4 }); flow(g, path, t + j * 0.3, '#ffd0d0', 3, 0.5, 4, { alpha: q4, u1: q4 }); }); txt(g, 'sacul\naortic', 940, R.sac[1] + 30, 17, '#ffc0b6', { alpha: q4 }); lead(g, 920, R.sac[1] + 30, R.sac[0] + 20, R.sac[1] + 6, q4); txt(g, 'inima', R.heart[0], R.heart[1] + 4, 17, '#ffe0dc', { alpha: q4 }); }
       // arcul 6: ascuns, caudal de 4
       if (b.i === 0 || b.i < 0) { const v = R.arch(4); txt(g, 'arcul 6: ascuns, caudal', v[0] - 60, v[1] + 80, 16, '#d8c4b8', { alpha: b.i < 0 ? 1 : p(0) }); }
       txt(g, 'ochi', R.eye[0], R.eye[1] - 50, 16, '#ffd6c4'); txt(g, 'mugurele membrului superior', R.limb[0] + 30, R.limb[1] + 66, 16, '#ffd6c4'); txt(g, 'ficat', R.liver[0] + 70, R.liver[1] + 60, 16, '#ffd6c4');
@@ -238,7 +240,7 @@ export function origin() {
       const lab = (s0, x, y, c, a, al = 'center', sz = 16) => txt(g, s0, x, y, sz, c, { alpha: a, align: al });
       lab('tub neural', CX + 80, CY - 236, L.ectoL, 1, 'left'); lead(g, CX + 76, CY - 230, CX + 44, CY - 186, 1);
       lab('ectoderm', CX - RX - 14, CY + 40, L.ectoL, 1, 'right'); lab('notocorda', CX, CY - 22, '#e6dcff', 1, 'center', 14); lab('endoderm', CX, CY + 182, L.endo, 1);
-      lab('paraxial\n(somitic)', CX - 150, CY - 110, OUT, q2(0) > 0.5 ? 1 : 0.6, 'center', 15); lab('intermediar', CX - 236, CY + 26, '#ffd6c4', q2(1), 'center', 14); lab('placa laterală', CX - 330, CY + 200, '#ffc0b6', q2(2), 'right');
+      lab('paraxial\n(somitic)', CX - 150, CY - 110, '#ffffff', q2(0) > 0.5 ? 1 : 0.6, 'center', 15); lab('intermediar', CX - 236, CY + 26, '#ffd6c4', q2(1), 'center', 14); lab('placa laterală', CX - 330, CY + 200, '#ffc0b6', q2(2), 'right');
       // creasta neurală: celulele de pe marginea dorsală a tubului; migrează dorso-ventral, în interiorul corpului
       const mig = b.i < 0 ? 1 : b.i >= 2 ? (b.i === 2 ? p(2) : 1) : 0;
       [-1, 1].forEach((sd) => {
@@ -329,7 +331,7 @@ export function count() {
         let y = Y[k]; if (k === 4) y = lerp(Y[4], (Y[4] + Y[6]) / 2 - 22, merge); if (k === 6) y = lerp(Y[6], (Y[4] + Y[6]) / 2 + 22, merge);
         const w = { 1: 230, 2: 210, 3: 190, 4: 170, 6: 150 }[k];
         const pp = new Path2D(); pp.roundRect(COLX - w / 2, y - 32, w, 64, 32); paint(g, pp, ARC[k], ARCS_[k], ARCL[k], [COLX - w / 2, y - 32, w, 64], OUT, 5);
-        txt(g, k === 1 ? 'Arcul 1 · maxilar + mandibular' : 'Arcul ' + k, COLX, y, k === 1 ? 16 : 19, OUT, { stroke: false });
+        txt(g, k === 1 ? 'Arcul 1\nmaxilar + mandibular' : 'Arcul ' + k, COLX, y, k === 1 ? 15 : 19, OUT, { stroke: false });
       });
       // arcul 5: nu se formează
       const a5 = 1 - gone * 0.85; g.save(); g.globalAlpha = a5; g.setLineDash([10, 8]); g.strokeStyle = '#bfaea6'; g.lineWidth = 4; g.beginPath(); g.roundRect(COLX - 80 * (1 - gone * 0.4), Y[5] - 22, 160 * (1 - gone * 0.4), 44, 22); g.stroke(); g.restore();
@@ -346,7 +348,7 @@ export function count() {
       // gâtul: hioidul (2 sus + 3 jos), faringele
       if (ne > 0) { const hx = HX - 40 * HS, hy = HY + 214 * HS; g.save(); g.globalAlpha = ne; tube(g, [[hx - 40, hy - 6], [hx + 14, hy - 8]], 11, ARC[2], { ow: 3 }); tube(g, [[hx - 40, hy + 6], [hx + 14, hy + 4], [hx + 56, hy - 6]], 11, ARC[3], { ow: 3 }); g.restore(); txt(g, 'hioid', hx - 80, hy, 16, '#ffd6c4', { alpha: ne, align: 'right' }); txt(g, 'GÂTUL: hioid, faringe, laringe', HX + 40, HY + 400, 17, '#ffd6c4', { alpha: ne }); }
       // 4 + 6 → cartilajele laringelui
-      if (merge > 0) { const lx = HX - 46 * HS, ly = HY + 270 * HS; g.save(); g.globalAlpha = merge; const lp = new Path2D(); lp.moveTo(lx - 32, ly - 22); lp.lineTo(lx + 28, ly - 22); lp.lineTo(lx + 18, ly + 28); lp.lineTo(lx - 24, ly + 28); lp.closePath(); const gr = g.createLinearGradient(lx, ly - 22, lx, ly + 28); gr.addColorStop(0, ARC[4]); gr.addColorStop(1, ARC[6]); paint(g, lp, gr, null, null, [lx - 32, ly - 22, 60, 50], OUT, 4); g.restore(); txt(g, 'cartilajele laringelui', lx - 60, ly + 4, 16, ARCL[4], { alpha: merge, align: 'right' }); txt(g, '4 + 6 fuzionează', COLX, (Y[4] + Y[6]) / 2 + 80, 16, ARCL[4], { alpha: merge }); }
+      if (merge > 0) { const lx = HX - 46 * HS, ly = HY + 270 * HS; g.save(); g.globalAlpha = merge; const lp = new Path2D(); lp.moveTo(lx - 32, ly - 22); lp.lineTo(lx + 28, ly - 22); lp.lineTo(lx + 18, ly + 28); lp.lineTo(lx - 24, ly + 28); lp.closePath(); const gr = g.createLinearGradient(lx, ly - 22, lx, ly + 28); gr.addColorStop(0, ARC[4]); gr.addColorStop(1, ARC[6]); paint(g, lp, gr, null, null, [lx - 32, ly - 22, 60, 50], OUT, 4); g.restore(); txt(g, 'cartilajele laringelui', lx - 60, ly + 4, 16, ARCL[4], { alpha: merge, align: 'right' }); txt(g, '4 + 6 fuzionează', COLX, (Y[4] + Y[6]) / 2 + 118, 16, ARCL[4], { alpha: merge }); }
       const e = ease(b.bt * 1.4);
       if (b.i === 0) ring(g, COLX, Y[5], 150, 42, e);
       if (b.i === 1) ring(g, COLX, (Y[1] + Y[2]) / 2, 150, 110, e);

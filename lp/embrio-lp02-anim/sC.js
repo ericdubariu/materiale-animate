@@ -19,14 +19,15 @@ function surfPts(cl, d, cl1) {
   const c = cl * (1 - d); const tip = [lerp(400, 520, cl1), lerp(400, 458, c), lerp(400, 452, c), lerp(400, 445, c)];
   return [[390, 100], [350, 150], [302, 220], [340, 262], [392, 272], [tip[0], 280], [392, 288], [350, 300], [310, 340], [350, 378], [394, 387], [tip[1], 395], [394, 403], [360, 414], [330, 450], [360, 482], [396, 489], [tip[2], 495], [396, 501], [370, 510], [345, 540], [370, 568], [398, 573], [tip[3], 578], [398, 583], [380, 594], [362, 615], [385, 640], [398, 664], [380, 694], [330, 730], [380, 772], [398, 860]];
 }
+const OFF = [-9999, -9999];
 export function sinusScene(mode) {
   const persist = mode === 'persist';
-  return () => ({
+  return () => { let BI = -1; return {
     home: HOME, cams: (persist ? [0, 1, 2] : [0, 1, 2, 3]).map(() => HOME),
-    anchors: persist ? [[250, 722], [230, 610], [560, 430]] : [[250, 300], [240, 420], [250, 720], [250, 600]],
+    anchors: persist ? [[250, 722], [300, 520], () => (BI === 2 || BI < 0 ? [470, 440] : OFF)] : [[250, 300], [240, 420], [250, 720], [250, 600]],
     phase: (i) => (persist ? ['orificiul extern', 'sinusul cervical persistent', 'comunicarea → fistulă'][i] || 'baza embriologică' : ['4 șanțuri de ectoderm', 'arcul 2 crește în jos', 'fuziune → sinusul cervical', 'sinusul dispare'][i] || 'arcul 2 închide șanțurile 2–4'),
     draw(g, t, b) {
-      bg(g);
+      bg(g); BI = b.i;
       let cl, gr, fu, d;
       if (persist) { cl = 1; gr = 1; fu = 1; d = 0; }
       else { const p = P(b, t, 4, 0.7); cl = b.i < 0 ? 1 : lerp(0.35, 1, p(0)); gr = p(1); fu = p(2); d = p(3); }
@@ -71,12 +72,12 @@ export function sinusScene(mode) {
         if (persist) { // orificiul pe linia de fuziune + secreția
           const ex = ox(tipY) - 2, ey = tipY + 6; ell(g, ex, ey, 10, 8, '#2a1520', { ow: 3 });
           if (b.i >= 0) { srand(4); for (let k = 0; k < 5; k++) { const u = loopT(t + k * 0.5, 2.5); dot(g, ex - 10 - u * 120, ey + 14 + u * 40 + Math.sin(u * 6 + k) * 6, 6, '#f4e27a', { alpha: (b.i === 2 ? 1 : 0.6) * (1 - u), ow: 2 }); } }
-          if (b.i === 2 || b.i < 0) { const tr = curve([[372, 430], [520, 410], [700, 398], [790, 396]], 10); g.save(); g.globalAlpha = b.i === 2 ? ease(clamp(b.bt / 2)) * 0.9 : 0.5; g.setLineDash([10, 8]); g.strokeStyle = C.hi; g.lineWidth = 5; g.beginPath(); g.moveTo(tr[0][0], tr[0][1]); tr.forEach((q) => g.lineTo(q[0], q[1])); g.stroke(); g.restore(); txt(g, '± traiect spre faringe\n(fosa amigdaliană)', 640, 350, 15, C.hi, { alpha: b.i === 2 ? 1 : 0.6 }); }
+          if (b.i === 2 || b.i < 0) { const tr = curve([[372, 430], [520, 410], [700, 398], [790, 396]], 10); g.save(); g.globalAlpha = b.i === 2 ? ease(clamp(b.bt / 2)) * 0.9 : 0.5; g.setLineDash([10, 8]); g.strokeStyle = C.hi; g.lineWidth = 5; g.beginPath(); g.moveTo(tr[0][0], tr[0][1]); tr.forEach((q) => g.lineTo(q[0], q[1])); g.stroke(); g.restore(); txt(g, '± traiect spre faringe\n(fosa amigdaliană)', 560, 350, 15, C.hi, { alpha: b.i === 2 ? 1 : 0.6 }); }
         }
       }
       // etichetele
       ARCS.forEach((k, i) => txt(g, String(k), 360, [220, 340, 450, 540, 615][i] + 2, k > 2 ? 20 : 24, OUT, { stroke: false, w: 900, alpha: k >= 3 ? 1 - 0.7 * d : 1 }));
-      txt(g, 'creasta\nepicardică', 470, 760, 16, '#ffd6c4'); txt(g, 'exterior', 150, 130, 17, L.ectoL); txt(g, 'faringe\n(endoderm)', 950, 900, 15, L.endo);
+      txt(g, 'creasta\nepicardică', 470, 760, 16, '#ffd6c4'); txt(g, 'exterior', 150, 130, 17, L.ectoL); txt(g, 'faringe\n(endoderm)', 950, 112, 15, L.endo);
       YB.forEach((y, j) => txt(g, `punga ${j + 1}`, 740, y - 26, 14, '#fff0b8', { alpha: 0.85 }));
       if (!persist) {
         if (b.i === 0 || b.i < 0) YB.forEach((y, j) => txt(g, `șanț ${j + 1}`, 200, y, 16, L.ectoL, { alpha: 1, align: 'center' }));
@@ -99,7 +100,7 @@ export function sinusScene(mode) {
         if (b.i === 3) ring(g, 360, 470, 140, 270, e);
       }
     },
-  });
+  }; };
 }
 export const clefts = sinusScene('normal');
 export const caseEmb = sinusScene('persist');
@@ -112,12 +113,14 @@ export const caseEmb = sinusScene('persist');
    1 = meatul crește spre interior; 2 = zoom: stratul de mezoderm dintre meat și pungă; 3 = zoom: stratul de endoderm (din punga 1);
    4 = punga 1 se lărgește în cavitate + tubă; oscioarele apar; timpanul complet. */
 export function membrane() {
-  const MY = 420, MX = 540; const ZC = cam(MX + 4, MY, 2.3);
+  let BI = -1; const MY = 420, MX = 540; const ZC = cam(MX + 4, MY, 2.3);
   return {
     home: HOME, cams: [HOME, ZC, ZC, HOME],
-    anchors: [[300, MY - 90], [MX + 4, MY + 80], [MX + 34, MY - 78], [800, 640]],
+    // la zoom (punctele 2, 3) badge-urile stau lângă straturi; altfel lângă meat / tubă, departe de etichete
+    anchors: [[300, MY - 90], () => (BI === 1 || BI === 2 ? [MX + 4, MY + 80] : [MX - 80, MY + 74]), () => (BI === 1 || BI === 2 ? [MX + 34, MY - 78] : [MX + 6, MY + 150]), [800, 640]],
     phase: (i) => ['ectodermul: meatul (șanțul 1)', 'mezodermul: la mijloc, subțire', 'endodermul: din punga 1', 'punga 1 → cavitatea + tuba'][i] || 'timpan = 3 straturi',
     draw(g, t, b) {
+      BI = b.i;
       bg(g); const p = P(b, t, 4);
       const mg = b.i === 0 ? lerp(0.15, 1, p(0)) : 1; const cav = b.i < 0 ? 1 : p(3);
       // țesutul
@@ -147,11 +150,11 @@ export function membrane() {
         const ml = new Path2D(); ml.moveTo(ox - 4, oy + 30); ml.lineTo(ox + 4, oy - 26); ml.quadraticCurveTo(ox + 14, oy - 46, ox + 30, oy - 34); ml.lineTo(ox + 14, oy - 14); ml.closePath(); paint(g, ml, ARC[1], ARCS_[1], ARCL[1], [ox - 4, oy - 46, 34, 76], OUT, 3);
         const ic = new Path2D(); ic.moveTo(ox + 30, oy - 36); ic.quadraticCurveTo(ox + 56, oy - 44, ox + 62, oy - 20); ic.lineTo(ox + 52, oy + 10); ic.lineTo(ox + 40, oy - 16); ic.closePath(); paint(g, ic, ARC[1], ARCS_[1], ARCL[1], [ox + 30, oy - 44, 32, 54], OUT, 3);
         const st = new Path2D(); st.moveTo(ox + 52, oy + 10); st.lineTo(ox + 104, oy - 4); st.lineTo(ox + 106, oy + 30); st.closePath(); paint(g, st, ARC[2], ARCS_[2], ARCL[2], [ox + 52, oy - 4, 54, 34], OUT, 3); g.restore();
-        txt(g, 'ciocan + nicovală (arcul 1)', MX + 90, MY - 96, 15, ARCL[1], { alpha: a }); txt(g, 'scărița (arcul 2)', MX + 150, MY + 80, 15, ARCL[2], { alpha: a }); }
+        txt(g, 'ciocan + nicovală (arcul 1)', MX + 196, MY - 34, 15, ARCL[1], { alpha: a, align: 'left' }); txt(g, 'scărița (arcul 2)', MX + 196, MY - 6, 15, ARCL[2], { alpha: a, align: 'left' }); }
       // etichete (la zoom: mici în lume)
       const z = b.i === 1 || b.i === 2;
       if (z) { const sz = 9; txt(g, 'ecto', MX - 7, MY - 58, sz, L.ectoL); txt(g, 'mezo', MX + 4, MY + 58, sz, '#ffc0b6'); txt(g, 'endo', MX + 16, MY - 58, sz, L.endo); txt(g, 'meatul', MX - 50, MY, sz, L.ectoL); txt(g, 'punga 1', MX + 54, MY + 22, sz, L.endo); }
-      else { txt(g, 'meatul acustic extern\n(șanțul 1)', 400, MY - 110, 16, L.ectoL, { alpha: mg }); txt(g, 'timpanul', MX, MY + 96, 17, C.hi, { alpha: mg > 0.95 ? 1 : 0 }); txt(g, 'cavitatea timpanică', MX + 120, MY - 150, 16, L.endo, { alpha: cav }); txt(g, 'tuba auditivă', 790, 610, 16, L.endo, { alpha: Math.max(0.5, cav), align: 'left' }); txt(g, 'exterior (piele)', 140, 160, 15, '#ffd6c4'); }
+      else { txt(g, 'meatul acustic extern\n(șanțul 1)', 400, MY - 110, 16, L.ectoL, { alpha: mg }); txt(g, 'timpanul', MX, MY + 96, 17, C.hi, { alpha: mg > 0.95 ? 1 : 0 }); txt(g, 'cavitatea timpanică', MX + 22 + cw * 0.5, MY - ch * 0.5 - 22, 16, L.endo, { alpha: cav }); txt(g, 'tuba auditivă', 790, 610, 16, L.endo, { alpha: Math.max(0.5, cav), align: 'left' }); txt(g, 'exterior (piele)', 140, 160, 15, '#ffd6c4'); }
       const e = ease(b.bt * 1.4);
       if (b.i === 0) ring(g, 400, MY, 160, 70, e);
       if (b.i === 1) ring(g, MX + 5, MY, 14, 52, e);
@@ -206,7 +209,7 @@ export function pouches() {
    și se oprește la POLUL INFERIOR al tiroidei; timusul continuă în mediastin; 4 = IV, netrasă de nimic, se fixează la POLUL SUPERIOR. */
 export function paraSwap() {
   const PX = 330, Y3 = 300, Y4 = 430; const TX = 600, TT = 400, TB = 590; // tiroida: pol sup. ~TT, pol inf. ~TB
-  const IIIa = [PX + 120, Y3 - 6], IIIb = [TX + 88, TB - 10]; const IVa = [PX + 120, Y4], IVb = [TX + 70, TT + 4];
+  const IIIa = [PX + 120, Y3 - 6], IIIb = [TX + 92, TB + 4]; const IVa = [PX + 120, Y4], IVb = [TX + 70, TT + 4];
   return {
     home: HOME, cams: [HOME, HOME, HOME, HOME],
     anchors: [[IIIa[0] - 60, IIIa[1] - 50], [PX + 240, 760], [IIIb[0] + 70, IIIb[1] + 30], [IVb[0] + 70, IVb[1] - 50]],
@@ -229,8 +232,9 @@ export function paraSwap() {
       thymus(g, [[IIIa[0] + 6, Y3 + 16], [lerp(IIIa[0] + 20, TX - 90, m), lerp(Y3 + 30, 560, m)], thTip], 34);
       txt(g, 'timus', thTip[0] - 60, thTip[1], 17, '#fff4dc');
       // paratiroida III: trasă de timus (pe lateral, ca să treacă pe lângă IV) până la polul inferior
-      const III = m < 0.85 ? [lerp(IIIa[0], IIIb[0] - 70, sp(m, 0, 0.85)) + Math.sin(sp(m, 0, 0.85) * Math.PI) * 60, lerp(IIIa[1], IIIb[1], sp(m, 0, 0.85))] : [lerp(IIIb[0] - 70, IIIb[0], sp(m, 0.85, 1)), IIIb[1]];
-      const IV = [lerp(IVa[0], IVb[0], iv), lerp(IVa[1], IVb[1], iv)];
+      // III ocolește tiroida pe lateral: coboară pe lângă IV (x ≈ 495, între faringe și lobul tiroidian), trece SUB lob, apoi se lipește de polul inferior
+      const IIIc = [495, TB + 30]; const III = m < 0.75 ? [lerp(IIIa[0], IIIc[0], sp(m, 0, 0.75)), lerp(IIIa[1], IIIc[1], sp(m, 0, 0.75))] : [lerp(IIIc[0], IIIb[0], sp(m, 0.75, 1)), lerp(IIIc[1], IIIb[1], sp(m, 0.75, 1))];
+      const IV = iv < 0.5 ? [lerp(IVa[0], 560, iv * 2), lerp(IVa[1], 360, iv * 2)] : [lerp(560, IVb[0], iv * 2 - 1), lerp(360, IVb[1], iv * 2 - 1)]; // pe deasupra lobului, nu prin el
       para(g, IV[0], IV[1], 20, { label: 'IV' }); para(g, III[0], III[1], 20, { label: 'III' });
       if (m > 0.05 && m < 0.95) arr(g, III[0] + 30, III[1] - 10, III[0] + 30, III[1] + 50, '#bdf4fa', 5, 0.8);
       if (b.i === 0 || b.i < 0) txt(g, 'III e mai SUS decât IV', 690, 230, 17, C.hi, { alpha: b.i < 0 ? 1 - m : 1 });
@@ -285,14 +289,14 @@ export function finalPos() {
       g.save(); g.setLineDash([8, 7]); g.strokeStyle = 'rgba(255,208,222,.85)'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(fc[0], fc[1] + 10); g.lineTo(CX, lerp(150, 560, dt)); g.stroke(); g.restore();
       thyroid(g, CX, lerp(170, 580, dt), lerp(0.35, 0.95, dt), {});
       txt(g, 'tiroida', CX, lerp(170, 580, dt) + 76 * dt + 6, 17, '#ffd0de');
-      if (dt < 0.98 || b.i < 0) txt(g, 'ductul tireoglos\n(manual)', CX + 120, 260, 14, '#ffd0de', { align: 'left', alpha: 0.85 });
+      if (dt < 0.98 || b.i < 0) txt(g, 'ductul tireoglos\n(manual)', CX + 12, 300, 14, '#ffd0de', { align: 'left', alpha: 0.85 });
       // etichete
       const lb = (s0, x, y, c, k, al2 = 'center') => txt(g, s0, x, y, 16, c, { alpha: al(k), align: al2 });
       lb('cavitatea timpanică\n+ tuba auditivă', CX + W + 150, Y[0] + 40, L.endo, 0); lb('meatul acustic\nextern', CX - W - 250, Y[0] + 30, L.ectoL, 0);
       lb('amigdala palatină', CX - W - 40, Y[1] + 4, '#ffc8f4', 1, 'right');
       lb('paratiroida inf.\n+ timusul', CX + W + 60, Y[2] + 200, '#bdf4fa', 2, 'left');
       lb('paratiroida sup.\n+ corpul ultimobranhial', CX + W + 60, Y[3] - 20, '#c8ceff', 3, 'left');
-      lb('timusul (mediastin)', CX, 880, '#fff4dc', 2);
+      lb('timusul (mediastin)', CX + 90, 880, '#fff4dc', 2, 'left');
       const e = ease(b.bt * 1.4);
       if (b.i === 0) ring(g, CX - W - 140, Y[0] - 30, 90, 60, e);
       if (b.i === 1) ring(g, CX - W - 6, Y[1] + 4, 40, 50, e);
