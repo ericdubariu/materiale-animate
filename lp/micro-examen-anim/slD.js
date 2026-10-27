@@ -1,5 +1,5 @@
-// PARTEA D: LP 6 Parazitologie (paginile 57–64 ale deck-ului de examen Micro). Un slide pe pagină: principiile, clasificarea,
-// protozoarele intestinale și genitale, Toxoplasma, teniile + Echinococcus, trematodele + alte cestode, nematodele pe gură, nematodele prin piele / carne / animale.
+// PARTEA D: LP 6 Parazitologie, aliniată la PDF-ul oficial (Diagnosticul de laborator al infecțiilor parazitare): principii, clasificare,
+// apoi câte un slide static cu poze (fără animații) pentru Trichomonas, Giardia, Toxoplasma, P. malariae, Echinococcus, Taenia, Ascaris, Enterobius, Toxocara, Trichinella.
 
 export const GL = [
   ['LP', 'lucrarea practică'], ['MGG', 'colorația May-Grünwald-Giemsa'], ['IgM', 'imunoglobulina M (apare prima)'],
@@ -7,8 +7,22 @@ export const GL = [
   ['CT', 'tomografia computerizată'], ['B12', 'vitamina B12 (cobalamina)'],
   ['T. solium', 'Taenia solium (tenia porcului)'], ['T. saginata', 'Taenia saginata (tenia vitei)'], ['D. latum', 'Diphyllobothrium latum (tenia peștelui)'],
   ['săpt.', 'săptămâni'],
+  ['ELISA', 'test imunoenzimatic'], ['RIF', 'reacția de imunofluorescență'], ['PCR', 'reacția de polimerizare în lanț (detectează ADN-ul parazitului)'],
+  ['LCR', 'lichid cefalorahidian'], ['RDT', 'test rapid de diagnostic'], ['SNC', 'sistemul nervos central'], ['H-E', 'hematoxilină-eozină'],
 ];
 export const TM = [
+  ['axostil', 'axostil', 'baston de susținere care străbate celula Trichomonas'],
+  ['schizont', 'schizont', 'forma care se divide în mai mulți merozoiți'],
+  ['merozoit', 'merozoit', 'celulă-fiică eliberată de schizont, care invadează alte hematii'],
+  ['gametocit', 'gametocit', 'forma sexuală, preluată de țânțar'],
+  ['oncosfer', 'oncosferă', 'embrionul cu 6 cârlige eliberat din ou'],
+  ['hexacant', 'embrion hexacant', 'embrion cu 6 cârlige'],
+  ['tachizoit', 'tachizoit', 'forma de multiplicare rapidă a Toxoplasmei'],
+  ['bradizoit', 'bradizoit', 'forma lentă din chistul tisular'],
+  ['Sabin', 'testul Sabin-Feldman', 'tachizoiți vii + ser imun + albastru de metilen: nu se mai colorează'],
+  ['cuaternar', 'acces cuaternar', 'febră la fiecare 72 h (a 4-a zi)'],
+  ['Kato', 'Kato-Miura', 'strat gros de scaun, transparentizat, care arată ouăle'],
+  ['vomic', 'vomică hidatică', 'chist hidatic rupt în bronhie, cu eliminare de lichid'],
   ['trofozoit', 'trofozoit', 'forma vie, activă, care se hrănește și se înmulțește; moare repede în afara gazdei'],
   ['chist', 'chist', 'forma de rezistență a protozoarelor, cu perete gros; rezistă în mediu și transmite boala'],
   ['flotați', 'flotație', 'ouăle, mai ușoare decât lichidul dens, urcă la suprafață și se adună pe lamelă'],
@@ -39,6 +53,8 @@ export const TM = [
   ['migrans', 'larva migrans', 'larva rătăcește prin țesuturi fără să ajungă adult'],
 ];
 
+const T = (n, lab) => ({ img: `pr_${n}`, lab });
+
 export const SL = [
   // ---------------- 57 · PRINCIPII
   {
@@ -58,87 +74,151 @@ export const SL = [
     scene: 'd_classify', kick: 'LP 6 · Clasificarea', title: 'Trei încrengături: protozoare, helminți, artropode',
     points: [
       { h: 'Protozoa: unicelulari', d: ['paraziți unicelulari: amoeboide, ciliate, sporozoare, flagelate', 'la microscop: !!trofozoiți și chisturi!! → nativ, Lugol, MGG'] },
-      { h: 'Plathelminthes: viermi plați', d: ['**helminți = plathelminți + nemathelminți**', '**trematode** (Fasciola) și **cestode** (tenii)', 'ouă, proglote → Kato-Miura, flotație'] },
-      { h: 'Nemathelminthes: viermi cilindrici', d: ['Ascaris, Enterobius, Trichuris', 'ouă, larve → Kato-Miura, larvoscopie, amprentă anală'] },
+      { h: 'Plathelminthes: viermi plați', d: ['**helminți = plathelminți + nemathelminți**', '**trematode** (nesegmentate) și **cestode** (segmentate: tenii)', 'ouă, proglote → Kato-Miura, flotație'] },
+      { h: 'Nemathelminthes: viermi cilindrici', d: ['Ascaris, Enterobius, Toxocara, Trichinella', 'ouă, larve → Kato-Miura, larvoscopie, amprentă anală'] },
       { h: 'Arthropoda: insecte', d: ['insectele parazite: păduchi, purici, acarieni'] },
     ],
     why: 'Paraziții se elimină **intermitent** și adesea în număr mic. Directul vede o picătură, iar !!stratul gros (Kato-Miura) și flotația (Willis-Hung)!! examinează mult mai multă probă. De aceea un examen negativ nu exclude: se repetă.',
     say: 'Unde trăiește parazitul, acolo îl caut; !!forma pe care o caut, trofozoit, chist, ou sau larvă, îmi dă metoda!!.',
     beatDur: 6,
   },
-  // ---------------- 59 · PROTOZOARELE INTESTINALE ȘI GENITALE
+  // ---------------- TRICHOMONAS
   {
-    scene: 'd_proto', kick: 'LP 6 · Protozoarele intestinale și genitale', title: 'Cum intră, unde trăiește, ce cauți',
+    scene: 'mosaic', sceneOpts: { cols: 2, tiles: [T(21, 'trofozoit'), T(25, 'ciclu'), T(28, 'nativ'), T(32, 'Giemsa')] },
+    kick: 'LP 6 · Protozoare · Trichomonas vaginalis', title: 'Trichomonas: doar trofozoit, doar din secreții',
     points: [
-      { h: 'Entamoeba histolytica', d: ['intră ca **chist înghițit** (apă, alimente); trăiește în cec, colon (abces hepatic)', 'trofozoiții invadează mucoasa **cecului** → ulcere → **dizenterie amibiană**', 'diareic: **trofozoit cu hematii**, examinat imediat · format: !!chist cu 4 nuclei!!, nativ + Lugol'] },
-      { h: 'Giardia lamblia', d: ['chist înghițit (fecal-oral); se lipește cu **discul adeziv** de duoden → **steatoree**', 'chisturile ies intermitent: !!repeți de 4 ori la 7 zile!! + lichid duodenal, biopsie'] },
-      { h: 'Trichomonas vaginalis', d: ['flagelat !!fără chist → transmitere directă, sexuală!!; trăiește în vagin, uretră', 'secreția se examinează **repede**, cât parazitul se mișcă: trofozoit mobil, nativ; primele 4–5 zile postmenstrual'] },
+      { h: 'Morfologie: fără chist', d: ['trofozoit **ovalar, 15 × 7 μm**, capătul anterior lat, cel posterior efilat', '**un nucleu**, **3–5 flageli** (4 anteriori + 1 recurent pe membrana ondulantă), **axostil**, costa', '!!nu are formă chistică!!'] },
+      { h: 'Ciclul', d: ['tract genital feminin; la bărbat **uretră și prostată**', 'diviziune binară; !!singura gazdă: omul, transmitere sexuală!!', 'boala: **tricomoniază**; nu supraviețuiește în mediul extern'] },
+      { h: 'Examenul direct', d: ['recoltezi **secreție vaginală, secreție uretrală, primul jet de urină**', '!!preparat nativ din probe proaspete: trofozoiți mobili!!'] },
+      { h: 'Giemsa + restul metodelor', d: ['Giemsa: citoplasmă **albastră**, nucleu **mov**, flageli', 'cultură (**mediul Diamond**, până la 5 zile): nu e de rutină · **ELISA** pentru bărbații asimptomatici', '!!PCR = gold standard!!'] },
     ],
-    warn: '**Entamoeba coli** e nepatogenă și seamănă: are chist cu **8 nuclei** (histolytica are 4) și nu fagocitează hematii.',
-    why: '!!Chistul transmite, trofozoitul îmbolnăvește!!. Chistul rezistă în mediu și **transmite**; trofozoitul moare repede în afara corpului, dar el **îmbolnăvește**. Scaunul format conține chisturi, cel diareic trofozoiți.',
-    beatDur: 8,
-  },
-  // ---------------- 60 · TOXOPLASMA
-  {
-    scene: 'd_toxo', kick: 'LP 6 · Toxoplasma', title: 'Cum ajunge Toxoplasma la om și cum o cauți',
-    points: [
-      { h: 'Pisica', d: ['!!gazda definitivă!!: ciclul sexuat în intestin', 'elimină **oochiști** în fecale'] },
-      { h: 'Oochiștii', d: ['sporulează în **sol**; omul îi înghite cu **legume nespălate**'] },
-      { h: 'Chisturile tisulare', d: ['persistă în **mușchi și creier** (animalele; pisica le mănâncă: carnivorism)', 'omul se infectează din **carne insuficient preparată**'] },
-      { h: 'Transplacentar', d: ['omul = gazdă intermediară', '!!doar primoinfecția din sarcină pune fătul în pericol!!'] },
-    ],
-    why: 'Diagnosticul se sprijină pe **serologie**: !!IgM apare prima → infecție recentă; IgG singure → infecție trecută!!. La gravida cu IgG+ și IgM− repeți IgG după **3 săptămâni**, ca să vezi dacă infecția e veche sau abia începe.',
-    say: 'Omul se infectează pe trei căi: oochiști de la pisică, chisturi din carne și transplacentar. La gravidă contează doar primoinfecția din sarcină.',
+    why: 'Fără chist, trofozoitul moare repede în afara gazdei: proba trebuie examinată **proaspătă**, nativ, ca să vezi mișcarea.',
     beatDur: 7,
   },
-  // ---------------- 61 · TENIILE ȘI ECHINOCOCCUS
+  // ---------------- GIARDIA
   {
-    scene: 'd_tenia', kick: 'LP 6 · Teniile și Echinococcus', title: 'Cine e gazda definitivă decide ce găsești în scaun',
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(35, 'trofozoit'), T(39, 'chist'), T(41, 'ciclu'), T(43, 'enterotest'), T(52, 'test rapid')] },
+    kick: 'LP 6 · Protozoare · Giardia lamblia', title: 'Giardia: chisturi în scaunul format, trofozoiți în cel diareic',
     points: [
-      { h: 'Taenia: carnea crudă', d: ['porc → **T. solium**, vită → **T. saginata**', 'adultul trăiește în **intestinul omului** = !!omul e gazda definitivă!!'] },
-      { h: 'Ce cauți la teniază', d: ['**proglote** în scaun, **scolexul** după tratament; amprenta anală', 'ouăle sunt **identice** la cele două specii'] },
-      { h: 'Cisticercoza', d: ['omul **înghite ouăle** de T. solium și face larva', 'creier (crize epileptice), ochi, mușchi'] },
-      { h: 'Echinococcus: chistul hidatic', d: ['câinele = gazda definitivă (ouă în fecale → pe blană, mâini, legume, apă)', '!!omul e gazdă intermediară (ca oaia)!!: ficat 60–70%, plămân 20–30%', 'cauți **chistul** (ecografie, CT) și **anticorpii** (antigenul 5); NU are ouă în scaun'] },
+      { h: 'Trofozoitul', d: ['**piriform, 10–12 × 5–7 μm**, **2 nuclei** anteriori, **4 perechi de flageli**, disc ventral de fixare', 'în nativ: mișcare de **„frunză căzătoare”**'] },
+      { h: 'Chistul', d: ['**ovalar, 7–10 μm**, perete gros cu **„halou”** clar dedesubt', '**2 sau 4 nuclei**, flageli liniari lângă corpusculul median'] },
+      { h: 'Ciclul', d: ['ingestia **chisturilor** (apă, alimente, fecal-orală) → în intestinul subțire fiecare chist dă **2 trofozoiți**', 'diviziune binară longitudinală; închistarea în colon', '!!scaun format → chisturi · scaun diareic → trofozoiți!!'] },
+      { h: 'Recoltare și examen direct', d: ['**materii fecale: 1 probă/zi, 3 zile** · lichid duodenal (sondaj sau **enterotest**) · **biopsie**', 'nativ în ser fiziologic sau **Lugol**, coloranți tricrom · în primele 3 săptămâni nu apar paraziți în scaun', '**biopsia** poate fi cea mai fidelă metodă'] },
+      { h: 'Imunodiagnostic și PCR', d: ['**Ac** (IgM, IgG, IgA) · **Ag**: imunofluorescență, **ELISA**, **test imunocromatografic rapid** din scaun', '**PCR** · cultura doar în cercetare'] },
     ],
-    warn: 'Chistul hidatic !!nu se puncționează „orbește”!!: lichidul hidatic e antigenic și dă **șoc anafilactic**.',
-    why: 'Adultul (care face ouă) trăiește doar în gazda **definitivă**. Unde omul e gazdă definitivă (teniaza) găsești proglote și ouă; unde e gazdă **intermediară** (hidatidoza, cisticercoza) are doar larva în țesuturi și !!nu elimină ouă!!; la hidatidoză cauți chistul imagistic și anticorpii serologic.',
-    beatDur: 8,
-  },
-  // ---------------- 62 · TREMATODE ȘI ALTE CESTODE
-  {
-    scene: 'd_trema', kick: 'LP 6 · Trematode și alte cestode', title: 'Fiecare are „sursa” lui: plantă, pește, om, purice',
-    points: [
-      { h: 'Fasciola hepatica (gălbeaza)', d: ['trematod; omul mănâncă **metacercari pe salata de creson**; adultul trăiește în **căile biliare**', 'ouă (operculate) în fecale sau aspirat duodenal !!abia după 90 de zile!!; eozinofilie, serologie'] },
-      { h: 'Diphyllobothrium latum', d: ['**tenia peștelui** (pește crud, 2 gazde acvatice), cel mai lung parazit uman', 'consumă **vitamina B12** → anemie megaloblastică · ouă operculate (Willis-Hung)'] },
-      { h: 'Hymenolepis nana', d: ['!!fără gazdă intermediară, cu autoinfectare!!: oul e infectant direct', 'de aceea persistă: **reexaminezi** · ouă cu filamente'] },
-      { h: 'Dipylidium caninum', d: ['tenia câinelui; copilul înghite **puricele câinelui**', 'proglotele **nu se dezintegrează**, le vezi în scaun: proglote mobile „în butoiaș”'] },
-    ],
-    why: '!!Ouăle operculate (cu capac) sunt la Fasciola și D. latum!!. La Fasciola întâi apare **eozinofilia** (primele 3 luni), iar ouăle vin abia când adultul ajunge în căile biliare; atenție la **„ouăle de pasaj”** după ficat de vită consumat.',
+    why: 'Chisturile ies **intermitent**, așa că examenul se repetă (3 zile), iar când scaunul e negativ dar suspiciunea rămâne, cauți **trofozoiții în lichidul duodenal sau în biopsie**.',
+    warn: 'Chist în scaun **format**, trofozoit în scaun **diareic**.',
     beatDur: 7,
   },
-  // ---------------- 63 · NEMATODELE CARE INTRĂ PE GURĂ
+  // ---------------- TOXOPLASMA
   {
-    scene: 'd_oral', kick: 'LP 6 · Nematodele care intră pe gură', title: 'Ascaris, Enterobius, Trichuris: oul e forma infectantă',
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(55, 'tachizoiți'), T(63, 'chist cerebral'), T(58, 'oochist'), T(60, 'ciclu'), T(66, 'screening gravide')] },
+    kick: 'LP 6 · Protozoare · Toxoplasma gondii', title: 'Toxoplasma: 4 stadii, direct în țesuturi, indirect prin anticorpi',
     points: [
-      { h: 'Ascaris', d: ['ou embrionat din sol → intestin → sânge → **plămân** → înghițit → intestin', 'drumul prin plămân → **sindrom Loeffler, eozinofilie**', 'întâi **larve în spută** (primele 2 săpt.), abia după !!60–70 de zile ouă în scaun!!'] },
-      { h: 'Enterobius (oxiurul)', d: ['ou de pe degete, obiecte, alimente; trăiește în cec, colon', 'femela depune ouăle **pe pielea perianală, seara**', 'amprenta anală, dimineața, înainte de toaletă: !!> 50% pozitivă, scaunul doar 10–15%!!'] },
-      { h: 'Trichuris (tricocefalul)', d: ['ou din sol (geohelmint); se înfige cu **capătul efilat** în mucoasa **cecului**', 'ouă brune **„în lămâie”**, cu dopuri la poli; Kato-Miura'] },
+      { h: 'Tachizoitul', d: ['**4 stadii**: tachizoit, merozoit, bradizoit (→ chisturi tisulare), sporozoit (în oochist)', 'tachizoit: formă de **semilună, 5–8 × 5–6 μm**', 'Giemsa: citoplasmă albastru-pal, **nucleu roșu**'] },
+      { h: 'Chistul tisular', d: ['aglomerare de **bradizoiți**, **~100 μm**, în **mușchi și sistem nervos**', 'se vede pe frotiu sau biopsie (**H-E**)'] },
+      { h: 'Oochistul', d: ['eliminat de **pisică** (gazda definitivă): **2 sporochisturi × 4 sporozoiți**', 'în preparat nativ'] },
+      { h: 'Căile de infectare', d: ['**carne insuficient preparată**, alimente/apă cu fecale de pisică, litieră, sol', '**transfuzie, transplant**, **transplacentar**'] },
+      { h: 'Diagnostic', d: ['**direct**: tachizoiți pe frotiu (Giemsa, PAS, H-E) din sânge, LCR, lichid amniotic, biopsie; **PCR**', '**indirect**: **IgM, IgG** (ELISA, RIF) · IgM și IgA la ~1 săpt., scad în 1–6 luni · !!IgG: platou 2–3 luni, persistă toată viața!!', '**Sabin-Feldman** (referință): tachizoiții vii **nu mai fixează albastrul de metilen** în prezența serului imun; se folosește rar · **Remington**'] },
     ],
-    why: 'Oul de Ascaris are nevoie de **săptămâni în sol** ca să devină infectant (geohelmint). Oul de Enterobius devine embrionat **în câteva ore** pe piele: de aceea pruritul duce la !!autoinfecție!! și boala se întreține singură.',
-    say: 'Pentru Enterobius fac amprenta anală dimineața, înainte de toaletă, pentru că !!femela își depune ouăle pe piele, nu în intestin!!.',
-    beatDur: 9,
+    why: '**Gravide, algoritm:** !!IgG negativ!! → evitat contactul cu pisici, carne bine prăjită, reevaluare serologică. !!IgG pozitiv!! → **IgM**: pozitiv = **infecție acută** (decizie terapeutică); negativ = **repetă după 3 săpt.**: titru **la fel** = infecție trecută, **IgG în creștere** = infecție acută.',
+    beatDur: 7,
   },
-  // ---------------- 64 · NEMATODELE PRIN PIELE, CARNE, DE LA ANIMALE
+  // ---------------- PLASMODIUM MALARIAE
   {
-    scene: 'd_skin', kick: 'LP 6 · Nematodele prin piele, carne, de la animale', title: 'Pe unde intră îți spune ce cauți',
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(68, 'inel'), T(69, 'trofozoit matur'), T(71, 'schizont'), T(72, 'gametocit'), T(75, 'ciclu'), T(80, 'test rapid')] },
+    kick: 'LP 6 · Protozoare · Plasmodium malariae', title: 'P. malariae: formă în bandă, ciclu de 72 h, frotiu + picătură groasă',
     points: [
-      { h: 'Ancylostoma', d: ['larva (filariformă) din **sol** străbate **pielea intactă** → plămân → duoden', 'duodenul: taie mucoasa, suge sânge → **anemie feriprivă** · ouă în scaun; larvoscopie'] },
-      { h: 'Strongyloides', d: ['larva filariformă prin piele → duoden, jejun; ouăle **eclozează în intestin** → !!în scaun larve!! (și lichid duodenal)', '**autoinfecție**: la imunodeprimați → forma diseminată'] },
-      { h: 'Trichinella', d: ['**carne de porc și mistreț**; larvele se închistează în **mușchi** striat', '!!biopsie (solear, deltoid) comprimată între 2 lame!!, trichineloscop'] },
-      { h: 'Toxocara', d: ['parazit al **câinelui** (ouă de la câine, cățeii, pisică); la om larva **nu se maturizează**: larva migrans în ficat, plămân, ochi', 'nu există ouă în scaun → diagnostic **serologic**, eozinofilie'] },
+      { h: 'Trofozoit tânăr (inelul)', d: ['inel **compact, gros**, citoplasmă densă, nucleu roșu intens', 'uneori **bandă transversală** prin hematie'] },
+      { h: 'Trofozoit matur', d: ['ocupă ~1/3 din hematie, **pigment malaric** brun, granular', '!!aspect de bandă transversală = semn distinctiv!!'] },
+      { h: 'Schizont matur', d: ['**6–12 merozoiți** în **rozetă** în jurul pigmentului brun central'] },
+      { h: 'Gametocit', d: ['rotund/oval, citoplasmă albastră cu granule brune, nucleu mare **excentric**', 'hematia gazdă **nu se mărește**'] },
+      { h: 'Ciclul', d: ['**Anopheles** = gazda definitivă (gametocit → zigot → oochist → sporozoiți în glandele salivare)', 'om: sporozoiți → **ficat** (schizont hepatic → merozoiți) → **hematii**: inel → bandă → schizont', '!!ciclu eritrocitar de 72 h = acces cuaternar!!'] },
+      { h: 'Diagnostic', d: ['**frotiu subțire** (Giemsa, Wright): **referință**, identifică specia', '**picătura groasă**: mai sensibilă, **nu diferențiază specia**; se fac împreună', '**RDT** (pLDH sau pan-Plasmodium; 15–20 min; mai puțin sensibil la parazitemii mici) · **PCR** (cea mai sensibilă; infecții mixte)'] },
     ],
-    warn: '!!Fără ouă în scaun!!: Enterobius (amprenta), Strongyloides (larve), Toxocara și hidatidoza (serologie).',
-    why: 'Unde omul nu e gazdă definitivă (Toxocara) sau unde ouăle eclozează înăuntru (Strongyloides), coproparazitologicul clasic pentru ouă nu ajută; !!schimbi produsul sau metoda!!.',
-    beatDur: 9,
+    why: 'Picătura groasă **găsește** parazitul, frotiul subțire **spune specia**: de aceea se folosesc împreună.',
+    beatDur: 7,
+  },
+  // ---------------- HELMINȚI + ECHINOCOCCUS
+  {
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(91, 'adult'), T(93, 'ou'), T(95, 'ciclu'), T(89, 'chisturi hidatice'), T(97, 'CT cerebral')] },
+    kick: 'LP 6 · Helminți · Echinococcus granulosus', title: 'Echinococcus: omul e gazdă intermediară, chistul hidatic',
+    points: [
+      { h: 'Adultul (în câine)', d: ['mic: **scolex** cu **4 ventuze și 28–40 cârlige** pe 2 rânduri, gât, **3 proglote** (imatur, matur, cu uter plin de ouă)', 'helminți: **trematode** (plate, nesegmentate), **cestode** (plate, segmentate), **nematode** (cilindrice)'] },
+      { h: 'Oul', d: ['**ovoid, 13–41 μm**, membrană cu **striații radiare**, embrion **hexacant**', '!!se găsește în fecalele câinelui, nu la om!!'] },
+      { h: 'Ciclul', d: ['**definitivă: câinele** (și lup, șacal, vulpe) · **intermediare: oaie, capră, porc, OM**', 'omul ingeră ouă → **oncosfere** → sânge → organe, unde se închistează'] },
+      { h: 'Boala', d: ['**echinococoză = hidatidoză**: **chist hidatic** (ficat, plămân; multiplu)', 'rupere → **șoc anafilactic**; **vomică hidatică** (chist deschis în bronhie)'] },
+      { h: 'Diagnostic', d: ['!!clinic + imagistic!!: **ecografie, radiografie, CT**', '**serologie: antigenul 5** (hemaglutinare indirectă, imunelectroforeză, **ELISA**)'] },
+    ],
+    why: 'Omul nu elimină ouă: nu cauți nimic în scaun, ci **chistul** (imagistic) și **anticorpii**.',
+    beatDur: 7,
+  },
+  // ---------------- TAENIA
+  {
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(103, 'T. solium'), T(114, 'T. saginata'), T(107, 'ou'), T(112, 'ciclu'), T(109, 'cisticercoză'), T(123, 'colonoscopie')] },
+    kick: 'LP 6 · Helminți · Taenia solium și T. saginata', title: 'Solium vs saginata: scolexul, proglotele și cine face cisticercoză',
+    points: [
+      { h: 'T. solium (porcul)', d: ['scolex **globulos, cu rostru și 2 coroane de cârlige**, 4 ventuze', '**~900 proglote**; uter cu **<10 ramificații** dendritice'] },
+      { h: 'T. saginata (vita)', d: ['scolex **piriform, fără rostru și fără cârlige**', '**1000–2000 proglote**; uter cu **~20 ramificații** dicotomice'] },
+      { h: 'Oul: identic', d: ['**sferic, 40 μm**, embrion **hexacant** în membrană striată, membrană vitelină', '!!nu deosebești specia după ou!!'] },
+      { h: 'Ciclul', d: ['om: **carne crudă cu cisticerci** → tenie adultă (scolexul se fixează); proglote gravide eliminate (~6/zi)', '**cisticercoză**: omul ingeră **OUĂ** de T. solium (!!fecal-oral, nu din carne!!); carnea cu cisticerci dă doar tenie intestinală'] },
+      { h: 'Cisticercoza', d: ['cisticercii în **mușchi, piele, inimă, plămân, ficat, SNC**', '**neurocisticercoză** → crize epileptice'] },
+      { h: 'Diagnostic', d: ['**amprenta anală**: ouă; **proglote gravide** în scaun (ouă doar dacă s-au spart)', '!!specia: proglotele + scolexul eliminat după tratament!! · **eozinofilie** (~13%) · **radiologic baritat**: defect de umplere în panglică · colonoscopie'] },
+    ],
+    why: 'Oul e identic, deci specia se pune **numai** pe **scolex și proglote**: cu cârlige și <10 ramificații = solium; fără cârlige și ~20 = saginata.',
+    beatDur: 7,
+  },
+  // ---------------- ASCARIS
+  {
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(125, 'adulți'), T(131, 'ou fecundat'), T(141, 'fecundat / nefecundat'), T(137, 'ciclu'), T(144, 'larve în plămân')] },
+    kick: 'LP 6 · Nematode · Ascaris lumbricoides', title: 'Ascaris: oul fecundat, Kato-Miura și eozinofilia',
+    points: [
+      { h: 'Adultul', d: ['**cel mai mare nematod intestinal**, geohelmint; sexe separate', '♀ **20–25 cm**, ambele capete drepte · ♂ **10–17 cm**, capăt posterior **încurbat ventral**'] },
+      { h: 'Oul fecundat', d: ['**65–75 × 30–50 μm**, galben-brun, înveliș **albuminos mamelonat**, celulă-ou rotundă cu spațiu liber la poli', 'rezistă >1 an în sol; larvă infectantă în **3–4 săpt.**'] },
+      { h: 'Oul nefecundat', d: ['**mai alungit, 88–93 × 38–40 μm**, interior = **masă de granule** (fără masculi)', 'atipic, greu de recunoscut'] },
+      { h: 'Ciclul', d: ['ou infectant ingerat → duoden → vase → **ficat → inimă → plămân (5–10 zile)** → trahee, faringe → înghițit → intestin → adult'] },
+      { h: 'Diagnostic', d: ['!!ouă în scaun!! (după **60–70 zile**), mai bine prin **Kato-Miura**; doar parazit de același sex → fără ouă', '**larve** în spută sau suc gastric (zilele 8–16) · adult eliminat · **eozinofilie**: 30–50% în faza migratorie, <10% după 60 zile'] },
+    ],
+    why: 'Ouăle apar abia după 60–70 de zile; până atunci diagnosticul e pe **larvele din spută** și pe **eozinofilie**.',
+    beatDur: 7,
+  },
+  // ---------------- ENTEROBIUS
+  {
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(146, 'adult'), T(150, 'ou'), T(153, 'ciclu'), T(155, 'amprenta anală'), T(157, 'ouă pe bandă')] },
+    kick: 'LP 6 · Nematode · Enterobius vermicularis', title: 'Enterobius: amprenta anală, 7 examene la 2 zile',
+    points: [
+      { h: 'Adultul', d: ['mic, alb-gălbui: ♀ **8–13 mm**, coadă ascuțită · ♂ **3–5 mm**, coadă încurbată', '**buton cefalic** (fixare), esofag rabditoid'] },
+      { h: 'Oul', d: ['**50 × 30 μm**, ovalar, **asimetric** (o latură plană, una convexă), transparent, dublu înveliș', 'embrion **giriform**'] },
+      { h: 'Ciclul', d: ['♀ depune ouăle **noaptea, în pliurile perianale** (prurit)', '**autoinfectare** mână-gură sau ouă din lenjerie → eclozare în intestin subțire, adulți în **cec**'] },
+      { h: 'Amprenta anală', d: ['bagheta cu **bandă adezivă transparentă** pe pliurile anale → lipită pe lamă', '!!7 examene la interval de 2 zile pentru a exclude diagnosticul!!'] },
+      { h: 'Rezultat', d: ['la microscop, obiectiv uscat: pozitivă în **>50%**', 'în scaun doar **10–15%** · adultul se poate vedea perianal, în vagin, în scaun'] },
+    ],
+    why: 'Femela depune ouăle **în afara intestinului**, deci scaunul e aproape inutil: se face **amprenta anală**.',
+    beatDur: 7,
+  },
+  // ---------------- TOXOCARA
+  {
+    scene: 'mosaic', sceneOpts: { cols: 2, tiles: [T(163, 'adult (câine)'), T(169, 'ou'), T(174, 'larva migrans oculară'), T(178, 'larvă în ficat')] },
+    kick: 'LP 6 · Nematode · Toxocara', title: 'Toxocara: din câine, doar larvele la om',
+    points: [
+      { h: 'Adultul și sursa', d: ['**♂ 4–6 cm, ♀ 6–10 cm**, cuticulă galbenă, **2 aripi laterale** anterior', '**câinele (cățeii)** = sursa principală; ouă de pe blană, sol, alimente'] },
+      { h: 'Oul', d: ['sferic-ovalar, înveliș subțire, **neregulat**, celulă nesegmentată', '!!nu e infectant la eliminare (1–4 săpt. în mediu)!!; eliminat doar de câine/pisică'] },
+      { h: 'Larva migrans', d: ['omul **nu găzduiește adultul** → larvele rătăcesc: **viscerală** și **oculară**', 'manifestări cutanate alergice, hepato-/splenomegalie, febră'] },
+      { h: 'Diagnostic', d: ['!!dificil: în scaun NU sunt ouă!!, biopsia rar pozitivă', '**eozinofilie, Ac anti-Toxocara, CT, ecografie** + factori de risc (câini, geofagie)', 'certitudine: **larve în spută / granuloame**; ocular: Ac în fluidele oculare'] },
+    ],
+    why: 'Omul e gazdă **accidentală**: nu elimină ouă, deci diagnosticul e **serologic și clinic**, nu coprologic.',
+    beatDur: 7,
+  },
+  // ---------------- TRICHINELLA
+  {
+    scene: 'mosaic', sceneOpts: { cols: 3, tiles: [T(189, 'larvă închistată'), T(187, 'ciclu'), T(185, 'biopsie musculară')] },
+    kick: 'LP 6 · Nematode · Trichinella spiralis', title: 'Trichinella: larve închistate în mușchi, biopsie și trichineloscop',
+    points: [
+      { h: 'Larva închistată', d: ['**40–1200 μm**, cuticulă groasă de 1 μm, **răsucită în celula musculară**', 'în intestin se dechistează; **în 30 h** devine adult'] },
+      { h: 'Ciclul', d: ['**același organism = gazdă definitivă și intermediară**', 'ciclul se oprește în **mușchiul scheletic**; continuă doar dacă altcineva mănâncă **carne cu larve vii**'] },
+      { h: 'Diagnostic', d: ['**biopsie musculară** (solear lângă tendonul ahilian, sau deltoid), **comprimată între 2 lame**, la **trichineloscop**', '!!biopsie pozitivă confirmă; negativă NU exclude!! · anamneză (carne insuficient preparată) · **eozinofilie >500/μL**'] },
+    ],
+    why: 'Nu cauți ouă în scaun: larvele sunt **în mușchi**, deci **biopsia**.',
+    beatDur: 6,
   },
 ];
