@@ -76,7 +76,7 @@ export const SL = [
       { h: 'Protozoa: unicelulari', d: ['paraziți unicelulari: amoeboide, ciliate, sporozoare, flagelate', 'la microscop: !!trofozoiți și chisturi!! → nativ, Lugol, MGG'] },
       { h: 'Plathelminthes: viermi plați', d: ['**helminți = plathelminți + nemathelminți**', '**trematode** (nesegmentate) și **cestode** (segmentate: tenii)', 'ouă, proglote → Kato-Miura, flotație'] },
       { h: 'Nemathelminthes: viermi cilindrici', d: ['Ascaris, Enterobius, Toxocara, Trichinella', 'ouă, larve → Kato-Miura, larvoscopie, amprentă anală'] },
-      { h: 'Arthropoda: insecte', d: ['insectele parazite: păduchi, purici, acarieni'] },
+      { h: 'Arthropoda: artropode', d: ['**insecte** (păduchi, purici) și **arahnide** (acarieni, căpușe)', 'LP scrie „insectele parazite: păduchi, purici, acarieni”; acarienii sunt de fapt arahnide (manual)'] },
     ],
     why: 'Paraziții se elimină **intermitent** și adesea în număr mic. Directul vede o picătură, iar !!stratul gros (Kato-Miura) și flotația (Willis-Hung)!! examinează mult mai multă probă. De aceea un examen negativ nu exclude: se repetă.',
     say: 'Unde trăiește parazitul, acolo îl caut; !!forma pe care o caut, trofozoit, chist, ou sau larvă, îmi dă metoda!!.',

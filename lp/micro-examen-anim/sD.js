@@ -423,7 +423,7 @@ CE TREBUIE SĂ SE VADĂ
  ouă, larve → Kato-Miura, larvoscopie, amprentă anală; păduchi, purici, acarieni. */
 export function d_classify() {
   const Y = [125, 345, 565, 785];
-  const NAME = [['Protozoa', 'unicelulari'], ['Plathelminthes', 'viermi plați'], ['Nemathelminthes', 'viermi cilindrici'], ['Arthropoda', 'insecte']];
+  const NAME = [['Protozoa', 'unicelulari'], ['Plathelminthes', 'viermi plați'], ['Nemathelminthes', 'viermi cilindrici'], ['Arthropoda', 'artropode']];
   const MET = ['trofozoit + chist\n→ nativ, Lugol, MGG', 'ouă, proglote\n→ Kato-Miura, flotație', 'ouă, larve → Kato-Miura,\nlarvoscopie,\namprentă anală', 'păduchi, purici,\nacarieni'];
   const COL = ['#d6f0e0', '#ffe2c4', '#ffd6d6', '#e6dcf5'];
   return {
