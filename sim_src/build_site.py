@@ -120,7 +120,8 @@ def main():
             t = {"mcq": "m", "open": "o", "calc": "c", "graph": "g"}[x["type"]]
             q.append([x["id"], x["topic"], x["diff"], t, 1 if x.get("station") else 0, 1 if x.get("img") else 0,
                       len(x.get("opts", [])), len(x.get("ok", [])),
-                      1 if x["id"].rsplit("_", 1)[-1] in FARMA_CASES.get(u["id"], []) and x.get("station") else 0])
+                      1 if x["id"].rsplit("_", 1)[-1] in FARMA_CASES.get(u["id"], []) and x.get("station") else 0,
+                      1 if x.get("hot") else 0])  # hot = a picat la examen → șansă mai mare la tragere (oral)
         units.append({"id": u["id"], "subject": u["subject"], "unit": u["unit"], "title": u["title"],
                       "short": u.get("short", ""), "topics": u["topics"], "file": u["file"], "q": q})
         if src != dst:
