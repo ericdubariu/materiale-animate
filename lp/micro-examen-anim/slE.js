@@ -87,7 +87,7 @@ export const SL = [
   /* ---------- 2 · colonii S ---------- */
   A(2, 'Colonii S', 'colS', 912, 768, [
     { h: 'Geloză simplă', d: ['cresc germeni nepretențioși'] },
-    { h: '!!Colonii S (smooth)!!', d: ['mici, rotunde, netede, bombate, lucioase', 'în ser fiziologic: !!suspensie omogenă!!', 'forma normală a **patogenilor** (ex. Staphylococcus)'] },
+    { h: '??!!Colonii S (smooth)!!??', d: ['mici, rotunde, netede, bombate, lucioase', 'în ser fiziologic: !!suspensie omogenă!!', 'forma normală a **patogenilor** (ex. Staphylococcus)'] },
   ], [
     { pt: 0, x: 456, y: 345, rx: 395, ry: 340, dash: 1, lab: 'geloză simplă', ly: -80 },
     { pt: 1, x: 200, y: 185, rx: 120, ry: 85, rot: -0.3, lab: 'colonii S' },
@@ -99,7 +99,7 @@ export const SL = [
   /* ---------- 3 · colonii R ---------- */
   A(3, 'Colonii R', 'colR', 1000, 985, [
     { h: 'Geloză simplă', d: ['mediu de bază'] },
-    { h: '!!Colonii R (rough)!!', d: ['mari, plate, uscate, margini neregulate, suprafață zbârcită', 'în ser fiziologic: !!aglutinare spontană!!', 'de regulă nepatogene'] },
+    { h: '??!!Colonii R (rough)!!??', d: ['mari, plate, uscate, margini neregulate, suprafață zbârcită', 'în ser fiziologic: !!aglutinare spontană!!', 'de regulă nepatogene'] },
   ], [
     { pt: 0, x: 505, y: 495, rx: 445, ry: 435, dash: 1, lab: 'geloză simplă', ly: -120 },
     { pt: 1, x: 590, y: 735, rx: 255, ry: 105, rot: -0.12, lab: 'colonii R' },
@@ -142,7 +142,7 @@ export const SL = [
 
   /* ---------- 7 · geloză-sânge ---------- */
   A(7, 'Geloză-sânge', 'gsange', 1000, 974, [
-    { h: '!!Geloză-sânge · mediu compus complex!!', d: ['geloză + !!sânge defibrinat 5–10%!!', 'pentru germeni **pretențioși** (streptococi, pneumococ)', 'roșu opac, uniform = nesămânțată'] },
+    { h: '??!!Geloză-sânge · mediu compus complex!!??', d: ['geloză + !!sânge defibrinat 5–10%!!', 'pentru germeni **pretențioși** (streptococi, pneumococ)', 'roșu opac, uniform = nesămânțată'] },
   ], [
     { pt: 0, x: 505, y: 480, rx: 445, ry: 440, dash: 1, lab: 'roșu opac, uniform', ly: -120 },
   ], [{ k: 'blood' }], {
@@ -151,9 +151,9 @@ export const SL = [
 
   /* ---------- 8 · hemoliza ---------- */
   A(8, 'Hemoliza: α, β, γ', 'hemoliza', 1000, 996, [
-    { h: '!!α · stânga!!', d: ['brun-verzui, opac: liză **parțială**', 'S. pneumoniae, viridans'] },
-    { h: '!!β · jos!!', d: ['clar, transparent: liză **completă**', 'S. pyogenes, S. aureus'] },
-    { h: '!!γ · sus!!', d: ['mediul a rămas roșu: **fără** hemoliză', 'enterococi'] },
+    { h: '??!!α · stânga!!??', d: ['brun-verzui, opac: liză **parțială**', 'S. pneumoniae, viridans'] },
+    { h: '??!!β · jos!!??', d: ['clar, transparent: liză **completă**', 'S. pyogenes, S. aureus'] },
+    { h: '??!!γ · sus!!??', d: ['mediul a rămas roșu: **fără** hemoliză', 'enterococi'] },
   ], [
     { pt: 0, x: 230, y: 450, rx: 125, ry: 255, rot: 0.08, lab: 'α' },
     { pt: 1, x: 640, y: 715, rx: 270, ry: 150, rot: -0.3, lab: 'β' },
@@ -165,7 +165,7 @@ export const SL = [
 
   /* ---------- 9 · Mueller-Hinton ---------- */
   A(9, 'Mueller-Hinton', 'mh', 1000, 936, [
-    { h: '!!Mueller-Hinton · mediul antibiogramei!!', d: ['standardizat, reproductibil', 'pentru **antibiograma difuzimetrică** și CMI în agar', '4 mm grosime, pH 7,2–7,4; cu sânge pentru pretențioși'] },
+    { h: '??!!Mueller-Hinton · mediul antibiogramei!!??', d: ['standardizat, reproductibil', 'pentru **antibiograma difuzimetrică** și CMI în agar', '4 mm grosime, pH 7,2–7,4; cu sânge pentru pretențioși'] },
   ], [
     { pt: 0, x: 500, y: 475, rx: 435, ry: 425, dash: 1, lab: 'Mueller-Hinton', ly: -120 },
   ], [{ k: 'abg' }], {
@@ -174,7 +174,7 @@ export const SL = [
 
   /* ---------- 10 · Sabouraud ---------- */
   A(10, 'Sabouraud', 'sab', 744, 704, [
-    { h: '!!Sabouraud · mediu special pentru fungi!!', d: ['**glucoză multă, pH acid**', '+ cloramfenicol (oprește bacteriile)', 'cresc !!levurile (Candida)!! în 24–72 h'] },
+    { h: '??!!Sabouraud · mediu special pentru fungi!!??', d: ['**glucoză multă, pH acid**', '+ cloramfenicol (oprește bacteriile)', 'cresc !!levurile (Candida)!! în 24–72 h'] },
   ], [
     { pt: 0, x: 360, y: 292, rx: 255, ry: 255, dash: 1, lab: 'Sabouraud', ly: -60 },
   ], [[{ k: 'sel', inh: 'cloramfenicol\n+ pH acid', germs: [{ type: 'gneg', lab: 'bacterii', dies: 1 }, { type: 'yeast', lab: 'levuri\n(Candida)' }] }, { k: 'grow', cell: 'yeast', col: '#fffdf6', agar: '#e6d49a', lab: 'Candida: 24–72 h' }]], {
@@ -183,7 +183,7 @@ export const SL = [
 
   /* ---------- 11 · colonii untoase ---------- */
   A(11, 'Colonii untoase', 'untoase', 1000, 927, [
-    { h: '!!Colonii untoase!!', d: ['mari, rotunde, mate, crem-albicioase', '= !!levuri (Candida)!!'] },
+    { h: '??!!Colonii untoase!!??', d: ['mari, rotunde, mate, crem-albicioase', '= !!levuri (Candida)!!'] },
     { h: 'Punctele roșii', d: ['alte colonii, nu fac parte din cultura de levuri'] },
   ], [
     { pt: 0, x: 300, y: 660, rx: 150, ry: 95, rot: -0.15, lab: 'colonii untoase' },
@@ -195,7 +195,7 @@ export const SL = [
 
   /* ---------- 12 · Chapman nesămânțat ---------- */
   A(12, 'Chapman / MSA (nesămânțat)', 'chap0', 1000, 886, [
-    { h: '!!Chapman · selectiv-diferențial!!', d: ['!!NaCl 7,5%!! → selectează stafilococii', '**manitol + roșu fenol** → diferențiază', 'roz-roșu = nimic fermentat'] },
+    { h: '??!!Chapman · selectiv-diferențial!!??', d: ['!!NaCl 7,5%!! → selectează stafilococii', '**manitol + roșu fenol** → diferențiază', 'roz-roșu = nimic fermentat'] },
   ], [
     { pt: 0, x: 490, y: 440, rx: 400, ry: 400, dash: 1, lab: 'roz-roșu', ly: -120 },
   ], [[{ k: 'sel', inh: 'NaCl 7,5%', germs: [{ type: 'strep', lab: 'streptococi', dies: 1 }, { type: 'gneg', lab: 'enterobacterii', dies: 1 }, { type: 'staph', lab: 'stafilococi' }], foot: 'stafilococii: halotoleranți' }, scaleRF(0.55, 'nesămânțat: roz-roșu')]], {
@@ -205,7 +205,7 @@ export const SL = [
   /* ---------- 13 · Chapman pozitiv ---------- */
   A(13, 'Chapman pozitiv', 'chapP', 816, 768, [
     { h: 'Mediul a devenit galben', d: ['!!manitol fermentat → acid → roșul fenol virează galben!!'] },
-    { h: 'Colonii galbene', d: ['!!S. aureus!! (stafilococ patogen, manitol +)', 'negativ: mediul rămâne roșu (S. epidermidis)'] },
+    { h: '??Colonii galbene??', d: ['!!S. aureus!! (stafilococ patogen, manitol +)', 'negativ: mediul rămâne roșu (S. epidermidis)'] },
   ], [
     { pt: 0, x: 410, y: 385, rx: 345, ry: 335, dash: 1, lab: 'mediul galben', ly: -110 },
     { pt: 1, x: 650, y: 440, rx: 95, ry: 210, rot: 0.1, lab: 'colonii galbene' },
@@ -222,7 +222,7 @@ export const SL = [
 
   /* ---------- 14 · MacConkey nesămânțat ---------- */
   A(14, 'MacConkey (nesămânțat)', 'mac0', 803, 768, [
-    { h: '!!MacConkey · selectiv-diferențial!!', d: ['!!săruri biliare → opresc Gram-pozitivii!!', '**lactoză + roșu neutru** → diferențiază', 'cresc enterobacteriile'] },
+    { h: '??!!MacConkey · selectiv-diferențial!!??', d: ['!!săruri biliare → opresc Gram-pozitivii!!', '**lactoză + roșu neutru** → diferențiază', 'cresc enterobacteriile'] },
   ], [
     { pt: 0, x: 398, y: 390, rx: 335, ry: 335, dash: 1, lab: 'MacConkey', ly: -100 },
   ], [[bile(), scaleRN(0.42, 'nesămânțat')]], {
@@ -258,7 +258,7 @@ export const SL = [
   /* ---------- 17 · MacConkey colonii M ---------- */
   A(17, 'MacConkey: colonii M', 'macM', 905, 1000, [
     { h: 'MacConkey', d: ['lactozo + → roz'] },
-    { h: '!!Colonii M (mucoase)!!', d: ['mari, lucioase, bombate, curgătoare', '= germen **capsulat** → !!Klebsiella!!'] },
+    { h: '??!!Colonii M (mucoase)!!??', d: ['mari, lucioase, bombate, curgătoare', '= germen **capsulat** → !!Klebsiella!!'] },
   ], [
     { pt: 0, x: 450, y: 510, rx: 380, ry: 375, dash: 1, lab: 'MacConkey', ly: -110, by: 770 },
     { pt: 1, x: 420, y: 215, rx: 265, ry: 75, rot: 0.02, lab: 'colonii M' },
