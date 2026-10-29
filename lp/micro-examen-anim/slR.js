@@ -10,7 +10,7 @@ export const GL = [
 ];
 export const TM = [];
 
-const K = (n) => `Recapitulare de dimineață · ${n} / 19`;
+const K = (n) => `Recapitulare de dimineață · ${n} / 30`;
 const AT = (n, img, title, marks, points, extra = {}) => ({
   scene: 'atlas', anim: false, kick: K(n), title, hud: [], sceneOpts: { img, W: 1000, H: 900, marks: marks.map((m) => ({ lab: '', ly: -3000, ...m })) }, points, beatDur: 6, ...extra,
 });
@@ -22,10 +22,10 @@ const q = (x, y, rx, ry, bx = 0, by = 0) => ({ x, y, rx, ry, ...(bx ? { bx } : {
 export const SL = [
   MO(1, [['n_steril', 'LP 1'], ['r_gram', 'LP 2'], ['e_chapP', 'LP 3'], ['r_abg', 'LP 5'], ['pr_155', 'LP 6'], ['e_hemoliza', 'medii']],
     'Recapitularea de dimineață: ce se uită repede și s-a cerut', [
-      { h: 'Cum o faci (30 min)', d: ['≈ 1,5 min pe slide: întâi spui cu voce tare, apoi verifici punctele'] },
+      { h: 'Cum o faci (≈ 40 min)', d: ['≈ 1,5 min pe slide la 2–17, ≈ 45 s pe fișele de paraziți (18–30): întâi spui cu voce tare, apoi verifici punctele'] },
       { h: '??așa?? = s-a întrebat la examen', d: ['roșu = ce dă puncte'] },
       { h: 'Ordinea', d: ['LP 1 → LP 2 → LP 3–4 → LP 5 → LP 6, apoi mediile din poze'] },
-      { h: 'Dacă rămâi fără timp', d: ['sari peste Ag–Ac (15) și paraziții (18–19) ultimii: !!sterilizarea, recoltarea, Gram, mediile și PCR!! se cer la toate grupele'] },
+      { h: 'Dacă rămâi fără timp', d: ['sari ultimele peste Ag–Ac (15) și peste fișele mici de paraziți (29–30): !!sterilizarea, recoltarea, Gram, mediile și PCR!! se cer la toate grupele'] },
       { h: 'Formula la orice mediu', d: ['nume → tip → ce conține → ce crește → + / − și de ce'] },
       { h: 'Formula la orice metodă', d: ['ce e → cum o faci → la ce folosește'] },
     ]),
@@ -133,17 +133,72 @@ export const SL = [
     { h: '??ARN? DA: RT-PCR · tipuri??', d: ['revers-transcriptaza → ADNc · tipuri: clasic, RT-PCR, real-time (qPCR), multiplex'] },
     { h: '??De ce nu de rutină??', d: ['scump, contaminare → fals +, ADN de germen mort, fără antibiogramă'] },
   ]),
-  MO(18, [['pr_32', 'Trichomonas'], ['pr_35', 'Giardia'], ['pr_55', 'Toxoplasma'], ['pr_69', 'Plasmodium']], 'LP 6 · Protozoarele: forma și diagnosticul', [
-    { h: '??Trichomonas vaginalis??', d: ['ovalar, !!un nucleu!!, 4 flageli anteriori + 1 pe membrana ondulantă, axostil; fără chist', 'nativ din secreție / primul jet · Giemsa · !!gold standard: PCR!!'] },
-    { h: 'Giardia', d: ['trofozoit piriform, 2 nuclei, disc adeziv · chist 2–4 nuclei în scaunul format · 3 probe'] },
-    { h: 'Toxoplasma', d: ['pisica = gazda definitivă · IgM = recentă, IgG singure = veche'] },
-    { h: 'Plasmodium', d: ['Giemsa: picătura groasă găsește parazitul, frotiul subțire spune specia'] },
+  // ---------- LP 6: câte o fișă scurtă pe parazit: ce e particular + CUM AFLI (diagnosticul) ----------
+  MO(18, [['pr_28', 'nativ'], ['pr_32', 'Giemsa'], ['pr_21', 'trofozoit']], 'Trichomonas vaginalis', [
+    { h: '??Protozoar flagelat, FĂRĂ CHIST??', d: ['doar trofozoit → !!transmitere sexuală!!, directă · omul = singura gazdă', 'vagin, uretră, prostată'] },
+    { h: '??Cum arată??', d: ['ovalar, **un nucleu anterior**, 4 flageli + membrana ondulantă, axostil'] },
+    { h: '??Cum afli??', d: ['secreție vaginală / uretrală, **primul jet de urină**, examinate imediat → **nativ: trofozoiți mobili** · Giemsa', '!!gold standard: PCR!! · cultura (Diamond) nu e de rutină'] },
   ]),
-  MO(19, [['pr_103', 'Taenia'], ['pr_89', 'Echinococcus'], ['pr_131', 'Ascaris'], ['pr_155', 'Enterobius'], ['pr_189', 'Trichinella']], 'LP 6 · Helminții: numește unul și cum îl cauți', [
-    { h: '??Vierme plat (cestod)??: Taenia', d: ['solium (porc) = scolex cu cârlige · saginata (vită) = fără · oul identic → specia după scolex și proglote'] },
-    { h: 'Echinococcus', d: ['câinele = gazda definitivă, omul = intermediară → chist hidatic · !!fără ouă în scaun!!: imagistică + serologie (Ag5)'] },
-    { h: 'Ascaris (nematod)', d: ['ou mamelonat · Kato-Miura · larve în spută + eozinofilie'] },
-    { h: '??Enterobius??', d: ['!!amprenta anală, dimineața!! (> 50%, scaunul 10–15%) · 7 examene la 2 zile'] },
-    { h: 'Trichinella', d: ['larve în mușchi → biopsie (solear, deltoid), trichineloscop'] },
+  MO(19, [['pr_35', 'trofozoit'], ['pr_39', 'chist'], ['pr_43', 'enterotest']], 'Giardia lamblia', [
+    { h: 'Protozoar flagelat, fecal-oral', d: ['se lipește cu **discul adeziv** de duoden → **steatoree**'] },
+    { h: 'Ce e particular', d: ['trofozoit „față cu ochi” (2 nuclei), mișcare de frunză căzătoare · chist cu 2–4 nuclei', '!!chisturi în scaunul format, trofozoiți în cel diareic!!'] },
+    { h: '??Cum afli??', d: ['scaun **nativ + Lugol**, 3 probe (elimină intermitent)', 'scaun negativ → **lichid duodenal** (sondaj, enterotest), biopsie · Ag în scaun: ELISA, **test rapid** · PCR'] },
+  ]),
+  AT(20, 'p_entamoeba', 'Entamoeba histolytica', [q(375, 290, 330, 210, -300), q(260, 705, 200, 135, -185), q(740, 705, 200, 135, -185)], [
+    { h: 'Protozoar (amibă), fecal-oral', d: ['chistul înghițit · cec, colon → **ulcere, dizenterie amibiană**; abces hepatic'] },
+    { h: 'Ce e particular', d: ['!!trofozoit hematofag!! (hematii în citoplasmă) = patogen', 'chist cu **4 nuclei** · E. coli (nepatogenă) are **8**'] },
+    { h: 'Cum afli', d: ['scaun diareic **proaspăt, „la cald”, ≤ 1 h** → trofozoiți · scaun format → chisturi, nativ + Lugol'] },
+  ]),
+  MO(21, [['pr_55', 'tachizoiți'], ['pr_58', 'oochist'], ['pr_66', 'screening']], 'Toxoplasma gondii', [
+    { h: 'Protozoar · pisica = gazda definitivă', d: ['omul se infectează din **carne crudă** (chisturi), legume / litieră (oochiști) sau **transplacentar**', '!!doar primoinfecția din sarcină!! afectează fătul'] },
+    { h: 'Ce e particular', d: ['tachizoit în **semilună** · chisturi tisulare în mușchi și creier'] },
+    { h: 'Cum afli', d: ['!!serologie: IgM = infecție recentă, IgG singure = veche!! (ELISA, RIF) · gravidă IgG+ IgM− → repeți IgG după 3 săpt.', 'direct: tachizoiți pe frotiu Giemsa (LCR, lichid amniotic, biopsie) · PCR'] },
+  ]),
+  MO(22, [['pr_69', 'bandă'], ['pr_71', 'schizont'], ['pr_80', 'test rapid']], 'Plasmodium (malaria)', [
+    { h: 'Protozoar · țânțarul Anopheles = gazda definitivă', d: ['om: ficat → hematii · P. malariae: ciclu de **72 h** (acces cuaternar)'] },
+    { h: 'Ce e particular', d: ['P. malariae: trofozoit în **bandă** prin hematie, pigment brun'] },
+    { h: 'Cum afli', d: ['!!frotiu subțire + picătură groasă, Giemsa!!: picătura găsește parazitul, frotiul spune specia', 'test rapid (RDT) · PCR (cea mai sensibilă)'] },
+  ]),
+  MO(23, [['pr_89', 'chisturi'], ['pr_91', 'adult'], ['pr_95', 'ciclu']], 'Echinococcus granulosus', [
+    { h: 'Vierme plat (cestod) · câinele = gazda definitivă', d: ['omul = gazdă intermediară (ca oaia): înghite ouă de pe blană, mâini, legume'] },
+    { h: 'Ce e particular', d: ['**chist hidatic**: ficat 60–70%, plămân 20–30%', '!!NU are ouă în scaunul omului!! · nu se puncționează: șoc anafilactic'] },
+    { h: 'Cum afli', d: ['**imagistic** (ecografie, CT) + **serologie: antigenul 5** (ELISA, hemaglutinare)'] },
+  ]),
+  MO(24, [['pr_103', 'T. solium'], ['pr_114', 'T. saginata'], ['pr_109', 'cisticercoză']], 'Taenia solium și T. saginata', [
+    { h: '??Vierme plat (cestod)?? din carne crudă', d: ['solium = **porc**, saginata = **vită** · omul = gazda definitivă (tenia în intestin)'] },
+    { h: 'Ce e particular', d: ['solium: scolex **cu cârlige** · saginata: **fără cârlige** · !!oul e identic!!', '!!cisticercoza = doar T. solium, din OUĂ!! → creier (crize epileptice)'] },
+    { h: 'Cum afli', d: ['**proglote** în scaun, **amprenta anală** (ouă) · specia după proglote și scolexul eliminat după tratament · eozinofilie', 'cisticercoza: imagistic (manual)'] },
+  ]),
+  MO(25, [['pr_131', 'ou fecundat'], ['pr_141', 'fecundat / nefecundat'], ['pr_144', 'larve în plămân']], 'Ascaris lumbricoides', [
+    { h: 'Nematod, geohelmint', d: ['ou din sol (devine infectant în săptămâni) · cel mai mare nematod intestinal'] },
+    { h: 'Ce e particular', d: ['larvele trec prin **plămân** → sindrom Loeffler, !!eozinofilie!!', 'ou fecundat **mamelonat**, galben-brun'] },
+    { h: 'Cum afli', d: ['**ouă în scaun** (abia după 60–70 de zile), **Kato-Miura** · la început: **larve în spută**', 'adultul eliminat · eozinofilie 30–50% în faza migratorie'] },
+  ]),
+  MO(26, [['pr_155', 'amprentă'], ['pr_157', 'ouă pe bandă'], ['pr_150', 'ou']], 'Enterobius vermicularis (oxiurul)', [
+    { h: 'Nematod mic, alb · cec, colon', d: ['**femela depune ouăle noaptea perianal** → prurit → autoinfecție mână-gură'] },
+    { h: 'Ce e particular', d: ['ou **asimetric** (o latură plană), transparent, embrionat'] },
+    { h: '??Cum afli??', d: ['!!amprenta anală: bandă adezivă, dimineața, înainte de toaletă!! → pozitivă > 50% (scaunul doar 10–15%)', 'un examen negativ nu exclude: **7 examene la 2 zile**'] },
+  ]),
+  MO(27, [['pr_163', 'adult (câine)'], ['pr_169', 'ou'], ['pr_174', 'ochi']], 'Toxocara (canis)', [
+    { h: 'Nematodul câinelui', d: ['omul (copilul) înghite ouă de la câini, cățeii, din sol'] },
+    { h: 'Ce e particular', d: ['la om larva nu devine adult → **larva migrans** viscerală și oculară'] },
+    { h: 'Cum afli', d: ['!!NU ai ouă în scaun!! → **serologie** (Ac anti-Toxocara) + **eozinofilie**, CT / ecografie', 'ocular: Ac în fluidele oculare'] },
+  ]),
+  MO(28, [['pr_189', 'larvă închistată'], ['pr_185', 'biopsie'], ['pr_187', 'ciclu']], 'Trichinella spiralis', [
+    { h: 'Nematod din carne de **porc, mistreț**', d: ['același organism e gazdă definitivă și intermediară'] },
+    { h: 'Ce e particular', d: ['larvele se **închistează în mușchiul striat** · nu apar în scaun'] },
+    { h: 'Cum afli', d: ['!!biopsie musculară (solear, deltoid) comprimată între 2 lame → trichineloscop!!', 'eozinofilie > 500/µL · anamneza: carne insuficient preparată'] },
+  ]),
+  AT(29, 'p_plat', 'Plathelminții mici: o particularitate + cum afli', [q(260, 255, 205, 175, -185), q(740, 255, 205, 175, -185), q(260, 665, 205, 175, -185), q(740, 665, 205, 175, -185)], [
+    { h: 'Fasciola hepatica (trematod)', d: ['creson · adultul în căile biliare · **eozinofilia apare întâi**', 'ouă operculate în scaun / aspirat duodenal după ~90 de zile · serologie'] },
+    { h: 'Diphyllobothrium latum', d: ['pește crud · cel mai lung · !!consumă B12 → anemie megaloblastică!!', 'ouă operculate în scaun'] },
+    { h: 'Hymenolepis nana', d: ['fără gazdă intermediară, **autoinfecție** → persistă', 'ouă (cu filamente) în scaun; reexaminezi'] },
+    { h: 'Dipylidium caninum', d: ['copilul înghite **puricele** câinelui', 'proglote mobile „în butoiaș” în scaun'] },
+  ]),
+  AT(30, 'p_nem', 'Nematodele mici: o particularitate + cum afli', [q(260, 255, 205, 175, -185), q(740, 255, 205, 175, -185), q(260, 665, 205, 175, -185), q(740, 665, 205, 175, -185)], [
+    { h: 'Trichuris (tricocefalul)', d: ['ou din sol · se înfige în mucoasa cecului', 'ouă **„în lămâie”**, cu dopuri la poli → Kato-Miura'] },
+    { h: 'Ancylostoma duodenale', d: ['larva intră **prin piele** · suge sânge în duoden → !!anemie feriprivă!!', 'ouă în scaun; larvoscopie'] },
+    { h: 'Strongyloides stercoralis', d: ['larva prin piele · ouăle eclozează în intestin → !!în scaun ai LARVE, nu ouă!!', 'larvoscopie, lichid duodenal · imunodeprimați → forma diseminată'] },
+    { h: 'Fără ouă în scaun (de reținut)', d: ['Enterobius (amprenta) · Strongyloides (larve) · Toxocara și Echinococcus (serologie) · Trichinella (biopsie)'] },
   ]),
 ];
