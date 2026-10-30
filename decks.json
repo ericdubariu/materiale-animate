@@ -86,7 +86,7 @@
    "slides": 40,
    "path": "lp/anatopat-z2-anim/index.html",
    "added": "2026-10-25",
-   "updated": "2026-10-26",
+   "updated": "2026-10-30",
    "tip": "lp",
    "ord": 106
   },
@@ -278,6 +278,18 @@
    "sub": "Scheletul de punctaj pentru cele 5 + 5 cazuri și cele 4 experimente, formulele de la stație, receptorii, erata și capcanele",
    "slides": 38,
    "path": "lp/recap-farma-02-04-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 900
+  },
+  {
+   "id": "recap-anatopat-01-26-anim",
+   "subj": "anatopat",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · preparatele 1–26",
+   "sub": "Toate cele 11 lame și 15 piese, stație cu stație: fișa de punctaj, DD, capcane, tabele finale",
+   "slides": 49,
+   "path": "lp/recap-anatopat-01-26-anim/index.html",
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 900

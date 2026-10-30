@@ -50,9 +50,9 @@ const M = {
     { x: 1040, y: 210, rx: 100, ry: 80, lab: 'plămân congestionat', ly: 330 },
   ],
   ren: [
-    { x: 338, y: 262, rx: 100, ry: 92, rot: 0.3, lab: 'zona alb-gălbuie (infarct)', lx: 180, ly: 110 },
+    { x: 338, y: 262, rx: 100, ry: 92, rot: 0.3, lab: 'zona alb-gălbuie (infarct)', lx: 220, ly: 60 },
     { x: 428, y: 260, rx: 18, ry: 95, rot: 0.05, lab: 'lizereu roșu', lx: 520, ly: 400 },
-    { x: 335, y: 180, rx: 95, ry: 24, lab: 'baza la capsulă', lx: 335, ly: 120 },
+    { x: 335, y: 180, rx: 95, ry: 24, lab: 'baza la capsulă', lx: 120, ly: 170 },
     { x: 680, y: 340, rx: 110, ry: 70, lab: 'parenchim viabil', ly: 450 },
   ],
   pulm: [
