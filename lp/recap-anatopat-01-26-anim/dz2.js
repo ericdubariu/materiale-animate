@@ -115,10 +115,10 @@ export function drawLung(g, t, o = {}) {
   stipple(g, lung, [90, 70, 810, 810], 520, ['#5d3638', '#a9787a', '#4a2a2d', '#c89a96'], 2, 6, 11);
   // bronhii și vase pe secțiune
   srand(4); for (let k = 0; k < 9; k++) { const x = rr(330, 820), y = rr(150, 640); g.save(); g.fillStyle = '#f4ece4'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.ellipse(x, y, rr(14, 26), rr(11, 20), rnd() * 3, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#2a1a1c'; g.beginPath(); g.ellipse(x, y, 7, 5, 0, 0, 7); g.fill(); g.restore(); }
-  if (o.lobe) { // pneumonie lobară: lobul inferior întreg consolidat
-    const lobe = P([[95, 470], [300, 430], [520, 470], [760, 560], [880, 600], [850, 760], [640, 870], [330, 880], [140, 760]]);
-    g.save(); g.clip(lung); paint(g, lobe, '#9c3b2e', '#7e2b22', '#c46a55', [90, 430, 810, 450], OUT, 5); stipple(g, lobe, [90, 430, 810, 450], 600, ['#c46a55', '#6e231b', '#e0957a'], 2, 4.5, 21); g.restore();
-    g.save(); g.setLineDash([14, 10]); g.strokeStyle = '#fff3e0'; g.lineWidth = 4; g.beginPath(); g.moveTo(95, 470); g.bezierCurveTo(300, 420, 560, 470, 880, 600); g.stroke(); g.restore();
+  if (o.lobe) { // pneumonie lobară: lobul superior întreg consolidat (LP: Klebsiella → pneumonie lobară a lobului superior)
+    const lobe = P([[100, 460], [110, 270], [170, 110], [420, 70], [700, 110], [860, 260], [895, 430], [620, 410], [330, 430]]);
+    g.save(); g.clip(lung); paint(g, lobe, '#9c3b2e', '#7e2b22', '#c46a55', [90, 60, 820, 400], OUT, 5); stipple(g, lobe, [90, 60, 820, 400], 600, ['#c46a55', '#6e231b', '#e0957a'], 2, 4.5, 21); g.restore();
+    g.save(); g.setLineDash([14, 10]); g.strokeStyle = '#fff3e0'; g.lineWidth = 4; g.beginPath(); g.moveTo(100, 460); g.bezierCurveTo(330, 425, 620, 405, 895, 430); g.stroke(); g.restore();
   }
   if (o.wedge !== false && !o.lobe) {
     const pr = o.wedgeP ?? 1; const wp = P(WEDGE);

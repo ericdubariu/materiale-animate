@@ -1,130 +1,82 @@
 [
-  {
-    "key": "P_steatoza", "nume": "Steatoză hepatică",
-    "principal": {
-      "key": "P_pancreatita", "nume": "Pancreatită acută hemoragico-necrotică",
-      "asemanare": "Ambele: organ abdominal mărit, moale, gălbui pe alocuri, cu leziune legată de grăsime (steatoză ≠ steatonecroză).",
-      "diferente": [
-        "La mine ficatul e !!galben uniform!!, difuz, fără hemoragii; la pancreatită aspect pestriț: zone roșu-negricioase de hemoragie și necroză.",
-        "La mine grăsimea e !!în hepatocite!! (vacuole), leziune reversibilă; la pancreatită grăsimea e necrozată și saponificată cu calciul: pete alb-cretoase (citosteatonecroză).",
-        "La mine capsula e !!netedă, lucioasă!!, destinsă; la pancreatită capsula e ștearsă, cu sufuziuni hemoragice, țesut friabil."
-      ]
-    },
-    "alternative": [
-      {"nume": "Rinichi de șoc", "cheia": "Rinichi cu corticala palidă, lată și medulara roșie, contrast net; la mine ficat mărit, galben uniform, unsuros la secțiune."},
-      {"nume": "Infarct renal", "cheia": "Zonă alb-gălbuie localizată, triunghiulară, cu lizereu roșu, în rinichi; la mine tot ficatul e galben, difuz, fără limită."}
-    ]
-  },
-  {
-    "key": "P_pancreatita", "nume": "Pancreatită acută hemoragico-necrotică",
-    "principal": {
-      "key": "P_steatoza", "nume": "Steatoză hepatică",
-      "asemanare": "Ambele: organ abdominal mărit, moale, cu leziune legată de grăsime (steatonecroză ≠ steatoză).",
-      "diferente": [
-        "La mine aspect !!pestriț!!: zone roșu-negricioase de hemoragie și necroză; la steatoză ficatul e galben uniform.",
-        "La mine pete alb-cretoase de !!citosteatonecroză!! (săpunuri de calciu), și pe grăsimea din jur; la steatoză grăsimea e în hepatocite, fără pete.",
-        "La mine capsula e ștearsă, cu !!sufuziuni hemoragice!!, țesut friabil; la steatoză capsula e netedă, lucioasă, destinsă."
-      ]
-    },
-    "alternative": [
-      {"nume": "Infarct pulmonar", "cheia": "Zonă roșu-negricioasă, cuneiformă, cu baza la pleură, în plămân; la mine hemoragia e în pancreas, cu pete alb-cretoase."},
-      {"nume": "Litiază biliară", "cheia": "Calculi fațetați în vezicula biliară, perete fibros; e cauza mea cea mai frecventă (calcul în ampula Vater); la mine pancreas hemoragic, cu steatonecroză."}
-    ]
-  },
-  {
-    "key": "P_litrenal", "nume": "Litiază renală",
-    "principal": {
-      "key": "P_litbil", "nume": "Litiază biliară",
-      "asemanare": "Ambele: calculi duri, formați prin precipitarea unei soluții suprasaturate, care obstruează și favorizează infecția.",
-      "diferente": [
-        "La mine calculii sunt în !!bazinet, calice și ureter!!; la litiaza biliară sunt în vezicula biliară, cu mucoasă verzuie.",
-        "La mine calculi de !!oxalat, fosfat, urat!! (galben-bruni sau alb-cenușii, adesea coraliformi); la litiaza biliară de colesterol (galbeni) sau pigmentari (negri), fațetați.",
-        "La mine cavități dilatate și parenchim subțiat: !!hidronefroză!!; la litiaza biliară peretele veziculei e îngroșat, fibros (colecistită cronică)."
-      ]
-    },
-    "alternative": [
-      {"nume": "Rinichi de șoc", "cheia": "Leziune de parenchim: corticală palidă, lată, medulară roșie; cavitățile normale, fără calculi; la mine bazinet dilatat, cu calculi."},
-      {"nume": "Infarct renal", "cheia": "Zonă alb-gălbuie, triunghiulară, în parenchim, baza la capsulă; la mine leziunea e în cavități: calculi + hidronefroză."}
-    ]
-  },
-  {
-    "key": "P_litbil", "nume": "Litiază biliară",
-    "principal": {
-      "key": "P_litrenal", "nume": "Litiază renală",
-      "asemanare": "Ambele: calculi duri, formați prin precipitarea unei soluții suprasaturate, care obstruează și favorizează infecția.",
-      "diferente": [
-        "La mine calculii sunt în !!vezicula biliară!!, cu mucoasă verzuie; la litiaza renală sunt în bazinet, calice și ureter.",
-        "La mine calculi de !!colesterol!! (galbeni, mari) sau pigmentari (negri, mici), fațetați; la litiaza renală oxalat, fosfat, urat, adesea coraliformi.",
-        "La mine peretele e !!îngroșat, fibros!!, mucoasa atrofică (colecistită cronică); la litiaza renală cavitățile dilatate, parenchim subțiat (hidronefroză)."
-      ]
-    },
-    "alternative": [
-      {"nume": "Pancreatită acută hemoragico-necrotică", "cheia": "Pancreas pestriț, hemoragic, cu pete alb-cretoase; e complicația mea (calcul în ampula Vater); la mine calculi în veziculă, perete fibros."},
-      {"nume": "Steatoză hepatică", "cheia": "Ficat mărit, galben uniform, unsuros, fără calculi; la mine veziculă deschisă, cu calculi fațetați."}
-    ]
-  },
-  {
-    "key": "P_pericard", "nume": "Pericardită fibrinoasă",
-    "principal": {
-      "key": "P10", "nume": "Infarct miocardic acut",
-      "asemanare": "Ambele: cord cu leziune gălbuie pe fond roșu-brun; IMA transmural poate da chiar pericardită fibrinoasă.",
-      "diferente": [
-        "La mine depozitele sunt !!pe suprafața epicardului!!, difuz; la IMA aria e în grosimea peretelui VS, transmurală, văzută pe secțiune.",
-        "La mine depozite !!aspre, viloase!!, friabile („cord păros”); la IMA arie galben-palidă, lutoasă, moale, cu margine roșie.",
-        "La mine depozitele !!se desprind ușor!!, dedesubt suprafață congestionată; la IMA un focar hemoragic în perete, aria nu se desprinde."
-      ]
-    },
-    "alternative": [
-      {"nume": "Aortă cu tromb parietal", "cheia": "Fibrină în straturi (linii Zahn), în lumenul aortei, aderentă de intimă; la mine fibrina e pe seroasă, viloasă, se desprinde ușor."},
-      {"nume": "Leptomeningită purulentă", "cheia": "Exsudat purulent galben-verzui, cremos, pe meninge, de-a lungul vaselor; la mine exsudat fibrinos, aspru, vilos, pe epicard."}
-    ]
-  },
-  {
-    "key": "P_abcescerebral", "nume": "Abces cerebral",
-    "principal": {
-      "key": "P11", "nume": "Hemoragii intracraniene (hematom intracerebral)",
-      "asemanare": "Ambele: creier pe secțiune, cu leziune profundă în parenchim, edem în jur și efect de masă.",
-      "diferente": [
-        "La mine conținut de !!puroi!! galben-verzui (pe piesa fixată gol sau cenușiu-gălbui); la hematom un cheag roșu-negricios, friabil.",
-        "La mine cavitatea are !!capsulă!! proprie, netedă, alb-cenușie, fermă; la hematom sângele disecă țesutul, fără perete propriu.",
-        "La mine ventriculul e !!comprimat!!, fără sânge (risc de ruptură în ventricul); la hematom sânge în ventriculi (inundație ventriculară)."
-      ]
-    },
-    "alternative": [
-      {"nume": "Leptomeningită purulentă", "cheia": "Puroi difuz, la suprafață, în spațiul subarahnoidian; la mine puroiul e în parenchim, circumscris, cu capsulă."},
-      {"nume": "Bronhopneumonie", "cheia": "Focare purulente multiple, mici, în plămân, fără capsulă; la mine o singură cavitate încapsulată, în creier."}
-    ]
-  },
-  {
-    "key": "P_leptomening", "nume": "Leptomeningită purulentă",
-    "principal": {
-      "key": "P_abcescerebral", "nume": "Abces cerebral",
-      "asemanare": "Ambele: inflamație purulentă (neutrofile) în cutia craniană, cu edem cerebral; germeni piogeni (bacterii), ajunși pe aceleași căi (contiguitate, hematogen).",
-      "diferente": [
-        "La mine puroiul e !!la suprafață!!, în spațiul subarahnoidian; la abces e în parenchim.",
-        "La mine leziunea e !!difuză!!, de-a lungul vaselor și în șanțuri; la abces colecție circumscrisă, rotund-ovalară.",
-        "La mine !!fără capsulă!!: meninge opace, îngroșate, cortexul intact pe secțiune; la abces cavitate cu capsulă fibro-glială netedă."
-      ]
-    },
-    "alternative": [
-      {"nume": "Hemoragii intracraniene (hematom intracerebral)", "cheia": "Cheag roșu-negricios, profund, cu inundație ventriculară; la mine exsudat galben-verzui la suprafață, cortex intact."},
-      {"nume": "Pericardită fibrinoasă", "cheia": "Exsudat fibrinos, aspru, vilos, pe epicard; la mine exsudat purulent, cremos, pe leptomeninge."}
-    ]
-  },
-  {
-    "key": "P_bronhopn", "nume": "Bronhopneumonie",
-    "principal": {
-      "key": "P9", "nume": "Infarct pulmonar",
-      "asemanare": "Ambele: plămân cu zone consolidate, ferme, care nu crepită, pe fond congestionat.",
-      "diferente": [
-        "La mine focare !!multiple, gălbui-cenușii!!, de 1–3 cm, bilaterale; la infarct o zonă unică (sau puține), roșu-negricioasă.",
-        "La mine focarele sunt !!centrate pe bronhiole!!, prost delimitate, la apăsare iese puroi; la infarct zonă cuneiformă, net delimitată, baza la pleură.",
-        "La mine exsudat !!purulent!! (neutrofile + fibrină), între focare plămân aerat; la infarct alveole pline de sânge, necroză ischemică după embol."
-      ]
-    },
-    "alternative": [
-      {"nume": "Tromb călăreț (tromboembol în a. pulmonară)", "cheia": "Mase cilindrice, încolăcite, în arterele pulmonare de la hil; la mine focare purulente în parenchim."},
-      {"nume": "Abces cerebral", "cheia": "Cavitate unică, încapsulată, cu puroi, în creier; la mine focare multiple, neîncapsulate, în plămân (pot abceda)."}
-    ]
-  }
+  {"key": "P_steatoza", "nume": "Steatoză hepatică",
+   "principal": {"key": "P_pancreatita", "nume": "Pancreatită acută",
+     "asemanare": "Ambele: organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatoză = grăsimi în hepatocite; steatonecroză = necroza țesutului gras).",
+     "diferente": [
+       "La mine tot ficatul e !!mărit, gălbui!!, uniform; la pancreatită țesut cu structură inomogenă, cu focare multiple (2–6 mm) gălbui-albicioase de steatonecroză.",
+       "La mine suprafața e !!netedă, lucioasă!!, capsula tensă, fără hemoragii; la pancreatită zone extinse de hemoragie, negricioase după fixare.",
+       "La mine după secțiune !!lama cuțitului are aspect grăsos!!, parenchimul prolabează peste capsulă; la pancreatită focarele se extind și în țesutul adipos peripancreatic."]},
+   "alternative": [
+     {"nume": "Rinichi de șoc", "cheia": "Corticala palidă și medulara hiperemică, în rinichi; la mine tot ficatul e mărit, gălbui, grăsos la secțiune."},
+     {"nume": "Infarct renal", "cheia": "Zonă palidă localizată, delimitată de un lizereu congestiv, în rinichi; la mine leziunea e difuză, în tot ficatul."}]},
+  {"key": "P_pancreatita", "nume": "Pancreatită acută",
+   "principal": {"key": "P_steatoza", "nume": "Steatoză hepatică",
+     "asemanare": "Ambele: organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatonecroză = necroza țesutului gras; steatoză = grăsimi în hepatocite).",
+     "diferente": [
+       "La mine focare !!multiple, mici (2–6 mm), gălbui-albicioase!! de steatonecroză pe un țesut inomogen; la steatoză ficatul e gălbui uniform.",
+       "La mine !!zone extinse de hemoragie!!, negricioase după fixare; la steatoză suprafața e netedă, lucioasă, fără hemoragii.",
+       "La mine focarele se extind și !!în țesutul adipos peripancreatic!!; la steatoză grăsimea e în citoplasma hepatocitelor, lama cuțitului are aspect grăsos."]},
+   "alternative": [
+     {"nume": "Infarct pulmonar", "cheia": "Infarct roșu (hemoragic), bine delimitat, în plămân; la mine hemoragia e în pancreas, cu focare de steatonecroză."},
+     {"nume": "Litiază biliară", "cheia": "Calculi în colecist; litiaza biliară e cauza pancreatitei în 35–60% din cazuri; la mine pancreas cu steatonecroză și hemoragie."}]},
+  {"key": "P_litrenal", "nume": "Litiază renală",
+   "principal": {"key": "P_litbil", "nume": "Litiază biliară",
+     "asemanare": "Ambele: calculi formați în cavitățile unui organ (litiază), care pot migra și pot produce obstrucție.",
+     "diferente": [
+       "La mine calculii sunt !!în calice și bazinet!!; la litiaza biliară sunt în colecist.",
+       "La mine calculi !!coraliformi!!, care preiau forma sistemului pielo-caliceal; la litiaza biliară calculi colesterolici galbeni sau pigmentari multipli, mici, fațetați.",
+       "La mine calice dilatate și parenchim renal atrofic: !!hidronefroză!!; la litiaza biliară calculul migrat în cistic dă stază biliară, empiem."]},
+   "alternative": [
+     {"nume": "Rinichi de șoc", "cheia": "Corticala palidă, medulara hiperemică, fără calculi; la mine calculi coraliformi și calice dilatate."},
+     {"nume": "Infarct renal", "cheia": "Zonă palidă cu lizereu congestiv, în parenchim; la mine leziunea e în calice și bazinet: calculi + hidronefroză."}]},
+  {"key": "P_litbil", "nume": "Litiază biliară",
+   "principal": {"key": "P_litrenal", "nume": "Litiază renală",
+     "asemanare": "Ambele: calculi formați în cavitățile unui organ (litiază), care pot migra și pot produce obstrucție.",
+     "diferente": [
+       "La mine calculii sunt !!în colecist!!; la litiaza renală sunt în calice și bazinet.",
+       "La mine calculi !!pigmentari multipli, fațetați!! sau colesterolici galbeni, friabili (cu săruri de calciu: albicioși, ca zarurile); la litiaza renală calculi coraliformi.",
+       "La mine calculul migrat în cistic dă !!stază biliară, empiem!!, perforație, fistule; la litiaza renală obstrucția dă hidronefroză."]},
+   "alternative": [
+     {"nume": "Pancreatită acută", "cheia": "Pancreas cu focare de steatonecroză și hemoragii; litiaza biliară e una dintre cauzele ei; la mine calculi în colecist."},
+     {"nume": "Steatoză hepatică", "cheia": "Ficat mărit, gălbui, grăsos la secțiune, fără calculi; la mine colecist deschis, cu calculi."}]},
+  {"key": "P_pericard", "nume": "Pericardită fibrinoasă",
+   "principal": {"key": "P10", "nume": "Infarct miocardic acut",
+     "asemanare": "Ambele: cord cu leziune vizibilă macroscopic; IMA e și o cauză a pericarditei (pericardita epistenocardică, sindromul Dressler).",
+     "diferente": [
+       "La mine leziunea e !!pe suprafața pericardului!!, difuză; la IMA zona e în peretele ventriculului stâng, văzută pe secțiune.",
+       "La mine !!depozite albicioase-cenușii de fibrină!!, suprafață mată, rugoasă („limbă de pisică”); la IMA zonă mai palidă, cu halou hiperemic (12–24 h).",
+       "La mine pericardul și-a pierdut !!luciul, umiditatea și transparența!!; la IMA modificarea e în miocard (după 2–3 zile galben ca lutul, moale)."]},
+   "alternative": [
+     {"nume": "Aortă cu tromb parietal", "cheia": "Tromb parietal pe intima aortei, cu plăci aterosclerotice; la mine fibrina e pe suprafața pericardului."},
+     {"nume": "Leptomeningită purulentă", "cheia": "Exsudat purulent pe leptomeninge („în șapcă”); la mine exsudat fibrinos pe pericard."}]},
+  {"key": "P_abcescerebral", "nume": "Abces cerebral",
+   "principal": {"key": "P11", "nume": "Hemoragii intracraniene (hematom intracerebral)",
+     "asemanare": "Ambele: creier pe secțiune, cu o leziune intraparenchimatoasă care ocupă spațiu.",
+     "diferente": [
+       "La mine cavitate !!rotund-ovalară cu conținut purulent!!; la hematom impregnarea hematică a parenchimului (sânge).",
+       "La mine leziunea e !!delimitată de o membrană piogenă!!; la hematom sângele provine din ruperea unei ramuri vasculare intracerebrale.",
+       "La mine țesutul cerebral a suferit !!necroză de colicvație!!, înlocuit cu puroi; la hematom sângele poate inunda și ventriculii (hemoragie intraventriculară)."]},
+   "alternative": [
+     {"nume": "Leptomeningită purulentă", "cheia": "Puroi difuz, în spațiul meningeal, pe convexitate; la mine puroi localizat, în parenchim, cu membrană piogenă."},
+     {"nume": "Bronhopneumonie", "cheia": "Focare multiple de condensare în plămân (se pot complica cu abcese); la mine o cavitate cu puroi, în creier."}]},
+  {"key": "P_leptomening", "nume": "Leptomeningită purulentă",
+   "principal": {"key": "P_abcescerebral", "nume": "Abces cerebral",
+     "asemanare": "Ambele: inflamație purulentă în cutia craniană, cu semne de hipertensiune intracraniană (redoare de ceafă, vărsături).",
+     "diferente": [
+       "La mine puroiul e !!în spațiul meningeal!!, pe suprafața creierului; la abces e în parenchim.",
+       "La mine inflamația e !!difuză (flegmonoasă)!!: girusuri aplatizate, șanțuri îngustate, „meningită în șapcă”; la abces proces localizat, bine delimitat.",
+       "La mine !!nu există membrană piogenă!!; la abces cavitate rotund-ovalară înconjurată de membrană piogenă."]},
+   "alternative": [
+     {"nume": "Hemoragii intracraniene (hematom intracerebral)", "cheia": "Sânge în parenchim, din ruperea unei ramuri vasculare; la mine exsudat purulent pe leptomeninge."},
+     {"nume": "Pericardită fibrinoasă", "cheia": "Exsudat fibrinos pe pericard („limbă de pisică”); la mine exsudat purulent pe leptomeninge."}]},
+  {"key": "P_bronhopn", "nume": "Bronhopneumonie",
+   "principal": {"key": "P9", "nume": "Infarct pulmonar",
+     "asemanare": "Ambele: plămân pe secțiune cu zone de consistență crescută, de culoare roșu închis.",
+     "diferente": [
+       "La mine focare !!multiple, bilaterale!!, cu diametre variabile; la infarct o zonă de infarct roșu (hemoragic), bine delimitată.",
+       "La mine focarele sunt !!în jurul bronhiilor și bronhiolelor!!, apoi în alveolele adiacente; la infarct zona corespunde ramurii obstruate a arterei pulmonare (TEP).",
+       "La mine focarele sunt separate de !!țesut pulmonar normal aerat!! și pot conflua; la infarct parenchimul din jur are modificări de stază cronică."]},
+   "alternative": [
+     {"nume": "Leptomeningită purulentă", "cheia": "Inflamație purulentă a leptomeningelui (pneumococul e cauză și aici); la mine focare de condensare în plămân."},
+     {"nume": "Abces cerebral", "cheia": "Cavitate cu puroi în creier; la mine focare de condensare în plămân, care se pot complica cu abcese."}]}
 ]

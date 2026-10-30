@@ -111,7 +111,7 @@ function cover() {
       bgFill(g);
       GROUPS.forEach(([, , s], r) => txt(g, s, 70, ROWY[r] + 28, 26, b.i === r ? '#ffe36e' : '#f3ecf6', 'left'));
       tiles.forEach((tl) => {
-        const nm = tl.n === 20 ? 'q20' : 'p' + tl.n; const box = [tl.x, tl.y, TW, TH]; const im = img(nm);
+        const nm = 'p' + tl.n; const box = [tl.x, tl.y, TW, TH]; const im = img(nm);
         const T = ready(im) ? fitT(im.naturalWidth, im.naturalHeight, ...box, true) : null;
         if (T) photo(g, nm, box, T, im.naturalWidth, im.naturalHeight, 10);
         frame(g, box, b.i === tl.r, 10); tag(g, String(tl.n), tl.x + 6, tl.y + 6, '#ffe36e', 14);
@@ -242,7 +242,7 @@ function fallback() { return { home: HOME, anchors: [], draw(g) { bgFill(g); } }
 // mozaicul din atlas.js + o bandă jos cu creditul pozelor
 function tiles(a) {
   const sc = mosaic(a); const d = sc.draw; sc.H += 46; sc.home = { x: sc.W / 2, y: sc.H / 2, z: 1 };
-  sc.draw = (g, t, b) => { d(g, t, b); wrapText(g, 'Poze: Wikimedia Commons (autorii: pe slide-ul preparatului)', 18, sc.H - 20, sc.W - 36, 22, 18); };
+  sc.draw = (g, t, b) => { d(g, t, b); wrapText(g, 'Pozele: preparatele de la LP (cum le vezi la examen)', 18, sc.H - 20, sc.W - 36, 22, 18); };
   return sc;
 }
 export const SCENES = { prep, cover, fisa, plan, cmp, mosaic, tiles, fallback };

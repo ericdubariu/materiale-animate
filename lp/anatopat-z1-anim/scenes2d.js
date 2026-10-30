@@ -212,7 +212,7 @@ function cover() {
   const k = [0, 0, 0, 0, 0];
   return {
     home: HOME, cams: POS5.map(([x, y]) => cam(x, y, 1.9)), anchors: POS5.map(([x, y]) => [x - 120, y - 120]),
-    labels: POS5.map(([x, y], i) => lbl([x, y + 170], ['edem pulmonar', 'stază + infarct', 'infarct renal', 'infarct miocardic', 'tromb mixt'][i])),
+    labels: POS5.map(([x, y], i) => lbl([x, y + 170], ['edem pulmonar', 'stază + infarct', 'infarct renal', 'infarct miocardic', 'tromb mixt'][i], { beats: [-1, i] })),
     draw(g, t, b) {
       bgFill(g, '#3a1d2a', '#140a12');
       POS5.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); const F = i === 1 ? (gg, tt) => { stazaField(gg, tt); } : FIELDS[NAMES5[i]]; mini(g, x, y, 140 + k[i] * 6, F, t); if (k[i] > 0.05) glowRing(g, x, y, 155, 155, 0, k[i]); });
@@ -223,7 +223,7 @@ function fisa() {
   const rows = [['Organ', 1, '#ffd36e'], ['Leziune', 1, '#ffd36e'], ['Definiție', 1, '#ffd36e'], ['Descriere', 6, '#ff9fc6'], ['Cauze', 4, '#c9b3ff'], ['Complicații', 4, '#7fe8ff'], ['DD', 1, '#9dff8a']];
   return {
     home: HOME, cams: [cam(500, 300, 1.25), cam(500, 560, 1.15), cam(500, 470, 1), cam(500, 560, 1.05)],
-    anchors: [[60, 60], [60, 330], [860, 510], [60, 530]],
+    anchors: [[60, 110], [60, 330], [860, 510], [60, 530]],
     phase: (i) => ['3 puncte obligatorii', 'o bulină = 1 punct', 'minim 5 puncte', 'mecanismul = liantul'][i] || '',
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
@@ -371,7 +371,7 @@ function stazaWhy() {
   const path = [[120, 760], [260, 620], [430, 520], [600, 440], [760, 380]];
   return {
     home: HOME, cams: [cam(220, 700, 1.6), cam(420, 560, 1.4), cam(760, 330, 1.6), cam(760, 330, 1.6)], anchors: [[120, 640], [430, 430], [700, 240], [880, 240]],
-    labels: [lbl([150, 890], 'AS dilatat (IC stângă / stenoză mitrală)'), lbl([430, 650], 'presiune ↑ retrograd'), lbl([760, 560], 'alveola')],
+    labels: [lbl([150, 890], 'AS dilatat (insuficiență cardiacă)'), lbl([430, 650], 'presiune ↑ retrograd'), lbl([760, 560], 'alveola')],
     phase: (i) => ['inima stângă cedează', 'presiunea urcă retrograd', 'diapedeză + fagocitoză', 'hemosiderină + fibroză'][i] || '',
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
@@ -396,7 +396,7 @@ function stazaWhy() {
 function infMic() {
   return {
     home: HOME, cams: [cam(600, 120, 2), cam(600, 430, 1.3), cam(140, 560, 2)], anchors: [[420, 40], [600, 300], [120, 460]],
-    labels: [lbl([600, 130], 'pleura viscerală', { beats: [0] }), lbl([600, 600], 'arie infarctată: alveole pline de sânge', { beats: [1] }), lbl([150, 700], 'plămân viabil, aerat', { beats: [2] })],
+    labels: [lbl([600, 130], 'pleura viscerală', { beats: [0] }), lbl([600, 600], 'arie infarctată: alveole pline de sânge', { beats: [1] }), lbl([150, 700], 'plămânul din jur: stază cronică', { beats: [2] })],
     draw(g, t, b) { infField(g, t); ring(g, b, 0, 600, 40, 420, 45); ring(g, b, 1, 600, 330, 260, 220); ring(g, b, 2, 130, 560, 120, 150); },
   };
 }
@@ -413,8 +413,8 @@ function infMare() {
 }
 function infWhy() {
   return {
-    home: HOME, cams: [cam(260, 620, 1.4), cam(500, 470, 1), cam(600, 300, 1.4), cam(600, 300, 1.6)], anchors: [[200, 520], [460, 170], [700, 140], [600, 380]],
-    labels: [lbl([170, 880], 'embol din TVP'), lbl([420, 520], 'a. pulmonară blocată'), lbl([760, 560], 'a. bronșică: sânge în continuare'), lbl([790, 70], 'con cu baza la pleură')],
+    home: HOME, cams: [cam(260, 620, 1.4), cam(500, 470, 1), cam(600, 300, 1.4), cam(600, 300, 1.6)], anchors: [[200, 520], [770, 462], [700, 140], [600, 380]],
+    labels: [lbl([170, 880], 'embol din TVP'), lbl([420, 520], 'a. pulmonară blocată'), lbl([760, 560], 'a. bronșică: sânge în continuare'), lbl([880, 210], 'con cu baza la pleură')],
     phase: (i) => ['embol pulmonar mic', 'circulația dublă', 'sângele inundă alveolele', 'septurile mor'][i] || '',
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a'); const st = b.i < 0 ? 4 : b.i + clamp(b.bt / 3);
@@ -459,7 +459,7 @@ function nucFate(g, x, y, stage, t) {
 function renMare() {
   return {
     home: HOME, cams: [cam(330, 330, 1.8), cam(760, 260, 1.9), cam(760, 260, 2.4), cam(500, 780, 1.3)], anchors: [[240, 170], [680, 120], [760, 230], [500, 600]],
-    labels: [lbl([330, 520], 'glomerul-fantomă', { beats: [0] }), lbl([760, 440], 'tub-fantomă: contur + membrană bazală păstrate', { beats: [1] }), lbl([760, 440], 'detritus eozinofil în lumen', { beats: [2] }), lbl([500, 690], 'nucleul dispare în 3 pași', { beats: [3] })],
+    labels: [lbl([330, 520], 'glomerul-fantomă', { beats: [0] }), lbl([760, 440], 'tub-fantomă: contur păstrat, fără nuclei', { beats: [1] }), lbl([760, 440], 'material eozinofil în lumen (nu e în LP)', { beats: [2] }), lbl([500, 690], 'nucleul dispare în 3 pași', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#f6cfe0', '#f0bed5');
       glom(g, 330, 330, 190, true, t); tubX(g, 760, 260, 170, true, t);
@@ -473,7 +473,7 @@ function renMare() {
 function renWhy() {
   return {
     home: HOME, cams: [cam(300, 470, 1.3), cam(500, 470, 1), cam(640, 330, 1.5), cam(640, 330, 1.5)], anchors: [[150, 420], [420, 380], [700, 170], [880, 300]],
-    labels: [lbl([180, 620], 'embol din cordul stâng'), lbl([470, 560], 'artere terminale'), lbl([700, 80], 'baza la capsulă'), lbl([900, 470], 'lizereu roșu')],
+    labels: [lbl([180, 620], 'embol arterial (migrat distal de cord)'), lbl([470, 560], 'artere terminale'), lbl([700, 80], 'baza la capsulă'), lbl([900, 470], 'lizereu roșu')],
     phase: (i) => ['ocluzie arterială', 'artere terminale', 'necroză de coagulare', 'reacția la margine'][i] || '',
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a'); const st = b.i < 0 ? 4 : b.i + clamp(b.bt / 3);
@@ -503,7 +503,7 @@ function imaMic() {
 function imaMare() {
   return {
     home: HOME, cams: [cam(420, 300, 1.6), cam(560, 560, 1.8), cam(850, 665, 1.9)], anchors: [[380, 170], [560, 470], [850, 590]],
-    labels: [lbl([420, 450], 'fibră necrozată: fără nucleu, fără striații', { beats: [0] }), lbl([560, 690], 'neutrofile: nuclei multilobați / fragmentați', { beats: [1] }), lbl([850, 790], 'hematii extravazate (în interstițiu)', { beats: [2] })],
+    labels: [lbl([420, 450], 'fibră necrozată: fără nucleu, intens eozinofilă', { beats: [0] }), lbl([560, 690], 'granulocite: banda internă', { beats: [1] }), lbl([850, 790], 'hematii: congestie (banda externă)', { beats: [2] })],
     draw(g, t, b) {
       bgFill(g, '#fbe3ee', '#f5d0e1');
       g.save(); g.translate(500, 467); g.rotate(-0.3);
@@ -516,14 +516,14 @@ function imaMare() {
   };
 }
 function imaWhy() {
-  const ST = [['0–4 ore', 'nimic la MO'], ['4–6 ore → 3 zile', 'roz intens, fără nuclei'], ['3–7 zile', 'neutrofile → macrofage'], ['săpt. 2–3', 'țesut de granulație'], ['2–3 luni', 'cicatrice fibroasă']];
+  const ST = [['4–6 ore', 'vizibil la microscop: roz intens'], ['primele zile', 'fără nuclei; lizereu cu granulocite'], ['5–10 zile', 'miomalacie'], ['săpt. 2–6', 'țesut de granulație → conjunctiv'], ['2–3 luni', 'cicatrice']];
   return {
     home: HOME, cams: ST.map((_, k) => cam(500, 420, 1.15)), anchors: ST.map((_, k) => [120 + k * 190, 820]),
     phase: (i) => (ST[i] ? ST[i][0] : ''),
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a'); const s = b.i < 0 ? 1 : b.i;
       // fibra mare
-      const deadF = s >= 1 && s <= 2, gone = s >= 3;
+      const deadF = s <= 2, gone = s >= 3;
       const p = new Path2D(); p.roundRect(110, 300, 780, 230, 80);
       if (!gone) { paint(g, p, deadF ? '#ff5f9b' : '#e77aa0', deadF ? null : '#d8628c', deadF ? '#ffc0d8' : null, [110, 300, 780, 230], OUT, 7); if (!deadF) { g.save(); g.clip(p); g.strokeStyle = 'rgba(150,40,90,.45)'; g.lineWidth = 4; for (let x = 120; x < 890; x += 22) { g.beginPath(); g.moveTo(x, 300); g.lineTo(x, 530); g.stroke(); } g.restore(); paint(g, blob(500, 415, 60, 24, 0, t, 0.03, 10, 1), HE.nuc, HE.nucS, HE.nucL, bb(500, 415, 60, 24), OUT, 3); } }
       else if (s === 3) { g.save(); g.fillStyle = '#f6c4d9'; g.fill(p); g.restore(); for (let k = 0; k < 5; k++) capillary(g, [[150 + k * 160, 290], [200 + k * 160, 420], [160 + k * 160, 540]], 26, t, { n: 2, nuclei: 1 }); for (let k = 0; k < 7; k++) paint(g, spindle(180 + k * 110, 470 - (k % 2) * 110, 90, 26, 0.3, t, k), '#d9c8f4', '#b9a2ea', null, bb(180 + k * 110, 400, 45, 13), OUT, 3); }
@@ -534,7 +534,7 @@ function imaWhy() {
       g.save(); g.strokeStyle = OUT; g.lineWidth = 16; g.beginPath(); g.moveTo(120, 760); g.lineTo(880, 760); g.stroke(); g.strokeStyle = '#ff9fc6'; g.lineWidth = 8; g.stroke(); g.restore();
       ST.forEach(([a, c], k) => { const x = 120 + k * 190, on = k === s; g.save(); g.fillStyle = on ? '#ffe36e' : '#4a3d58'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.arc(x, 760, on ? 22 : 15, 0, 7); g.fill(); g.stroke(); g.restore(); txt(g, a, x, 720, 20, on ? '#ffe36e' : '#d9c8e4'); });
       txt(g, ST[s][1], 500, 200, 36, '#fff');
-      if (s === 2) txt(g, 'zilele 5–10 (Robbins: 3–7): miomalacie → RUPTURĂ', 500, 880, 26, '#ff8a8a');
+      if (s === 2) txt(g, 'enzime proteolitice: miomalacie → risc de ruptură', 500, 880, 26, '#ff8a8a');
     },
   };
 }
@@ -562,7 +562,7 @@ function trombMare() {
 function trombWhy() {
   return {
     home: HOME, cams: [cam(500, 400, 1.05), cam(500, 600, 1.3), cam(500, 600, 1.3), cam(500, 560, 1.1)], anchors: [[330, 170], [300, 700], [700, 700], [500, 340]],
-    phase: (i) => ['triada Virchow', 'trombocitele → strat palid', 'fibrina → strat roșu', 'straturi repetate = Zahn'][i] || '',
+    phase: (i) => ['triada Virchow', 'trombocitele → strat palid', 'eritrocitele → strat roșu', 'straturi repetate = Zahn'][i] || '',
     draw(g, t, b) {
       const st = b.i < 0 ? 4 : b.i + clamp(b.bt / 3);
       if (st < 1) {
@@ -575,7 +575,7 @@ function trombWhy() {
       const layers = st < 2 ? 1 : st < 3 ? 2 : Math.min(ZAHN, 2 + Math.floor((st - 3) * 6));
       trombField(g, t, { layers });
       if (st < 2) { const f = clamp(st - 1); srand(9); for (let k = 0; k < 14; k++) { const x = rr(0, 1000); g.save(); g.fillStyle = '#c9b3ff'; g.strokeStyle = OUT; g.lineWidth = 3; g.beginPath(); g.arc(x, lerp(200, 740, f) + rr(-20, 20), 10, 0, 7); g.fill(); g.stroke(); g.restore(); } }
-      txt(g, 'sângele curge în continuare →', 560, 260, 28, '#fff');
+      txt(g, 'sângele curge în continuare →', 560, 330, 28, '#fff');
     },
   };
 }

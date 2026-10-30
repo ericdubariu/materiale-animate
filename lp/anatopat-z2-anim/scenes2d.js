@@ -48,7 +48,19 @@ export function drawAorta(g, t, o = {}) {
   g.save(); g.clip(thr); g.globalAlpha = 0.28; stipple(g, thr, [230, 220, 260, 670], 160, ['#3f1d1c', '#e9d6cc'], 2, 5, 3); g.restore();
   g.restore();
 }
-// 7 · trunchiul a. pulmonare deschis, cu embolul „în șa” la bifurcație
+// 7 · aorta abdominală deschisă, cu trombul „călăreț” pe bifurcație, extins în ambele artere iliace comune (S1)
+const SAD = [[425, 430], [578, 430], [590, 560], [668, 682], [738, 822], [692, 840], [612, 712], [540, 664], [500, 646], [460, 664], [388, 712], [308, 840], [262, 822], [332, 682], [410, 560]];
+export function drawSaddle(g, t, o = {}) {
+  drawAorta(g, t, { noThr: true });
+  const up = o.up ?? 1, down = o.down ?? 1;
+  const thr = P(SAD);
+  g.save(); g.beginPath(); g.rect(0, 650 - 225 * up, 1000, 225 * up + 200 * down); g.clip();
+  paint(g, thr, '#8e5a55', '#6f3d3a', '#c79b90', [262, 430, 476, 410], OUT, 6);
+  g.save(); g.clip(thr); for (let k = 0; k < 30; k++) { const y = 420 + k * 16; g.strokeStyle = k % 2 ? 'rgba(122,26,38,.75)' : 'rgba(222,196,186,.75)'; g.lineWidth = 7; g.beginPath(); g.moveTo(240, y + 20); g.bezierCurveTo(400, y - 20, 600, y + 20, 760, y - 20); g.stroke(); } g.restore();
+  g.save(); g.clip(thr); g.globalAlpha = 0.28; stipple(g, thr, [262, 430, 476, 410], 140, ['#3f1d1c', '#e9d6cc'], 2, 5, 3); g.restore();
+  g.restore();
+}
+// (vechi) trunchiul a. pulmonare deschis, cu embolul „în șa” la bifurcație — nu mai e folosit
 const PA_T = [[500, 940], [500, 760], [500, 560], [500, 470]], PA_L = [[500, 470], [380, 410], [250, 380], [110, 400]], PA_R = [[500, 470], [620, 410], [750, 380], [890, 400]];
 function tube(g, pts, w, col, inner) { const p = smooth(pts, false); g.save(); g.lineCap = 'round'; g.lineJoin = 'round'; g.strokeStyle = OUT; g.lineWidth = w + 12; g.stroke(p); g.strokeStyle = col; g.lineWidth = w; g.stroke(p); if (inner) { g.strokeStyle = inner; g.lineWidth = w * 0.55; g.stroke(p); } g.restore(); }
 // linia mediană a lumenului (ramura stângă → bifurcație → ramura dreaptă)
@@ -193,7 +205,7 @@ export function drawClot(g, t, o = {}) {
 /* =================================================== COPERTA */
 const ICONS = [
   ['aortă cu tromb', (g, t) => { g.translate(500, 467); g.scale(0.95, 0.95); g.translate(-500, -467); drawAorta(g, t); }],
-  ['tromb călăreț', (g, t) => drawEmbolus(g, t)],
+  ['tromb călăreț', (g, t) => drawSaddle(g, t)],
   ['infarct renal', (g, t) => drawKidney(g, t, { wedge: { a: -2.0 } })],
   ['infarct pulmonar', (g, t) => drawLung(g, t)],
   ['infarct miocardic', (g, t) => drawHeart(g, t, { mi: 1 })],
@@ -211,7 +223,7 @@ function cover() {
   const draw = iconGrid(ICONS.map((x) => x[0]));
   return {
     home: HOME, cams: POS7.map(([x, y]) => cam(x, y, 2.1)), anchors: POS7.map(([x, y]) => [x - 80, y - 85]),
-    labels: POS7.map(([x, y], i) => lbl([x, y + 150], ICONS[i][0])),
+    labels: POS7.map(([x, y], i) => lbl([x, y + 150], ICONS[i][0], { beats: [-1, i] })),
     draw(g, t, b) { bgFill(g, '#3a1d47', '#160b1d'); draw(g, t, b); },
   };
 }
@@ -264,46 +276,46 @@ function recScene(drawFn, o) {
   });
 }
 const aortaRec = recScene((g, t, b) => drawAorta(g, t), {
-  cams: [cam(380, 560, 1.15), cam(400, 520, 1.55), cam(380, 500, 1.9), cam(380, 520, 2.1), cam(400, 420, 2.2), cam(440, 360, 2.0)],
-  anchors: [[300, 200], [520, 330], [360, 420], [330, 560], [445, 300], [400, 250]],
-  labels: [lbl([620, 120], 'intimă cu plăci de aterom', { beats: [-1, 5] }), lbl([270, 560], 'tromb parietal', { beats: [-1, 0, 1, 2, 3] }), lbl([560, 440], 'lumen liber', { beats: [1] }), lbl([235, 800], 'extensia în a. iliacă', { beats: [-1, 0] })],
-  rings: [[360, 560, 150, 350, 0.25], [530, 420, 60, 140], [440, 420, 60, 80], [430, 520, 55, 70], [470, 350, 40, 90], [400, 240, 30, 40]],
+  cams: [cam(380, 560, 1.15), cam(520, 230, 1.6), cam(540, 160, 2.0)],
+  anchors: [[300, 200], [620, 300], [560, 80]],
+  labels: [lbl([620, 120], 'intima cu plăci aterosclerotice', { beats: [-1, 1, 2] }), lbl([270, 560], 'tromb parietal', { beats: [-1, 0] }), lbl([235, 800], 'extensia în a. iliacă', { beats: [-1] })],
+  rings: [[360, 560, 150, 350, 0.25], [520, 230, 110, 170], [540, 130, 60, 50]],
 });
-const embolRec = recScene((g, t, b) => drawEmbolus(g, t), {
-  cams: [cam(500, 450, 1.0), cam(500, 430, 1.4), cam(420, 420, 2.0), cam(600, 450, 2.0), cam(330, 400, 2.0), cam(780, 640, 1.4)],
-  anchors: [[160, 330], [500, 330], [420, 360], [620, 380], [300, 470], [800, 560]],
-  labels: [lbl([500, 260], 'embolul „în șa”, pe bifurcație', { beats: [-1, 0, 1] }), lbl([500, 850], 'trunchiul a. pulmonare', { beats: [-1] }), lbl([230, 330], 'capăt rupt', { beats: [1] }), lbl([840, 760], 'plămân congestionat', { beats: [5] })],
-  rings: [[500, 450, 360, 130], [500, 450, 340, 110], [420, 420, 70, 50], [620, 440, 60, 50], [330, 410, 70, 50], [780, 640, 170, 190]],
+const embolRec = recScene((g, t, b) => drawSaddle(g, t), {
+  cams: [cam(500, 330, 1.2), cam(500, 760, 1.3), cam(500, 600, 1.7), cam(560, 600, 2.1)],
+  anchors: [[300, 120], [200, 900], [500, 400], [700, 700]],
+  labels: [lbl([660, 120], 'aorta abdominală', { beats: [-1, 0] }), lbl([500, 905], 'arterele iliace comune', { beats: [-1, 1] }), lbl([780, 520], 'tromb călare pe bifurcație', { beats: [-1, 2, 3] })],
+  rings: [[500, 300, 150, 280], [500, 780, 300, 140], [500, 600, 200, 160], [520, 620, 230, 200]],
 });
 const renRec = recScene((g, t, b) => drawKidney(g, t, { wedge: { a: -2.05 } }), {
-  cams: [cam(380, 330, 1.7), cam(380, 330, 1.8), cam(380, 320, 2.0), cam(380, 330, 2.0), cam(330, 220, 2.2), cam(470, 470, 1.0)],
-  anchors: [[250, 210], [470, 300], [310, 300], [380, 360], [300, 150], [700, 250]],
-  labels: [lbl([330, 150], 'baza la capsulă', { beats: [-1, 1, 4] }), lbl([520, 420], 'vârful spre hil', { beats: [-1, 1] }), lbl([200, 380], 'lizereu roșu', { beats: [2] }), lbl([780, 470], 'hil', { beats: [-1, 5] })],
-  rings: [[350, 290, 120, 100, 0.4], [370, 310, 140, 110, 0.4], [360, 300, 120, 100, 0.4], [360, 300, 100, 80, 0.4], [300, 190, 100, 40, -0.6], [430, 400, 160, 110, 0.4]],
+  cams: [cam(380, 330, 1.7), cam(330, 220, 2.2), cam(380, 320, 2.0), cam(560, 520, 1.2)],
+  anchors: [[250, 210], [300, 150], [310, 300], [700, 250]],
+  labels: [lbl([330, 150], 'suprafața externă', { beats: [-1, 1] }), lbl([200, 380], 'lizereu congestiv', { beats: [2] }), lbl([700, 640], 'parenchim renal normal', { beats: [-1, 3] })],
+  rings: [[350, 290, 120, 100, 0.4], [300, 190, 100, 40, -0.6], [370, 310, 140, 112, 0.4], [600, 480, 200, 170]],
 });
 const pulmRec = recScene((g, t, b) => drawLung(g, t), {
-  cams: [cam(330, 700, 1.4), cam(300, 700, 1.6), cam(300, 720, 1.9), cam(280, 720, 2.0), cam(170, 720, 2.3), cam(400, 660, 1.4)],
-  anchors: [[400, 600], [520, 560], [300, 690], [240, 760], [120, 620], [600, 620]],
-  labels: [lbl([170, 900], 'pleură cu fibrină', { beats: [-1, 4] }), lbl([600, 480], 'vârful spre hil', { beats: [1] }), lbl([700, 300], 'parenchim congestionat, aerat', { beats: [-1, 5] })],
-  rings: [[300, 690, 230, 170], [330, 690, 250, 190], [280, 720, 150, 120], [280, 720, 130, 110], [160, 730, 90, 150, -0.4], [330, 690, 260, 200]],
+  cams: [cam(330, 690, 1.5), cam(300, 720, 1.9), cam(620, 420, 1.3)],
+  anchors: [[520, 560], [300, 690], [700, 220]],
+  labels: [lbl([600, 480], 'vârful spre hil', { beats: [-1, 0] }), lbl([700, 300], 'stază cronică (indurație brună)', { beats: [-1, 2] })],
+  rings: [[330, 690, 250, 190], [280, 720, 150, 120], [650, 400, 220, 200]],
 });
 const imaRec = recScene((g, t, b) => drawHeart(g, t, { mi: 1 }), {
-  cams: [cam(560, 600, 1.4), cam(560, 610, 1.5), cam(560, 620, 1.8), cam(560, 620, 1.9), cam(560, 600, 1.4), cam(560, 650, 2.2)],
-  anchors: [[470, 680], [700, 640], [600, 690], [450, 610], [580, 400], [560, 600]],
-  labels: [lbl([580, 760], 'peretele posterior VS', { beats: [-1, 4] }), lbl([270, 470], 'VD', { beats: [-1] }), lbl([580, 470], 'lumen VS', { beats: [-1] }), lbl([390, 700], 'margine roșie-violacee', { beats: [2] })],
-  rings: [[580, 640, 200, 90], [580, 640, 200, 90], [580, 640, 160, 70], [580, 640, 160, 70], [580, 640, 220, 110], [560, 640, 50, 40]],
+  cams: [cam(560, 600, 1.4), cam(560, 620, 1.8), cam(500, 520, 1.0), cam(560, 600, 1.4)],
+  anchors: [[470, 680], [600, 690], [270, 400], [700, 640]],
+  labels: [lbl([580, 760], 'peretele VS', { beats: [-1, 0, 1] }), lbl([270, 470], 'VD', { beats: [-1, 2] }), lbl([580, 470], 'lumen VS', { beats: [-1, 2] }), lbl([390, 700], 'halou hiperemic', { beats: [0] })],
+  rings: [[580, 640, 200, 90], [580, 640, 160, 70], [500, 520, 380, 300], [580, 640, 220, 110]],
 });
 const hemRec = recScene((g, t, b) => drawBrain(g, t, { hem: 1 }), {
-  cams: [cam(620, 520, 1.6), cam(620, 520, 1.8), cam(620, 520, 2.0), cam(620, 520, 2.0), cam(580, 470, 1.5), cam(500, 470, 1.0)],
-  anchors: [[700, 380], [780, 520], [620, 540], [770, 640], [560, 330], [500, 160]],
-  labels: [lbl([620, 700], 'hematom profund', { beats: [-1, 0, 1, 2] }), lbl([560, 300], 'sânge în ventricul', { beats: [4] }), lbl([400, 110], 'linia mediană împinsă', { beats: [5] }), lbl([820, 300], 'țesut edemațiat', { beats: [3] })],
-  rings: [[625, 530, 150, 140], [625, 530, 150, 140], [625, 530, 125, 115], [625, 530, 170, 165], [545, 410, 50, 60], [480, 430, 50, 300]],
+  cams: [cam(620, 520, 1.6), cam(580, 470, 1.5), cam(500, 470, 1.0)],
+  anchors: [[700, 380], [560, 330], [500, 160]],
+  labels: [lbl([620, 700], 'hematom intracerebral', { beats: [-1, 0] }), lbl([560, 300], 'hematom intraventricular', { beats: [-1, 1] })],
+  rings: [[625, 530, 150, 140], [545, 410, 50, 60], [500, 470, 450, 420]],
 });
 const socRec = recScene((g, t, b) => drawShockKidney(g, t), {
-  cams: [cam(470, 470, 1.0), cam(470, 470, 1.1), cam(330, 380, 1.8), cam(400, 470, 1.5), cam(200, 420, 2.0), cam(480, 470, 1.4)],
-  anchors: [[170, 220], [800, 240], [250, 300], [330, 600], [110, 500], [560, 400]],
-  labels: [lbl([200, 160], 'corticala palidă, lată', { beats: [-1, 2] }), lbl([420, 470], 'medulara roșie', { beats: [-1, 2, 5] }), lbl([720, 470], 'sinus + bazinet', { beats: [-1] })],
-  rings: [[470, 470, 370, 310], [470, 470, 370, 310], [330, 380, 170, 130], [470, 470, 350, 290], [130, 470, 50, 230], [470, 470, 300, 240]],
+  cams: [cam(200, 420, 2.0), cam(450, 470, 1.4), cam(330, 380, 1.8), cam(620, 470, 1.6)],
+  anchors: [[110, 500], [420, 300], [250, 300], [720, 330]],
+  labels: [lbl([200, 160], 'corticala palidă', { beats: [-1, 0, 2] }), lbl([420, 470], 'medulara hiperemică', { beats: [-1, 1, 2] }), lbl([720, 470], 'pelvis renal', { beats: [-1, 3] })],
+  rings: [[130, 470, 50, 230], [470, 470, 250, 200], [330, 380, 170, 130], [620, 470, 110, 90]],
 });
 
 /* =================================================== „DE CE ARATĂ AȘA” (patogenia, animată) */
@@ -311,7 +323,7 @@ function aortaWhy() {
   return {
     home: HOME, cams: [cam(330, 470, 1.6), cam(500, 470, 1.4), cam(500, 470, 1.2), cam(650, 470, 1.2), cam(500, 470, 1)],
     anchors: [[320, 250], [520, 250], [500, 700], [840, 250], null],
-    labels: [lbl([320, 820], 'placă ulcerată', { beats: [-1, 0] }), lbl([550, 160], 'turbulență', { beats: [1] }), lbl([500, 840], 'tromb parietal; lumenul rămâne liber', { beats: [2] }), lbl([800, 820], 'embol → membrele inferioare, intestin', { beats: [3] })],
+    labels: [lbl([320, 820], 'placă ulcerată', { beats: [-1, 0] }), lbl([550, 160], 'turbulență', { beats: [1] }), lbl([500, 840], 'tromb parietal: straturi', { beats: [2] }), lbl([800, 820], 'embol → distal, ram mai mic', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       // peretele aortic longitudinal (jos) + lumen cu flux
@@ -333,26 +345,22 @@ function aortaWhy() {
     },
   };
 }
-// TVP → VCI → AD → VD → a. pulmonară
-const ROUTE = [[620, 900], [600, 780], [560, 640], [520, 520], [500, 420], [470, 360], [420, 330], [400, 290], [470, 250], [520, 210], [520, 150]];
+// piesa 7: trombul arterial pe bifurcația aortei; crește retrograd (în sus, contra fluxului), apoi un fragment pleacă distal
 function embolWhy() {
   return {
-    home: HOME, cams: [cam(600, 780, 1.6), cam(560, 640, 1.5), cam(480, 380, 1.5), cam(500, 220, 1.7)],
-    anchors: [[700, 830], [640, 600], [360, 380], [600, 150]],
-    labels: [lbl([760, 900], 'TVP: mulajul venei', { beats: [-1, 0] }), lbl([660, 520], 'VCI', { beats: [-1, 1] }), lbl([330, 300], 'AD → VD', { beats: [-1, 2] }), lbl([500, 70], 'a. pulmonară: se pliază „în șa”', { beats: [-1, 3] })],
+    home: HOME, cams: [cam(500, 560, 1.35), cam(500, 480, 1.2), cam(500, 640, 1.3), cam(380, 760, 1.4)],
+    anchors: [[330, 560], [330, 380], [700, 760], [180, 820]],
+    labels: [lbl([760, 300], 'fluxul arterial ↓', { beats: [-1, 0, 1] }), lbl([780, 470], 'crește retrograd (în sus)', { beats: [1] }), lbl([500, 905], 'călare pe bifurcație, în ambele iliace', { beats: [-1, 2] }), lbl([200, 930], 'fragment → distal (embolizare)', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
-      // siluetă: cord + VCI + vena membrului inferior
-      const heart = blob(450, 320, 150, 130, 0.3, t, 0.06, 14, 3); paint(g, heart, '#b8433f', '#933230', '#e07a70', [300, 190, 300, 260], OUT, 7);
-      txt(g, 'AD', 400, 360, 26); txt(g, 'VD', 500, 300, 26);
-      const v = smooth(ROUTE.slice(0, 5), false); g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 58; g.stroke(v); g.strokeStyle = '#5d6fb8'; g.lineWidth = 46; g.stroke(v); g.restore();
-      const pa = smooth([[520, 220], [520, 130], [380, 80], [660, 80]], false); g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 54; g.beginPath(); g.moveTo(520, 220); g.lineTo(520, 120); g.moveTo(380, 70); g.quadraticCurveTo(520, 120, 660, 70); g.stroke(); g.strokeStyle = '#ead9b8'; g.lineWidth = 42; g.stroke(); g.restore();
-      // trombul în vena gambei
-      const prog = b.i < 0 ? 0 : [0, 0.33, 0.7, 1][b.i] + (b.i < 3 ? u01(b) * ([0.33, 0.7, 1, 1][b.i] - [0, 0.33, 0.7, 1][b.i]) : 0);
-      const seg = (u) => { const f = u * (ROUTE.length - 1); const i = Math.min(ROUTE.length - 2, Math.floor(f)); const k = f - i; return [lerp(ROUTE[i][0], ROUTE[i + 1][0], k), lerp(ROUTE[i][1], ROUTE[i + 1][1], k)]; };
-      if (b.i === 0 || b.i < 0) { g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 36; g.beginPath(); g.moveTo(620, 920); g.lineTo(605, 800); g.stroke(); g.strokeStyle = '#6a1c22'; g.lineWidth = 26; g.stroke(); g.restore(); if (b.i === 0) { const k = ease(b.bt * 0.8 - 0.4); g.save(); g.strokeStyle = '#ffe36e'; g.lineWidth = 5; g.setLineDash([8, 8]); g.beginPath(); g.moveTo(580, 820 - k * 6); g.lineTo(640, 812 + k * 6); g.stroke(); g.restore(); txt(g, 'se rupe', 700, 790, 24, '#ffe36e'); } }
-      if (b.i >= 1) { const [x, y] = b.i === 3 ? [520, 120] : seg(prog); const rot = b.i === 3 ? 0 : -1.2; g.save(); g.translate(x, y); g.rotate(rot); const k = b.i === 3 ? ease(b.bt) : 0; const pts = []; for (let i = 0; i <= 12; i++) { const u = i / 12; pts.push([lerp(-60, -140 * k - 20, 0) + u * lerp(120, 260, k) - lerp(60, 130, k), Math.sin(u * 9 + t) * lerp(6, 14, k) + (k > 0 ? -Math.sin(u * Math.PI) * 30 * k : 0)]); } const p = smooth(pts, false); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 32; g.stroke(p); g.strokeStyle = '#6a1c22'; g.lineWidth = 22; g.stroke(p); g.restore(); }
-      if (b.i < 0) txt(g, 'imobilizare · postoperator · sarcină · cancer', 330, 900, 22, '#e6dcec', 'center', 700);
+      const up = b.i < 0 ? 1 : b.i === 0 ? 0.15 : b.i === 1 ? 0.15 + 0.85 * u01(b) : 1;
+      const down = b.i < 0 ? 1 : b.i <= 1 ? 0.12 : b.i === 2 ? 0.12 + 0.88 * u01(b) : 1;
+      drawSaddle(g, t, { up, down });
+      // fluxul: săgeți în jos, în aortă
+      const tt = REDUCED ? 0 : t;
+      for (let k = 0; k < 2; k++) { const y0 = 80 + ((tt * 60 + k * 120) % 240); arrow(g, 500, y0, 500, y0 + 80, '#ffe36e'); }
+      // embolizarea: un fragment se desprinde din coada iliacă stângă și coboară pe artera iliacă
+      if (b.i === 3) { const u = u01(b); const x = lerp(290, 235, u), y = lerp(830, 900, u); paint(g, blob(x, y, 18, 13, 0.4, t, 0.2, 10, 4), '#6f3d3a', null, null, bb(x, y, 18, 13), OUT, 4); }
     },
   };
 }
@@ -364,7 +372,7 @@ function renWhy() {
   return {
     home: HOME, cams: [cam(260, 330, 1.6), cam(560, 470, 1.2), cam(640, 300, 1.7), cam(640, 300, 1.7)],
     anchors: [[150, 220], [500, 160], [800, 160], [860, 360]],
-    labels: [lbl([330, 520], 'cord stâng: AS (fibrilație) · valve (endocardită) · VS (tromb mural post-IMA)', { beats: [-1, 0] }), lbl([470, 790], 'ramuri terminale, fără colaterale', { beats: [1] }), lbl([760, 470], 'țesut palid, ferm', { beats: [2] }), lbl([760, 470], 'cicatrice în „V”', { beats: [3] })],
+    labels: [lbl([330, 520], 'tromb arterial: migrează distal de cord', { beats: [-1, 0] }), lbl([470, 790], 'ramura care deservește teritoriul', { beats: [1] }), lbl([760, 470], 'infarct alb (anemic)', { beats: [2] }), lbl([760, 470], 'lizereu congestiv', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       // atriul stâng cu tromb + embolul care pleacă
@@ -374,7 +382,7 @@ function renWhy() {
       const cone = (a, k) => { const ap = [470, 470 + (k - 1.5) * 1]; return null; };
       const caps = new Path2D(); caps.arc(470, 470, 330, -0.95, 0.95); g.save(); g.lineWidth = 46; g.strokeStyle = OUT; g.stroke(caps); g.lineWidth = 34; g.strokeStyle = '#c8573f'; g.stroke(caps); g.restore();
       const wedge = (a0, a1, col) => { const p = new Path2D(); p.moveTo(470 + Math.cos((a0 + a1) / 2) * 140, 470 + Math.sin((a0 + a1) / 2) * 140); p.arc(470, 470, 316, a0, a1); p.closePath(); return p; };
-      const bl = b.i >= 2 || b.i < 0; const sc = b.i === 3;
+      const bl = b.i >= 2 || b.i < 0; const sc = false;
       const w0 = wedge(-0.9, -0.3), w1 = wedge(-0.3, 0.3), w2 = wedge(0.3, 0.9);
       paint(g, w1, '#c8573f', '#a8432f', null, [470, 300, 330, 330], OUT, 4); paint(g, w2, '#c8573f', '#a8432f', null, [470, 300, 330, 330], OUT, 4);
       if (bl) { const k = b.i === 2 ? ease(b.bt) : 1; g.save(); g.fillStyle = '#a3122a'; g.fill(w0); g.restore(); const inner = wedge(-0.86, -0.34); paint(g, w0, '#c8573f', null, null, [470, 140, 330, 330], OUT, 4); g.save(); g.globalAlpha = k; g.fillStyle = '#a3122a'; g.fill(w0); g.fillStyle = sc ? '#f4f0ea' : '#f0d98f'; g.save(); g.translate(470, 470); g.scale(0.94, 0.94); g.translate(-470, -470); g.fill(inner); g.restore(); g.restore(); }
@@ -398,18 +406,17 @@ function pulmWhy() {
   return {
     home: HOME, cams: [cam(700, 300, 1.5), cam(420, 470, 1.25), cam(300, 650, 1.5), cam(500, 470, 1)],
     anchors: [[800, 200], [620, 380], [170, 640], [840, 700]],
-    labels: [lbl([780, 120], 'embol din TVP → ramură a a. pulmonare', { beats: [-1, 0] }), lbl([660, 560], 'a. bronșică: sânge în zona moartă', { beats: [1] }), lbl([260, 900], 'con roșu, baza la pleură + fibrină', { beats: [2] }), lbl([780, 860], 'resorbție → cicatrice · embol infectat → abces', { beats: [3] })],
+    labels: [lbl([780, 120], 'embol din TVP → ramură a a. pulmonare', { beats: [-1, 0] }), lbl([660, 560], 'a. bronșică: sânge în zona moartă', { beats: [1] }), lbl([260, 900], 'zonă triunghiulară, roșie-negricioasă', { beats: [2] }), lbl([780, 860], 'stază cronică preexistentă', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       const p = b.i < 2 ? (b.i < 0 ? 1 : 0) : b.i === 2 ? ease(b.bt * 0.6) : 1;
-      g.save(); if (b.i === 3) { g.globalAlpha = 1; } drawLung(g, t, { wedgeP: p, fibrin: b.i >= 2 || b.i < 0 }); g.restore();
+      g.save(); if (b.i === 3) { g.globalAlpha = 1; } drawLung(g, t, { wedgeP: p, fibrin: false }); g.restore();
       // artera pulmonară cu embolul
       g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 34; g.beginPath(); g.moveTo(860, 150); g.quadraticCurveTo(700, 330, 570, 515); g.stroke(); g.strokeStyle = '#5d6fb8'; g.lineWidth = 22; g.stroke(); g.restore();
       const u = b.i === 0 ? u01(b) : 1; const ex = lerp(860, 570, u), ey = lerp(150, 515, u) - Math.sin(u * Math.PI) * 30;
       paint(g, blob(ex, ey, 22, 15, 0.7, t, 0.2, 10, 3), '#3b0a10', null, null, bb(ex, ey, 22, 15), OUT, 4);
       if (b.i >= 1 || b.i < 0) { g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 20; const ba = smooth([[760, 470], [600, 520], [430, 600], [300, 700]], false); g.stroke(ba); g.strokeStyle = '#e8424f'; g.lineWidth = 11; g.stroke(ba); g.setLineDash([10, 18]); g.lineDashOffset = REDUCED ? 0 : -t * 60; g.strokeStyle = '#ffd0d6'; g.lineWidth = 5; g.stroke(ba); g.restore(); }
-      if (b.i < 0) txt(g, 'plămân deja congestionat (IC stângă)', 500, 60, 26, '#ffe36e');
-      if (b.i === 3) { const k = ease(b.bt * 0.5); g.save(); g.globalAlpha = k; const wp = P(WEDGE); g.clip(wp); g.fillStyle = 'rgba(235,228,220,.85)'; g.fillRect(0, 0, 1000, 934); g.restore(); }
+      if (b.i < 0) txt(g, 'plămân cu stază cronică preexistentă', 500, 60, 26, '#ffe36e');
     },
   };
 }
@@ -446,8 +453,8 @@ function hem4() {
   const SUL = [150, 340, 560, 720, 900];
   return {
     home: HOME, cams: [cam(220, 300, 1.8), cam(450, 330, 1.8), cam(720, 360, 1.7), cam(780, 620, 1.4)],
-    anchors: [[190, 120], [450, 300], [720, 290], [780, 560]],
-    labels: [lbl([190, 600], 'biconvex · a. meningee medie', { beats: [-1, 0] }), lbl([450, 650], 'semilună · venele-punte', { beats: [-1, 1] }), lbl([720, 700], 'în șanțuri, la bază', { beats: [-1, 2] }), lbl([780, 880], 'în parenchim · HTA', { beats: [-1, 3] })],
+    anchors: [[190, 215], [450, 249], [640, 300], [780, 560]],
+    labels: [lbl([190, 430], '1 epidural: os–dura, traumatic', { beats: [-1, 0] }), lbl([470, 400], '2 subdural: dura–arahnoidă', { beats: [-1, 1] }), lbl([720, 480], '3 subarahnoidian: arahnoidă–pia · spații intergirale', { beats: [-1, 2] }), lbl([780, 760], '4 intracerebral: în parenchim · ramură ruptă', { beats: [-1, 3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       const pr = (i) => (b.i < 0 ? 1 : b.i === i ? ease(b.bt) : b.i > i ? 1 : 0.15);
@@ -474,8 +481,7 @@ function hem4() {
       // 4 intracerebral
       g.save(); g.globalAlpha = Math.max(0.15, pr(3)); const k4 = Math.max(0.35, pr(3)); paint(g, blob(780, 640, 90 * k4, 70 * k4, 0.3, t, 0.2, 14, 7), '#4a0910', null, null, bb(780, 640, 90, 70), OUT, 5); g.restore();
       // etichetele straturilor, în dreapta, fiecare în stratul ei
-      txt(g, 'os', 975, 120, 24, '#fff', 'right'); txt(g, 'dura mater', 975, 220, 19, '#fff', 'right'); txt(g, 'arahnoida', 975, 250, 16, '#fff', 'right'); txt(g, 'sp. subarahnoidian (LCR)', 975, 289, 16, '#fff', 'right'); txt(g, 'pia + creier', 40, 860, 22, '#fff', 'left');
-      ['1 epidural', '2 subdural', '3 subarahnoidian', '4 intracerebral'].forEach((s, i) => txt(g, s, [190, 450, 720, 780][i], [470, 470, 520, 760][i], 28, b.i === i ? '#ffe36e' : '#fff'));
+      txt(g, 'os', 925, 120, 24, '#fff', 'right'); txt(g, 'dura mater', 925, 220, 19, '#fff', 'right'); txt(g, 'arahnoida', 925, 250, 16, '#fff', 'right'); txt(g, 'sp. subarahnoidian (LCR)', 925, 289, 16, '#fff', 'right'); txt(g, 'pia + creier', 40, 860, 22, '#fff', 'left');
     },
   };
 }
@@ -483,7 +489,7 @@ function hemWhy() {
   return {
     home: HOME, cams: [cam(260, 420, 1.8), cam(260, 420, 2.0), cam(560, 500, 1.2), cam(500, 470, 1.0), cam(560, 420, 1.4)],
     anchors: [[150, 250], [330, 300], [700, 380], [460, 120], [560, 330]],
-    labels: [lbl([230, 640], 'perete hialinizat, fragil', { beats: [0] }), lbl([300, 250], 'per rhexin', { beats: [1] }), lbl([660, 720], 'hematom', { beats: [2] }), lbl([380, 90], 'linia mediană împinsă', { beats: [3] }), lbl([560, 300], 'inundație ventriculară', { beats: [4] })],
+    labels: [lbl([230, 640], 'perete vascular', { beats: [0] }), lbl([300, 250], 'ruptura peretelui', { beats: [1] }), lbl([660, 720], 'impregnare hematică', { beats: [2] }), lbl([380, 90], 'hematom', { beats: [3] }), lbl([560, 300], 'inundare ventriculară', { beats: [4] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       if (b.i <= 1 && b.i >= 0) {
@@ -492,13 +498,12 @@ function hemWhy() {
         paint(g, wall, '#f2d7e6', '#e0b8cf', null, [80, 330, 380, 180], OUT, 7);
         g.save(); g.fillStyle = 'rgba(255,255,255,.5)'; for (let i = 0; i < 9; i++) { g.beginPath(); g.ellipse(120 + i * 38, 345, 14, 6, 0, 0, 7); g.fill(); g.beginPath(); g.ellipse(120 + i * 38, 495, 14, 6, 0, 0, 7); g.fill(); } g.restore();
         const lum = new Path2D(); lum.roundRect(110, 375 - k * 6, 320, 90 + k * 12, 45); paint(g, lum, '#d8323f', null, null, [110, 375, 320, 90], OUT, 4);
-        txt(g, 'TA ↑', 270, 432, 30);
         if (b.i === 1) { const u = ease(b.bt); paint(g, blob(330, 300 - 120 * u, 40 + 60 * u, 30 + 50 * u, 0, t, 0.25, 12, 5), '#4a0910', null, null, bb(330, 260, 80, 60), OUT, 5); g.save(); g.strokeStyle = '#ffe36e'; g.lineWidth = 6; g.beginPath(); g.moveTo(310, 330); g.lineTo(330, 350); g.lineTo(350, 330); g.stroke(); g.restore(); }
-        txt(g, 'a. lenticulostriată (perforantă)', 270, 600, 26, '#e6dcec', 'center', 700);
+        txt(g, 'ramură vasculară intracerebrală', 270, 600, 26, '#e6dcec', 'center', 700);
         g.save(); g.translate(760, 470); g.scale(0.32, 0.32); g.translate(-500, -467); drawBrain(g, t, { hem: 0 }); g.restore(); txt(g, 'nucleii bazali', 760, 650, 22, '#e6dcec', 'center', 700);
       } else {
         const h = b.i === 2 ? 0.2 + 0.6 * ease(b.bt * 0.6) : b.i === 3 ? 0.8 + 0.2 * ease(b.bt) : 1; drawBrain(g, t, { hem: h, shift: b.i === 3 ? 26 * ease(b.bt) : b.i < 0 || b.i >= 3 ? 26 : 10 });
-        if (b.i === 3) { arrow(g, 620, 160, 520, 160, '#ffe36e'); txt(g, 'edem · HTIC · herniere', 500, 900, 26, '#ffe36e'); }
+        
       }
     },
   };
@@ -506,8 +511,8 @@ function hemWhy() {
 function socWhy() {
   return {
     home: HOME, cams: [cam(500, 470, 1.0), cam(300, 400, 1.6), cam(640, 380, 1.15), cam(500, 470, 1.0)],
-    anchors: [[150, 120], [170, 260], [640, 130], [840, 830]],
-    labels: [lbl([500, 80], 'hipoperfuzie: hemoragie, sepsis, pompă', { beats: [0] }), lbl([210, 760], 'corticala: vasoconstricție → palidă', { beats: [1] }), lbl([480, 800], 'medulara: vasele drepte pline → roșie', { beats: [1, 2] }), lbl([700, 900], 'IRA: oligurie → regenerare (poliurie)', { beats: [3] })],
+    anchors: [[300, 300], [505, 334], [790, 110], [860, 430]],
+    labels: [lbl([500, 80], 'șoc: aport de oxigen insuficient', { beats: [0] }), lbl([210, 760], 'corticala: sânge redistribuit → palidă', { beats: [1] }), lbl([480, 800], 'medulara: hiperemică', { beats: [1, 2] }), lbl([700, 900], 'reversibil: hemodializă temporară', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2a1631', '#120914');
       const k = b.i < 0 ? 1 : b.i === 0 ? 0 : b.i === 1 ? ease(b.bt * 0.7) : 1;
@@ -517,9 +522,9 @@ function socWhy() {
       if (b.i === 2) {
         // tub necrozat cu cilindru, mărit
         field(g, 790, 260, 140, () => { bgFill(g, '#f7d8e4', '#f1c6d6'); for (let i = 0; i < 12; i++) { const a = i / 12 * 6.28; const x = 790 + Math.cos(a) * 80, y = 260 + Math.sin(a) * 80; const dead = i % 3 === 0; paint(g, blob(x, y, 24, 18, a, t, 0.05, 10, i), dead ? '#f9c7da' : '#e88fb6', null, null, bb(x, y, 24, 18), OUT, 3); if (!dead) { g.fillStyle = '#2c2490'; g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); } } paint(g, blob(790, 260, 40, 34, 0, t, 0.1, 10, 9), '#f4a1c4', null, null, bb(790, 260, 40, 34), OUT, 3); });
-        txt(g, 'tub necrozat pe segmente + cilindru', 760, 440, 22, '#ffe36e');
+        txt(g, 'necroză tubulară; glomeruli neafectați', 760, 440, 22, '#ffe36e');
       }
-      if (b.i === 3) { const u = ease(b.bt * 0.5); g.save(); g.strokeStyle = OUT; g.lineWidth = 14; g.lineCap = 'round'; g.beginPath(); g.moveTo(860, 470); g.lineTo(860, 520 + 260 * u); g.stroke(); g.strokeStyle = '#ffe36e'; g.lineWidth = 6; g.stroke(); g.restore(); txt(g, 'urina ↓', 900, 820, 24, '#ffe36e', 'left'); }
+      if (b.i === 3) { const u = ease(b.bt * 0.5); g.save(); g.strokeStyle = OUT; g.lineWidth = 14; g.lineCap = 'round'; g.beginPath(); g.moveTo(860, 470); g.lineTo(860, 520 + 260 * u); g.stroke(); g.strokeStyle = '#ffe36e'; g.lineWidth = 6; g.stroke(); g.restore(); txt(g, 'filtrare ↓', 840, 820, 24, '#ffe36e', 'right'); }
     },
   };
 }
@@ -527,7 +532,7 @@ function socWhy() {
 /* =================================================== DD: două desene alăturate */
 const DDF = {
   aorta: (g, t) => drawAorta(g, t), clotAo: (g, t) => { drawAorta(g, t, { noThr: true }); drawClot(g, t, { pts: [[500, 90], [490, 300], [500, 520], [480, 640], [370, 760], [290, 860]] }); },
-  embol: (g, t) => drawEmbolus(g, t), clotPA: (g, t) => { drawEmbolus(g, t, { noEmb: true }); drawClot(g, t, { w: 66, pts: [[130, 402], [250, 382], [380, 410], [500, 470], [620, 410], [750, 382], [870, 402]] }); drawClot(g, t, { w: 80, pts: [[500, 480], [500, 640], [500, 780]] }); },
+  embol: (g, t) => drawSaddle(g, t), clotPA: (g, t) => { drawEmbolus(g, t, { noEmb: true }); drawClot(g, t, { w: 66, pts: [[130, 402], [250, 382], [380, 410], [500, 470], [620, 410], [750, 382], [870, 402]] }); drawClot(g, t, { w: 80, pts: [[500, 480], [500, 640], [500, 780]] }); },
   ren: (g, t) => drawKidney(g, t, { wedge: { a: -2.05 } }), pyelo: (g, t) => drawKidney(g, t, { abscess: true }),
   pulm: (g, t) => drawLung(g, t), lobar: (g, t) => drawLung(g, t, { lobe: true }),
   ima: (g, t) => drawHeart(g, t, { mi: 1 }), scar: (g, t) => drawHeart(g, t, { scar: true, thin: true }),
@@ -584,18 +589,18 @@ function script({ spec }) {
 /* =================================================== CAPCANE + RECAPITULARE */
 function capcane() {
   const T = [
-    ['tromb ≠ cheag', DDF.aorta, DDF.clotAo], ['alb vs. roșu', DDF.ren, DDF.pulm], ['edem vs. pneumonie', null, null], ['siderofage vs. antracoză', null, null],
-    ['între ce straturi?', DDF.hem, DDF.subdural], ['șoc ≠ infarct', DDF.soc, DDF.renInf], ['lama 2: două leziuni', null, null], ['piesa fixată', DDF.aorta, null],
+    ['tromb: aderent, mat, friabil', DDF.aorta, DDF.clotAo], ['alb vs. roșu', DDF.ren, DDF.pulm], ['transsudat vs. exsudat', null, null], ['siderofage = celule cardiace', null, null],
+    ['între ce straturi?', DDF.hem, DDF.subdural], ['șoc ≠ infarct', DDF.soc, DDF.renInf], ['tromb călăreț: unde?', DDF.embol, null], ['piesa fixată', DDF.aorta, null],
   ];
   const pos = T.map((_, i) => [130 + (i % 4) * 247, 260 + Math.floor(i / 4) * 400]);
   const micro = (g, t, kind, x, y) => { // desene mici pentru capcanele de la lame
     if (kind === 2) { for (let k = 0; k < 4; k++) { const cx = x - 50 + (k % 2) * 100, cy = y - 50 + Math.floor(k / 2) * 100; paint(g, blob(cx, cy, 44, 44, 0, t, 0.05, 12, k), k < 2 ? '#f6c7da' : '#f2a3c6', null, null, bb(cx, cy, 44, 44), OUT, 4); if (k >= 2) { srand(k); for (let j = 0; j < 6; j++) { g.fillStyle = '#2c2490'; g.beginPath(); g.arc(cx + rr(-25, 25), cy + rr(-25, 25), 5, 0, 7); g.fill(); } } else { g.fillStyle = '#fff'; g.beginPath(); g.arc(cx + 12, cy - 10, 10, 0, 7); g.fill(); } } }
-    if (kind === 3) { paint(g, blob(x - 50, y, 50, 40, 0, t, 0.12, 12, 2), '#f7c6d9', null, null, bb(x - 50, y, 50, 40), OUT, 4); srand(3); for (let j = 0; j < 8; j++) { g.fillStyle = '#a8652d'; g.beginPath(); g.arc(x - 50 + rr(-25, 25), y + rr(-20, 20), 6, 0, 7); g.fill(); } paint(g, blob(x + 55, y, 50, 40, 0, t, 0.12, 12, 5), '#f7c6d9', null, null, bb(x + 55, y, 50, 40), OUT, 4); for (let j = 0; j < 8; j++) { g.fillStyle = '#111'; g.beginPath(); g.arc(x + 55 + rr(-25, 25), y + rr(-20, 20), 6, 0, 7); g.fill(); } }
+    if (kind === 3) { paint(g, blob(x - 50, y, 50, 40, 0, t, 0.12, 12, 2), '#f7c6d9', null, null, bb(x - 50, y, 50, 40), OUT, 4); srand(3); for (let j = 0; j < 8; j++) { g.fillStyle = '#a8652d'; g.beginPath(); g.arc(x - 50 + rr(-25, 25), y + rr(-20, 20), 6, 0, 7); g.fill(); } paint(g, blob(x + 55, y, 50, 40, 0, t, 0.12, 12, 5), '#f7c6d9', null, null, bb(x + 55, y, 50, 40), OUT, 4); for (let j = 0; j < 8; j++) { g.fillStyle = '#a8652d'; g.beginPath(); g.arc(x + 55 + rr(-25, 25), y + rr(-20, 20), 6, 0, 7); g.fill(); } }
     if (kind === 6) { const p = new Path2D(); p.roundRect(x - 100, y - 70, 200, 140, 16); paint(g, p, '#d8a3bf', null, null, [x - 100, y - 70, 200, 140], OUT, 5); paint(g, P([[x + 100, y - 70], [x + 100, y + 70], [x + 10, y + 70]]), '#7a0f20', null, null, [x, y, 100, 70], OUT, 4); srand(4); for (let j = 0; j < 10; j++) { g.fillStyle = '#a8652d'; g.beginPath(); g.arc(x - 80 + rr(0, 100), y - 50 + rr(0, 100), 5, 0, 7); g.fill(); } }
   };
   return {
     home: HOME, cams: pos.map(([x, y]) => cam(x, y, 1.9)), anchors: pos.map(([x, y]) => [x - 100, y - 150]),
-    labels: pos.map(([x, y], i) => lbl([x, y + 165], T[i][0])),
+    labels: pos.map(([x, y], i) => lbl([x, y + 165], T[i][0], { beats: [-1, i] })),
     draw(g, t, b) {
       bgFill(g);
       pos.forEach(([x, y], i) => {
@@ -603,7 +608,7 @@ function capcane() {
         g.save(); g.clip(p);
         const [, a, c] = T[i];
         if (a && c) { for (const [f, dx] of [[a, -55], [c, 55]]) { g.save(); g.translate(x + dx - 55, y - 55); g.scale(0.11, 0.118); f(g, t); g.restore(); } txt(g, 'vs.', x, y + 6, 22, '#ffe36e'); }
-        else if (a) { g.save(); g.translate(x - 100, y - 100); g.scale(0.2, 0.214); a(g, t); g.restore(); g.save(); g.globalAlpha = 0.45 + 0.25 * pulse(t, 2); g.fillStyle = '#6b4a2e'; g.fill(p); g.restore(); txt(g, 'formol → brun-cenușiu', x, y + 110, 18, '#fff'); }
+        else if (a) { g.save(); g.translate(x - 100, y - 100); g.scale(0.2, 0.214); a(g, t); g.restore(); if (i === 7) { g.save(); g.globalAlpha = 0.45 + 0.25 * pulse(t, 2); g.fillStyle = '#6b4a2e'; g.fill(p); g.restore(); txt(g, 'formol: altă culoare', x, y + 110, 17, '#fff'); } }
         else micro(g, t, i, x, y);
         g.restore();
         if (on) glowRing(g, x, y, 135, 160, 0, ease(b.bt * 1.5));
