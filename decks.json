@@ -269,6 +269,18 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 120
+  },
+  {
+   "id": "recap-farma-02-04-anim",
+   "subj": "farma",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · LP 2–4: cazuri, receptori și experimente",
+   "sub": "Scheletul de punctaj pentru cele 5 + 5 cazuri și cele 4 experimente, formulele de la stație, receptorii, erata și capcanele",
+   "slides": 38,
+   "path": "lp/recap-farma-02-04-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 900
   }
  ]
 }
