@@ -133,10 +133,10 @@ export const SLIDES = [
   },
   {
     ...FISA('Cazul 1 · substanța A', [
-      { l: '1', q: 'Ce receptor / ce fel de ligand?', n: ['agonist', 'Rp GABA-A din SNC', 'cuplat cu canal de Cl⁻'],
+      { l: '1', q: 'Ce efect are la nivelul SNC?', n: ['hiperpolarizare', 'potențial post-sinaptic inhibitor', 'Cl⁻ intră'],
+        tx: '!!Hiperpolarizare, potențial post-sinaptic inhibitor!!: canalul de Cl⁻ se deschide și Cl⁻ intră în neuron.' },
+      { l: '2', q: 'De ce (receptorul, ligandul)?', n: ['agonist', 'Rp GABA-A din SNC', 'cuplat cu canal de Cl⁻'],
         tx: '!!Agonist!! (afinitate + activitate intrinsecă) pe receptorii GABA-A din SNC, cuplați cu canal de Cl⁻; fiind lipofilă, A traversează bariera hematoencefalică.' },
-      { l: '2', q: 'Ce efect are la nivelul SNC?', n: ['Cl⁻ intră', 'hiperpolarizare', 'potențial post-sinaptic inhibitor'],
-        tx: 'Canalul se deschide, Cl⁻ intră → !!hiperpolarizare, potențial post-sinaptic inhibitor!!.' },
     ]),
     kick: 'La OSPE · Cazul 1 · Substanța A', title: 'Răspunsul-model: substanța A pe GABA-A',
   },
@@ -170,14 +170,14 @@ export const SLIDES = [
   },
   {
     ...FISA('Cazul 2 · acetilcolina pe N2', [
-      { l: '1', q: 'Efectul ACh pe musculatura striată', n: ['N2: canal de Na⁺', 'Na⁺ intră → depolarizare', 'potențial de acțiune', 'contracția fibrei musculare'],
-        tx: 'ACh deschide N2 → Na⁺ intră → depolarizare → canale de Na⁺ voltaj-dependente → potențial de acțiune → !!contracția întregii fibre musculare!!.' },
+      { l: '1', q: 'Efectul ACh pe musculatura striată', n: ['contracția fibrei musculare', 'N2: canal de Na⁺', 'Na⁺ intră → depolarizare', 'potențial de acțiune'],
+        tx: '!!Contracția întregii fibre musculare!!: ACh deschide N2 → Na⁺ intră → depolarizare → canale de Na⁺ voltaj-dependente → potențial de acțiune.' },
       { l: '2', q: 'Cum se prelungește efectul?', n: ['inhibarea acetilcolinesterazei', 'ACh rămâne mai mult în fantă'],
         tx: 'Prin !!inhibitori de colinesterază!! (parasimpatomimetice indirecte): ACh e descompusă mai lent și rămâne mai mult în fanta sinaptică.' },
       { l: '3', q: 'Cum influențezi N2 pentru relaxare?', n: ['blocante neuromusculare (curarizante)', 'antidepolarizante', 'depolarizante (antirepolarizante)'],
         tx: 'Cu miorelaxante periferice (blocante neuromusculare, curarizante): !!antidepolarizante și depolarizante (antirepolarizante)!!.' },
       { l: '4', q: 'Supradoza de curarizant', n: ['răspunsul nu e în LP'],
-        tx: 'Întrebarea apare în LP, dar răspunsul nu: îl găsești în chenarul albastru (manual).' },
+        tx: 'Întrebarea apare în LP, dar răspunsul nu: îl găsești în chenarul albastru.' },
     ]),
     kick: 'La OSPE · Cazul 2 · Acetilcolina pe N2', title: 'Răspunsul-model pe cele 4 întrebări: placa motorie',
     xtra: 'Întrebarea 4, din manual: supradoză de antidepolarizant → inhibitor de colinesterază (neostigmină); de depolarizant → fără antidot, ventilație asistată.',
@@ -228,8 +228,8 @@ export const SLIDES = [
   },
   {
     ...FISA('Cazul 3 · efedrina', [
-      { l: '1', q: 'Receptorii și mecanismul molecular', n: ['eliberează NA presinaptic', 'stimulează direct α și β', 'Rp α1 (Gq) vasculari', 'vasoconstricție, decongestionant'],
-        tx: 'Efedrina eliberează NA din terminațiile simpatice și stimulează direct receptorii α și β; pe vase, NA și efedrina activează !!Rp α1 (Gq)!! → vasoconstricție → decongestionare nazală.' },
+      { l: '1', q: 'Receptorii și mecanismul molecular', n: ['Rp α1 (Gq) vasculari', 'eliberează NA presinaptic', 'stimulează direct α și β', 'vasoconstricție, decongestionant'],
+        tx: '!!Rp α1 (Gq)!! de pe vase, activați de NA (eliberată de efedrină din terminațiile simpatice) și direct de efedrină, care stimulează receptorii α și β → vasoconstricție → decongestionare nazală.' },
       { l: '2', q: 'Fenomenul la doze repetate + mecanismul', n: ['toleranță acută (tahifilaxie)', 'epuizarea stocurilor de NA'],
         tx: '!!Tahifilaxie (toleranță acută)!!: răspunsul scade rapid la doze repetate în interval scurt, prin epuizarea stocurilor presinaptice de noradrenalină.' },
     ]),
