@@ -7,8 +7,10 @@ Intrare
   pachetele de întrebări      fișierele <id>.js + index.js produse de build-ul Triviadorului
                               (TRV.pack({...}) / TRV.index([...])); se copiază neschimbate
   lp/fiziopat-examen-anim/    lista oficială de 22 de întrebări cu răspunsurile model (slide-urile „Răspuns model”)
-  lp/anatopat-z1-anim/, lp/anatopat-z2-anim/
-                              fișele OSPE oficiale (organ, leziune, definiție, descriere, cauze, complicații, DD)
+  lp/anatopat-z1-anim/ … z4   fișele OSPE oficiale (organ, leziune, definiție, descriere, cauze, complicații, DD)
+  lp/recap-histo-02-05-anim/, lp/recap-histo-06-07-anim/
+                              cele 19 lame de Histologie (poza, descrierea) + sim_src/histo_fise.json (fișa de evaluare oficială pe noțiuni)
+  sim_src/farma_fise.json     banca de subiecte pentru fișa OSPE de Farmacologie (cazurile din LP 1–4, modelul oficial, variante, teorie)
 
 Ieșire
   sim/index.html, sim/fonts/, sim/pachete/index.js, sim/pachete/<id>.js,
@@ -27,7 +29,8 @@ SRC = SITE / "sim_src"
 OUT = SITE / "sim"
 
 # pachetele folosite de simulări (restul nu se publică)
-KEEP = re.compile(r"^(unix_.+|histo_lp0[2-7]|anatopat_lp\d+|farma_lp\d+|micro_lp0[1-6]b?|fizio_lp\d+|embrio_lp\d+)$")
+KEEP = re.compile(r"^(unix_.+|anatopat_lp\d+|micro_lp0[1-6]b?|fizio_lp\d+|embrio_lp\d+)$")
+# Histologie și Farmacologie: fișele OSPE se construiesc din deck-urile aliniate la LP-urile oficiale (vezi build_fise)
 ORDER = {"histo": 0, "anatopat": 1, "farma": 2, "micro": 3, "fizio": 4, "fiziopat": 5, "embrio": 6}
 
 # Fiziopatologie: „una de mecanism, una din definiții / clasificări”. Împărțirea după formularea întrebării:
@@ -35,15 +38,6 @@ ORDER = {"histo": 0, "anatopat": 1, "farma": 2, "micro": 3, "fizio": 4, "fiziopa
 # definiții = „definiți / enumerați / prezentați definiția, clasificarea, tipurile, stadiile / DD”.
 FP_MEC = {1, 2, 4, 6, 9, 11, 12, 17, 18, 19, 22}
 
-# Farmacologie: la examen se dă un caz clinic de comentat. Stațiile din pachete care sunt cazuri clinice
-# (un pacient concret cu o situație de comentat). Restul stațiilor (rețete, forme farmaceutice, calcul de doză,
-# decodarea unei substanțe, experimentele) rămân disponibile doar dacă sunt cerute explicit în aplicație.
-FARMA_CASES = {
-    "farma_lp01": [],
-    "farma_lp02": ["q09", "q11", "q12", "q20", "q21", "q22", "q23", "q25", "q26"],
-    "farma_lp03": ["q07", "q08", "q21", "q23", "q24"],
-    "farma_lp04": ["q15", "q23", "q25", "q26", "q27", "q28", "q29", "q30"],
-}
 
 # fișele OSPE din deck-urile de Anatomie patologică → tema (topic) din pachetul de întrebări
 SHEET_MAP = {
@@ -92,6 +86,11 @@ for (const d of ['anatopat-z1-anim', 'anatopat-z2-anim', 'anatopat-z3-anim', 'an
   const m = await import(site + '/lp/' + d + '/slides.js');
   for (const s of m.SLIDES) if (s.script && s.sceneOpts && s.sceneOpts.f) out.sheets.push({ deck: d, f: s.sceneOpts.f, kick: s.kick, rows: s.script });
 }
+out.histo = [];
+for (const d of ['recap-histo-02-05-anim', 'recap-histo-06-07-anim']) {
+  const m = await import(site + '/lp/' + d + '/slides.js');
+  for (const s of m.SLIDES) if (s.scene === 'lama') out.histo.push({ deck: d, kick: s.kick, title: s.title, points: s.points, insets: s.insets || [], dd: (s.sceneOpts || {}).dd });
+}
 console.log(JSON.stringify(out));
 """
 
@@ -128,17 +127,13 @@ def main():
             t = {"mcq": "m", "open": "o", "calc": "c", "graph": "g"}[x["type"]]
             q.append([x["id"], x["topic"], x["diff"], t, 1 if x.get("station") else 0, 1 if x.get("img") else 0,
                       len(x.get("opts", [])), len(x.get("ok", [])),
-                      1 if x["id"].rsplit("_", 1)[-1] in FARMA_CASES.get(u["id"], []) and x.get("station") else 0,
+                      0,
                       1 if x.get("hot") else 0])  # hot = a picat la examen → șansă mai mare la tragere (oral)
         units.append({"id": u["id"], "subject": u["subject"], "unit": u["unit"], "title": u["title"],
                       "short": u.get("short", ""), "topics": u["topics"], "file": u["file"], "q": q})
         if src != dst:
             shutil.copyfile(f, dst / u["file"])
         keep_files.add(u["file"])
-    for uid, ids in FARMA_CASES.items():
-        u = next((x for x in units if x["id"] == uid), None)
-        assert u, uid
-        assert sum(q[8] for q in u["q"]) == len(ids), f"{uid}: cazurile clinice nu se potrivesc cu pachetul"
     units.sort(key=lambda u: (ORDER.get(u["subject"], 9), not u["id"].startswith("unix_"), u["id"]))
 
     # lista de 22 (Fiziopatologie) și fișele OSPE (Anatomie patologică), citite din deck-uri
@@ -169,6 +164,74 @@ def main():
                                           ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
     keep_files.add("anatopat_fise.js")
 
+    # ---------- Histologie: o stație pe lamă, din recapitulările OSPE (aliniate la LP-urile oficiale 2–7) ----------
+    by_lp = {}
+    for x in ext["histo"]:
+        m = re.match(r"LP (\d+) · Lama (\d+) din (\d+) · ([^·]+?) · (.+)$", x["kick"])
+        assert m, x["kick"]
+        lp, nr, col, org = int(m[1]), int(m[2]), m[4].strip(), m[5].strip()
+        img = x["insets"][0]["img"] if x["insets"] else None
+        kp = []
+        for pnt in x["points"]:
+            h = pnt["h"]
+            if h.startswith("Recunoa"): st = "Recunoașterea · lama + colorația"
+            elif h.startswith("Ob. mic"): st = "Descrierea · ob. mic"
+            elif h.startswith("Ob. mare"): st = "Descrierea · ob. mare"
+            elif h.startswith("DD"): st = "DD · " + h.split("·", 1)[1].strip() + " · 1 asemănare + 3 diferențe"
+            else: st = h
+            for d in pnt["d"]:
+                t = d.strip()
+                if t.startswith("= "): t = "Asemănare: " + t[2:]
+                elif t.startswith("≠ "): t = "Diferență: " + t[2:]
+                kp.append({"s": st, "t": t})
+        by_lp.setdefault(lp, []).append({"nr": nr, "title": x["title"], "col": col, "org": org, "deck": x["deck"], "img": img, "kp": kp})
+    HF = {(z["lp"], z["nr"]): z for z in json.loads((SRC / "histo_fise.json").read_text(encoding="utf-8"))["lame"]}
+    for lp, lames in sorted(by_lp.items()):
+        uid = f"histo_f{lp:02d}"
+        lames.sort(key=lambda z: z["nr"])
+        imgs, qs = {}, []
+        for i, z in enumerate(lames):
+            key = None
+            if z["img"]:
+                f = next((f for f in (SITE / "lp" / z["deck"] / "img").glob(z["img"] + ".*")), None)
+                assert f, (z["deck"], z["img"])
+                key = f"l{i}"
+                imgs[key] = f"../lp/{z['deck']}/img/{f.name}"
+            qs.append({"id": f"{uid}_l{i+1}", "topic": i, "diff": 0, "type": "open", "station": 1, "img": key,
+                       "q": "Recunoașteți lama și colorația, descrieți preparatul (obiectiv mic, apoi obiectiv mare) și faceți diagnosticul diferențial cu o singură altă lamă.",
+                       "kp": z["kp"], "ev": HF[(lp, z["nr"])], "src": f"Recapitularea OSPE de Histologie · LP {lp}, {z['title']} ({z['col']} · {z['org']})"})
+        titles = {2: "Epiteliile de acoperire (I)", 3: "Epiteliile de acoperire (II)", 4: "Epiteliile glandulare exocrine (III)",
+                  5: "Epiteliile glandulare endocrine (IV)", 6: "Țesutul conjunctiv (I)", 7: "Țesutul conjunctiv (II)"}
+        (dst / f"{uid}.js").write_text("TRV.pack(" + json.dumps({"id": uid, "questions": qs, "imgs": imgs}, ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
+        keep_files.add(f"{uid}.js")
+        units.append({"id": uid, "subject": "histo", "unit": f"LP {lp}", "title": titles[lp], "short": titles[lp], "file": f"{uid}.js",
+                      "topics": [z["title"] for z in lames], "q": [[q["id"], q["topic"], 2, "o", 1, 1 if q["img"] else 0, 0, 0, 0, 0, 0] for q in qs]})
+    assert sum(len(v) for v in by_lp.values()) == 19, "Histologie LP 2–7 trebuie să aibă 19 lame"
+    for z in HF.values():
+        assert abs(sum(n["p"] for n in z["poz"]) - 6) < 1e-9 and len(z["dd"]["f"]) == 3, (z["lp"], z["nr"])
+
+    # ---------- Farmacologie: banca de subiecte pentru fișa OSPE (sim_src/farma_fise.json) ----------
+    FB = json.loads((SRC / "farma_fise.json").read_text(encoding="utf-8"))
+    ftitles = {1: "Absorbția și distribuția", 2: "Metabolizarea și excreția", 3: "Farmacodinamie", 4: "Farmacodinamie. Farmacotoxicologie"}
+    ids = set()
+    for lp in (1, 2, 3, 4):
+        uid = f"farma_f{lp:02d}"
+        subs = [x for x in FB["subjects"] if x["lp"][0] == lp]
+        qs = []
+        for i, x in enumerate(subs):
+            assert x["id"] not in ids, x["id"]; ids.add(x["id"])
+            assert x["items"] and all(it["barem"] and all(b["p"] > 0 for b in it["barem"]) for it in x["items"]), x["id"]
+            q = {"id": "farma_" + x["id"], "topic": i, "diff": 2, "type": "open", "station": 1, **{k: v for k, v in x.items() if k != "id"}}
+            qs.append(q)
+        (dst / f"{uid}.js").write_text("TRV.pack(" + json.dumps({"id": uid, "questions": qs, "imgs": {}}, ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
+        keep_files.add(f"{uid}.js")
+        units.append({"id": uid, "subject": "farma", "unit": f"LP {lp}", "title": ftitles[lp], "short": ftitles[lp], "file": f"{uid}.js",
+                      "topics": [x["title"] for x in subs],
+                      "q": [[q["id"], q["topic"], 2, "o", 1, 0, 0, 0, 1 if q["kind"] == "caz" else 0, 0, 1 if q.get("variant") else 0] for q in qs]})
+    for m in ("model_s1", "model_s2", "model_s3"):
+        assert m in ids, f"lipsește {m} (modelul oficial)"
+    units.sort(key=lambda u: (ORDER.get(u["subject"], 9), not u["id"].startswith("unix_"), u["id"]))
+
     (dst / "index.js").write_text("TRV.index(" + json.dumps(units, ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
     keep_files.add("index.js")
     for old in dst.glob("*.js"):
@@ -181,7 +244,7 @@ def main():
 
     n = sum(len(u["q"]) for u in units)
     size = sum(p.stat().st_size for p in OUT.rglob("*") if p.is_file())
-    print(f"Gata: {len(units)} pachete, {n} întrebări + 22 (Fiziopatologie) + {len(sheets)} fișe OSPE · sim/ = {size/1e6:.1f} MB")
+    print(f"Gata: {len(units)} pachete, {n} întrebări + 22 (Fiziopatologie) + {len(sheets)} fișe Anatopat · sim/ = {size/1e6:.1f} MB")
 
 
 if __name__ == "__main__":

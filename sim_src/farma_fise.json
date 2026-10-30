@@ -1,0 +1,2905 @@
+{
+ "subjects": [
+  {
+   "id": "model_s1",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "Modelul OSPE oficial · subiectul 1",
+   "title": "Pacientul obez și substanța lipofilă",
+   "stem": "Un pacient cu obezitate este tratat cu o substanță lipofilă. La inițierea tratamentului, acesta are nevoie de doze mai mari din substanța respectivă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Explicați de ce este necesară creșterea dozei substanței la începutul tratamentului.",
+     "barem": [
+      {
+       "t": "fiind lipofil, medicamentul se distribuie în țesutul adipos",
+       "p": 0.75
+      },
+      {
+       "t": "cantitatea din sânge e redusă, efectul mai scăzut: sunt necesare doze mai mari până la echilibrarea concentrațiilor",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Menționați ce etapă farmacocinetică este influențată.",
+     "barem": [
+      {
+       "t": "distribuția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "model_s2",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "Modelul OSPE oficial · subiectul 2",
+   "title": "Picăturile de ochi cu ligand β2",
+   "stem": "Un pacient utilizează picături de ochi cu o substanță cu afinitate față de receptorii beta-2 de la nivelul ochiului (epiteliu ciliar) și lipsită de activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este substanța utilizată?",
+     "barem": [
+      {
+       "t": "antagonist",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce fel de receptori sunt receptorii beta-2? (localizare la nivelul celulei, cuplare cu proteine sau cu canale ionice)",
+     "barem": [
+      {
+       "t": "receptori membranari",
+       "p": 0.5
+      },
+      {
+       "t": "cuplați cu proteine Gs",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce efect are substanța utilizată asupra presiunii intraoculare? Cum se realizează acest efect?",
+     "barem": [
+      {
+       "t": "scade presiunea intraoculară",
+       "p": 1
+      },
+      {
+       "t": "prin scăderea sintezei de umoare apoasă",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Ce efect farmacologic asupra vaselor de sânge și ce contraindicație ar putea avea această substanță dacă ar fi administrată sistemic?",
+     "barem": [
+      {
+       "t": "contracția musculaturii netede vasculare / vasoconstricție",
+       "p": 1
+      },
+      {
+       "t": "vasospasm (angină vasospastică), hipertensiune arterială",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "model_s3",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "Modelul OSPE oficial · subiectul 3",
+   "title": "Dependența psihică",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați fenomenul de dependență psihică.",
+     "barem": [
+      {
+       "t": "dorință crescută de a consuma o substanță",
+       "p": 1
+      },
+      {
+       "t": "cu scopul obținerii unei satisfacții de ordin emoțional sau de a evita o suferință emoțională",
+       "p": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c1",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 1",
+   "title": "Peptidul I per os",
+   "stem": "Un medicament cu structură peptidică, notat I, se administrează per os. Se recoltează sânge la 0, 20, 40, 60 și 90 de minute și se determină concentrația plasmatică.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se pot explica valorile din tabel?",
+     "barem": [
+      {
+       "t": "Cp = 0 la toți timpii: substanța nu se absoarbe",
+       "p": 0.75
+      },
+      {
+       "t": "proteazele din tubul digestiv degradează peptidul",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "absorbția",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "De ce nu se absoarbe nici insulina administrată per os?",
+     "barem": [
+      {
+       "t": "moleculă prea mare",
+       "p": 0.5
+      },
+      {
+       "t": "prea hidrofilă",
+       "p": 0.5
+      }
+     ]
+    }
+   ],
+   "table": {
+    "head": [
+     "Timp (min)",
+     "0",
+     "20",
+     "40",
+     "60",
+     "90"
+    ],
+    "rows": [
+     [
+      "Cp (µg/mL)",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "lp1_c2",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 2",
+   "title": "Bioechivalența alprazolamului",
+   "stem": "O companie dorește să pună pe piață un medicament cu alprazolam care să poată substitui medicamentul original.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce parametri farmacocinetici se măsoară în studiile de bioechivalență?",
+     "barem": [
+      {
+       "t": "Cmax",
+       "p": 0.5
+      },
+      {
+       "t": "Tmax",
+       "p": 0.5
+      },
+      {
+       "t": "AUC",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce reprezintă fiecare parametru?",
+     "barem": [
+      {
+       "t": "Cmax = concentrația plasmatică maximă",
+       "p": 0.5
+      },
+      {
+       "t": "Tmax = timpul până la atingerea Cmax",
+       "p": 0.5
+      },
+      {
+       "t": "AUC = cantitatea totală care ajunge în circulația sistemică în timp",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce condiție trebuie îndeplinită pentru aprobare?",
+     "barem": [
+      {
+       "t": "intervalul de încredere de 90% al raportului generic / referință, pentru AUC și Cmax",
+       "p": 0.5
+      },
+      {
+       "t": "între 80% și 125%",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c3",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 3",
+   "title": "Levotiroxina și calciul",
+   "stem": "O pacientă cu hipotiroidie urmează tratament cronic per os cu levotiroxină. De câteva zile prezintă bradicardie, somnolență și intoleranță la frig. A început din proprie inițiativă un supliment cu calciu, pe care îl ia dimineața, simultan cu levotiroxina.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum explicați agravarea simptomelor?",
+     "barem": [
+      {
+       "t": "calciul se leagă de levotiroxină",
+       "p": 0.75
+      },
+      {
+       "t": "scade absorbția, deci efectul levotiroxinei",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Cum consiliați pacienta?",
+     "barem": [
+      {
+       "t": "levotiroxina pe stomacul gol, cu cel puțin o jumătate de oră înainte de micul dejun",
+       "p": 0.5
+      },
+      {
+       "t": "la minimum 2 ore de alte medicamente sau suplimente (aluminiu, fier, calciu)",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "absorbția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c4",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 4",
+   "title": "Levodopa și carbidopa",
+   "stem": "În boala Parkinson se administrează levodopa, care prin decarboxilare se transformă în dopamină, asociată cu carbidopa, un inhibitor al DOPA-decarboxilazei, pentru a evita efectele secundare periferice ale dopaminei.",
+   "items": [
+    {
+     "l": "a",
+     "q": "De ce carbidopa nu împiedică transformarea levodopa în dopamină și în creier?",
+     "barem": [
+      {
+       "t": "levodopa traversează bariera hematoencefalică",
+       "p": 0.5
+      },
+      {
+       "t": "dopamina nu traversează bariera hematoencefalică",
+       "p": 0.5
+      },
+      {
+       "t": "carbidopa nu traversează bariera hematoencefalică: inhibă conversia doar periferic",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Care este rostul asocierii?",
+     "barem": [
+      {
+       "t": "evită efectele secundare periferice ale dopaminei",
+       "p": 0.5
+      },
+      {
+       "t": "crește cantitatea de levodopa disponibilă la bariera hematoencefalică",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este implicată?",
+     "barem": [
+      {
+       "t": "distribuția (trecerea prin bariera hematoencefalică)",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c5",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 5",
+   "title": "Volumul aparent de distribuție",
+   "stem": "Două medicamente, A și B, se administrează intravenos, câte 100 mg, în doză unică. Concentrația plasmatică maximă este 20 mg/L pentru A și 1 mg/L pentru B. Distribuția e rapidă, iar eliminarea e neglijabilă înainte de măsurare.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Calculați volumul aparent de distribuție (Vd) pentru cele două medicamente.",
+     "barem": [
+      {
+       "t": "Vd = cantitatea administrată / concentrația plasmatică",
+       "p": 0.5
+      },
+      {
+       "t": "Vd (A) = 100 mg / 20 mg/L = 5 L",
+       "p": 0.5
+      },
+      {
+       "t": "Vd (B) = 100 mg / 1 mg/L = 100 L",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Unde s-a distribuit preferențial fiecare medicament?",
+     "barem": [
+      {
+       "t": "A în sânge",
+       "p": 0.5
+      },
+      {
+       "t": "B în țesuturi",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c6",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 6",
+   "title": "Pacientul cu IMC 37 și substanța lipofilă",
+   "stem": "Un pacient cu IMC 37 este tratat cronic cu o substanță lipofilă, iar doza a fost crescută pe parcursul tratamentului. După un regim drastic de slăbit, prezintă simptome specifice supradozajului.",
+   "items": [
+    {
+     "l": "a",
+     "q": "De ce a fost nevoie de doze mai mari la începutul tratamentului?",
+     "barem": [
+      {
+       "t": "medicamentul lipofil se distribuie în țesutul adipos",
+       "p": 0.75
+      },
+      {
+       "t": "cantitatea din sânge e redusă: sunt necesare doze mai mari până la echilibrarea concentrațiilor",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "distribuția",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "De ce a apărut supradozajul după slăbire?",
+     "barem": [
+      {
+       "t": "medicamentul din țesutul adipos se redistribuie în sânge",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp1_c7",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 1 · Cazul 7",
+   "title": "Medicamentul G dislocat de pe proteine",
+   "stem": "Un pacient cu diabet zaharat ia cronic medicamentul G, care eliberează insulina din pancreas și are afinitate crescută pentru proteinele plasmatice. Pentru o durere dentară ia medicamentul X și prezintă tahicardie, senzație de foame, transpirații, paloare și tremurături.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se explică simptomele?",
+     "barem": [
+      {
+       "t": "hipoglicemie",
+       "p": 0.5
+      },
+      {
+       "t": "X are și el afinitate crescută pentru proteinele plasmatice",
+       "p": 0.5
+      },
+      {
+       "t": "X dislocă G de pe proteine",
+       "p": 0.75
+      },
+      {
+       "t": "crește fracția liberă a lui G: efectul se intensifică",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce fracție a medicamentului realizează efectul?",
+     "barem": [
+      {
+       "t": "doar fracția liberă",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este implicată?",
+     "barem": [
+      {
+       "t": "distribuția (legarea de proteinele plasmatice)",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c1",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 1",
+   "title": "Carbamazepina și contraceptivele orale",
+   "stem": "O pacientă cu tratament cronic cu carbamazepină (antiepileptic cu acțiune inductoare enzimatică) folosește ca metodă contraceptivă contraceptive orale.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce comentarii faceți?",
+     "barem": [
+      {
+       "t": "carbamazepina este inductor enzimatic",
+       "p": 0.5
+      },
+      {
+       "t": "crește expresia CYP3A4",
+       "p": 0.5
+      },
+      {
+       "t": "contraceptivele sunt metabolizate mai repede: eficacitatea lor poate fi compromisă",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce recomandați?",
+     "barem": [
+      {
+       "t": "alte metode contraceptive (prezervativ, sterilet)",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "metabolizarea",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c2",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 2",
+   "title": "Autoinducția carbamazepinei",
+   "stem": "Un pacient cu prima criză epileptică primește carbamazepină (antiepileptic cu efect inductor enzimatic) 500 mg/zi. Se recoltează probe de sânge la 4, 8 și 12 ore, la început și după 3 săptămâni.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce explicație propuneți pentru concentrațiile mai mici după 3 săptămâni?",
+     "barem": [
+      {
+       "t": "carbamazepina este un puternic inductor enzimatic",
+       "p": 0.5
+      },
+      {
+       "t": "induce inclusiv enzima care o metabolizează: autoinducție enzimatică",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "metabolizarea",
+       "p": 0.5
+      }
+     ]
+    }
+   ],
+   "table": {
+    "head": [
+     "Ora recoltării",
+     "4 h",
+     "8 h",
+     "12 h"
+    ],
+    "rows": [
+     [
+      "La început (mg/L)",
+      "8,65",
+      "7,42",
+      "6,32"
+     ],
+     [
+      "După 3 săptămâni (mg/L)",
+      "6,12",
+      "4,35",
+      "3,17"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "lp2_c3",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 3",
+   "title": "Simvastatina și claritromicina",
+   "stem": "Un pacient cu hipercolesterolemie severă primește simvastatină în doză maximă. Pentru o infecție, medicul ia în considerare claritromicina.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce consecințe are asocierea?",
+     "barem": [
+      {
+       "t": "claritromicina este inhibitor enzimatic (CYP3A4)",
+       "p": 0.5
+      },
+      {
+       "t": "încetinește metabolizarea simvastatinei: concentrația ei crește",
+       "p": 0.75
+      },
+      {
+       "t": "reacții adverse: miopatie (miozită, rabdomioliză)",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce recomandați?",
+     "barem": [
+      {
+       "t": "scăderea dozei sau evitarea asocierii",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "metabolizarea",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c4",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 4",
+   "title": "Clopidogrelul și omeprazolul",
+   "stem": "Un pacient cu hipertensiune arterială, angină pectorală, hipercolesterolemie și ulcer gastric primește clopidogrel (pro-drog) și omeprazol (inhibitor enzimatic).",
+   "items": [
+    {
+     "l": "a",
+     "q": "Comentați asocierea.",
+     "barem": [
+      {
+       "t": "clopidogrelul este pro-drog, activat de CYP2C19",
+       "p": 0.75
+      },
+      {
+       "t": "omeprazolul este inhibitor enzimatic",
+       "p": 0.5
+      },
+      {
+       "t": "scade bioactivarea clopidogrelului: risc de ineficacitate",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce recomandați?",
+     "barem": [
+      {
+       "t": "se evită asocierea",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "metabolizarea",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c5",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 5",
+   "title": "Intoxicația cu fenobarbital",
+   "stem": "O persoană este găsită inconștientă lângă blistere goale de fenobarbital. La spital primește doze multiple de cărbune activat. Fenobarbitalul are caracter slab acid, se excretă renal și se reabsoarbe tubular.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum puteți crește eliminarea fenobarbitalului?",
+     "barem": [
+      {
+       "t": "bicarbonat de sodiu: alcalinizarea urinii",
+       "p": 0.75
+      },
+      {
+       "t": "în mediu alcalin, fenobarbitalul (acid slab) e predominant ionizat",
+       "p": 0.75
+      },
+      {
+       "t": "forma ionizată nu se reabsoarbe tubular, rămâne în urină",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "excreția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c6",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 6",
+   "title": "Timpul de înjumătățire din două valori",
+   "stem": "După administrarea unei doze unice, picul plasmatic este de 10 ng/mL la o oră, iar după 4 ore concentrația este de 5 ng/mL. Epurarea este de ordinul I.",
+   "items": [
+    {
+     "l": "a",
+     "q": "După cât timp este medicamentul practic eliminat din organism?",
+     "barem": [
+      {
+       "t": "T½ = 3 h",
+       "p": 0.5
+      },
+      {
+       "t": "eliminarea completă după 5–7 T½: 15–21 h",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "În câte prize zilnice se administrează?",
+     "barem": [
+      {
+       "t": "intervalul dintre doze este 1–2 T½",
+       "p": 0.5
+      },
+      {
+       "t": "24 : 3 = 8 administrări pe zi",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Cum se modifică numărul de administrări dacă T½ ar fi mai lung?",
+     "barem": [
+      {
+       "t": "scade (administrări mai rare)",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Cum puteți reduce numărul de administrări?",
+     "barem": [
+      {
+       "t": "forme farmaceutice retard / cu eliberare prelungită",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp2_c7",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 2 · Cazul 7",
+   "title": "Tabelul de concentrații",
+   "stem": "După administrarea unei doze unice, se recoltează probe de sânge la momentele din tabel.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de cinetică are medicamentul?",
+     "barem": [
+      {
+       "t": "cinetică de ordinul I (Cp nu scade liniar)",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Calculați timpul de înjumătățire.",
+     "barem": [
+      {
+       "t": "prima fază e distribuția: se folosesc valorile de la final",
+       "p": 0.5
+      },
+      {
+       "t": "Ke = (ln 25 − ln 12,5) : 3 = 0,23",
+       "p": 0.5
+      },
+      {
+       "t": "T½ = 0,693 / 0,23 = 3 h",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Când este practic completă eliminarea?",
+     "barem": [
+      {
+       "t": "după 5–7 T½ (15–21 h)",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Cum influențează legarea de proteinele plasmatice T½?",
+     "barem": [
+      {
+       "t": "crește T½",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "e",
+     "q": "Ce se întâmplă cu eliminarea în insuficiența renală și ce parametri se modifică?",
+     "barem": [
+      {
+       "t": "eliminarea renală scade",
+       "p": 0.5
+      },
+      {
+       "t": "clearance-ul scade, T½ crește",
+       "p": 0.5
+      }
+     ]
+    }
+   ],
+   "table": {
+    "head": [
+     "Ora",
+     "0",
+     "1",
+     "2",
+     "5",
+     "6",
+     "9",
+     "12"
+    ],
+    "rows": [
+     [
+      "Cp (µg/mL)",
+      "100",
+      "70",
+      "50",
+      "35",
+      "25",
+      "12,5",
+      "6,25"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "lp3_c1",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 1",
+   "title": "Eficacitate și potență",
+   "stem": "Un pacient ia cronic substanța A. Medicul o înlocuiește cu o substanță din aceeași clasă, cu doza zilnică mai mică. Pacientul întreabă dacă să ia mai multe comprimate, ca înainte; medicul îi spune că nu.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce parametru permite unei substanțe să fie administrată într-o doză mai mică decât altă substanță pentru același efect?",
+     "barem": [
+      {
+       "t": "potența",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Prin ce diferă potența de eficacitate?",
+     "barem": [
+      {
+       "t": "potența: doza necesară pentru același efect (pe axa dozei)",
+       "p": 0.5
+      },
+      {
+       "t": "eficacitatea: mărimea efectului maxim",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c2",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 2",
+   "title": "Supradoza cu medicamentul B",
+   "stem": "T.E., 45 de ani, ajunge la UPU după o supradoză cu medicamentul B, luat în scop suicidar. B se leagă de receptorii membranari din centrul respirator bulbar și produce deprimare respiratorie.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Care este cea mai bună abordare terapeutică?",
+     "barem": [
+      {
+       "t": "un antagonist competitiv",
+       "p": 0.75
+      },
+      {
+       "t": "al acelorași receptori",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce tip de ligand este B?",
+     "barem": [
+      {
+       "t": "agonist",
+       "p": 0.5
+      },
+      {
+       "t": "afinitate și activitate intrinsecă",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "De ce funcționează tratamentul?",
+     "barem": [
+      {
+       "t": "ocupă receptorii fără să-i activeze",
+       "p": 0.5
+      },
+      {
+       "t": "nu se mai formează mesageri secunzi: deprimarea respiratorie dispare",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c3",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 3",
+   "title": "Substanța S",
+   "stem": "Substanța S are afinitate pentru receptorii beta-2 cuplați cu proteine Gs și are activitate intrinsecă. Se distribuie bine în musculatura netedă traheobronșică și uterină.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este S?",
+     "barem": [
+      {
+       "t": "agonist β2",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efect farmacologic și ce indicații terapeutice ar putea avea?",
+     "barem": [
+      {
+       "t": "bronhodilatație",
+       "p": 0.75
+      },
+      {
+       "t": "efect tocolitic (relaxarea uterului)",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Explicați mecanismul.",
+     "barem": [
+      {
+       "t": "Gs → adenilat-ciclaza → AMPc crește",
+       "p": 0.5
+      },
+      {
+       "t": "PKA",
+       "p": 0.25
+      },
+      {
+       "t": "calsechestrina și Ca²⁺-ATPaza",
+       "p": 0.5
+      },
+      {
+       "t": "scade Ca²⁺ → relaxare",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c4",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 4",
+   "title": "Substanța M",
+   "stem": "Substanța M are afinitate pentru receptorii beta-1 cuplați cu Gs din cord și din aparatul juxtaglomerular și nu posedă activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este M?",
+     "barem": [
+      {
+       "t": "antagonist β1",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efect farmacologic are?",
+     "barem": [
+      {
+       "t": "cardioinhibiție (scad forța și frecvența cardiacă)",
+       "p": 0.75
+      },
+      {
+       "t": "scade secreția de renină",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Explicați mecanismul în miocardul contractil.",
+     "barem": [
+      {
+       "t": "AMPc nu crește",
+       "p": 0.25
+      },
+      {
+       "t": "canalele de Ca²⁺ de tip L nu se activează",
+       "p": 0.5
+      },
+      {
+       "t": "scade Ca²⁺ intracelular: contracția scade",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Explicați mecanismul în nodul sinusal.",
+     "barem": [
+      {
+       "t": "fără AMPc nu se activează canalele HCN",
+       "p": 0.5
+      },
+      {
+       "t": "frecvența cardiacă scade",
+       "p": 0.25
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c5",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 5",
+   "title": "Intestinul izolat",
+   "stem": "Un fragment de intestin subțire este menținut într-un vas cu soluție în condiții fiziologice (izotonie, izoionie, oxigen, 37°C). Se adaugă pilocarpină, apoi atropină.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se modifică contractilitatea după pilocarpină? Explicați.",
+     "barem": [
+      {
+       "t": "crește (contracție)",
+       "p": 0.5
+      },
+      {
+       "t": "pilocarpina: agonist M1,3 (Gq)",
+       "p": 0.5
+      },
+      {
+       "t": "fosfolipaza C → PIP2 → IP3 + DAG",
+       "p": 0.5
+      },
+      {
+       "t": "IP3 → Ca²⁺: contracție fazică; DAG → PKC: contracție tonică",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce se întâmplă după atropină?",
+     "barem": [
+      {
+       "t": "relaxare",
+       "p": 0.5
+      },
+      {
+       "t": "atropina: antagonist M1,3, împiedică acțiunea pilocarpinei",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c6",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 6",
+   "title": "Secreția salivară la 4 loturi de șoareci",
+   "stem": "Patru loturi de șoareci, narcotizați cu uretan 1,3–1,5 g/kg intraperitoneal: lotul 1 ser fiziologic; lotul 2 pilocarpină + ser fiziologic; lotul 3 ser fiziologic + atropină; lotul 4 pilocarpină + atropină. Se măsoară diametrul petelor de salivă la 10, 20, 30, 40 și 50 de minute.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ordonați loturile descrescător după diametrul petelor.",
+     "barem": [
+      {
+       "t": "lotul 2 > lotul 1 ≈ lotul 4 > lotul 3",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Explicați rezultatele.",
+     "barem": [
+      {
+       "t": "glandele salivare au receptori M1,3 (Gq)",
+       "p": 0.5
+      },
+      {
+       "t": "pilocarpina (agonist) crește secreția",
+       "p": 0.5
+      },
+      {
+       "t": "atropina (antagonist) scade secreția și împiedică acțiunea pilocarpinei",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp3_c7",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 3 · Cazul 7",
+   "title": "Pupila la 3 iepuri",
+   "stem": "La trei iepuri se pun 1–2 picături în sacul conjunctival inferior al ochiului drept (ochiul stâng este martor): iepurele 1 pilocarpină, iepurele 2 atropină, iepurele 3 adrenalină. Se examinează diametrul pupilar și reflexul fotomotor.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se modifică diametrul pupilar la fiecare iepure?",
+     "barem": [
+      {
+       "t": "pilocarpina: mioză",
+       "p": 0.5
+      },
+      {
+       "t": "atropina: midriază",
+       "p": 0.5
+      },
+      {
+       "t": "adrenalina: midriază",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Prin ce receptori acționează substanțele?",
+     "barem": [
+      {
+       "t": "pilocarpina și atropina: M3 (Gq) din mușchiul circular",
+       "p": 0.5
+      },
+      {
+       "t": "adrenalina: α1 (Gq) din mușchiul radial",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Cum influențează agoniștii muscarinici presiunea intraoculară?",
+     "barem": [
+      {
+       "t": "o scad",
+       "p": 0.5
+      },
+      {
+       "t": "contractă mușchiul circular și ciliar: crește scurgerea convențională",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Ce alte mecanisme de scădere a presiunii intraoculare cunoașteți?",
+     "barem": [
+      {
+       "t": "antagoniști β",
+       "p": 0.25
+      },
+      {
+       "t": "agoniști α2",
+       "p": 0.25
+      },
+      {
+       "t": "inhibitori de anhidrază carbonică",
+       "p": 0.25
+      },
+      {
+       "t": "analogi de prostaglandine",
+       "p": 0.25
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c1",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 1",
+   "title": "Substanța A",
+   "stem": "Substanța A are lipofilie crescută și traversează bariera hematoencefalică. Are afinitate pentru receptori din SNC cuplați cu canale de Cl⁻ și are activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce efect are la nivelul SNC?",
+     "barem": [
+      {
+       "t": "Cl⁻ intră în neuron",
+       "p": 0.5
+      },
+      {
+       "t": "hiperpolarizare",
+       "p": 0.75
+      },
+      {
+       "t": "potențial post-sinaptic inhibitor",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce tip de ligand este A și pe ce receptor acționează?",
+     "barem": [
+      {
+       "t": "agonist",
+       "p": 0.5
+      },
+      {
+       "t": "receptorii GABA-A",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c2",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 2",
+   "title": "Acetilcolina pe receptorii N2",
+   "stem": "Acetilcolina stimulează receptorii N2 cuplați cu canale ionice de Na⁺.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce efect are acetilcolina asupra musculaturii striate?",
+     "barem": [
+      {
+       "t": "Na⁺ intră → depolarizare",
+       "p": 0.5
+      },
+      {
+       "t": "potențial de acțiune",
+       "p": 0.5
+      },
+      {
+       "t": "contracția fibrei musculare",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Cum se poate prelungi efectul acetilcolinei?",
+     "barem": [
+      {
+       "t": "inhibitori de colinesterază",
+       "p": 0.75
+      },
+      {
+       "t": "acetilcolina rămâne mai mult în fanta sinaptică",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Pentru o intervenție chirurgicală e nevoie de relaxare musculară. Cum influențați receptorii N2?",
+     "barem": [
+      {
+       "t": "miorelaxante periferice (curarizante)",
+       "p": 0.5
+      },
+      {
+       "t": "antidepolarizante",
+       "p": 0.5
+      },
+      {
+       "t": "depolarizante (antirepolarizante)",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c3",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 3",
+   "title": "Efedrina",
+   "stem": "Un pacient cu viroză respiratorie folosește picături de nas cu efedrină. După administrări repetate, la câteva ore, picăturile nu mai au efect.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Prin ce receptori și prin ce mecanism acționează efedrina?",
+     "barem": [
+      {
+       "t": "receptori α1 (Gq) de pe vase",
+       "p": 0.5
+      },
+      {
+       "t": "eliberează noradrenalina din terminațiile simpatice",
+       "p": 0.5
+      },
+      {
+       "t": "stimulează direct receptorii α și β",
+       "p": 0.5
+      },
+      {
+       "t": "vasoconstricție → decongestionare nazală",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce fenomen apare și prin ce mecanism?",
+     "barem": [
+      {
+       "t": "tahifilaxie (toleranță acută)",
+       "p": 1
+      },
+      {
+       "t": "epuizarea stocurilor presinaptice de noradrenalină",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c4",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 4",
+   "title": "Substanța D",
+   "stem": "Substanța D, agonist al receptorilor membranari β2, este folosită ca bronhodilatator. După câteva luni de tratament, efectul nu mai este ca la început.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Explicați scăderea eficacității.",
+     "barem": [
+      {
+       "t": "autoinducție enzimatică (toleranță farmacocinetică)",
+       "p": 0.75
+      },
+      {
+       "t": "down-regulation receptorial (toleranță farmacodinamică)",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce măsuri luați?",
+     "barem": [
+      {
+       "t": "creșterea dozei",
+       "p": 0.5
+      },
+      {
+       "t": "asocierea cu corticosteroizi",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce diferență este între dependența psihică și cea fizică?",
+     "barem": [
+      {
+       "t": "psihică: dorința de a consuma pentru o satisfacție emoțională",
+       "p": 0.5
+      },
+      {
+       "t": "fizică: modificări adaptative, sindrom de abstinență la întrerupere",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c5",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 5",
+   "title": "Beta-blocantul oprit brusc",
+   "stem": "Un pacient tratat cronic cu un antagonist β pentru hipertensiune arterială oprește brusc tratamentul. A doua zi face o criză hipertensivă (epistaxis, confuzie, tulburări de vorbire și de vedere, vărsături, deficite motorii focale).",
+   "items": [
+    {
+     "l": "a",
+     "q": "Explicați cauza manifestărilor.",
+     "barem": [
+      {
+       "t": "up-regulation: crește densitatea receptorilor",
+       "p": 0.75
+      },
+      {
+       "t": "mediatorii endogeni găsesc mai mulți receptori",
+       "p": 0.5
+      },
+      {
+       "t": "efect de rebound",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Cum se poate preveni?",
+     "barem": [
+      {
+       "t": "reducerea treptată a dozelor",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c6",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 6",
+   "title": "Acatalazia",
+   "stem": "I.M., 7 ani, se lovește, iar pe rană i se pune apă oxigenată. În loc să apară degajare de gaz (oxigen), sângele devine negru-cenușiu.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se explică fenomenul?",
+     "barem": [
+      {
+       "t": "acatalazie",
+       "p": 0.75
+      },
+      {
+       "t": "catalaza (inactivează peroxizii) lipsește sau e extrem de redusă",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Dați alte exemple de reacții de tip idiosincrazic.",
+     "barem": [
+      {
+       "t": "apneea toxică la suxametoniu (deficit de pseudocolinesterază)",
+       "p": 0.5
+      },
+      {
+       "t": "intoleranța la alcool (deficit de alcool-dehidrogenază)",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce diferență este între alergie și idiosincrazie?",
+     "barem": [
+      {
+       "t": "alergia: mecanism imunologic, intoleranță dobândită",
+       "p": 0.5
+      },
+      {
+       "t": "idiosincrazia: deficit enzimatic genetic, intoleranță înnăscută",
+       "p": 0.5
+      },
+      {
+       "t": "ambele sunt independente de doză",
+       "p": 0.25
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lp4_c7",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": false,
+   "src": "LP 4 · Cazul 7",
+   "title": "Alergia la antibiotic",
+   "stem": "C.I., 60 de ani, cu infecție streptococică, primește un antibiotic. După câteva ore apar dificultăți respiratorii și amețeală. În reacția alergică se eliberează histamină.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Explicați mecanismele efectelor histaminei.",
+     "barem": [
+      {
+       "t": "bronhii: H1 (Gq) → bronhoconstricție",
+       "p": 0.75
+      },
+      {
+       "t": "vase: H1 (Gq) și H2 (Gs) → vasodilatație, tensiunea arterială scade",
+       "p": 0.75
+      },
+      {
+       "t": "permeabilitate vasculară crescută → edem",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "De unde provine histamina?",
+     "barem": [
+      {
+       "t": "IgE fixate pe mastocite / bazofile",
+       "p": 0.5
+      },
+      {
+       "t": "la reexpunere: degranulare",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Care este tratamentul șocului anafilactic?",
+     "barem": [
+      {
+       "t": "adrenalină intramuscular",
+       "p": 0.5
+      },
+      {
+       "t": "0,01 mg/kg, maximum 0,5 mg, repetată la 5 minute",
+       "p": 0.5
+      },
+      {
+       "t": "linia a doua: antihistaminic H1, glucocorticoid",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_toleranta",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 4 · Farmacotoxicologia",
+   "title": "Toleranța",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Definiți toleranța și enumerați tipurile ei.",
+     "barem": [
+      {
+       "t": "reactivitate scăzută la medicament",
+       "p": 0.5
+      },
+      {
+       "t": "înnăscută (genetic)",
+       "p": 0.5
+      },
+      {
+       "t": "farmacologică: farmacocinetică sau farmacodinamică",
+       "p": 0.5
+      },
+      {
+       "t": "acută (tahifilaxie) sau cronică",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_intoleranta",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 4 · Farmacotoxicologia",
+   "title": "Intoleranța",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Definiți intoleranța și enumerați tipurile ei.",
+     "barem": [
+      {
+       "t": "reactivitate exagerată la medicament",
+       "p": 0.75
+      },
+      {
+       "t": "înnăscută: idiosincrazie (deficit enzimatic genetic)",
+       "p": 0.75
+      },
+      {
+       "t": "dobândită: alergie",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_depfizica",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 4 · Farmacotoxicologia",
+   "title": "Dependența fizică",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați fenomenul de dependență fizică.",
+     "barem": [
+      {
+       "t": "modificări adaptative după consumul cronic al unei substanțe",
+       "p": 1
+      },
+      {
+       "t": "sindrom de abstinență la întrerupere",
+       "p": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_efsec",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 4 · Farmacotoxicologia",
+   "title": "Efecte secundare și efecte toxice",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Ce diferență este între efectele secundare și efectele toxice ale medicamentelor?",
+     "barem": [
+      {
+       "t": "efectele secundare: neintenționate, dependente de mecanismul de acțiune",
+       "p": 0.75
+      },
+      {
+       "t": "efectele toxice: mecanism toxic direct, cu afectarea unui organ sau sistem",
+       "p": 0.75
+      },
+      {
+       "t": "ambele sunt dependente de doză",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_glucocort",
+   "lp": [
+    4
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 4 · Receptorii intracelulari",
+   "title": "Glucocorticoizii",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați mecanismul efectului antiinflamator al glucocorticoizilor.",
+     "barem": [
+      {
+       "t": "se leagă de receptorul steroidic intracelular; complexul trece în nucleu",
+       "p": 0.5
+      },
+      {
+       "t": "transcripție → proteină specifică",
+       "p": 0.5
+      },
+      {
+       "t": "blochează fosfolipaza A2",
+       "p": 0.5
+      },
+      {
+       "t": "nu se mai formează acid arahidonic: nici leucotriene, nici prostaglandine",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_bd",
+   "lp": [
+    1
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 1 · Absorbția",
+   "title": "Biodisponibilitatea",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Definiți biodisponibilitatea și biodisponibilitatea absolută.",
+     "barem": [
+      {
+       "t": "procentul din substanță care ajunge în circulația sistemică în formă neschimbată și activă",
+       "p": 0.75
+      },
+      {
+       "t": "și viteza cu care se realizează procesul",
+       "p": 0.5
+      },
+      {
+       "t": "Bd absolută = AUC p.o. / AUC i.v. × 100",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_abs",
+   "lp": [
+    1
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 1 · Absorbția",
+   "title": "Condițiile absorbției",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Ce condiții trebuie să îndeplinească un medicament ca să traverseze membranele?",
+     "barem": [
+      {
+       "t": "liposolubil",
+       "p": 0.5
+      },
+      {
+       "t": "neionizat",
+       "p": 0.5
+      },
+      {
+       "t": "nelegat de proteine",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_pasaj",
+   "lp": [
+    1
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 1 · Absorbția",
+   "title": "Primul pasaj hepatic",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați primul pasaj hepatic.",
+     "barem": [
+      {
+       "t": "după administrarea orală, sângele din intestin ajunge prin vena portă întâi în ficat",
+       "p": 0.75
+      },
+      {
+       "t": "enzimele hepatice transformă majoritatea medicamentelor în metaboliți inactivi",
+       "p": 0.75
+      },
+      {
+       "t": "pro-drogurile sunt transformate în metaboliți activi",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_ordin",
+   "lp": [
+    2
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 2 · Cinetica de eliminare",
+   "title": "Cinetica de ordinul I și 0",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Ce diferență este între cinetica de eliminare de ordinul I și cea de ordinul 0?",
+     "barem": [
+      {
+       "t": "ordinul I: cantitatea eliminată proporțională cu Cp (exponențial)",
+       "p": 0.5
+      },
+      {
+       "t": "ordinul I: T½ constant",
+       "p": 0.5
+      },
+      {
+       "t": "ordinul 0: cantitate constantă eliminată în timp (liniar)",
+       "p": 0.5
+      },
+      {
+       "t": "ordinul 0: T½ variază",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_faze",
+   "lp": [
+    2
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 2 · Metabolizarea",
+   "title": "Fazele metabolizării",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Descrieți fazele metabolizării medicamentelor.",
+     "barem": [
+      {
+       "t": "faza I: oxidare, hidroliză, reducere",
+       "p": 0.5
+      },
+      {
+       "t": "mediată de enzimele citocromului P450",
+       "p": 0.5
+      },
+      {
+       "t": "faza II: reacții de conjugare",
+       "p": 0.5
+      },
+      {
+       "t": "ex.: metilare, acetilare, sulfatare, glucuronoconjugare, conjugare cu glutationul",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_enzime",
+   "lp": [
+    2
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 2 · Metabolizarea",
+   "title": "Enzimele microzomiale și nemicrozomiale",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Ce diferență este între enzimele microzomiale și cele nemicrozomiale?",
+     "barem": [
+      {
+       "t": "microzomiale (citocrom P450): în reticulul endoplasmatic, specificitate de substrat redusă",
+       "p": 0.75
+      },
+      {
+       "t": "microzomialele sunt inductibile",
+       "p": 0.5
+      },
+      {
+       "t": "nemicrozomiale: enzime libere, specificitate înaltă, neinductibile",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_liganzi",
+   "lp": [
+    3
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 3 · Liganzii",
+   "title": "Tipurile de liganzi",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Definiți afinitatea și activitatea intrinsecă și caracterizați agonistul parțial și antagonistul necompetitiv.",
+     "barem": [
+      {
+       "t": "afinitate: capacitatea de a se lega specific de receptor",
+       "p": 0.5
+      },
+      {
+       "t": "activitate intrinsecă: capacitatea de a activa receptorul și de a produce un răspuns",
+       "p": 0.5
+      },
+      {
+       "t": "agonist parțial: 0 < α < 1",
+       "p": 0.5
+      },
+      {
+       "t": "antagonist necompetitiv: afinitate față de alt situs, α = 0",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_gprot",
+   "lp": [
+    3
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 3 · Receptorii cuplați cu proteine G",
+   "title": "Căile Gs, Gi, Gq",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați căile de semnalizare ale receptorilor cuplați cu proteinele Gs, Gi și Gq.",
+     "barem": [
+      {
+       "t": "Gs: adenilat-ciclaza activată → AMPc crește",
+       "p": 0.5
+      },
+      {
+       "t": "Gi: adenilat-ciclaza inhibată → AMPc scade",
+       "p": 0.5
+      },
+      {
+       "t": "Gq: fosfolipaza C → PIP2 → IP3 + DAG",
+       "p": 0.5
+      },
+      {
+       "t": "IP3 → Ca²⁺ crește; DAG → PKC",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_insulina",
+   "lp": [
+    3
+   ],
+   "kind": "teorie",
+   "variant": false,
+   "src": "LP 3 · Receptorii-enzime",
+   "title": "Receptorul insulinei",
+   "stem": "",
+   "items": [
+    {
+     "l": "",
+     "q": "Explicați mecanismul de acțiune al insulinei pe receptorul ei.",
+     "barem": [
+      {
+       "t": "receptor cu activitate tirozin-kinazică",
+       "p": 0.5
+      },
+      {
+       "t": "autofosforilarea reziduurilor de tirozină",
+       "p": 0.5
+      },
+      {
+       "t": "căile IRS, PI3K, Akt",
+       "p": 0.25
+      },
+      {
+       "t": "translocarea GLUT4 în membrană → crește captarea glucozei",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_prodrug_ind",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 2 · drug/prodrug și inductori",
+   "title": "Pro-drogul și inductorul enzimatic",
+   "stem": "Un pacient primește un pro-drog care devine activ prin metabolizare hepatică. Pentru o altă afecțiune i se asociază carbamazepina (inductor enzimatic).",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce se întâmplă cu formarea metabolitului activ?",
+     "barem": [
+      {
+       "t": "viteza de metabolizare crește",
+       "p": 0.5
+      },
+      {
+       "t": "se formează mai mult metabolit activ: Cp a metabolitului activ crește",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce risc apare și ce recomandați?",
+     "barem": [
+      {
+       "t": "eficacitatea și toxicitatea cresc",
+       "p": 0.5
+      },
+      {
+       "t": "scăderea dozei de pro-drog sau evitarea asocierii",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "metabolizarea",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_drug_ind",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 2 · Cazul 1",
+   "title": "Medicamentul activ și carbamazepina",
+   "stem": "Un pacient ia cronic un medicament activ ca atare, metabolizat hepatic de CYP3A4. Începe tratament cu carbamazepină.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se modifică concentrația plasmatică a primului medicament? Explicați.",
+     "barem": [
+      {
+       "t": "carbamazepina e inductor enzimatic: crește expresia CYP3A4",
+       "p": 0.75
+      },
+      {
+       "t": "viteza de metabolizare crește, Cp scade",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce risc apare?",
+     "barem": [
+      {
+       "t": "risc de ineficacitate terapeutică",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce recomandați?",
+     "barem": [
+      {
+       "t": "creșterea dozei pentru același efect sau evitarea asocierii",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_baza",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 2 · Cazul 5",
+   "title": "Intoxicația cu o bază slabă",
+   "stem": "O substanță cu caracter slab bazic, luată în supradoză, se excretă renal și se reabsoarbe tubular.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum puteți crește eliminarea ei? Explicați.",
+     "barem": [
+      {
+       "t": "acidifierea urinii",
+       "p": 0.75
+      },
+      {
+       "t": "în urina acidă, baza slabă devine ionizată (BH⁺)",
+       "p": 0.75
+      },
+      {
+       "t": "forma ionizată nu se reabsoarbe tubular, rămâne în urină",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "excreția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_t6",
+   "lp": [
+    2
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 2 · Cazul 6",
+   "title": "Medicamentul cu T½ = 6 ore",
+   "stem": "Un medicament are timpul de înjumătățire de 6 ore și o cinetică de eliminare de ordinul I.",
+   "items": [
+    {
+     "l": "a",
+     "q": "După cât timp este practic eliminat din organism?",
+     "barem": [
+      {
+       "t": "după 5–7 T½: 30–42 de ore",
+       "p": 1
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Câte administrări pe zi, cu un interval de un T½?",
+     "barem": [
+      {
+       "t": "24 : 6 = 4 administrări pe zi",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce caracterizează cinetica de ordinul I?",
+     "barem": [
+      {
+       "t": "cantitatea eliminată proporțională cu Cp",
+       "p": 0.5
+      },
+      {
+       "t": "T½ constant",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Cum puteți reduce numărul de administrări?",
+     "barem": [
+      {
+       "t": "forme farmaceutice retard / cu eliberare prelungită",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_vd",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 1 · Cazul 5",
+   "title": "Volumul de distribuție pentru C și D",
+   "stem": "Două medicamente, C și D, se administrează intravenos, câte 200 mg, în doză unică. Concentrația plasmatică maximă este 40 mg/L pentru C și 2 mg/L pentru D. Distribuția e rapidă, iar eliminarea e neglijabilă înainte de măsurare.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Calculați volumul aparent de distribuție pentru fiecare.",
+     "barem": [
+      {
+       "t": "Vd = cantitatea administrată / concentrația plasmatică",
+       "p": 0.5
+      },
+      {
+       "t": "Vd (C) = 200 / 40 = 5 L",
+       "p": 0.5
+      },
+      {
+       "t": "Vd (D) = 200 / 2 = 100 L",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Unde s-a distribuit preferențial fiecare medicament?",
+     "barem": [
+      {
+       "t": "C în sânge",
+       "p": 0.5
+      },
+      {
+       "t": "D în țesuturi",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_ciroza",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 1 · proteinele de legare",
+   "title": "Pacientul cu ciroză hepatică",
+   "stem": "Un pacient cu ciroză hepatică primește un medicament care circulă legat în proporție mare de albumină. La doza obișnuită, efectul este mult mai intens decât la alți pacienți.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Explicați fenomenul.",
+     "barem": [
+      {
+       "t": "în ciroză scade producția de albumină",
+       "p": 0.75
+      },
+      {
+       "t": "crește fracția liberă a medicamentului",
+       "p": 0.75
+      },
+      {
+       "t": "doar fracția liberă realizează efectul",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "distribuția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_bd",
+   "lp": [
+    1
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 1 · biodisponibilitatea",
+   "title": "Biodisponibilitatea după administrarea orală",
+   "stem": "Un medicament se administrează în aceeași doză intravenos și per os. Aria de sub curbă (AUC) este 100 mg·h/L după administrarea intravenoasă și 40 mg·h/L după cea orală.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Calculați biodisponibilitatea absolută.",
+     "barem": [
+      {
+       "t": "Bd absolută = AUC p.o. / AUC i.v. × 100",
+       "p": 0.5
+      },
+      {
+       "t": "= 40%",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce fenomen poate explica valoarea scăzută?",
+     "barem": [
+      {
+       "t": "primul pasaj hepatic",
+       "p": 0.75
+      },
+      {
+       "t": "enzimele hepatice transformă medicamentul în metaboliți inactivi înainte de circulația sistemică",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce etapă farmacocinetică este influențată?",
+     "barem": [
+      {
+       "t": "absorbția",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_m3",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 3 · Cazurile 5–6",
+   "title": "Substanța P pe receptorii M3",
+   "stem": "Substanța P are afinitate pentru receptorii M3 (M1) cuplați cu Gq din bronhii și din glandele exocrine și are activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este P?",
+     "barem": [
+      {
+       "t": "agonist muscarinic",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efecte are asupra bronhiilor și glandelor exocrine?",
+     "barem": [
+      {
+       "t": "bronhoconstricție",
+       "p": 0.5
+      },
+      {
+       "t": "hipersecreție",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Explicați mecanismul.",
+     "barem": [
+      {
+       "t": "Gq → fosfolipaza C → PIP2 → IP3 + DAG",
+       "p": 0.75
+      },
+      {
+       "t": "IP3 → Ca²⁺ crește; DAG → PKC",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Ce substanță din LP împiedică aceste efecte?",
+     "barem": [
+      {
+       "t": "atropina, antagonist muscarinic",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_glaucom",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 3 · Cazul 7",
+   "title": "Picăturile cu agonist muscarinic în glaucom",
+   "stem": "Un pacient cu glaucom primește picături de ochi cu un agonist al receptorilor M3 (M1).",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce efect are asupra pupilei și prin ce mușchi?",
+     "barem": [
+      {
+       "t": "mioză",
+       "p": 0.5
+      },
+      {
+       "t": "contracția mușchiului circular al irisului",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efect are asupra presiunii intraoculare și cum?",
+     "barem": [
+      {
+       "t": "scade presiunea intraoculară",
+       "p": 0.5
+      },
+      {
+       "t": "contracția mușchiului ciliar: lărgirea spațiilor Fontana și a canalului Schlemm, crește scurgerea",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce fel de receptori sunt receptorii M3?",
+     "barem": [
+      {
+       "t": "membranari, cuplați cu proteine Gq",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_alfa1",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 3 · tabelul receptorilor α",
+   "title": "Substanța V pe receptorii α1",
+   "stem": "Substanța V are afinitate pentru receptorii alfa-1 cuplați cu Gq și are activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este V?",
+     "barem": [
+      {
+       "t": "agonist α1",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efect are asupra vaselor și ce risc apare la administrare sistemică?",
+     "barem": [
+      {
+       "t": "vasoconstricție",
+       "p": 0.5
+      },
+      {
+       "t": "hipertensiune arterială",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce efect are aplicată pe ochi?",
+     "barem": [
+      {
+       "t": "contracția mușchiului radial al irisului: midriază activă",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "d",
+     "q": "Explicați mecanismul.",
+     "barem": [
+      {
+       "t": "Gq → fosfolipaza C → IP3 + DAG → Ca²⁺ crește",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_beta1ag",
+   "lp": [
+    3
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 3 · Cazul 4",
+   "title": "Substanța K pe receptorii β1",
+   "stem": "Substanța K are afinitate pentru receptorii beta-1 cuplați cu Gs din cord și din aparatul juxtaglomerular și are activitate intrinsecă.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Ce tip de ligand este K?",
+     "barem": [
+      {
+       "t": "agonist β1",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efect are asupra cordului și asupra aparatului juxtaglomerular?",
+     "barem": [
+      {
+       "t": "cardiostimulare (efecte trop-pozitive)",
+       "p": 0.75
+      },
+      {
+       "t": "crește secreția de renină",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Explicați mecanismul în miocard.",
+     "barem": [
+      {
+       "t": "Gs → adenilat-ciclaza → AMPc → PKA",
+       "p": 0.5
+      },
+      {
+       "t": "canale de Ca²⁺ tip L: Ca²⁺ intracelular crește → contracție crescută",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_suxa",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 4 · Cazul 6",
+   "title": "Apneea după suxametoniu",
+   "stem": "Un pacient primește suxametoniu în timpul unei intervenții chirurgicale. După intervenție rămâne în apnee mult mai mult decât de obicei.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum se explică fenomenul?",
+     "barem": [
+      {
+       "t": "apnee toxică la suxametoniu",
+       "p": 0.5
+      },
+      {
+       "t": "deficit de pseudocolinesterază",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce tip de reacție adversă este?",
+     "barem": [
+      {
+       "t": "idiosincrazie (intoleranță înnăscută)",
+       "p": 0.75
+      },
+      {
+       "t": "deficit enzimatic genetic",
+       "p": 0.5
+      },
+      {
+       "t": "independentă de doză",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_tahifil",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 4 · Cazul 3 + LP 3",
+   "title": "Decongestionantul nazal care nu mai acționează",
+   "stem": "O pacientă cu rinită folosește la câteva ore o substanță care eliberează noradrenalina din terminațiile simpatice și stimulează direct receptorii α și β. După câteva administrări, efectul decongestionant dispare.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Prin ce receptori se produce decongestionarea?",
+     "barem": [
+      {
+       "t": "receptori α1 (Gq) de pe vase",
+       "p": 0.5
+      },
+      {
+       "t": "vasoconstricție",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce fenomen apare și prin ce mecanism?",
+     "barem": [
+      {
+       "t": "tahifilaxie (toleranță acută)",
+       "p": 1
+      },
+      {
+       "t": "epuizarea stocurilor presinaptice de noradrenalină",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce tip de toleranță este?",
+     "barem": [
+      {
+       "t": "farmacologică, acută",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_astm_cort",
+   "lp": [
+    4
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 4 · receptorii intracelulari",
+   "title": "Astmaticul cu glucocorticoid",
+   "stem": "Un pacient astmatic tratat cronic cu un agonist β2 primește și un glucocorticoid.",
+   "items": [
+    {
+     "l": "a",
+     "q": "De ce se asociază glucocorticoidul la agonistul β2?",
+     "barem": [
+      {
+       "t": "atenuează down-regulation-ul receptorilor β2",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Explicați efectul antiinflamator al glucocorticoidului.",
+     "barem": [
+      {
+       "t": "receptor intracelular → nucleu → transcripție → proteină specifică",
+       "p": 0.5
+      },
+      {
+       "t": "blochează fosfolipaza A2",
+       "p": 0.5
+      },
+      {
+       "t": "nu se mai formează acid arahidonic: nici leucotriene, nici prostaglandine",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce efect au leucotrienele asupra bronhiilor?",
+     "barem": [
+      {
+       "t": "pe receptorii CysLT1 (Gq): bronhoconstricție cu debut lent și efect îndelungat",
+       "p": 0.75
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "v_betablk_ochi",
+   "lp": [
+    3,
+    1
+   ],
+   "kind": "caz",
+   "variant": true,
+   "src": "Variantă după LP 3 + LP 1 (ca modelul oficial)",
+   "title": "Picăturile cu antagonist β și distribuția",
+   "stem": "Un pacient cu glaucom folosește picături de ochi cu un antagonist β. Medicamentul nu ar trebui să ajungă în cantitate mare în circulația sistemică.",
+   "items": [
+    {
+     "l": "a",
+     "q": "Cum scade presiunea intraoculară?",
+     "barem": [
+      {
+       "t": "scade secreția de umoare apoasă",
+       "p": 0.75
+      },
+      {
+       "t": "prin blocarea receptorilor β2 (Gs): AMPc scade",
+       "p": 0.5
+      }
+     ]
+    },
+    {
+     "l": "b",
+     "q": "Ce efecte ar avea pe cord dacă ar ajunge sistemic, prin receptorii β1?",
+     "barem": [
+      {
+       "t": "cardioinhibiție",
+       "p": 0.75
+      }
+     ]
+    },
+    {
+     "l": "c",
+     "q": "Ce efect ar avea pe bronhii, prin receptorii β2?",
+     "barem": [
+      {
+       "t": "blochează bronhodilatația: risc de bronhoconstricție",
+       "p": 0.5
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

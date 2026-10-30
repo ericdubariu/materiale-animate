@@ -1,0 +1,1106 @@
+{
+ "lame": [
+  {
+   "lp": 2,
+   "nr": 1,
+   "title": "Epiteliul simplu pavimentos",
+   "diag": "Epiteliul simplu pavimentos, impregnație argentică, mezenter",
+   "poz": [
+    {
+     "t": "preparat etalat, nu secțiune",
+     "p": 0.5
+    },
+    {
+     "t": "celule de formă neregulată",
+     "p": 0.5
+    },
+    {
+     "t": "celule poligonale",
+     "p": 0.5
+    },
+    {
+     "t": "strâns unite",
+     "p": 0.5
+    },
+    {
+     "t": "ca pietrele de pavaj",
+     "p": 0.5
+    },
+    {
+     "t": "limite crenelate",
+     "p": 1
+    },
+    {
+     "t": "argintul precipită în spațiile intercelulare",
+     "p": 1
+    },
+    {
+     "t": "nucleul și nucleolul nu se colorează",
+     "p": 1
+    },
+    {
+     "t": "citoplasma nu se colorează",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu epiteliul simplu cubic, col. hematoxilină-eozină, rinichi",
+    "f": [
+     {
+      "t": "secțiune prin medulara renală, cu lumenele tubilor colectori"
+     },
+     {
+      "t": "celule aproximativ pătrate"
+     },
+     {
+      "t": "nucleu rotund, eucrom, central"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 2,
+   "nr": 2,
+   "title": "Epiteliul simplu cubic",
+   "diag": "Epiteliul simplu cubic, hematoxilină-eozină, rinichi",
+   "poz": [
+    {
+     "t": "în tubii colectori din medulara renală",
+     "p": 0.5
+    },
+    {
+     "t": "celule aproximativ cubice (pătrate)",
+     "p": 1
+    },
+    {
+     "t": "un singur rând pe membrana bazală",
+     "p": 1
+    },
+    {
+     "t": "polul apical delimitează lumenul",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă palid eozinofilă",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei rotunzi",
+     "p": 1
+    },
+    {
+     "t": "nuclei eucromi",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei centrali",
+     "p": 0.5
+    },
+    {
+     "t": "limite intercelulare bine vizibile",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu epiteliul simplu prismatic (cilindric), col. hematoxilină-eozină, vezica biliară",
+    "f": [
+     {
+      "t": "celule alungite, cilindrice"
+     },
+     {
+      "t": "nucleu alungit, perpendicular pe membrana bazală, în jumătatea inferioară"
+     },
+     {
+      "t": "limite fine doar apical și platou striat"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 2,
+   "nr": 3,
+   "title": "Epiteliul simplu prismatic (cilindric)",
+   "diag": "Epiteliul simplu prismatic (cilindric), hematoxilină-eozină, vezica biliară",
+   "poz": [
+    {
+     "t": "celule alungite, cilindrice",
+     "p": 1
+    },
+    {
+     "t": "un singur rând pe membrana bazală",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă palid eozinofilă",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei alungiți (ovalari)",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei paraleli între ei",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei perpendiculari pe membrana bazală",
+     "p": 0.5
+    },
+    {
+     "t": "nucleii în jumătatea inferioară",
+     "p": 1
+    },
+    {
+     "t": "limite fine numai spre polul apical",
+     "p": 0.5
+    },
+    {
+     "t": "pol apical cu platou striat (microvilozități)",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu epiteliul simplu cubic, col. hematoxilină-eozină, rinichi",
+    "f": [
+     {
+      "t": "celule aproximativ pătrate"
+     },
+     {
+      "t": "nucleu rotund, central"
+     },
+     {
+      "t": "limite bine vizibile, fără platou striat"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 3,
+   "nr": 4,
+   "title": "Epiteliul pseudostratificat",
+   "diag": "Epiteliul pseudostratificat, hematoxilină-eozină, trahee",
+   "poz": [
+    {
+     "t": "toate celulele ating membrana bazală",
+     "p": 1
+    },
+    {
+     "t": "înălțimi diferite, nu toate ajung la suprafață",
+     "p": 0.5
+    },
+    {
+     "t": "epiteliu cilindric înalt",
+     "p": 0.5
+    },
+    {
+     "t": "nucleii în 2/3 bazale, la înălțimi diferite",
+     "p": 0.5
+    },
+    {
+     "t": "falsă impresie de stratificare",
+     "p": 1
+    },
+    {
+     "t": "treimea superioară cu citoplasmă eozinofilă",
+     "p": 0.5
+    },
+    {
+     "t": "cili la suprafață",
+     "p": 0.5
+    },
+    {
+     "t": "nuclei rotunzi, rotund-ovalari, în bastonaș",
+     "p": 0.5
+    },
+    {
+     "t": "celule caliciforme (cupă de șampanie), fără cili",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu uroteliul (epiteliul tranzițional), col. hematoxilină-eozină, vezica urinară",
+    "f": [
+     {
+      "t": "stratificat: bazal, celule în rachetă, umbreliforme"
+     },
+     {
+      "t": "umbreliforme mari, intens eozinofile, fără cili"
+     },
+     {
+      "t": "nuclei în toate straturile, hipercromi în umbreliforme"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 3,
+   "nr": 5,
+   "title": "Epiteliul stratificat pavimentos necheratinizat",
+   "diag": "Epiteliul stratificat pavimentos necheratinizat, hematoxilină-eozină, esofag",
+   "poz": [
+    {
+     "t": "mai multe rânduri suprapuse",
+     "p": 0.5
+    },
+    {
+     "t": "membrana bazală sinuoasă",
+     "p": 0.5
+    },
+    {
+     "t": "bazal: un rând cubo-cilindric, bazofil",
+     "p": 0.5
+    },
+    {
+     "t": "bazal: nuclei hipocromi, rotunzi-ovalari",
+     "p": 1
+    },
+    {
+     "t": "mijlociu: celule poligonale, strâns unite",
+     "p": 1
+    },
+    {
+     "t": "mijlociu: citoplasmă eozinofilă, nuclei eucromi, centrali",
+     "p": 0.5
+    },
+    {
+     "t": "superficial: celule turtite, paralele cu membrana bazală",
+     "p": 0.5
+    },
+    {
+     "t": "spre suprafață, citoplasmă tot mai palidă",
+     "p": 0.5
+    },
+    {
+     "t": "nucleu tot mai mic, picnotic, excentric",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu uroteliul (epiteliul tranzițional), col. hematoxilină-eozină, vezica urinară",
+    "f": [
+     {
+      "t": "stratul mijlociu cu celule în rachetă de tenis"
+     },
+     {
+      "t": "un rând de umbreliforme, intens eozinofile"
+     },
+     {
+      "t": "membrana bazală invizibilă în hematoxilină-eozină"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 3,
+   "nr": 6,
+   "title": "Uroteliul (epiteliul tranzițional)",
+   "diag": "Uroteliul (epiteliul tranzițional), hematoxilină-eozină, vezica urinară",
+   "poz": [
+    {
+     "t": "aspect stratificat",
+     "p": 0.5
+    },
+    {
+     "t": "membrana bazală invizibilă în hematoxilină-eozină",
+     "p": 1
+    },
+    {
+     "t": "bazal: cubo-cilindrice, bazofile, nuclei hipocromi",
+     "p": 0.5
+    },
+    {
+     "t": "mijlociu: celule în rachetă de tenis",
+     "p": 1
+    },
+    {
+     "t": "racheta: expansiune subțire printre celulele de dedesubt",
+     "p": 0.5
+    },
+    {
+     "t": "superficial: umbreliforme mari, puternic eozinofile",
+     "p": 1
+    },
+    {
+     "t": "o umbreliformă acoperă 2–3 rachete",
+     "p": 1
+    },
+    {
+     "t": "1, rar 2 nuclei hipercromi",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu epiteliul stratificat pavimentos necheratinizat, col. hematoxilină-eozină, esofag",
+    "f": [
+     {
+      "t": "stratul mijlociu cu celule poligonale (spinocelular)"
+     },
+     {
+      "t": "superficial: mai multe rânduri turtite, palide, nucleu picnotic"
+     },
+     {
+      "t": "membrana bazală sinuoasă, vizibilă"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 4,
+   "nr": 7,
+   "title": "Glanda tubulară simplă",
+   "diag": "Glanda tubulară simplă, hematoxilină-eozină, colon",
+   "poz": [
+    {
+     "t": "glandele în mucoasă, spre lumen",
+     "p": 0.5
+    },
+    {
+     "t": "aspect de deget de mănușă (tub)",
+     "p": 1
+    },
+    {
+     "t": "3 segmente: fund, corp, gât",
+     "p": 1
+    },
+    {
+     "t": "pe glandilem, epiteliu simplu prismatic",
+     "p": 0.5
+    },
+    {
+     "t": "lumen îngust",
+     "p": 0.5
+    },
+    {
+     "t": "celule caliciforme: cupă de șampanie",
+     "p": 1
+    },
+    {
+     "t": "caliciforme: nucleu bazal hipercrom, mucus necolorat",
+     "p": 0.5
+    },
+    {
+     "t": "absorbante: prismatice înalte, citoplasmă eozinofilă",
+     "p": 0.5
+    },
+    {
+     "t": "absorbante: nuclei ovalari în 1/3 inferioară",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu glanda tubulo-acinoasă, col. hematoxilină-eozină, glanda submandibulară",
+    "f": [
+     {
+      "t": "acini seroși, mucoși, micști"
+     },
+     {
+      "t": "celule seroase, mucoase, semiluna Gianuzzi"
+     },
+     {
+      "t": "celule mioepiteliale între membrana bazală și celulele acinare"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 4,
+   "nr": 8,
+   "title": "Glanda alveolară simplă (sebacee)",
+   "diag": "Glanda alveolară simplă (sebacee), hematoxilină-eozină, buză",
+   "poz": [
+    {
+     "t": "săculeț",
+     "p": 1
+    },
+    {
+     "t": "canal scurt, la rădăcina firului de păr",
+     "p": 0.5
+    },
+    {
+     "t": "spre centru: celule mari, poliedrice, limite vizibile",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă vacuolară, necolorată (sebum)",
+     "p": 1
+    },
+    {
+     "t": "nucleu la început rotund, central",
+     "p": 0.5
+    },
+    {
+     "t": "pe membrana bazală: un rând cubic, bazofil",
+     "p": 0.5
+    },
+    {
+     "t": "celulele bazale regenerează glanda",
+     "p": 0.5
+    },
+    {
+     "t": "spre canal: nucleu picnotic, hipercrom, excentric",
+     "p": 0.5
+    },
+    {
+     "t": "celulele se dezintegrează: secreție holocrină",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu glanda tubulo-acinoasă, col. hematoxilină-eozină, glanda submandibulară",
+    "f": [
+     {
+      "t": "acini seroși, mucoși, micști, cu lumen"
+     },
+     {
+      "t": "celule mioepiteliale alungite, nucleu paralel cu membrana bazală"
+     },
+     {
+      "t": "celule întregi, cu zimogen sau mucus"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 4,
+   "nr": 9,
+   "title": "Glanda tubulo-acinoasă (submandibulară)",
+   "diag": "Glanda tubulo-acinoasă, hematoxilină-eozină, glanda submandibulară",
+   "poz": [
+    {
+     "t": "aspect heterogen al acinilor",
+     "p": 0.5
+    },
+    {
+     "t": "acin mucos: citoplasmă palidă, lumen larg",
+     "p": 0.5
+    },
+    {
+     "t": "mucos: nuclei hipercromi, turtiți, bazali",
+     "p": 0.5
+    },
+    {
+     "t": "acin seros: cel mai mic, zimogen eozinofil supranuclear",
+     "p": 0.5
+    },
+    {
+     "t": "seros: nucleu rotund, eucrom, bazal",
+     "p": 0.5
+    },
+    {
+     "t": "seros: lumen foarte mic, punctiform",
+     "p": 1
+    },
+    {
+     "t": "acin mixt: cel mai mare",
+     "p": 0.5
+    },
+    {
+     "t": "semiluna Gianuzzi (3–5 celule seroase)",
+     "p": 1
+    },
+    {
+     "t": "celule mioepiteliale între membrana bazală și acini",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu glanda tubulară simplă, col. hematoxilină-eozină, colon",
+    "f": [
+     {
+      "t": "tub (deget de mănușă) cu fund, corp, gât"
+     },
+     {
+      "t": "celule caliciforme și absorbante"
+     },
+     {
+      "t": "lumen îngust, cu epiteliu simplu prismatic pe glandilem"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 5,
+   "nr": 10,
+   "title": "Glanda tiroidă",
+   "diag": "Celule endocrine dispuse în foliculi, hematoxilină-eozină, glanda tiroidă",
+   "poz": [
+    {
+     "t": "foliculi rotunzi-ovalari",
+     "p": 1
+    },
+    {
+     "t": "de diferite mărimi și stadii de activitate",
+     "p": 0.5
+    },
+    {
+     "t": "epiteliu simplu (folicular) pe membrana bazală",
+     "p": 0.5
+    },
+    {
+     "t": "cavitate cu coloid eozinofil",
+     "p": 1
+    },
+    {
+     "t": "celule turtite / cubice / cilindrice, după activitate",
+     "p": 1
+    },
+    {
+     "t": "nucleul are forma celulei",
+     "p": 0.5
+    },
+    {
+     "t": "parafoliculare (C) lângă membrana bazală, nu ating coloidul",
+     "p": 1
+    },
+    {
+     "t": "parafoliculare: citoplasmă palidă, nucleu mare, rotund",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu celule endocrine dispuse în cuiburi și cordoane, col. hematoxilină-eozină, glanda suprarenală",
+    "f": [
+     {
+      "t": "fără cavitate, fără coloid"
+     },
+     {
+      "t": "fasciculata palidă, vacuolară (grăsimi)"
+     },
+     {
+      "t": "corticală periferică în 3 zone și medulară centrală"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 5,
+   "nr": 11,
+   "title": "Glanda suprarenală",
+   "diag": "Celule endocrine dispuse în cuiburi și cordoane, hematoxilină-eozină, glanda suprarenală",
+   "poz": [
+    {
+     "t": "corticală periferică, medulară centrală (20%)",
+     "p": 1
+    },
+    {
+     "t": "glomerulara: cordoane scurte, arcuite",
+     "p": 0.5
+    },
+    {
+     "t": "glomerulara: celule mici, bazofile, nucleu hipercrom",
+     "p": 0.5
+    },
+    {
+     "t": "fasciculata: cea mai groasă",
+     "p": 1
+    },
+    {
+     "t": "fasciculata: cordoane lungi, perpendiculare pe medulară",
+     "p": 0.5
+    },
+    {
+     "t": "fasciculata: celule mari, palide, vacuolare",
+     "p": 0.5
+    },
+    {
+     "t": "reticulata: cordoane scurte, anastomozate",
+     "p": 0.5
+    },
+    {
+     "t": "reticulata: celule intens eozinofile, lipofuscină",
+     "p": 0.5
+    },
+    {
+     "t": "medulara: celule cromafine, citoplasmă bazofilă",
+     "p": 0.5
+    },
+    {
+     "t": "celule sustentaculare la periferia cuiburilor",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu celule endocrine dispuse în foliculi, col. hematoxilină-eozină, glanda tiroidă",
+    "f": [
+     {
+      "t": "celule dispuse în foliculi"
+     },
+     {
+      "t": "cavitate cu coloid eozinofil"
+     },
+     {
+      "t": "foliculi de mărimi diferite"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 5,
+   "nr": 12,
+   "title": "Insula Langerhans (pancreasul endocrin)",
+   "diag": "Insulele Langerhans (pancreasul endocrin), hematoxilină-eozină, pancreas",
+   "poz": [
+    {
+     "t": "componentă endocrină și exocrină",
+     "p": 0.5
+    },
+    {
+     "t": "1–3 milioane de insule, 1–2% din volum",
+     "p": 0.5
+    },
+    {
+     "t": "insule rotunde-ovalare, mai palid colorate",
+     "p": 1
+    },
+    {
+     "t": "4 tipuri: α, β, δ, F (PP)",
+     "p": 0.5
+    },
+    {
+     "t": "nu se identifică în hematoxilină-eozină, ci imunohistochimic",
+     "p": 1
+    },
+    {
+     "t": "celule mai mici decât cele acinare, în cuiburi",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă granulară, palidă",
+     "p": 0.5
+    },
+    {
+     "t": "nucleu rotund, eucrom",
+     "p": 0.5
+    },
+    {
+     "t": "exocrinul: în totalitate acini seroși",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu celule endocrine dispuse în cuiburi și cordoane, col. hematoxilină-eozină, glanda suprarenală",
+    "f": [
+     {
+      "t": "corticală și medulară, fără acini"
+     },
+     {
+      "t": "corticală în 3 zone: glomerulară, fasciculată, reticulată"
+     },
+     {
+      "t": "fasciculata: celule mari, vacuolare, în cordoane lungi"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 6,
+   "nr": 1,
+   "title": "Celulele țesutului conjunctiv",
+   "diag": "Celulele țesutului conjunctiv, hematoxilină-eozină, țesut de granulație",
+   "poz": [
+    {
+     "t": "celularitate abundentă",
+     "p": 1
+    },
+    {
+     "t": "toate tipurile de celule, proprii și migrate",
+     "p": 0.5
+    },
+    {
+     "t": "vascularizație abundentă",
+     "p": 1
+    },
+    {
+     "t": "doar fibre de colagen, izolate sau în fascicule",
+     "p": 0.5
+    },
+    {
+     "t": "fibroblast: nucleu mare, ovalar, hipocrom, cu nucleol",
+     "p": 0.5
+    },
+    {
+     "t": "fibrocit: nucleu fusiform, hipercrom",
+     "p": 0.5
+    },
+    {
+     "t": "adipocit: inel cu pecete",
+     "p": 0.5
+    },
+    {
+     "t": "plasmocit: nucleu în spițe de roată",
+     "p": 0.5
+    },
+    {
+     "t": "macrofag vacuolar, celule gigante multinucleate",
+     "p": 0.5
+    },
+    {
+     "t": "limfocit mic, citoplasmă în semilună",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu țesutul conjunctiv lax, col. hematoxilină-eozină, glanda mamară",
+    "f": [
+     {
+      "t": "celule, fibre și substanță fundamentală în proporții egale"
+     },
+     {
+      "t": "fibroblaste și fibrocite lângă colagen, plus celule migrate"
+     },
+     {
+      "t": "capilare: nuclei ca dinții de fierăstrău, transversal 1–2 nuclei"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 6,
+   "nr": 2,
+   "title": "Fibrele de colagen",
+   "diag": "Fibrele de colagen, Van Gieson, glanda mamară",
+   "poz": [
+    {
+     "t": "se colorează în roșu puternic",
+     "p": 1
+    },
+    {
+     "t": "așezare dezordonată sau ordonată",
+     "p": 0.5
+    },
+    {
+     "t": "linii mai mult sau mai puțin sinuoase",
+     "p": 1
+    },
+    {
+     "t": "izolate sau grupate în fascicule",
+     "p": 0.5
+    },
+    {
+     "t": "fascicule fine sau grosiere",
+     "p": 0.5
+    },
+    {
+     "t": "trec dintr-un fascicul în altul",
+     "p": 0.5
+    },
+    {
+     "t": "nu se ramifică, nu se anastomozează niciodată",
+     "p": 1
+    },
+    {
+     "t": "nucleii fibrocitelor negru-cafenii, ovalari, turtiți",
+     "p": 0.5
+    },
+    {
+     "t": "fibrocite lipite de fibre, citoplasma nu se vede",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu fibrele de reticulină, col. impregnație argentică, splină",
+    "f": [
+     {
+      "t": "se colorează în negru"
+     },
+     {
+      "t": "mai subțiri, nu formează fascicule"
+     },
+     {
+      "t": "se ramifică și se anastomozează în rețea"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 6,
+   "nr": 3,
+   "title": "Fibrele de reticulină",
+   "diag": "Fibrele de reticulină, impregnație argentică, splină",
+   "poz": [
+    {
+     "t": "se colorează în negru",
+     "p": 1
+    },
+    {
+     "t": "linii cu traiect neregulat",
+     "p": 0.5
+    },
+    {
+     "t": "sunt subțiri",
+     "p": 0.5
+    },
+    {
+     "t": "se ramifică",
+     "p": 1
+    },
+    {
+     "t": "se anastomozează cu alte fibre",
+     "p": 1
+    },
+    {
+     "t": "formează rețele",
+     "p": 0.5
+    },
+    {
+     "t": "rețele cu ochiuri de mărimi diferite",
+     "p": 0.5
+    },
+    {
+     "t": "rețele cu ochiuri de forme diferite",
+     "p": 0.5
+    },
+    {
+     "t": "nu se grupează în fascicule",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu fibrele de colagen, col. Van Gieson, glanda mamară",
+    "f": [
+     {
+      "t": "se colorează în roșu puternic"
+     },
+     {
+      "t": "sub formă de linii sinuoase"
+     },
+     {
+      "t": "le putem găsi ca fibre izolate sau grupate în fascicule"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 7,
+   "nr": 1,
+   "title": "Conjunctivul lax",
+   "diag": "Țesutul conjunctiv lax, hematoxilină-eozină, glanda mamară",
+   "poz": [
+    {
+     "t": "celule, fibre, substanță fundamentală în proporții egale",
+     "p": 1
+    },
+    {
+     "t": "conjunctiv dens și lax, laxul în lobulul mamar",
+     "p": 0.5
+    },
+    {
+     "t": "fibroblaste: nucleu alungit, hipocrom",
+     "p": 0.5
+    },
+    {
+     "t": "fibrocite: nucleu alungit, hipercrom",
+     "p": 0.5
+    },
+    {
+     "t": "celule migrate din sânge",
+     "p": 0.5
+    },
+    {
+     "t": "fibre de colagen palid roz",
+     "p": 0.5
+    },
+    {
+     "t": "izolate sau în fascicule cu orientare variabilă",
+     "p": 1
+    },
+    {
+     "t": "capilar longitudinal: nuclei ca dinții de fierăstrău",
+     "p": 1
+    },
+    {
+     "t": "capilar transversal: 1, maximum 2 nuclei",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu țesutul conjunctiv adipos alb, col. hematoxilină-eozină, glanda mamară",
+    "f": [
+     {
+      "t": "predomină celulele"
+     },
+     {
+      "t": "adipocite mari, optic goale, inel cu pecete"
+     },
+     {
+      "t": "fibre reduse cantitativ"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 7,
+   "nr": 2,
+   "title": "Țesutul adipos alb",
+   "diag": "Țesutul conjunctiv adipos alb, hematoxilină-eozină, glanda mamară",
+   "poz": [
+    {
+     "t": "predomină celulele, strâns una lângă alta",
+     "p": 1
+    },
+    {
+     "t": "substanță fundamentală și fibre reduse",
+     "p": 0.5
+    },
+    {
+     "t": "adipocite mari, limite bine vizibile",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă incoloră, celula pare goală",
+     "p": 1
+    },
+    {
+     "t": "izolate sau în cuiburi: paniculi adipoși",
+     "p": 0.5
+    },
+    {
+     "t": "rotunde, ovalare sau poligonale",
+     "p": 0.5
+    },
+    {
+     "t": "o vacuolă mare, necolorată",
+     "p": 0.5
+    },
+    {
+     "t": "citoplasmă eozinofilă în inel subțire",
+     "p": 0.5
+    },
+    {
+     "t": "nucleu turtit, hipercrom, excentric: inel cu pecete",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu țesutul conjunctiv lax, col. hematoxilină-eozină, glanda mamară",
+    "f": [
+     {
+      "t": "celule, fibre și substanță fundamentală în proporții egale"
+     },
+     {
+      "t": "fibroblaste, fibrocite și celule migrate"
+     },
+     {
+      "t": "colagen palid roz, cu orientare variabilă"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 7,
+   "nr": 3,
+   "title": "Conjunctivul tendinos",
+   "diag": "Țesutul conjunctiv tendinos, hematoxilină-eozină, tendon",
+   "poz": [
+    {
+     "t": "predomină fibrele de colagen, ordonate",
+     "p": 1
+    },
+    {
+     "t": "celule puține, substanță fundamentală redusă",
+     "p": 0.5
+    },
+    {
+     "t": "fibre groase, palid eozinofile",
+     "p": 1
+    },
+    {
+     "t": "ușor ondulate pe secțiune longitudinală",
+     "p": 0.5
+    },
+    {
+     "t": "fascicule dense, paralele",
+     "p": 0.5
+    },
+    {
+     "t": "tenocite alungite, dreptunghiulare",
+     "p": 0.5
+    },
+    {
+     "t": "limite și citoplasmă slab vizibile",
+     "p": 0.5
+    },
+    {
+     "t": "nucleu ovalar, hipercrom",
+     "p": 0.5
+    },
+    {
+     "t": "„nuclei gemeni”, cap la cap",
+     "p": 1
+    }
+   ],
+   "dd": {
+    "t": "cu țesutul conjunctiv lax, col. hematoxilină-eozină, glanda mamară",
+    "f": [
+     {
+      "t": "fibre izolate sau în fascicule cu orientare variabilă"
+     },
+     {
+      "t": "fibroblaste, fibrocite și celule migrate"
+     },
+     {
+      "t": "substanță fundamentală în proporție egală, cu capilare"
+     }
+    ]
+   }
+  },
+  {
+   "lp": 7,
+   "nr": 4,
+   "title": "Conjunctivul reticular",
+   "diag": "Țesutul conjunctiv reticular, hematoxilină-eozină, nodul limfatic",
+   "poz": [
+    {
+     "t": "celule reticulare, fibre de reticulină, puțină substanță fundamentală",
+     "p": 0.5
+    },
+    {
+     "t": "zona medulară, cu limfocite rare",
+     "p": 1
+    },
+    {
+     "t": "celule reticulare stelate",
+     "p": 1
+    },
+    {
+     "t": "citoplasmă eozinofilă",
+     "p": 0.5
+    },
+    {
+     "t": "nucleu mare, rotund, hipocrom",
+     "p": 0.5
+    },
+    {
+     "t": "prelungiri lungi, puține, anastomozate",
+     "p": 0.5
+    },
+    {
+     "t": "pseudorețea care dublează rețeaua de fibre",
+     "p": 0.5
+    },
+    {
+     "t": "fibrele de reticulină nu se văd în hematoxilină-eozină",
+     "p": 1
+    },
+    {
+     "t": "în ochiuri: limfocite mici, citoplasmă în semilună",
+     "p": 0.5
+    }
+   ],
+   "dd": {
+    "t": "cu fibrele de reticulină, col. impregnație argentică, splină",
+    "f": [
+     {
+      "t": "fibrele se văd, colorate în negru"
+     },
+     {
+      "t": "fibre ramificate, anastomozate"
+     },
+     {
+      "t": "rețele cu ochiuri de mărimi și forme diferite"
+     }
+    ]
+   }
+  }
+ ]
+}
