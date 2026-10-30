@@ -221,6 +221,18 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 40
+  },
+  {
+   "id": "recap-histo-06-07-anim",
+   "subj": "histo",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · LP 6–7 · țesutul conjunctiv",
+   "sub": "Cele 7 lame: recunoaștere + colorație → descriere → DD (1 asemănare + 3 diferențe)",
+   "slides": 18,
+   "path": "lp/recap-histo-06-07-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 903
   }
  ]
 }
