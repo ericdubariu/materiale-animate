@@ -69,6 +69,15 @@ SHEET_MAP = {
     ("anatopat-z4-anim", "bp"): ("anatopat_lp0304", [13]),   # bronhopneumonia
 }
 
+# Histologie: poze curate în plus (fără etichete), pe (LP, lama din LP)
+HISTO_CLEAN = {
+    (6, 2): [("col_mare", "Ob. mare")],
+    (6, 3): [("ret_mare", "Ob. mare"), ("splina", "Alt câmp · aceeași colorație")],
+    (7, 1): [("lax_mare", "Ob. mare")],
+    (7, 2): [("adi_mare", "Ob. mare")],
+    (7, 3): [("ten_mare", "Ob. mare")],
+}
+
 # Anatomie patologică: la stații doar pozele reale ale preparatelor de la LP (cele din deck-uri, lp_*.jpg).
 # tema din pachet → (deck, [pozele, prima = cea principală])
 def _L(d, n): return (d, [f"lp_l{n}_mic", f"lp_l{n}_lama"])
@@ -82,6 +91,7 @@ ANA_IMG = {
                         ("z4", ["lp_p23"]), ("z4", ["lp_p24"]), ("z4", ["lp_p25"]), ("z4", ["lp_p26"])],
 }
 def ana_caption(name):
+    if name.startswith("z_"): return "Detaliu mărit · aceeași lamă"
     if name.endswith("_lama"): return "Lama la ochiul liber"
     if "_mic" in name or name in ("lp_l2_staza", "lp_l2_inf"): return "La microscop · HE"
     return "Piesa" if not name.endswith(("_b", "_c")) else "Piesa · altă imagine"
@@ -103,6 +113,19 @@ def ana_rewrite(p):
             if f.exists():
                 files.append((n, f"../lp/anatopat-{deck}-anim/img/{n}.jpg"))
         assert files, (p["id"], t, names)
+        # detalii mărite din aceeași poză la microscop (decupaje curate din deck), doar la lame
+        import hashlib
+        seenh = set()
+        for n, u in list(files):
+            if not (n.endswith("_mic") or n in ("lp_l2_staza", "lp_l2_inf")):
+                continue
+            for z in sorted((SITE / "lp" / f"anatopat-{deck}-anim" / "img").glob(f"z_{n}_*.jpg")):
+                h = hashlib.md5(z.read_bytes()).hexdigest()
+                from PIL import Image as _I
+                if h in seenh or _I.open(z).width < 300:
+                    continue
+                seenh.add(h)
+                files.append((z.stem, f"../lp/anatopat-{deck}-anim/img/{z.name}"))
         k0 = f"t{t}_0"
         imgs[k0] = files[0][1]
         q["img"] = k0
@@ -246,7 +269,15 @@ def main():
                 assert f, (z["deck"], z["img"])
                 key = f"l{i}"
                 imgs[key] = f"../lp/{z['deck']}/img/{f.name}"
-            qs.append({"id": f"{uid}_l{i+1}", "topic": i, "diff": 0, "type": "open", "station": 1, "img": key,
+            local = z["nr"] - {2: 0, 3: 3, 4: 6, 5: 9}.get(lp, 0)
+            annot = []
+            for f in sorted((OUT / "img" / "histo").glob(f"h{lp}_{local}_*.jpg"), key=lambda f: (0 if "_mic" in f.name else 1, f.name)):
+                annot.append({"src": f"img/histo/{f.name}", "cap": ("Ob. mic" if "_mic" in f.name else "Ob. mare") + " · poza de la disciplină, cu structurile marcate"})
+            more = []
+            for extra in HISTO_CLEAN.get((lp, local), []):
+                ff = next((SITE / "lp").glob(f"*/img/{extra[0]}.jpg"), None)
+                if ff: more.append({"src": f"../lp/{ff.parent.parent.name}/img/{ff.name}", "cap": extra[1]})
+            qs.append({"id": f"{uid}_l{i+1}", "topic": i, "diff": 0, "imgcap": "Poza de ansamblu", "more": more, "annot": annot, "type": "open", "station": 1, "img": key,
                        "q": "Recunoașteți lama și colorația, descrieți preparatul (obiectiv mic, apoi obiectiv mare) și faceți diagnosticul diferențial cu o singură altă lamă.",
                        "kp": z["kp"], "ev": HF[(lp, z["nr"])], "src": f"Recapitularea OSPE de Histologie · LP {lp}, {z['title']} ({z['col']} · {z['org']})"})
         titles = {2: "Epiteliile de acoperire (I)", 3: "Epiteliile de acoperire (II)", 4: "Epiteliile glandulare exocrine (III)",

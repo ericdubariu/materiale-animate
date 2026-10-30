@@ -392,6 +392,9 @@ details.topics .tu{font:600 12px/1.2 var(--ui);color:var(--faint);margin:12px 0 
 .qm{display:flex;flex-direction:column;gap:4px;width:150px;padding:0;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--well);color:var(--muted);font:600 12px/1.3 var(--ui);cursor:zoom-in;text-align:left}
 .qm img{width:100%;height:96px;object-fit:cover;display:block}
 .qm span{padding:4px 8px 6px}
+.qa{display:flex;flex-direction:column;gap:4px;width:190px;padding:0;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--well);color:var(--muted);font:600 12px/1.3 var(--ui);cursor:zoom-in;text-align:left}
+.qa img{width:100%;height:120px;object-fit:cover;display:block}
+.qa span{padding:4px 8px 6px}
 .kp .info{padding:10px 12px;border-radius:12px;border:1px dashed var(--line2);font-size:14px;color:var(--body)}
 .meter{position:relative;height:9px;border-radius:99px;background:var(--line);margin:18px 0 6px;overflow:hidden}
 .meter i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--bad);transition:width .3s var(--ease),background .3s}
@@ -604,7 +607,7 @@ const SIMS={
 const LPORDER=["histo","anatopat","farma","micro","fizio","fiziopat","embrio"];
 const unitsOf=k=>IDX().filter(SIMS[k].unit||(()=>false));
 function optsFor(k){const S=SIMS[k];
-  const base={units:null,topics:[],diffs:[1,2,3],wrong:false,shuffle:true,n:2,timing:"real",nOral:3,nPrac:2,tq:"none",nCalc:3,nMcq:4,nGraph:1,nOpen:2,wtime:"none",fptime:"30",nEmb:20,patho:true,only4:false,allSt:false,noVar:false,ffisa:"gen",nF:1,etime:"none",ecustom:20,sim:null};
+  const base={units:null,topics:[],diffs:[1,2,3],wrong:false,shuffle:true,n:2,timing:"real",nOral:3,nPrac:2,tq:"none",nCalc:3,nMcq:4,nGraph:1,nOpen:2,wtime:"none",fptime:"30",nEmb:20,patho:true,only4:false,allSt:false,noVar:false,annot:false,ffisa:"gen",nF:1,etime:"none",ecustom:20,sim:null};
   const o=Object.assign(base,store.get("opt_"+k,{}));
   const all=k==="fiziopat"?[]:unitsOf(k).map(u=>u.id);
   if(!Array.isArray(o.units))o.units=k==="unix"?[]:all;
@@ -724,6 +727,7 @@ function renderOptions(k){
     const nw=pd.filter(m=>Mem.isWrong(m.id)).length;
     tg.append(toggle("Doar greșelile mele",`${nQ(nw)} din materialul ales, salvate pe acest dispozitiv`,o.wrong,v=>{o.wrong=v;o.sim&&(o.sim.touched=false);re()}));
     if(k!=="unix"&&k!=="farma")tg.append(toggle("Amestecă întrebările",S.kind==="station"?"Oprit: stațiile vin în ordinea LP-urilor":"Oprit: întrebările vin în ordinea din LP",o.shuffle,v=>{o.shuffle=v;save()}));
+    if(k==="histo")tg.append(toggle("Pozele adnotate și în timpul stației","Mod de învățare: vezi pozele de la disciplină (ob. mic, ob. mare) cu structurile marcate cât răspunzi. Unele au scris și numele lamei. Oprit: le vezi după autoevaluare.",o.annot,v=>{o.annot=v;save()}));
     if(k==="farma")tg.append(toggle("Fără variantele noi","Doar cazurile din LP, modelul oficial și întrebările de teorie",o.noVar,v=>{o.noVar=v;o.topics=[];re()}));
     if(k==="embrio"){tg.append(toggle("Mai ales patologie","Malformații, sindroame, anomalii, cazuri clinice: ~70% din întrebări",o.patho,v=>{o.patho=v;save()}));
       tg.append(toggle("Doar întrebări cu 4 variante","Exact formatul examenului; mai puține întrebări",o.only4,v=>{o.only4=v;re()}))}
@@ -901,7 +905,9 @@ function autoKP(t,text){const T=norm(text);if(T.trim().length<3)return false;con
 
 /* ============================ elemente comune ============================ */
 const imgHTML=(q,alt="Imaginea întrebării")=>q._img?`<div class="qimg"><img alt="${alt}"><span class="zoom">${q.imgcap?esc(q.imgcap)+" · ":""}Atinge pentru mărire</span></div>${(q.more||[]).length?`<div class="qmore">${q.more.map((m,i)=>`<button type="button" class="qm" data-i="${i}"><img alt="${esc(m.cap)}" src="${esc(m.src)}"><span>${esc(m.cap)}</span></button>`).join("")}</div>`:""}`:"";
-function wireImg(root,q){const d=$(".qimg",root);if(d&&q._img){$("img",d).src=q._img;d.onclick=()=>lightbox(q._img)}$$(".qm",root).forEach(b=>b.onclick=()=>lightbox(q.more[+b.dataset.i].src))}
+const annotHTML=q=>(q.annot||[]).length?`<div class="lbl" style="margin-top:14px">Pozele de la disciplină · ob. mic și ob. mare, cu structurile marcate</div><div class="qmore annot">${q.annot.map((m,i)=>`<button type="button" class="qa" data-i="${i}"><img alt="${esc(m.cap)}" src="${esc(m.src)}" loading="lazy"><span>${esc(m.cap.split(" · ")[0])}</span></button>`).join("")}</div>`:"";
+function wireAnnot(root,q){$$(".qa",root).forEach(b=>b.onclick=()=>lightbox(q.annot[+b.dataset.i].src))}
+function wireImg(root,q){wireAnnot(root,q);const d=$(".qimg",root);if(d&&q._img){$("img",d).src=q._img;d.onclick=()=>lightbox(q._img)}$$(".qm",root).forEach(b=>b.onclick=()=>lightbox(q.more[+b.dataset.i].src))}
 const headPills=(q,show)=>`<span class="schip" style="--c:${sCol(q._subject)}"><i></i>${esc(q._unitLabel)}</span>${show&&q._topic?`<span class="pill">${esc(q._topic)}</span>`:""}${q.diff?`<span class="pill">${DIFF[q.diff]}</span>`:""}${q.hot?`<span class="pill hot">${q._subject==="micro"?"a picat la examen":"apare des"}</span>`:""}`;
 function modelHTML(q,open){return q.model?`<details class="model" ${open?"open":""}><summary>Răspunsul model</summary><div class="md">${String(q.model).split("\n").map(x=>`<p>${md(x)}</p>`).join("")}</div></details>`:""}
 const scoreCls=v=>v>=7.5?"ok-c":v>=5?"mid-c":"no-c";
@@ -938,7 +944,7 @@ async function pickStations(k,o){
 const START={
   async station(k,o){const qs=await pickStations(k,o);
     const T=o.timing==="real"?{read:60,ans:360,last:60}:o.timing==="rapid"?{read:30,ans:180,last:30}:{read:0,ans:0,last:0};
-    runStations(k,qs.map(q=>({q})),{T,label:"Stația",oral:false})},
+    runStations(k,qs.map(q=>({q})),{T,label:"Stația",oral:false,annot:k==="histo"&&o.annot})},
   async oral(k,o){const pl=pool(k,o);
     // întrebările care au picat la examen (hot) au șansă cu 30% mai mare la tragere: amestec ponderat (cheie = u^(1/w))
     const wsh=a=>a.map(m=>[Math.pow(Math.random(),1/(m.hot?1.3:1)),m]).sort((x,y)=>y[0]-x[0]).map(x=>x[1]);
@@ -1069,7 +1075,7 @@ function runStations(k,items,cfg){
     const label=`${cfg.label} ${i+1} din ${items.length}`;
     const sc=h(`<div class="stwrap"><div class="stprog"><span class="schip" style="--c:${sCol(k)}"><i></i>${esc(S.title)}</span>${it.part?`<span class="pill">${it.part}</span>`:""}
         <span class="pill">${label}</span><span class="dots" aria-hidden="true">${items.map((_,j)=>`<i class="${j<i?"d":j===i?"c":""}"></i>`).join("")}</span></div>
-      <div class="stgrid"><div><div class="panel task"><div class="qhead">${headPills(q)}</div>${q._fisa?farmaBlank(q):`<div class="qtext">${md(S.blank==="anatopat"?"Recunoașteți preparatul (organul / țesutul, leziunea și definiția ei), descrieți modificările patologice, apoi cauzele, complicațiile și diagnosticul diferențial.":q.q)}</div>${imgHTML(q,"Preparatul")}${S.blank==="histo"?histoBlank():S.blank==="anatopat"?anatopatBlank(q):""}`}
+      <div class="stgrid"><div><div class="panel task"><div class="qhead">${headPills(q)}</div>${q._fisa?farmaBlank(q):`<div class="qtext">${md(S.blank==="anatopat"?"Recunoașteți preparatul (organul / țesutul, leziunea și definiția ei), descrieți modificările patologice, apoi cauzele, complicațiile și diagnosticul diferențial.":q.q)}</div>${imgHTML(q,"Preparatul")}${cfg.annot?annotHTML(q):""}${S.blank==="histo"?histoBlank():S.blank==="anatopat"?anatopatBlank(q):""}`}
         ${cfg.oral?`<p class="note" style="margin:0">Răspunde cu voce tare, ca la examen. Contează doar ce spui.</p>`:`<p class="note" style="margin:0">Răspunde cu voce tare. Examinatorul nu pune întrebări și anunță doar ultimul minut.</p>`}</div>
         <div id="ev"></div></div>
         <aside class="panel clockc"><div class="ph" id="ph">${T.read?"Citești sarcina":"Răspunzi cu voce tare"}</div><div class="clock" id="ck">${fmt(T.read||T.ans)}</div>
@@ -1108,9 +1114,9 @@ function runStations(k,items,cfg){
       it.res={...s,checked,sheet:!!sheet};{const qh=box.closest(".stwrap")&&box.closest(".stwrap").querySelector(".qhead");if(qh)qh.innerHTML=headPills(q,true)}Mem.record(q.id,sheet?s.pass:s.pct>=75);
       $(".actions",ev).outerHTML=`<div class="verdict ${s.pass?"ok":"no"}"><span>${sheet?`${s.pts} / ${s.max} p · ${s.pass?"promovat":"nepromovat"}`:`${s.pct}% · nota ${nf(s.note,1)}`}</span>
         <small>${sheet?(s.ob?"Rubricile obligatorii sunt bifate.":"Fără organ, leziune și definiție stația nu se punctează."):s.pass?"Peste jumătate din puncte.":"Sub jumătate din puncte."}</small></div>
-        ${sheet?"":modelHTML(q)}${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}
+        ${sheet?"":modelHTML(q)}${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}${cfg.annot?"":annotHTML(q)}
         <div class="actions"><button class="btn pri" type="button" id="nx">${i<items.length-1?`${cfg.label} următoare`.replace("Întrebarea următoare","Întrebarea următoare"):"Vezi rezultatul"}</button></div>`;
-      if(!sheet&&q.model)$("details.model",ev).open=false;
+      if(!sheet&&q.model)$("details.model",ev).open=false;wireAnnot(ev,q);
       $("#nx",ev).onclick=()=>{g0.cur++;next()}}};
   const gradeEv=(i,box)=>{const it=items[i],q=it.q,G=q._fisa?farmaGroups(q):histoGroups(q.ev);
     const ev=h(`<div class="panel selfev"><h3>Autoevaluare pe fișa de evaluare</h3><p class="hint">${q._fisa?"Bifează noțiunile pe care le-ai spus cu voce tare (măcar în esență). Dacă ai înșirat noțiuni greșite înaintea celor bune, nu le bifa pe cele de după limita de +50%.":"Bifează ce ai spus cu voce tare (măcar în esență). Fără diagnostic și colorație, stația are 0 puncte."}</p>
@@ -1128,9 +1134,9 @@ function runStations(k,items,cfg){
       it.res={...s,checked,ev:true};{const qh=box.closest(".stwrap")&&box.closest(".stwrap").querySelector(".qhead");if(qh)qh.innerHTML=headPills(q,true)}
       if(q._fisa)q.subs.forEach(x=>{const r=s.per[x.id];if(r&&r.m)Mem.record(x.id,r.p/r.m>=.75)});else Mem.record(q.id,s.pct>=75);
       $(".actions",ev).outerHTML=`<div class="verdict ${s.pass?"ok":"no"}"><span>${fp(s.pts)} / 9 p · nota ${nf(s.note,2)}</span><small>${s.elim?"Fără diagnostic și colorație, stația are 0 puncte.":s.pass?"Promovat.":"Nepromovat."}</small></div>
-        ${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}
+        ${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}${cfg.annot?"":annotHTML(q)}
         <div class="actions"><button class="btn pri" type="button" id="nx">${i<items.length-1?`${cfg.label} următoare`:"Vezi rezultatul"}</button></div>`;
-      $("#nx",ev).onclick=()=>{g0.cur++;next()}}};
+      wireAnnot(ev,q);$("#nx",ev).onclick=()=>{g0.cur++;next()}}};
   const stationResults=()=>{g0.over=true;g0.live=false;
     const rs=items.map(it=>it.res);const sheetAll=rs.every(r=>r.sheet);
     const avg=rs.reduce((a,r)=>a+r.note,0)/rs.length,passN=rs.filter(r=>r.pass).length;
@@ -1149,7 +1155,7 @@ function runStations(k,items,cfg){
       const sc=h(`<div class="wrap narrow"><div class="rvbar"><button class="btn sec sm" type="button" id="bk">${ICO.back} Rezultatul</button><h2>Revizuirea</h2></div>
         ${items.map((it,j)=>{const q=it.q,r=it.res;const sheet=r.sheet&&fise&&fise.sheets[q._unit+"|"+q.topic];
           if(r.ev)return `<div class="panel rv"><div class="rvh"><span class="rn pill">${j+1}</span>${headPills(q,true)}<span class="rvs ${scoreCls(r.note)}">${fp(r.pts)}/9 p</span></div>
-            ${q._fisa?farmaBlank(q):`<div class="qtext">${md(q.q)}</div>${imgHTML(q,"Preparatul")}`}<div class="lbl">Fișa de evaluare, cu ce ai bifat</div><div class="fisa">${evTable(q._fisa?farmaGroups(q):histoGroups(q.ev),"review",r.checked)}</div>${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}</div>`;
+            ${q._fisa?farmaBlank(q):`<div class="qtext">${md(q.q)}</div>${imgHTML(q,"Preparatul")}`}<div class="lbl">Fișa de evaluare, cu ce ai bifat</div><div class="fisa">${evTable(q._fisa?farmaGroups(q):histoGroups(q.ev),"review",r.checked)}</div>${annotHTML(q)}${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}</div>`;
           return `<div class="panel rv"><div class="rvh"><span class="rn pill">${j+1}</span>${headPills(q,true)}<span class="rvs ${r.sheet?(r.pass?"ok-c":"no-c"):scoreCls(r.note)}">${r.sheet?`${r.pts}/${r.max} p`:`${r.pct}%`}</span></div>
           <div class="qtext">${md(q.q)}</div>${imgHTML(q,"Preparatul")}<div class="lbl">${sheet?"Fișa, cu ce ai bifat":"Punctele-cheie, cu ce ai bifat"}</div>${sheet?sheetHTML(sheetModel(sheet.rows)):kpList(q.kp)}${sheet?"":modelHTML(q)}${q.src?`<div class="src">Sursa: ${esc(q.src)}</div>`:""}</div>`}).join("")}
         <div class="actions" style="justify-content:center"><button class="btn sec" type="button" id="bk2">Înapoi la rezultat</button></div></div>`);
