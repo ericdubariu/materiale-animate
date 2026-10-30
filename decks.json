@@ -233,6 +233,30 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 903
+  },
+  {
+   "id": "farma-lp02-anim",
+   "subj": "farma",
+   "tip": "lp",
+   "title": "LP 2 · Farmacocinetică: cazuri clinice",
+   "sub": "ADME, regula pH-ului, inductori și inhibitori (activ vs pro-drog), T½ și platoul · cele 5 cazuri cu scriptul OSPE",
+   "slides": 34,
+   "path": "lp/farma-lp02-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 20
+  },
+  {
+   "id": "farma-lp03-anim",
+   "subj": "farma",
+   "tip": "lp",
+   "title": "LP 3 · Farmacodinamie: receptori și cazuri",
+   "sub": "Tipurile de liganzi și curbele doză–efect · Gs, Gi, Gq · decodorul · cele 5 cazuri (supradoză, D, E, alergie, șoc anafilactic) cu scriptul OSPE",
+   "slides": 33,
+   "path": "lp/farma-lp03-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 30
   }
  ]
 }

@@ -255,7 +255,7 @@ export const SLIDES = [
       T('hair', 'α1 · Gq', C.gq, 'piloerecție'), T('liver', 'α1 · Gq', C.gq, 'glicogenoliză'), T('smooth', 'α2 · Gi', C.gi, 'contracție'),
       T('pancreas', 'α2 · Gi', C.gi, 'insulină ↓'), T('terminal', 'α2 · Gi', C.gi, 'NA ↓ (feedback negativ)'),
     ] },
-    kick: 'Receptorii adrenergici · α', title: 'Receptorii α: α1 contractă, α2 frânează',
+    kick: 'Receptorii adrenergici · alfa', title: 'Receptorii α: α1 contractă, α2 frânează',
     table: { head: ['Receptor', 'Localizare', 'Efect'], rows: [
       ['α1 (Gq) post-sinaptic', 'ochi: mușchiul radial al irisului', 'contracție → !!midriază activă!!'],
       ['α1 (Gq) post-sinaptic', 'vase', 'vasoconstricție, HTA'],
@@ -276,7 +276,7 @@ export const SLIDES = [
       T('bronchi', 'β2 · Gs', C.gs, 'bronhodilatație'), T('gut', 'β2 · Gs', C.gs, 'peristaltism ↓'), T('uterus', 'β2 · Gs', C.gs, 'relaxare: tocolitic'),
       T('vessel', 'β2 · Gs', C.gs, 'vasodilatație · glicogenoliză'), T('fat', 'β3 · Gs', C.gs, 'lipoliză · vezica relaxată'),
     ] },
-    kick: 'Receptorii adrenergici · β', title: 'Receptorii β: β1 stimulează cordul, β2 relaxează',
+    kick: 'Receptorii adrenergici · beta', title: 'Receptorii β: β1 stimulează cordul, β2 relaxează',
     table: { head: ['Receptor', 'Localizare', 'Efect'], rows: [
       ['β1 (Gs)', 'cord', '!!cardiostimulare!!: ino-, crono-, dromo-, batmo-, tonotrop pozitiv'],
       ['β1 (Gs)', 'aparat juxtaglomerular renal', '↑ renina → aldosteron → volum ↑ → HTA'],
@@ -298,7 +298,7 @@ export const SLIDES = [
       O('intestin', 'gut', 'peristaltism ↑', 'peristaltism ↓\nsfinctere închise'), O('vezica urinară', 'bladder', 'contracție', 'relaxare (β3)'), O('uterul gravid', 'uterus', '–', 'relaxare\n(tocolitic)'),
     ], legend: 'verde = parasimpatic · portocaliu = simpatic' },
     kick: 'Tabelul opuselor', title: 'Parasimpatic vs simpatic pe fiecare organ: deduci orice efect',
-    table: { head: ['Organ', 'Parasimpatic · ACh → M', 'Simpatic · NA, adrenalina → α, β'], rows: [
+    table: { head: ['Organ', 'Parasimpatic · ACh → M', 'Simpatic · NA, adrenalina → alfa, beta'], rows: [
       ['Pupila', 'mioză (M3, circular)', 'midriază (α1, radial)'],
       ['Glande salivare', 'salivă ↑ (M)', 'salivă ↓'],
       ['Bronhii', 'bronhoconstricție, secreții ↑ (M3)', 'bronhodilatație (β2)'],

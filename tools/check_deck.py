@@ -58,7 +58,9 @@ JS_INFO = r"""() => {
   const ls = [...document.querySelectorAll('#ov .lbl:not(.dim)')].map(l => l.getBoundingClientRect());
   let lov = 0; for (let i = 0; i < ls.length; i++) for (let j = i + 1; j < ls.length; j++) { const A = ls[i], B = ls[j]; if (A.x < B.x + B.width - 4 && B.x < A.x + A.width - 4 && A.y < B.y + B.height - 4 && B.y < A.y + A.height - 4) lov++; }
   const small = [...txt.querySelectorAll('p,td,.box')].filter(e => parseFloat(getComputedStyle(e).fontSize) < 10.5).length;
-  return { raw, i: c.i, n: S.length, beats: c.beats.length, over, vis, keysLeft, keysWell, kickTitleKey, ovl, lov, small,
+  // litere grecești mici într-un element cu text-transform: uppercase → α devine „A”, β devine „B” (greșeală găsită la Farma LP 3)
+  const greekUp = [...document.querySelectorAll('body *')].filter(e => getComputedStyle(e).textTransform === 'uppercase' && [...e.childNodes].some(n => n.nodeType === 3 && /[α-ω]/.test(n.nodeValue))).map(e => e.textContent.slice(0, 30));
+  return { raw, greekUp, i: c.i, n: S.length, beats: c.beats.length, over, vis, keysLeft, keysWell, kickTitleKey, ovl, lov, small,
            kick: document.getElementById('kick').innerText, title: document.getElementById('title').innerText,
            anim: S[c.i].anim, spec: S[c.i].spec, foot: document.getElementById('foot') ? document.getElementById('foot').innerText : '' };
 }"""
@@ -96,6 +98,7 @@ with sync_playwright() as p:
             if info['anim'] is True and not info['spec']: issues.append(f'S{sn}: anim:true fără spec')
             if info['ovl']: issues.append(f'S{sn}: {info["ovl"]} perechi de badge-uri suprapuse')
             if info['lov']: issues.append(f'S{sn}: {info["lov"]} etichete suprapuse')
+            if info.get('greekUp'): issues.append(f'S{sn}: literă grecească în text cu majuscule (α→A, β→B): {info["greekUp"][:3]}')
             if info['small']: issues.append(f'S{sn}: {info["small"]} elemente cu font < 10,5 px')
             # abrevieri: tokenuri MAJUSCULE din textul stâng care nu apar în subsol
             body_txt = info['raw']

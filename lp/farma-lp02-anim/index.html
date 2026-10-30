@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Farmacologie LP 2 animat · Farmacocinetică: cazuri clinice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+/* Artboard 16:9 (1280×720) scalat în fereastră: stânga caietul cu punctele 1-2-3, dreapta „godeul” microscopului cu scena 3D vie.
+   O singură temă, deliberat: slide-ul e o foaie deschisă, scena e câmpul întunecat al microscopului. */
+:root{
+  color-scheme: dark;
+  --paper:#231A2B; --ink:#F3ECF6; --muted:#B8ABC4; --faint:#8C7F99; --line:#3A2E45; --body:#D9CFE2;
+  --histo:#C27A10; --histo-ink:#FFCF85; --histo-tint:#3A2A12;
+  --well:#100916; --well-2:#1E1027; --on-well:#F6EEF7;
+  --say:#140D1C; --warn:#FF7C90; --warn-tint:#3B1C26; --why-ink:#E6DCEC;
+  --f-display:"Plus Jakarta Sans","Inter",system-ui,sans-serif;
+  --f-ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:var(--paper);color:var(--ink);overflow:hidden}
+body{font-family:var(--f-ui);-webkit-font-smoothing:antialiased}
+#fit{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--paper)}
+#stage{position:relative;width:1280px;height:720px;transform-origin:center center;flex:none;background:var(--paper);overflow:hidden}
+/* scena */
+#well{position:absolute;left:534px;top:22px;width:724px;height:676px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,var(--well-2),var(--well) 70%);box-shadow:0 0 0 1px rgba(255,255,255,.07),0 18px 40px -18px rgba(0,0,0,.7)}
+body.script #well{width:452px;left:806px}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+#ov{position:absolute;inset:0;pointer-events:none}
+.badge{position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid #fff;background:var(--histo);color:#fff;font:700 14px/26px var(--f-ui);text-align:center;pointer-events:none;box-shadow:0 0 0 4px rgba(194,122,16,.25),0 4px 14px rgba(0,0,0,.45);transition:transform .25s,box-shadow .25s,opacity .3s;padding:0}
+.badge.on{transform:scale(1.22);box-shadow:0 0 0 7px rgba(255,207,133,.35),0 0 26px rgba(255,180,70,.9)}
+.badge:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.lbl{position:absolute;left:0;top:0;transform:translate(-50%,-50%);white-space:nowrap;font:600 12px/1 var(--f-ui);color:var(--on-well);background:rgba(20,10,28,.72);border:1px solid rgba(255,255,255,.22);padding:5px 9px;border-radius:999px;backdrop-filter:blur(4px);transition:opacity .4s;letter-spacing:.01em}
+.lbl.dim{opacity:.0}
+.lbl i{font-style:normal;color:#FFCF85}
+#hud{position:absolute;left:16px;top:14px;display:flex;gap:8px;flex-wrap:wrap;max-width:calc(100% - 32px);pointer-events:none}
+.chip{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;color:#f6eef7;background:rgba(27,18,34,.82);border:1px solid rgba(255,255,255,.18);padding:6px 9px;border-radius:999px}
+.chip b{color:#FFCF85;font-weight:700}
+#phase{position:absolute;right:16px;top:14px;font:700 13px/1 var(--f-display);color:#fff;background:rgba(168,106,12,.92);padding:8px 14px;border-radius:999px;letter-spacing:.02em;pointer-events:none;transition:opacity .35s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+#phase:empty{opacity:0}
+#ctl{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;align-items:center;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;pointer-events:none}
+#ctl.show,#ctl:focus-within{opacity:1;transform:none;pointer-events:auto}
+#stepInfo{position:absolute;right:16px;bottom:16px;font:600 11px/1 var(--f-ui);color:rgba(246,238,247,.55);font-variant-numeric:tabular-nums;letter-spacing:.04em;pointer-events:none;transition:opacity .35s}
+#ctl.show ~ #stepInfo{opacity:0}
+#sel{position:fixed;inset:0;z-index:20;background:rgba(10,5,14,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#selIn{width:min(980px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+#selHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#selHead h2{margin:0;font:800 18px/1.2 var(--f-display);color:var(--ink)}
+#selList{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;overflow:auto;min-height:0}
+.si{display:block;text-align:left;font:600 13px/1.3 var(--f-ui);color:var(--ink);background:var(--histo-tint);border:1px solid transparent;border-radius:11px;padding:9px 11px;cursor:pointer}
+.si span{display:inline-block;min-width:22px;color:var(--histo-ink);font-variant-numeric:tabular-nums}
+.si small{display:block;margin-top:3px;font:500 11px/1.3 var(--f-ui);color:var(--muted)}
+.si:hover,.si.cur{border-color:var(--histo)}
+.si:focus-visible,#selClose:focus-visible{outline:2px solid var(--histo);outline-offset:2px}
+#selClose{font:700 13px/1 var(--f-ui);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer}
+.tb{pointer-events:auto;font:600 11.5px/1 var(--f-ui);color:var(--on-well);background:rgba(20,10,28,.6);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 11px;cursor:pointer;backdrop-filter:blur(4px)}
+.tb:hover{background:rgba(194,122,16,.7)}
+.tb.on{background:var(--histo);border-color:var(--histo)}
+.tb:focus-visible{outline:2px solid #fff;outline-offset:2px}
+#photos{position:absolute;left:12px;bottom:12px;display:flex;gap:8px;pointer-events:none}
+.ph{width:118px;border-radius:10px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 20px rgba(0,0,0,.45)}
+.ph img{display:block;width:100%;height:74px;object-fit:cover}
+.ph span{display:block;font:600 10px/1.25 var(--f-ui);color:#f3e6f2;padding:4px 6px;background:rgba(20,10,28,.85)}
+#zoom{position:absolute;inset:0;background:rgba(10,4,14,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:5;cursor:zoom-out}
+#zoom img{max-width:92%;max-height:84%;border-radius:8px}
+#zoom p{margin:0;color:#eadbea;font:500 13px var(--f-ui)}
+/* text */
+#txt{position:absolute;left:30px;top:22px;width:478px;height:676px;display:flex;flex-direction:column}
+body.script #txt{left:30px;width:750px}
+body.wide #well{left:420px;width:838px}
+body.wide #txt{width:362px}
+body.wide #title{font-size:22px}
+#txt::before{content:"";position:absolute;left:-18px;top:6px;bottom:6px;width:4px;border-radius:4px;background:var(--histo)}
+#kick{padding-right:64px;font:700 11px/1.2 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--histo-ink);margin:4px 0 6px}
+#title{font:800 25px/1.14 var(--f-display);letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+#body{flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+#pts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.pt{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:7px 9px 7px 7px;border-radius:12px;cursor:pointer;transition:background .35s,box-shadow .35s}
+.pt .n{width:26px;height:26px;border-radius:50%;background:var(--histo);color:#fff;font:700 13px/26px var(--f-ui);text-align:center;transition:transform .3s}
+.pt h3{margin:2px 0 2px;font:700 14.5px/1.25 var(--f-ui)}
+.pt p{margin:0;font:400 13px/1.42 var(--f-ui);color:var(--body)}
+.pt p+p{margin-top:1px}
+.pt p::before{content:"➤ ";color:var(--histo);font-size:10px}
+.pt b,.box b,.script b{font-weight:700;color:var(--ink)}
+.pt.on{background:var(--histo-tint);box-shadow:inset 0 0 0 1px rgba(255,207,133,.35)}
+.pt.on .n{transform:scale(1.12);box-shadow:0 0 0 4px rgba(194,122,16,.25)}
+.pt:focus-visible{outline:2px solid var(--histo);outline-offset:1px}
+.box{border-radius:12px;padding:9px 12px;font:400 12.8px/1.45 var(--f-ui)}
+.box .h{display:block;font:800 10.5px/1 var(--f-ui);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.why{background:var(--histo-tint);color:var(--why-ink)}
+.why .h{color:var(--histo-ink)}
+.say{background:var(--say);color:#EFE6F8;box-shadow:inset 0 0 0 1px rgba(201,179,255,.18)}
+.say .h{color:#C9B3FF}
+.say b{color:#fff}
+.warn{background:var(--warn-tint);color:#F6DDE2;box-shadow:inset 3px 0 0 var(--warn)}
+.warn .h{color:var(--warn)}
+#foot{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);font:400 10.5px/1.4 var(--f-ui);color:var(--faint);display:flex;flex-direction:column;gap:3px}
+#foot .terms b{font-weight:600;color:var(--muted)}
+#pg{position:absolute;right:0;top:0;font:600 11px/1 var(--f-ui);color:var(--faint);font-variant-numeric:tabular-nums;background:none;border:0;padding:6px 0 6px 10px;cursor:pointer}
+#pg:hover{color:var(--histo-ink)}
+/* script OSPE */
+.script{display:flex;flex-direction:column;gap:6px}
+.sec{display:grid;grid-template-columns:106px 1fr;gap:12px;padding:8px 10px;border-radius:12px;transition:background .35s,opacity .35s;cursor:pointer}
+.sec .tm{font:700 11px/1.3 var(--f-ui);color:var(--histo-ink);letter-spacing:.04em;text-transform:uppercase}
+.sec .tm small{display:block;font:600 11px/1.3 var(--f-ui);color:var(--faint);letter-spacing:0;text-transform:none;margin-top:2px;font-variant-numeric:tabular-nums}
+.sec p{margin:0;font:400 13px/1.5 var(--f-ui);color:var(--body)}
+.sec.on{background:var(--histo-tint)}
+/* tabel */
+table.rt{width:100%;border-collapse:collapse;font:400 12px/1.35 var(--f-ui)}
+.rt th{text-align:left;font:700 10.5px/1.2 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;color:var(--histo-ink);padding:6px 6px;border-bottom:2px solid var(--histo)}
+.rt td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.rt tr.on td{background:var(--histo-tint)}
+.rt td:first-child{font-weight:700}
+/* modul „ascunde etichetele” */
+body.quiz .lbl,body.quiz #photos,body.quiz #phase{opacity:0!important}
+body.quiz .badge{background:#3a2a48}
+body.quiz .pt p,body.quiz .pt h3{filter:blur(5px);transition:filter .3s}
+body.quiz .pt.peek p,body.quiz .pt.peek h3{filter:none}
+body.quiz .sec p{filter:blur(5px)}
+body.quiz .sec.peek p{filter:none}
+/* nav doar când pagina e deschisă singură */
+body.solo #err{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;color:#eadbea;font:500 14px/1.5 var(--f-ui)}
+@media (prefers-reduced-motion:reduce){.badge,.pt,.sec,#well,#txt{transition:none}}
+/* roșu = ce dă puncte la examen */
+:root{--key:#FF4D4D}
+b.key,#body b.key,.pt b.key,.box b.key,.say b.key,.script b.key,.rt b.key{color:var(--key)!important;font-weight:800}
+body.quiz b.key{color:inherit!important}
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+  <section id="well" aria-label="Scena animată">
+    <canvas id="gl"></canvas>
+    <div id="ov"></div>
+    <div id="hud"></div>
+    <div id="phase"></div>
+    <div id="photos"></div>
+    <div id="ctl" class="ctl">
+      <button class="tb" id="selBtn" type="button" title="Toate slide-urile">Slide-uri</button>
+      <button class="tb" id="quizBtn" type="button" aria-pressed="false" title="Ascunde etichetele (E)">Ascunde etichetele</button>
+      <button class="tb" id="fsBtn" type="button" title="Ecran complet (F)">Ecran complet</button>
+    </div>
+    <div id="stepInfo"></div>
+    <div id="err" hidden></div>
+  </section>
+  <section id="txt">
+    <button id="pg" type="button" title="Alege slide-ul"></button>
+    <div id="kick"></div>
+    <h1 id="title"></h1>
+    <div id="body"></div>
+    <div id="foot"></div>
+  </section>
+</div></div>
+<div id="sel" hidden><div id="selIn" role="dialog" aria-label="Alege slide-ul"><div id="selHead"><h2 id="selTitle">Slide-uri</h2><button id="selClose" type="button">Închide</button></div><div id="selList"></div></div></div>
+<script type="module" src="engine.js"></script>
+</body>
+</html>
