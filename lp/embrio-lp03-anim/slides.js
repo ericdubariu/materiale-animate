@@ -169,11 +169,12 @@ export const SLIDES = [
       { h: 'Brațul cefalic (cranial)', d: ['→ duoden distal, jejun, o parte din ileon', 'dă ansele intestinului subțire'] },
       { h: 'Brațul caudal', d: ['→ ileonul inferior, cecul, apendicele vermiform, colonul ascendent, !!2/3 proximale ale transversului!!', 'are **mugurele cecal** (marchează granița subțire–gros)'] },
       { h: 'Axul = !!a. mezenterică superioară!!', d: ['ansa se rotește în jurul arterei'] },
-      { h: 'Ductul vitelin', d: ['leagă vârful ansei de sacul vitelin; dacă rămâne → **diverticul Meckel** (în plus față de LP)'] },
+      { h: 'Ductul vitelin', d: ['leagă vârful ansei de sacul vitelin'] },
     ],
     why: 'Mezenterul dorsal → mezenterul intestinului; mezenterul ventral → omentul mic + lig. falciform (doar în regiunea preenteronului).',
     insets: [{ img: 'loop', cap: 'Ansa intestinală primară (UMFST, LP)' }],
     labelText: ['a. sup.'], beatDur: 7,
+    xtra: 'Dacă ductul vitelin rămâne → **diverticul Meckel**.',
   },
   {
     scene: 'rotation', anim: true,
@@ -213,8 +214,8 @@ export const SLIDES = [
       { h: 'Septul urorectal (LA: septum urorectale)', d: ['un perete de **mezoderm** care coboară spre membrana cloacală', 'în față: !!sinusul urogenital (UG) → vezica, uretra!!; în spate: **canalul anorectal (AR)**'] },
       { h: 'Rezultatul', d: ['!!S7!!: membrana cloacală se retrage → 2 orificii (urogenital + anal)'] },
     ],
-    why: 'Locul unde septul atinge membrana devine **corpul perineal**. Dacă septul nu coboară complet → fistule între rect și căile urinare/vagin (în plus față de LP). Embriologia specială (UMFST) se contrazice: la sistemul urinar septul ajunge la membrana cloacală la sfârșitul S7; la sistemul digestiv se oprește aproape de ea, iar membrana se rupe în S8. La examen dai varianta din LP (S7).',
     extraText: WK, beatDur: 7,
+    xtra: 'Locul unde septul atinge membrana devine **corpul perineal**. Dacă septul nu coboară complet → fistule între rect și căile urinare / vagin. Embriologia specială (UMFST) se contrazice: la sistemul urinar septul ajunge la membrana cloacală la sfârșitul S7; la sistemul digestiv se oprește aproape de ea, iar membrana se rupe în S8. La examen dai varianta din LP (S7).',
   },
   {
     scene: 'anal', anim: false,
@@ -222,12 +223,13 @@ export const SLIDES = [
     kick: 'Partea C · Metenteron · Canalul anal', title: 'Linia pectinată desparte canalul anal: endoderm sus, ectoderm jos',
     hud: ['secțiune frontală'],
     points: [
-      { h: 'Partea superioară (2/3)', d: ['din !!endoderm!! (metenteron)', 'a. rectală superioară ← a. mezenterică inferioară', 'inervație viscerală → hemoroizii interni nu dor (în plus față de LP)'] },
-      { h: 'Partea inferioară (1/3)', d: ['din !!ectoderm!! (proctodeu)', 'ramuri din a. rușinoasă (pudendă) internă', 'inervație somatică → hemoroizii externi dor'] },
+      { h: 'Partea superioară (2/3)', d: ['din !!endoderm!! (metenteron)', 'a. rectală superioară ← a. mezenterică inferioară'] },
+      { h: 'Partea inferioară (1/3)', d: ['din !!ectoderm!! (proctodeu)', 'ramuri din a. rușinoasă (pudendă) internă'] },
       { h: 'Linia pectinată (LA: linea pectinata)', d: ['marchează unde a fost **membrana anală** (după ce dispare membrana cloacală)'] },
     ],
     warn: 'LP-ul scrie „inferior – ectoderm – a. rectalis media din a. pudenda interna”. Corect anatomic (manual): din a. pudendă internă vine a. rectală inferioară; a. rectală mijlocie vine din a. iliacă internă. La grilă, !!„partea inferioară e irigată de ramuri din a. pudendă internă”!! e adevărat.',
     labelText: ['a. inf.'], beatDur: 7,
+    xtra: 'Inervația viscerală a 2/3 superioare → hemoroizii interni nu dor; inervația somatică a 1/3 inferioare → hemoroizii externi dor.',
   },
   // ---------------- PARTEA D ----------------
   {
@@ -256,8 +258,8 @@ export const SLIDES = [
       { h: 'Rotația + fuziunea', d: ['duodenul se rotește în „C” → mugurele ventral trece în spate și se lipește de cel dorsal'] },
       { h: 'Ductele după fuziune', d: ['la început au ducturi separate', '!!Wirsung = ductul ventral + partea distală a celui dorsal!!', 'Santorini (accesor) = restul ductului dorsal'] },
     ],
-    why: 'Dacă mugurele ventral are două părți care înconjoară duodenul → !!pancreas inelar!! → obstrucție duodenală (în plus față de LP, dar apare des la grile).',
     beatDur: 7,
+    xtra: 'Dacă mugurele ventral are două părți care înconjoară duodenul → **pancreas inelar** → obstrucție duodenală (apare des la grile).',
   },
   // ---------------- PARTEA E ----------------
   {
@@ -321,12 +323,13 @@ export const SLIDES = [
     points: [
       { h: 'S4: mugurele devine bifid', d: ['2 muguri = viitoarele **bronhii principale**'] },
       { h: 'S5: bronhiile lobare', d: ['!!3 în dreapta, 2 în stânga!! (ca lobii)'] },
-      { h: 'S6: bronhiile segmentare', d: ['10 în dreapta, 8–9 în stânga (în plus față de LP)'] },
+      { h: 'S6: bronhiile segmentare', d: [] },
       { h: 'S8 → luna 6', d: ['ramificare dihotomă → !!~17 generații până la sfârșitul lunii 6!!', '~6 se adaugă după naștere → !!23 în total!!', 'încă nu poate face schimb gazos; surfactantul apare abia la sfârșitul lunii a 6-a'] },
     ],
     why: 'Partea de după bifurcație → bronhii + parenchim pulmonar. Plămânii cresc în canalele pericardo-peritoneale și se învelesc în pleură (viscerală din mezoderm splanhnic, parietală din somatic).',
     insets: [{ img: 'branching', cap: 'Ramificarea, S4–S8 (UMFST, LP)' }],
     extraText: WK, beatDur: 7.5,
+    xtra: 'Numărul bronhiilor segmentare: 10 în dreapta, 8–9 în stânga.',
   },
   {
     scene: 'stagesLung', anim: false,
@@ -352,8 +355,9 @@ export const SLIDES = [
       { h: 'Hipoplazie unilaterală', d: ['afectează **un singur plămân**', 'insuficiență respiratorie, adaptare dificilă la viața extrauterină'] },
       { h: 'Atrezia traheală', d: ['traheea e închisă → !!obstrucție severă a căilor respiratorii la naștere!!'] },
     ],
-    why: 'Plămânul are nevoie de spațiu și de lichid amniotic ca să crească. Cauze clasice de hipoplazie (în plus față de LP): !!hernia diafragmatică!! (intestinele ocupă toracele) și oligohidramniosul.',
+    why: 'Plămânul are nevoie de spațiu și de lichid amniotic ca să crească.',
     beatDur: 6.5,
+    xtra: 'Cauze clasice de hipoplazie: hernia diafragmatică (intestinele ocupă toracele) și oligohidramniosul.',
   },
   // ---------------- PARTEA G ----------------
   {
