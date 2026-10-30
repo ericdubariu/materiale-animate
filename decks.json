@@ -197,6 +197,18 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 30
+  },
+  {
+   "id": "recap-embrio-01-06-anim",
+   "subj": "embrio",
+   "tip": "lp",
+   "title": "Recapitulare · LP 1–6",
+   "sub": "Desenele-cheie din fiecare LP, capcanele de la grilă și malformațiile (caz → mecanism → ce bifezi) · axa S1–S10 + tabelele finale",
+   "slides": 41,
+   "path": "lp/recap-embrio-01-06-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 900
   }
  ]
 }
