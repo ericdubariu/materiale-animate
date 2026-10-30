@@ -209,6 +209,18 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 900
+  },
+  {
+   "id": "farma-lp04-anim",
+   "subj": "farma",
+   "tip": "lp",
+   "title": "LP 4 · Sistemul nervos vegetativ: receptori și experimente",
+   "sub": "Receptorii N, M, α, β și proteina G · tabelul opuselor · cele 4 experimente (ileon, salivă, pupilă, uter) cu scriptul OSPE · clasificarea medicamentelor",
+   "slides": 37,
+   "path": "lp/farma-lp04-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 40
   }
  ]
 }
