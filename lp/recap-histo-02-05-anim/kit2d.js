@@ -223,7 +223,7 @@ export function tubule(g, x, y, r, o = {}) {
 // cadru de microscop rotund (pentru câmpuri)
 export function field(g, x, y, r, drawInside, ring = '#ffffff') {
   g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.save(); g.clip(); drawInside(); g.restore();
-  g.lineWidth = 10; g.strokeStyle = OUT; g.stroke(); g.lineWidth = 4; g.strokeStyle = ring; g.globalAlpha = 0.35; g.stroke(); g.restore();
+  g.beginPath(); g.arc(x, y, r, 0, 7); g.lineWidth = 10; g.strokeStyle = OUT; g.stroke(); g.lineWidth = 4; g.strokeStyle = ring; g.globalAlpha = 0.35; g.stroke(); g.restore();
 }
 export function roundRect(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
 export function antibody(g, x, y, s, rot, color = '#ffe08a') {

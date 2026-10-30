@@ -55,14 +55,14 @@ export const SLIDES = [
   },
   {
     scene: 'fibers3', kick: 'LP 6 · Noțiuni de bază', title: 'Trei fibre, trei colorații: în HE se vede doar colagenul',
-    hud: ['Aceleași 3 fibre', 'HE ⇄ colorația specială'], anim: false, spec: 'Trei carduri fixe (colagen, reticulină, elastice), fiecare cu varianta HE și varianta în colorația specială; cardul punctului se aprinde.',
+    hud: ['Aceleași 3 fibre', 'HE ⇄ colorația specială'], anim: false, spec: 'Trei carduri fixe (colagen, reticulină, elastice): colagenul și reticulina trec din HE în colorația lor specială (van Gieson roșu, argentic negru); elasticele rămân necolorate (HE, fără lamă în LP 6); cardul punctului se aprinde.',
     points: [
       { h: 'Fibre de colagen → !!van Gieson: roșu!!', d: ['linii sinuoase, fine sau grosiere, izolate sau **în fascicule**; !!nu se ramifică!!', 'în HE: se colorează **palid roz**'] },
       { h: 'Fibre de reticulină → !!argentic: negru!!', d: ['**subțiri, traiect neregulat, rețea**; se ramifică + anastomozează', 'în HE: **nu se colorează**'] },
       { h: 'Fibre elastice', d: ['în HE: **nu se colorează**; nu au lamă în LP 6'] },
     ],
     why: 'Cu excepția colagenului, fibrele nu se colorează cu HE. De aceea LP 6 are trei colorații: HE pentru celule, van Gieson pentru colagen, impregnația argentică pentru reticulină.',
-    xtra: 'Colagenul rezistă la tracțiune (ca un cablu), reticulina formează scheletul fin (stroma) al organelor, elasticele dau elasticitate. În manuale, elasticele se colorează cu orceină sau rezorcină-fuxină.',
+    xtra: 'Colagenul rezistă la tracțiune (ca un cablu), reticulina formează scheletul fin (stroma) al organelor, elasticele dau elasticitate. În manuale, elasticele se colorează cu orceină sau rezorcină-fucsină.',
     warn: 'La OSPE spui întâi colorația: ea îți spune deja ce fibră vezi.',
     beatDur: 7,
   },

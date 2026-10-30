@@ -3,6 +3,9 @@
 import { OUT, HE, VG, AG, clamp, lerp, ease, glowRing, roundRect, paint, spindle, blob, bb, bundle, wavy, srand, rr, makeNet, drawNet,
   fibroblast, plasmocyte, macrophage, giant, lymphocyte, arrow, field as ring0 } from './kit2d.js';
 import { atlas, mosaic } from './atlas.js';
+
+// field() din kit2d conturează ultima cale desenată; refacem cercul ca să fie conturat cercul, nu ultima formă din interior.
+const fieldC = (g, x, y, r, f, ring) => ring0(g, x, y, r, () => { f(); g.beginPath(); g.arc(x, y, r, 0, 7); }, ring);
 import { W, H, bgFill, field, fieldThumb } from './fields.js';
 
 const cam = (x, y, z) => ({ x, y, z });
@@ -98,9 +101,9 @@ function props() {
     labels: [lbl([200, 380], 'celule'), lbl([500, 380], 'fibre'), lbl([800, 380], 'substanță fundamentală'), ...G.map(([n, x]) => lbl([x, 520], n))],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      ring0(g, C[0][0], C[0][1], R, () => { g.fillStyle = HE.bg; g.fillRect(0, 0, W, H); fibroblast(g, 170, 180, 0.28, 0.3, t); plasmocyte(g, 250, 270, 0.5, 0.3, t); lymphocyte(g, 140, 280, 0.7, t); macrophage(g, 260, 150, 0.4, t, { inc: 3 }); });
-      ring0(g, C[1][0], C[1][1], R, () => { g.fillStyle = HE.bg; g.fillRect(0, 0, W, H); bundle(g, wavy(370, 170, 640, 200, 10, 2, 0, 12), 28, { n: 3 }); bundle(g, wavy(370, 250, 640, 280, 8, 2, 1, 12), 18, { n: 2 }); g.save(); g.strokeStyle = AG.fib; g.lineWidth = 4; g.beginPath(); g.moveTo(420, 320); g.lineTo(480, 300); g.lineTo(540, 330); g.moveTo(480, 300); g.lineTo(500, 250); g.stroke(); g.restore(); });
-      ring0(g, C[2][0], C[2][1], R, () => { g.fillStyle = '#eaf4ff'; g.fillRect(0, 0, W, H); srand(4); g.fillStyle = 'rgba(150,190,230,.5)'; for (let k = 0; k < 40; k++) { g.beginPath(); g.arc(rr(670, 930), rr(90, 350), rr(4, 10), 0, 7); g.fill(); } });
+      fieldC(g, C[0][0], C[0][1], R, () => { g.fillStyle = HE.bg; g.fillRect(0, 0, W, H); fibroblast(g, 170, 180, 0.28, 0.3, t); plasmocyte(g, 250, 270, 0.5, 0.3, t); lymphocyte(g, 140, 280, 0.7, t); macrophage(g, 260, 150, 0.4, t, { inc: 3 }); });
+      fieldC(g, C[1][0], C[1][1], R, () => { g.fillStyle = HE.bg; g.fillRect(0, 0, W, H); bundle(g, wavy(370, 170, 640, 200, 10, 2, 0, 12), 28, { n: 3 }); bundle(g, wavy(370, 250, 640, 280, 8, 2, 1, 12), 18, { n: 2 }); g.save(); g.strokeStyle = AG.fib; g.lineWidth = 4; g.beginPath(); g.moveTo(420, 320); g.lineTo(480, 300); g.lineTo(540, 330); g.moveTo(480, 300); g.lineTo(500, 250); g.stroke(); g.restore(); });
+      fieldC(g, C[2][0], C[2][1], R, () => { g.fillStyle = '#eaf4ff'; g.fillRect(0, 0, W, H); srand(4); g.fillStyle = 'rgba(150,190,230,.5)'; for (let k = 0; k < 40; k++) { g.beginPath(); g.arc(rr(670, 930), rr(90, 350), rr(4, 10), 0, 7); g.fill(); } });
       for (let k = 0; k < 3; k++) if (b.i === k) glowRing(g, C[k][0], C[k][1], R + 12, R + 12, 0, ease(b.bt * 1.5));
       // proporțiile: 3 bare pe țesut (celule, fibre, SF)
       G.forEach(([n, x, v], gi) => {
@@ -157,9 +160,9 @@ function fibers({ spec }) {
       lbl([280, 890], 'nu se ramifică'), lbl([720, 890], 'se ramifică + anastomozează')],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      ring0(g, C[0][0], C[0][1], R, () => { g.fillStyle = VG.bg; g.fillRect(0, 0, W, H); [[200, 34], [260, 54], [330, 24], [400, 44], [460, 30]].forEach(([y, w], k) => bundle(g, wavy(0, y, 380, y + 20, 14, 2, k, 14), w, { c: VG, n: 3 })); });
-      ring0(g, C[1][0], C[1][1], R, () => { g.fillStyle = AG.bg; g.fillRect(0, 0, W, H); drawNet(g, NET, AG.fib, 4.5); });
-      ring0(g, C[2][0], C[2][1], R, () => { g.fillStyle = '#f5e9dc'; g.fillRect(0, 0, W, H); g.save(); g.strokeStyle = '#7a4a22'; g.lineWidth = 4; g.lineCap = 'round'; EL.forEach((p, k) => { g.beginPath(); p.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke(); const [mx, my] = p[8]; g.beginPath(); g.moveTo(mx, my); g.quadraticCurveTo(mx + 30, my + (k % 2 ? 30 : -30), mx + 70, my + (k % 2 ? 50 : -50)); g.stroke(); }); g.restore(); });
+      fieldC(g, C[0][0], C[0][1], R, () => { g.fillStyle = VG.bg; g.fillRect(0, 0, W, H); [[200, 34], [260, 54], [330, 24], [400, 44], [460, 30]].forEach(([y, w], k) => bundle(g, wavy(0, y, 380, y + 20, 14, 2, k, 14), w, { c: VG, n: 3 })); });
+      fieldC(g, C[1][0], C[1][1], R, () => { g.fillStyle = AG.bg; g.fillRect(0, 0, W, H); drawNet(g, NET, AG.fib, 4.5); });
+      fieldC(g, C[2][0], C[2][1], R, () => { g.fillStyle = '#f3dfe9'; g.fillRect(0, 0, W, H); g.save(); g.globalAlpha = 0.28; g.strokeStyle = '#c9a3b8'; g.lineWidth = 4; g.lineCap = 'round'; EL.forEach((p, k) => { g.beginPath(); p.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke(); const [mx, my] = p[8]; g.beginPath(); g.moveTo(mx, my); g.quadraticCurveTo(mx + 30, my + (k % 2 ? 30 : -30), mx + 70, my + (k % 2 ? 50 : -50)); g.stroke(); }); g.restore(); g.beginPath(); g.arc(C[2][0], C[2][1], R, 0, 7); });
       const r = hiRow(b);
       for (let k = 0; k < 3; k++) if (b.i === k || (tab && r >= 0 && r !== 3)) glowRing(g, C[k][0], C[k][1], R + 12, R + 12, 0, ease(b.bt * 1.5), k === 0 ? '#ff6b81' : '#ffe36e');
       // jos: criteriul decisiv (pe fond deschis, ca pe lamă)

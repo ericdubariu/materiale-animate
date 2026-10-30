@@ -113,8 +113,8 @@ export function body() {
   const URE = curve([[690, 500], [660, 620], [580, 700], [530, 730]]);
   const LIVER = [330, 330], KID = [700, 470], TIS = [850, 440], GUTC = [520, 530], HEART = [540, 240];
   return {
-    home: HOME, anchors: [[GUTC[0] + 110, GUTC[1] - 20], [TIS[0] + 30, TIS[1] - 120], [LIVER[0] - 110, LIVER[1] - 90], [KID[0] - 55, KID[1] - 50]],
-    phase: (i) => ['A · absorbția', 'D · distribuția', 'M · metabolizarea', 'E · eliminarea'][i] || 'tot drumul',
+    home: HOME, anchors: [[GUTC[0] + 110, GUTC[1] - 20], [TIS[0] + 30, TIS[1] - 120], [LIVER[0] - 110, LIVER[1] - 90], [KID[0] - 55, KID[1] - 50], [770, 640]],
+    phase: (i) => ['A · absorbția', 'D · distribuția', 'M · metabolizarea', 'E · excreția', 'parametrii'][i] || 'tot drumul',
     draw(g, t, b) {
       bg(g);
       // silueta
@@ -123,7 +123,7 @@ export function body() {
       const bod = new Path2D(); bod.moveTo(330, 160); bod.quadraticCurveTo(500, 130, 670, 160); bod.lineTo(720, 200); bod.lineTo(900, 380); bod.lineTo(930, 470); bod.lineTo(880, 480); bod.lineTo(760, 330); bod.lineTo(720, 560); bod.lineTo(700, 820); bod.lineTo(300, 820); bod.lineTo(280, 560); bod.lineTo(240, 330); bod.lineTo(120, 480); bod.lineTo(70, 470); bod.lineTo(100, 380); bod.lineTo(280, 200); bod.closePath();
       paint(g, bod, '#3d2e22', null, null, [70, 130, 860, 690], OUT, 6);
       g.restore();
-      const on = (k) => b.i === k; const lit = (k) => b.i < 0 || b.i === k;
+      const on = (k) => b.i === k; const lit = (k) => b.i < 0 || b.i === k || b.i === 4;
       // vase și tub
       tube(g, GI, 22, '#f0a6a0', { raw: true, glow: on(0) ? 0.6 : 0 });
       tube(g, GUT, 26, '#f0a6a0', { raw: true, glow: on(0) ? 0.6 : 0 });
@@ -154,6 +154,12 @@ export function body() {
       txt(g, 'ficat', LIVER[0] - 60, LIVER[1] + 70, 20, C.cream); txt(g, 'vena portă', 400, 490, 17, '#c7b1ff');
       txt(g, 'inimă', HEART[0] + 60, HEART[1] - 50, 18, C.cream); txt(g, 'țesut', 855, 380, 18, C.cream);
       txt(g, 'rinichi', KID[0] + 70, KID[1] + 40, 18, C.cream); txt(g, 'vezica (urina)', 500, 840, 18, C.cream);
+      // parametrii farmacocinetici
+      panel(g, 745, 600, 245, 310, { stroke: on(4) ? C.hi : 'rgba(255,225,180,.2)', lw: on(4) ? 5 : 3 });
+      txt(g, 'primari', 867, 630, 17, C.dim, { w: 700 });
+      ['Bd (F)', 'Vd', 'Cp', 'Cl'].forEach((l, j) => pill(g, 810 + (j % 2) * 115, 675 + Math.floor(j / 2) * 62, 100, 48, K.stage[j], l, { size: 20 }));
+      txt(g, 'secundar', 867, 800, 17, C.dim, { w: 700 });
+      pill(g, 867, 845, 200, 48, '#e7c34a', 'T½ (Cl, Vd)', { size: 20 });
       // legenda
       dot(g, 120, 870, 10, K.drug); txt(g, 'medicamentul', 140, 870, 18, C.cream, { align: 'left', w: 700 });
       dot(g, 120, 905, 10, K.met); txt(g, 'metabolitul', 140, 905, 18, C.cream, { align: 'left', w: 700 });

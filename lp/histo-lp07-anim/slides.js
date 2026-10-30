@@ -287,7 +287,7 @@ export const SLIDES = [
     scene: 'atlas', sceneOpts: { img: 'ten_mare', W: 550, H: 305, marks: [
       { x: 282, y: 86, rx: 40, ry: 13, rot: 0.45, lab: '„nuclei gemeni”', ly: 125 },
       { x: 282, y: 204, rx: 40, ry: 13, rot: 0.5, lab: '„nuclei gemeni”', ly: 243 },
-      { x: 472, y: 212, rx: 38, ry: 12, rot: 0.45, lab: 'tenocit: citoplasmă invizibilă', ly: 250 },
+      { x: 472, y: 212, rx: 38, ry: 12, rot: 0.45, lab: 'tenocit: citoplasmă slab vizibilă', ly: 250 },
       { x: 300, y: 150, rx: 150, ry: 24, rot: 0.47, dash: true, lab: 'fascicul paralel', lx: 150, ly: 160 },
     ] },
     kick: 'Lama 3 · Pe lama reală · Ob. mare · HE', title: 'La ob. mare: nucleii „cap la cap”',
@@ -332,7 +332,7 @@ export const SLIDES = [
       { h: 'Ce vezi din rețea', d: ['reticular: !!celulele reticulare!! stelate, nucleu hipocrom; **fibrele nu se văd**', 'LP 6: **fibrele negre**, ramificate, anastomozate'] },
       { h: 'Organul și ochiurile', d: ['reticular: !!nodul limfatic!! (medulara), **limfocite** în ochiuri', 'LP 6: **rinichi**, tubi renali în ochiuri'] },
     ],
-    why: 'Asemănarea: ambele arată **rețeaua de fibre de reticulină** (la HE, dublată de pseudorețeaua celulelor reticulare), cu ochiuri în care stau alte structuri.',
+    why: 'Asemănarea: ambele au la bază **rețeaua de fibre de reticulină**, cu ochiuri în care stau alte structuri (în HE fibrele nu se văd, dar pseudorețeaua celulelor reticulare o dublează).',
     warn: '„Văd fibrele de reticulină” la HE = greșit. La reticularul HE vezi **celulele reticulare**; fibrele negre = LP 6 (argentic).',
     beatDur: 8,
   },

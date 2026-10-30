@@ -1,5 +1,5 @@
-// Kit Farmacologie LP 4 (SNV): culori fixe pe tot deck-ul, membrane, receptori, proteine G, liganzi, iconițe de organe,
-// baia de organ izolat, înregistrări care se desenează în timp, irisul văzut din față.
+// Kit Farmacologie (comun LP 3 / LP 4): culori fixe, membrane, receptori, proteine G, liganzi, iconițe de organe,
+// baia de organ, înregistrări, irisul; cheia și broasca, subunitățile α/βγ, bronhia și vasul în secțiune, manometrul TA, mastocitul.
 import { OUT, clamp, lerp, ease, paint, blob, bb, smooth, glowRing, arrow, REDUCED } from '../kit2d.js';
 export { OUT, clamp, lerp, ease, paint, blob, bb, smooth, glowRing, arrow, REDUCED };
 
@@ -288,4 +288,112 @@ export function tile(g, x, y, w, h, o, act, k) {
   if (o.ico) icon(g, o.ico, x + w / 2, y + h * 0.36, (o.is || 0.85) * Math.min(1, h / 280) * (1 + 0.08 * k), { alpha: a, ...(o.io || {}) });
   if (o.chip) pill(g, x + w / 2, y + h * 0.7, Math.min(w - 26, 220), 38, o.cc || C.gq, o.chip, { alpha: a, size: 19 });
   if (o.sub) txt(g, o.sub, x + w / 2, y + h * 0.88, o.ss || 17, C.cream, { alpha: a, w: 700, maxW: w - 16 });
+}
+
+
+/* =================================================== LP 3: helperi noi */
+// ligand triunghi (ca în schema din LP: agonistul portocaliu, antagonistul roșu)
+export function tri(g, x, y, r, col, letter = '', o = {}) {
+  const p = new Path2D(); p.moveTo(x, y - r); p.lineTo(x + r * 0.95, y + r * 0.7); p.lineTo(x - r * 0.95, y + r * 0.7); p.closePath();
+  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha); paint(g, p, col, null, '#ffffff', [x - r, y - r, 2 * r, 2 * r], OUT, 4); g.restore();
+  if (letter) txt(g, letter, x, y + r * 0.22, r * 0.8, OUT, { stroke: false, alpha: o.alpha });
+}
+// subunitatea α (cu nucleotidul: 'GDP' / 'GTP') și dimerul βγ
+export function galpha(g, x, y, col, lab, tok, o = {}) {
+  const s = o.s || 1; g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  if (o.glow) { g.shadowColor = col; g.shadowBlur = 26 * o.glow; }
+  paint(g, blob(x, y, 46 * s, 32 * s, 0, 0, 0.05, 12, 3), col, null, '#ffffff', bb(x, y, 46 * s, 32 * s), OUT, 4);
+  g.restore();
+  txt(g, lab, x - 8 * s, y - 4 * s, 22 * s, OUT, { stroke: false, alpha: o.alpha });
+  if (tok) pill(g, x + 4 * s, y + 40 * s, 66 * s, 28 * s, tok === 'GTP' ? '#7fe8ff' : '#c9a77a', tok, { size: 15 * s, alpha: o.alpha, r: 12 });
+}
+export function gbg(g, x, y, o = {}) {
+  const s = o.s || 1; g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  paint(g, blob(x, y, 26 * s, 22 * s, 0, 0, 0.05, 10, 5), '#d9c9b2', null, null, bb(x, y, 26 * s, 22 * s), OUT, 3.5);
+  paint(g, blob(x + 22 * s, y + 30 * s, 16 * s, 13 * s, 0, 0, 0.05, 10, 7), '#bfae96', null, null, bb(x + 22 * s, y + 30 * s, 16 * s, 13 * s), OUT, 3);
+  g.restore();
+  txt(g, 'β', x, y, 19 * s, OUT, { stroke: false, alpha: o.alpha }); txt(g, 'γ', x + 22 * s, y + 30 * s, 15 * s, OUT, { stroke: false, alpha: o.alpha });
+}
+// broasca (corpul alamă) cu cadranul de rotație: ang ∈ [-1, 1] (1 = rotație completă în sens orar, -1 = invers); o.pinch = gaura strânsă de pană
+export function lock(g, x, y, ang, o = {}) {
+  const s = o.s || 1; const w = 120 * s, h = 150 * s;
+  const body = new Path2D(); body.roundRect(x - w / 2, y, w, h, 22 * s); paint(g, body, '#d9a441', '#b07f22', '#ffe3a0', [x - w / 2, y, w, h], OUT, 5);
+  // gaura cheii (sus)
+  const kw = 26 * s * (1 - 0.75 * (o.pinch || 0));
+  g.save(); g.fillStyle = '#2a1534'; g.beginPath(); g.roundRect(x - kw / 2, y - 4 * s, kw, 22 * s, 5 * s); g.fill(); g.restore();
+  // cadranul
+  const cx = x, cy = y + 100 * s, R = 40 * s;
+  g.save(); g.lineCap = 'round';
+  g.strokeStyle = OUT; g.lineWidth = 14 * s; g.beginPath(); g.arc(cx, cy, R, Math.PI, 2 * Math.PI); g.stroke();
+  g.strokeStyle = '#5aa8ff'; g.lineWidth = 8 * s; g.beginPath(); g.arc(cx, cy, R, Math.PI, 1.5 * Math.PI); g.stroke();
+  g.strokeStyle = '#5fcf7a'; g.beginPath(); g.arc(cx, cy, R, 1.5 * Math.PI, 2 * Math.PI); g.stroke();
+  const a = -Math.PI / 2 + ang * Math.PI / 2;
+  g.strokeStyle = OUT; g.lineWidth = 9 * s; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * R * 1.05, cy + Math.sin(a) * R * 1.05); g.stroke();
+  g.strokeStyle = '#ffffff'; g.lineWidth = 4.5 * s; g.stroke();
+  g.restore();
+  dot(g, cx, cy, 7 * s, '#ffffff', { ow: 3 });
+  if (o.wedge) { // pana bătută în lateral (alt situs)
+    const p = new Path2D(); const wx = x + w / 2 + 50 * s * (1 - o.wedge); p.moveTo(wx + 52 * s, y + 6 * s); p.lineTo(wx - 18 * s, y + 22 * s); p.lineTo(wx + 52 * s, y + 40 * s); p.closePath();
+    paint(g, p, '#8a5a2e', null, '#c89a6a', [wx - 18, y, 70, 40], OUT, 4);
+  }
+}
+// cheia văzută din lateral, cu vârful în jos la (x, tip); o.spin = cât s-a rotit (bucla se îngustează), o.teeth = 'ok' | 'bad'
+export function key(g, x, tip, col, o = {}) {
+  const s = o.s || 1; g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  const top = tip - 120 * s; const sp = Math.max(0.18, Math.abs(Math.cos((o.spin || 0) * Math.PI / 2)));
+  const sh = new Path2D(); sh.roundRect(x - 7 * s, top, 14 * s, 120 * s, 5 * s); paint(g, sh, col, null, '#ffffff', [x - 7, top, 14, 120], OUT, 4);
+  for (let k = 0; k < 3; k++) { const ty = tip - 30 * s - k * 22 * s; const p = new Path2D(); if (o.teeth === 'bad') p.rect(x + 6 * s, ty - 8 * s, 14 * s, 14 * s); else { p.moveTo(x + 6 * s, ty - 9 * s); p.lineTo(x + 20 * s, ty); p.lineTo(x + 6 * s, ty + 9 * s); p.closePath(); } paint(g, p, col, null, null, [x, ty - 9, 20, 18], OUT, 3.5); }
+  const bow = new Path2D(); bow.ellipse(x, top - 30 * s, 40 * s * sp, 34 * s, 0, 0, Math.PI * 2); paint(g, bow, col, null, '#ffffff', [x - 40, top - 64, 80, 68], OUT, 5);
+  g.save(); g.fillStyle = OUT; g.beginPath(); g.ellipse(x, top - 30 * s, 13 * s * sp, 12 * s, 0, 0, Math.PI * 2); g.fill(); g.restore();
+  g.restore();
+  if (o.letter) txt(g, o.letter, x, top - 30 * s, 20 * s, '#fff', { alpha: o.alpha });
+}
+// bronhia în secțiune: open = 0 (strânsă) … 1 (dilatată)
+export function bronchus(g, x, y, R, open, o = {}) {
+  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  ell(g, x, y, R, R, '#f2b6a6', { ow: 5 });
+  const mr = R * (0.55 + 0.3 * open); g.strokeStyle = OUT; g.lineWidth = 16; g.beginPath(); g.arc(x, y, mr, 0, 7); g.stroke(); g.strokeStyle = '#c94a5a'; g.lineWidth = 10; g.stroke();
+  const lr = R * (0.12 + 0.5 * open); ell(g, x, y, mr - 10, mr - 10, o.edema ? '#ffd0c8' : '#f8d6cc', { ow: 3 });
+  ell(g, x, y, lr, lr, '#2a1a20', { ow: 3 });
+  g.restore();
+}
+// vasul în secțiune: open = lumenul (0 strâmt … 1 larg); o.leak = lichid care iese
+export function vesselX(g, x, y, R, open, o = {}) {
+  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  const wall = R * (0.35 - 0.18 * open); ell(g, x, y, R, R, '#c93a4a', { ow: 5 });
+  ell(g, x, y, R - wall, R - wall, '#7d1a28', { ow: 3 });
+  for (let k = 0; k < 4; k++) { const a = k * 1.6 + 0.4; dot(g, x + Math.cos(a) * (R - wall) * 0.5, y + Math.sin(a) * (R - wall) * 0.5, 7, '#ff8a96', { ow: 2 }); }
+  if (o.leak) for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; const r = R + 8 + o.leak * 34 + (k % 2) * 8; dot(g, x + Math.cos(a) * r, y + Math.sin(a) * r, 6, C.water, { ow: 2, alpha: clamp(o.leak * 1.5) }); }
+  g.restore();
+}
+// manometru (TA): v ∈ 0..1
+export function gauge(g, x, y, R, v, label, o = {}) {
+  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  ell(g, x, y, R, R, '#fbf3e2', { ow: 5 });
+  g.lineCap = 'round'; const a0 = Math.PI * 0.8, a1 = Math.PI * 2.2;
+  [['#ff6b5e', 0, 0.3], ['#ffe36e', 0.3, 0.55], ['#5fcf7a', 0.55, 1]].forEach(([c, u0, u1]) => { g.strokeStyle = c; g.lineWidth = 9; g.beginPath(); g.arc(x, y, R - 12, a0 + (a1 - a0) * u0, a0 + (a1 - a0) * u1); g.stroke(); });
+  const a = a0 + (a1 - a0) * clamp(v); g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * (R - 16), y + Math.sin(a) * (R - 16)); g.stroke();
+  dot(g, x, y, 6, OUT, { ow: 0 });
+  g.restore();
+  if (label) txt(g, label, x, y + R * 0.55, Math.max(15, R * 0.3), OUT, { stroke: false, alpha: o.alpha });
+}
+// mastocitul: deg = câte granule au plecat (0..1); o.ige = anticorpi pe suprafață
+export function mastocyte(g, x, y, r, deg = 0, t = 0, o = {}) {
+  g.save(); if (o.alpha !== undefined) g.globalAlpha = clamp(o.alpha);
+  paint(g, blob(x, y, r, r * 0.92, 0, t * 0.3, 0.05, 14, 2), '#c9a3e6', '#a37fc4', '#efe0ff', bb(x, y, r, r), OUT, 5);
+  ell(g, x - r * 0.15, y + r * 0.05, r * 0.36, r * 0.3, '#6a3f9a', { ow: 3 });
+  const n = 22;
+  for (let k = 0; k < n; k++) {
+    const a = k * 2.4, rr0 = r * (0.45 + 0.4 * ((k * 37) % 10) / 10); const out = deg * (k % 3 === 0 ? 1 : 0.85);
+    const rr = rr0 + out * r * (0.9 + (k % 4) * 0.25);
+    dot(g, x + Math.cos(a) * rr, y + Math.sin(a) * rr * 0.92, r * 0.07, '#7a2f8a', { ow: 1.5, alpha: 1 - 0.3 * out });
+  }
+  if (o.ige) for (let k = 0; k < 7; k++) { const a = -Math.PI * 0.95 + k * Math.PI * 0.95 / 6; const ax = x + Math.cos(a) * (r + 6), ay = y + Math.sin(a) * (r + 6); antiY(g, ax, ay, a + Math.PI / 2, o.ige); }
+  g.restore();
+}
+// anticorp IgE (Y) cu baza în (x, y), orientat după rot (0 = în sus)
+export function antiY(g, x, y, rot, a = 1, col = '#7fd36a') {
+  g.save(); g.globalAlpha *= clamp(a); g.translate(x, y); g.rotate(rot); g.lineCap = 'round';
+  for (const [c, w] of [[OUT, 9], [col, 5]]) { g.strokeStyle = c; g.lineWidth = w; g.beginPath(); g.moveTo(0, 0); g.lineTo(0, -16); g.lineTo(-10, -28); g.moveTo(0, -16); g.lineTo(10, -28); g.stroke(); }
+  g.restore();
 }

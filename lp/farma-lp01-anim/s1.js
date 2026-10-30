@@ -162,7 +162,7 @@ export function pasaj() {
   const HEP = curve([[700, 330], [760, 260], [810, 220]]);
   const SYS = curve([[880, 250], [920, 360], [920, 520]]);
   return {
-    home: HOME, anchors: [[120, 90], [420, 640], [600, 250]],
+    home: HOME, anchors: [[120, 90], [460, 470], [600, 250]],
     phase: (i) => ['administrarea orală', 'vena portă → ficat', 'enzimele hepatice → circulația'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -319,7 +319,7 @@ export function bhe() {
   const BY = 430;
   const bounceUp = (u, y0, ym) => (u < 0.5 ? lerp(y0, ym, ease(u * 2)) : lerp(ym, y0, ease((u - 0.5) * 2)));
   return {
-    home: HOME, anchors: [[40, 860], [430, 280], [210, 560], [700, 640], [920, 120]],
+    home: HOME, anchors: [[40, 860], [430, 280], [440, 770], [700, 640], [920, 120]],
     phase: (i) => ['levodopa + carbidopa', 'levodopa trece BHE', 'dopamina nu trece BHE', 'carbidopa nu trece BHE', 'efectul asocierii'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -359,7 +359,7 @@ export function bhe() {
 /* =================================================== DISTRIBUȚIA: FACTORI + Vd */
 export function distf() {
   return {
-    home: HOME, anchors: [[60, 60], [40, 300], [360, 300], [680, 300], [40, 690]],
+    home: HOME, anchors: [[60, 95], [40, 300], [360, 300], [680, 300], [40, 690]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 960, 230, b.i === 0);
@@ -385,7 +385,7 @@ export function distf() {
 /* =================================================== CAZUL 5: Vd (A = 5 L, B = 100 L) */
 export function vd() {
   return {
-    home: HOME, anchors: [[60, 50], [60, 150], [60, 300], [520, 300], [60, 810]],
+    home: HOME, anchors: [[60, 95], [60, 150], [60, 300], [520, 300], [60, 810]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 960, 110, b.i === 0);
@@ -410,7 +410,7 @@ export function vd() {
 export function fat() {
   const FC = [[150, 560], [270, 520], [390, 570], [210, 680], [330, 690], [450, 670], [100, 700], [500, 560], [560, 690]];
   return {
-    home: HOME, anchors: [[40, 50], [300, 470], [620, 470], [700, 870]],
+    home: HOME, anchors: [[230, 110], [300, 470], [620, 470], [700, 870]],
     phase: (i) => ['pacient obez, substanță lipofilă', 'distribuție în adipos → doză ↑', 'slăbire → redistribuire', 'etapa: distribuția'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -434,7 +434,7 @@ export function fat() {
       // nivelul în sânge
       const lvl = b.i === 0 ? 0.55 : b.i === 1 ? lerp(0.55, 0.3, ease(p2)) : b.i === 2 ? lerp(0.3, 0.92, ease(p3)) : b.i === 3 ? 0.92 : 0.3;
       box(g, 730, 30, 250, 760, false);
-      txt(g, 'în sânge', 855, 70, 20, C.cream);
+      txt(g, 'în sânge', 855, 95, 20, C.cream);
       const y0 = 110, hh = 600; const bar = new Path2D(); bar.roundRect(905, y0 + hh * (1 - lvl), 55, hh * lvl, 10);
       paint(g, bar, lvl > 0.8 ? C.key : lvl < 0.4 ? C.gi : C.gs, null, null, [905, y0, 55, hh], OUT, 4);
       dline(g, 750, y0 + hh * 0.2, 960, y0 + hh * 0.2, C.key); txt(g, 'prag toxic', 820, y0 + hh * 0.2 - 16, 16, C.key);
@@ -450,7 +450,7 @@ export function fat() {
 export function proteins() {
   const P = [[230, 'albumină', '#ffe08a'], [500, 'SHBG', '#9fd3f0'], [770, 'TBG', '#d6b8ff']];
   return {
-    home: HOME, anchors: [[60, 50], [40, 390], [40, 640], [520, 390]],
+    home: HOME, anchors: [[60, 100], [40, 390], [40, 640], [520, 390]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 960, 330, b.i === 0);

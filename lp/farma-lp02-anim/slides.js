@@ -10,7 +10,7 @@ export const GLOS = [
   ['CYP450', 'citocromul P450'], ['P450', 'citocromul P450'], ['CYP', 'citocromul P450'], ['CYP3A4', 'izoforma 3A4 a citocromului P450'], ['CYP2C19', 'izoforma 2C19 a citocromului P450'],
   ['CBZ', 'carbamazepina'], ['HTA', 'hipertensiunea arterială'], ['GI', 'gastrointestinal'],
   ['pH', 'aciditatea mediului'], ['pKa', 'constanta de aciditate a substanței'], ['HA', 'acid slab, forma neionizată'], ['A⁻', 'acid slab, forma ionizată'],
-  ['B', 'bază slabă, forma neionizată'], ['BH⁺', 'bază slabă, forma ionizată'], ['H⁺', 'ionul de hidrogen'], ['ATP', 'adenozin-trifosfatul (energia pompei)'], ['T1', 'momentul primei recoltări folosite'], ['T2', 'momentul celei de-a doua recoltări'], ['c1', 'concentrația la T1'], ['c2', 'concentrația la T2'],
+  ['BH⁺', 'bază slabă, forma ionizată (B = baza slabă, forma neionizată)'], ['H⁺', 'ionul de hidrogen'], ['ATP', 'adenozin-trifosfatul (energia pompei)'], ['T1', 'momentul primei recoltări folosite'], ['T2', 'momentul celei de-a doua recoltări'], ['c1', 'concentrația la T1'], ['c2', 'concentrația la T2'],
   ['NaHCO₃', 'bicarbonatul de sodiu'], ['ln', 'logaritmul natural'], ['c0', 'concentrația inițială'], ['Δt', 'intervalul de timp'],
   ['mg/L', 'miligrame pe litru'], ['ng/mL', 'nanograme pe mililitru'], ['µg/mL', 'micrograme pe mililitru'],
 ];
@@ -159,7 +159,7 @@ export const SLIDES = [
   {
     scene: 'c1carba', anim: false,
     spec: 'Static: stânga sus carbamazepina (pastilă verde) și contraceptivele orale (blister); stânga jos hepatocitul cu multe enzime „CYP3A4 ↑”; dreapta sus graficul contraceptivului: curba punctată fără inductor peste „nivel eficient”, curba galbenă cu carbamazepină sub el; dreapta jos prezervativul și steriletul; panoul punctului se încadrează.',
-    kick: 'Cazul 1 · Carbamazepină + contraceptive orale', title: 'Cazul 1: carbamazepina induce CYP3A4, iar contraceptivele orale nu mai protejează',
+    kick: 'Cazul 1 · Carbamazepină + contraceptive orale', title: 'Cazul 1: carbamazepina induce CYP3A4, iar eficacitatea contraceptivelor orale poate fi compromisă',
     hud: ['drug + inductor'],
     points: [
       D('Enunțul', 'pacientă cu tratament cronic cu carbamazepină (antiepileptic cu acțiune inductoare enzimatică)', 'ca măsură contraceptivă: contraceptive orale'),
@@ -251,7 +251,7 @@ export const SLIDES = [
   {
     scene: 'excr', anim: false,
     spec: 'Static: 5 panouri: urina (rinichii și vezica, „majoritatea”), fecalele (intestinul, 1 neabsorbite → 2 direct în fecale), bila (ficatul legat de intestin, 1 absorbite → 2 circuitul enterohepatic → 3 în fecale), aerul expirat (bronhiile, anestezicele inhalatorii), alte căi (lapte, transpirație, salivă, lacrimi); panoul punctului se încadrează.',
-    kick: 'Partea B · Excreția', title: 'Excreția: majoritatea pe rinichi, restul pe alte 4 căi',
+    kick: 'Partea B · Excreția', title: 'Excreția: majoritatea medicamentelor pe rinichi, unele și pe alte căi',
     hud: ['5 căi'],
     points: [
       D('Definiția', '!!îndepărtarea substanței medicamentoase din organism!!', '!!majoritatea medicamentelor sunt excretate la nivel renal!! (urina)'),
@@ -268,11 +268,12 @@ export const SLIDES = [
     kick: 'Excreția · Rinichiul', title: 'Rinichiul în 3 pași: filtrare, secreție, reabsorbție',
     hud: ['verde = polar, hidrofil', 'maro = nepolar, lipofil'],
     points: [
-      D('1 · Filtrarea glomerulară', 'substanța trece din glomerul în tub'),
+      D('1 · Filtrarea glomerulară'),
       D('2 · Secreția tubulară (tubul contort proximal)', 'substanțele polare, hidrofile → !!secreție activă!!', 'substanțele nepolare, lipofile → difuzie pasivă'),
       D('3 · Reabsorbția tubulară (tubul contort distal)', 'nepolare, lipofile → !!pot trece înapoi în circulația peritubulară prin difuzie pasivă!!', 'polare, hidrofile → rămân în urină'),
     ],
     why: 'În LP: pe măsură ce substanțele sunt filtrate și secretate în urină, concentrația lor crește, iar la nivelul tubului contort distal devine mai mare decât în capilarele peritubulare.',
+    xtra: 'La filtrarea glomerulară, substanța trece din sângele glomerulului în tub (urina primară); de aici începe drumul spre urină.',
     beatDur: 7,
   },
   {
@@ -333,7 +334,7 @@ export const SLIDES = [
       D('Enunțul', 'doză unică: pic plasmatic !!10 ng/mL la o oră!!; după 4 ore: 5 ng/mL; epurare de ordinul 1'),
       D('1 · Practic eliminat după…', 'T½ = 3 h; eliminarea completă se realizează după 5–7 T½: 5 × 3 = 15, 7 × 3 = 21 → !!D. 15–21 h!!'),
       D('2 · În câte prize zilnice?', 'pentru majoritatea medicamentelor, intervalul dintre doze este 1–2 T½ (concentrații în intervalul terapeutic)', 'cu interval = 1 T½: 24 h : 3 = !!8 administrări pe zi!!'),
-      D('3 · T½ mai lung → administrări?', 'mai puține: T½ scurt → administrări mai dese, T½ lung → mai rare'),
+      D('3 · T½ mai lung → administrări?', 'numărul de administrări ar fi mai mic: T½ scurt → administrări mai dese, T½ lung → mai rare'),
       D('4 · Cum reduci numărul de administrări?', '!!forme farmaceutice retard / cu eliberare prelungită!!'),
     ],
     why: 'Întrebările din LP: 1. după cât timp e practic eliminată (A. 6–8 h, B. 10–14 h, C. 5–7 h, D. 15–21 h, E. 14–16 h)? 2. în câte prize zilnice? 3. dacă T½ ar fi mai lung, numărul de administrări ar fi mai mare sau mai mic? 4. ce s-ar putea face pentru a reduce numărul de administrări?',
@@ -342,7 +343,7 @@ export const SLIDES = [
   },
   {
     ...FISA({ title: 'Cazul 6 · T½', sub: '10 ng/mL la 1 h, 5 ng/mL la 4 h', ico: 'pill', stage: 3, rows: [{ l: '1', t: 'Practic eliminat după?', n: 1 }, { l: '2', t: 'Câte prize pe zi?', n: 2 }, { l: '3', t: 'T½ mai lung?', n: 1 }, { l: '4', t: 'Mai puține administrări?', n: 1 }] }, [
-      { tm: '1 · Practic eliminat după?', at: '1 noțiune', tx: 'T½ = 3 h; eliminarea completă după 5–7 T½ = 15–21 h: !!răspunsul D!!.' },
+      { tm: '1 · Practic eliminat după?', at: '1 noțiune', tx: '!!Răspuns: D (15–21 h)!!. T½ = 3 h; eliminarea completă se realizează după 5–7 T½: 5 × 3 = 15, 7 × 3 = 21.' },
       { tm: '2 · În câte prize zilnice?', at: '2 noțiuni', tx: 'Intervalul dintre doze este 1–2 T½; cu un interval de un T½: 24 : 3 = !!8 administrări pe zi!!.' },
       { tm: '3 · Dacă T½ ar fi mai lung?', at: '1 noțiune', tx: 'Numărul de administrări ar fi !!mai mic!! (T½ lung → administrări mai rare).' },
       { tm: '4 · Cum reduci numărul de administrări?', at: '1 noțiune', tx: 'Forme farmaceutice retard / cu eliberare prelungită.' },
@@ -380,8 +381,8 @@ export const SLIDES = [
   {
     ...FISA({ title: 'Cazul 7 · tabelul', sub: '100 → 6,25 µg/mL în 12 h', ico: 'kidney', stage: 3, rows: [{ l: '1', t: 'Tipul de cinetică', n: 1 }, { l: '2', t: 'Când e completă eliminarea?', n: 1 }, { l: '3', t: 'T½', n: 2 }, { l: '4', t: 'Proteinele și T½', n: 1 }, { l: '5', t: 'Insuficiența renală', n: 1 }, { l: '6', t: 'Ce parametri?', n: 2 }] }, [
       { tm: '1 · Ce tip de cinetică?', at: '1 noțiune', tx: 'Cp nu scade liniar → cinetică de ordinul I.' },
-      { tm: '2 · Când e practic completă eliminarea?', at: '1 noțiune', tx: 'După 5–7 T½ (cu T½ = 3 h: 15–21 h).' },
-      { tm: '3 · Care este T½?', at: '2 noțiuni', tx: 'Prima fază = distribuție / redistribuție, deci iau valorile de la final: Ke = (ln 25 − ln 12,5) : 3 = 0,23; !!T½ = 0,693 / 0,23 = 3 h!!.' },
+      { tm: '2 · Când e practic completă eliminarea?', at: '1 noțiune', tx: 'Eliminarea depinde de T½: este completă după 5–7 T½.' },
+      { tm: '3 · Care este T½?', at: '2 noțiuni', tx: '!!T½ = 0,693 / Ke = 0,693 / 0,23 = 3 h!!, calculat cu valori dinspre sfârșitul monitorizării: Ke = (ln 25 − ln 12,5) : (9 − 6) = 0,23. În prima fază au loc distribuția și redistribuția, deci T½ aparent („2 ore?”) poate să nu fie corect.' },
       { tm: '4 · Legarea de proteine și T½?', at: '1 noțiune', tx: '!!Legarea de proteinele plasmatice crește T½!!.' },
       { tm: '5 · Eliminarea renală în insuficiența renală?', at: '1 noțiune', tx: 'Este scăzută.' },
       { tm: '6 · Ce parametri și cum?', at: '2 noțiuni', tx: '!!Cl scade, T½ crește!!.' },

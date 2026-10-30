@@ -49,7 +49,7 @@ export function metab() {
   const PL = curve([[250, 140], [250, 260], [250, 360], [250, 560], [250, 740]]);
   const PR = curve([[640, 130], [700, 230], [760, 290], [860, 420], [880, 470], [820, 540], [740, 600], [740, 700], [740, 760]]);
   return {
-    home: HOME, anchors: [[40, 60], [70, 300], [560, 230], [560, 600]],
+    home: HOME, anchors: [[40, 95], [70, 300], [560, 230], [560, 600]],
     phase: (i) => ['definiția', 'medicament activ → metaboliți', 'pro-drog → formă activă', 'forma activă → inactivă → excreție'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -76,7 +76,7 @@ export function metab() {
 /* =================================================== UNDE, FAZA I, FAZA II, CE INFLUENȚEAZĂ */
 export function phases() {
   return {
-    home: HOME, anchors: [[40, 60], [380, 60], [380, 360], [40, 690]],
+    home: HOME, anchors: [[40, 95], [380, 60], [380, 360], [40, 690]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 340, 630, b.i === 0);
@@ -205,7 +205,7 @@ export function graphs4() {
 /* =================================================== CAZUL 1: CARBAMAZEPINĂ + CONTRACEPTIVE ORALE */
 export function c1carba() {
   return {
-    home: HOME, anchors: [[40, 60], [40, 330], [520, 60], [520, 690]],
+    home: HOME, anchors: [[40, 100], [40, 330], [520, 60], [520, 690]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 470, 270, b.i === 0);
@@ -234,7 +234,7 @@ export function c1carba() {
 export function autoind() {
   const T = [4, 8, 12], I = [8.65, 7.42, 6.32], D = [6.12, 4.35, 3.17];
   return {
-    home: HOME, anchors: [[40, 50], [40, 300], [520, 640]],
+    home: HOME, anchors: [[40, 105], [40, 300], [520, 640]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 960, 220, b.i === 0);
@@ -264,7 +264,7 @@ export function autoind() {
 export function simva() {
   const f0 = bell(6.2), f1 = bell(9.6, 5.5, 0.8);
   return {
-    home: HOME, anchors: [[40, 50], [40, 300], [520, 50], [520, 640]],
+    home: HOME, anchors: [[40, 105], [40, 300], [520, 50], [520, 640]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 470, 250, b.i === 0);
@@ -369,7 +369,7 @@ export function nephron() {
       txt(g, 'urină →', 935, TY + 70, 17, '#f2d07a');
       // capilarul peritubular
       rbox(g, 235, CY - 35, 745, 70, '#7a1f2c', 34, 5); txt(g, 'capilar peritubular', 420, CY + 60, 17, '#ffc9cf');
-      txt(g, '1 · filtrare glomerulară', 150, 110, 19, C.hi); txt(g, '2 · secreție tubulară', 420, 110, 19, C.hi); txt(g, '3 · reabsorbție tubulară', 790, 110, 19, C.hi);
+      txt(g, '1 · filtrare glomerulară', 168, 110, 19, C.hi); txt(g, '2 · secreție tubulară', 420, 110, 19, C.hi); txt(g, '3 · reabsorbție tubulară', 790, 110, 19, C.hi);
       if (b.i >= 0) hiBox(g, [40, 250, 610][b.i], 80, [230, 350, 370][b.i], 440, true);
       // 1: filtrarea: capsulele intră din glomerul în tub
       if (live(b, 0)) for (let k = 0; k < 4; k++) { const u = L(t, 3.2, k / 4); const x = lerp(150, 560, u), y = TY + Math.sin(k * 2) * 18; caps(g, x, y, k % 2 ? POL : NPOL, 1 - u * 0.3, 0); }
@@ -398,7 +398,7 @@ export function urineph() {
   const WY = 470;
   const bounce = (u, y0, ym) => (u < 0.5 ? lerp(y0, ym, ease(u * 2)) : lerp(ym, y0, ease((u - 0.5) * 2)));
   return {
-    home: HOME, anchors: [[60, 860], [40, 120], [530, 120], [500, 650]],
+    home: HOME, anchors: [[36, 745], [40, 120], [530, 120], [500, 650]],
     phase: (i) => ['neionizat trece · ionizat rămâne', 'acid slab în urină alcalină', 'bază slabă în urină acidă', 'ionizat → eliminat'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -436,7 +436,7 @@ export function urineph() {
 /* =================================================== CAZUL 5: FENOBARBITAL */
 export function pheno() {
   return {
-    home: HOME, anchors: [[40, 50], [520, 50], [40, 470], [520, 470]],
+    home: HOME, anchors: [[40, 100], [520, 50], [40, 470], [520, 470]],
     draw(g, t, b) {
       bg(g);
       box(g, 20, 30, 470, 420, b.i === 0);
@@ -465,7 +465,7 @@ export function pheno() {
 export function orders2() {
   const f1 = (x) => 100 * Math.pow(0.5, x), f0 = (x) => Math.max(0, 100 - 25 * x);
   return {
-    home: HOME, anchors: [[60, 80], [550, 80], [500, 880]],
+    home: HOME, anchors: [[60, 80], [550, 80], [60, 880]],
     phase: (i) => ['ordinul I: 50% pe oră', 'ordinul 0: 25 mg/L pe oră', 'timpul de înjumătățire'][i] || '',
     draw(g, t, b) {
       bg(g);
@@ -498,7 +498,7 @@ export function c6() {
   const f = (h) => (h < 1 ? 10 * h : 10 * Math.pow(0.5, (h - 1) / 3));
   const OPT = ['A. 6–8 h', 'B. 10–14 h', 'C. 5–7 h', 'D. 15–21 h', 'E. 14–16 h'];
   return {
-    home: HOME, anchors: [[60, 60], [700, 60], [60, 640], [520, 820], [800, 820]],
+    home: HOME, anchors: [[300, 95], [700, 60], [60, 640], [40, 820], [530, 820]],
     draw(g, t, b) {
       bg(g);
       const A = axes(g, 20, 40, 660, 560, { xmax: 22, ymax: 11, xt: [0, 1, 4, 7, 10, 13, 16, 19, 22], yt: [5, 10], xl: 'ore', yl: 'ng/mL', fs: 15 });
@@ -542,7 +542,7 @@ export function c7({ spec }) {
     },
   };
   return {
-    home: HOME, anchors: [[700, 50], [300, 330], [300, 560], [120, 300], [520, 650]],
+    home: HOME, anchors: [[700, 50], [300, 330], [40, 650], [120, 300], [520, 650]],
     draw(g, t, b) {
       bg(g);
       const A = axes(g, 20, 40, 660, 560, { xmax: 13, ymax: 105, xt: [0, 1, 2, 5, 6, 9, 12], yt: [25, 50, 75, 100], xl: 'ore', yl: 'µg/mL', fs: 15 });

@@ -51,7 +51,7 @@ export const SLIDES = [
       { h: 'Concluzia', d: ['examinatorul: „mai e 1 minut” → spui concluzia'] },
     ],
     say: '7 minute: 1 citești sarcina (ciornă) + 6 răspunzi: spui scriptul (2–3 min), **începi devreme**, apoi completezi. Se punctează doar ce spui cu voce tare; examinatorul tace.',
-    warn: '= **ordinea de punctaj** la Histologie: ce spui în afara ordinii riscă să nu fie bifat.',
+    warn: 'Recunoaștere → descriere → DD = **ordinea de punctaj** la Histologie: ce spui în afara ordinii riscă să nu fie bifat.',
     beatDur: 6,
   },
   // ---------------------------------------------------------------- 3 · ARBORELE DE DECIZIE
@@ -116,7 +116,7 @@ export const SLIDES = [
   // ---------------------------------------------------------------- 7 · CELE 3 FIBRE
   {
     scene: 'fibers', kick: 'Recapitulare LP 6–7 · Cele 3 fibre', title: 'Trei fibre: în HE se vede doar colagenul',
-    hud: ['colagen · reticulină · elastice'], anim: false, spec: 'Trei câmpuri fixe (van Gieson roșu, argentic negru, al treilea pentru fibrele elastice, care nu au lamă în LP 6–7); jos, fascicul neramificat vs. rețea ramificată, încercuite pe punctul 4.',
+    hud: ['colagen · reticulină · elastice'], anim: false, spec: 'Trei câmpuri fixe (van Gieson roșu, argentic negru, al treilea, HE roz pal, cu fibrele elastice abia schițate: nu se colorează în HE și nu au lamă în LP 6–7); jos, fascicul neramificat vs. rețea ramificată, încercuite pe punctul 4.',
     points: [
       { h: 'Fibre de colagen', d: ['!!van Gieson → roșu puternic!! (colorația de elecție), nucleii negru-cafenii; în HE palid roz', 'linii sinuoase, izolate sau în fascicule fine / grosiere; **nu se ramifică, nu se anastomozează**'] },
       { h: 'Fibre de reticulină (colagen tip III)', d: ['argirofile: !!impregnație argentică → negru!!; în HE nu se văd', 'linii neregulate, mai subțiri decât colagenul, **se ramifică + anastomozează** în rețele; nu formează fascicule'] },

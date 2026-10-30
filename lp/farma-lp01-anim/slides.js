@@ -164,7 +164,7 @@ export const SLIDES = [
     points: [
       D('Administrarea orală', 'gura → tubul digestiv → absorbția din intestin'),
       D('Vena portă → ficatul', 'sângele din intestin ajunge !!întâi în ficat!!, apoi în circulația sistemică'),
-      D('Enzimele hepatice (EN: first-pass effect)', '!!transformă majoritatea medicamentelor în metaboliți inactivi!!', 'transformă !!pro-drogurile în metaboliți activi!!'),
+      D('Enzimele hepatice (EN: first-pass metabolism)', '!!transformă majoritatea medicamentelor în metaboliți inactivi!!', 'transformă !!pro-drogurile în metaboliți activi!!'),
     ],
     xtra: 'Consecința (dedusă): după primul pasaj ajunge mai puțin medicament activ în circulația sistemică, deci biodisponibilitatea orală e de obicei mai mică decât la i.v.',
     beatDur: 7,
@@ -288,10 +288,10 @@ export const SLIDES = [
     beatDur: 7,
   },
   {
-    ...FISA({ title: 'Cazul 4 · levodopa + carbidopa', sub: 'de ce nu e blocată și în creier?', ico: 'brain', stage: 1, rows: [{ l: 'a', t: 'De ce nu inhibă conversia în creier?', n: 3 }, { l: 'b', t: 'Rostul asocierii (dacă se cere)', n: 2 }, { l: 'c', t: 'Etapa (dacă se cere)', n: 1 }] }, [
+    ...FISA({ title: 'Cazul 4 · levodopa + carbidopa', sub: 'de ce nu e blocată și în creier?', ico: 'brain', stage: 1, rows: [{ l: 'a', t: 'De ce nu inhibă conversia în creier?', n: 3 }, { l: 'b', t: 'Rostul asocierii (dacă se cere)', n: 2 }, { l: 'c', t: 'Etapa (dacă se cere)', n: 2 }] }, [
       { tm: 'a · De ce nu inhibă conversia și în creier?', at: '3 noțiuni', tx: '!!Levodopa traversează BHE; dopamina nu traversează BHE; carbidopa nu traversează BHE!!, deci împiedică conversia levodopa în dopamină doar periferic, nu și în SNC.' },
       { tm: 'b · Dacă se cere rostul asocierii', at: '2 noțiuni', tx: 'Evită efectele secundare periferice ale dopaminei și crește cantitatea de levodopa disponibilă la BHE.' },
-      { tm: 'c · Dacă se cere etapa', at: '1 noțiune', tx: 'Distribuția (trecerea prin BHE); în LP cazul este marcat la absorbție și distribuție.' },
+      { tm: 'c · Dacă se cere etapa', at: '2 noțiuni', tx: 'Absorbția și distribuția: așa este marcat cazul în LP (trecerea prin BHE).' },
     ]),
     kick: 'La OSPE · Cazul 4 · Levodopa + carbidopa', title: 'Răspunsul-model: cine trece BHE și cine nu',
   },

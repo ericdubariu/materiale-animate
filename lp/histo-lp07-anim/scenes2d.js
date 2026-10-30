@@ -5,6 +5,9 @@ import {
 } from './kit2d.js';
 import { atlas, mosaic } from './atlas.js';
 
+// field() din kit2d conturează ultima cale desenată; refacem cercul ca să fie conturat cercul, nu ultima formă din interior.
+const fieldC = (g, x, y, r, f, ring) => field(g, x, y, r, () => { f(); g.beginPath(); g.arc(x, y, r, 0, 7); }, ring);
+
 const W = 1000, H = 934;
 const cam = (x, y, z) => ({ x, y, z });
 const HOME = cam(500, 467, 1);
@@ -145,7 +148,7 @@ function cover() {
     labels: pos.map(([x, y], i) => lbl([x, y + 205], L[i][2])),
     draw(g, t, b) {
       bgFill(g, '#3a1d47', '#160b1d');
-      pos.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); field(g, x, y, 180 + k[i] * 8, () => { g.save(); g.translate(x - 180, y - 180); g.scale(0.36, 0.385); L[i][1](g, t); g.restore(); }); if (k[i] > 0.05) glowRing(g, x, y, 195, 195, 0, k[i]); });
+      pos.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); fieldC(g, x, y, 180 + k[i] * 8, () => { g.save(); g.translate(x - 180, y - 180); g.scale(0.36, 0.385); L[i][1](g, t); g.restore(); }); if (k[i] > 0.05) glowRing(g, x, y, 195, 195, 0, k[i]); });
     },
   };
 }
@@ -287,13 +290,13 @@ function tenRec() {
   const tw = () => near(700, 467);
   return {
     home: HOME, cams: [cam(500, 467, 1.3), cam(500, 467, 1.9), cam(500, 467, 2.6), cam(500, 467, 1.9)],
-    anchors: [() => { const p = toWorldTen(450, 430); return p; }, () => { const p = near(450, 540); return [p[0], p[1] - 30]; }, () => { const p = tw(); return [p[0], p[1] - 34]; }, () => toWorldTen(560, 319)],
+    anchors: [() => { const p = toWorldTen(300, 400); return p; }, () => { const p = near(450, 540); return [p[0], p[1] - 30]; }, () => { const p = tw(); return [p[0], p[1] - 34]; }, () => toWorldTen(560, 319)],
     inset: () => ({ img: 'ten', cap: 'Așa arată pe lamă · HE' }),
     labels: [lbl(toWorldTen(700, 690), 'fascicule paralele de colagen', { beats: [-1, 0] }), lbl(() => { const p = near(450, 540); return [p[0], p[1] + 34]; }, 'nuclei de tenocite', { beats: [1] }), lbl(() => { const p = tw(); return [p[0], p[1] + 40]; }, '„nuclei gemeni”', { beats: [2] }), lbl(() => { const p = toWorldTen(560, 319); return [p[0], p[1] + 30]; }, 'fantă albă (artefact)', { beats: [3] })],
     draw(g, t, b) {
       F = tenField(g, t);
       if (b.i === 2) { const [x, y] = tw(); glowRing(g, x, y, 70, 26, 0.42, ease(b.bt * 1.5)); }
-      if (b.i === 0) { const [x, y] = toWorldTen(450, 430); glowRing(g, x, y, 260, 34, 0.42, ease(b.bt * 1.5)); }
+      if (b.i === 0) { const [x, y] = toWorldTen(300, 400); glowRing(g, x, y, 260, 34, 0.42, ease(b.bt * 1.5)); }
     },
   };
 }
@@ -360,8 +363,8 @@ function retWhy() {
     labels: [lbl([260, 760], 'limfocite dese: rețeaua ascunsă'), lbl([680, 760], 'medulara: se vede rețeaua'), lbl([680, 380], 'pseudorețeaua dublează rețeaua de fibre (nu se văd în HE)', { beats: [2] })],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      field(g, 260, 470, 220, () => { g.save(); g.fillStyle = '#fbeef4'; g.fillRect(40, 250, 440, 440); srand(3); for (let k = 0; k < 160; k++) lymphocyte(g, rr(50, 470), rr(260, 680), 0.6, t); g.restore(); });
-      field(g, 680, 470, 220, () => { g.save(); g.translate(460, 250); g.scale(0.44, 0.47); retHEField(g, t); g.restore();
+      fieldC(g, 260, 470, 220, () => { g.save(); g.fillStyle = '#fbeef4'; g.fillRect(40, 250, 440, 440); srand(3); for (let k = 0; k < 160; k++) lymphocyte(g, rr(50, 470), rr(260, 680), 0.6, t); g.restore(); });
+      fieldC(g, 680, 470, 220, () => { g.save(); g.translate(460, 250); g.scale(0.44, 0.47); retHEField(g, t); g.restore();
         if (b.i === 2) { g.save(); g.setLineDash([8, 6]); g.strokeStyle = '#151017'; g.lineWidth = 3; const RC = [[220, 240], [430, 180], [330, 430], [560, 380], [760, 470], [460, 620], [690, 650], [850, 330], [140, 470]].map(([x, y]) => [460 + x * 0.44, 250 + y * 0.47]); RC.forEach((p, i) => RC.forEach((q, j) => { if (j > i && Math.hypot(p[0] - q[0], p[1] - q[1]) < 115) { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); } })); g.restore(); } });
       if (b.i === 0) glowRing(g, 260, 470, 230, 230, 0, ease(b.bt * 1.5));
       if (b.i === 1) glowRing(g, 680, 470, 230, 230, 0, ease(b.bt * 1.5));
@@ -378,8 +381,8 @@ function ddPair({ spec }) {
     labels: [lbl([260, 820], o.l), lbl([740, 820], o.r)],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      field(g, 260, 470, 225, () => { g.save(); g.translate(35, 245); g.scale(0.45, 0.48); F[o.a](g, t); g.restore(); });
-      field(g, 740, 470, 225, () => { g.save(); g.translate(515, 245); g.scale(0.45, 0.48); F[o.b](g, t); g.restore(); });
+      fieldC(g, 260, 470, 225, () => { g.save(); g.translate(35, 245); g.scale(0.45, 0.48); F[o.a](g, t); g.restore(); });
+      fieldC(g, 740, 470, 225, () => { g.save(); g.translate(515, 245); g.scale(0.45, 0.48); F[o.b](g, t); g.restore(); });
       if (b.i >= 0) { glowRing(g, 260, 470, 235, 235, 0, ease(b.bt * 1.5)); glowRing(g, 740, 470, 235, 235, 0, ease(b.bt * 1.5)); }
     },
   };
@@ -404,7 +407,7 @@ function script({ spec }) {
     phase: (i) => (i >= 0 ? `${spec.script[i].tm} · ${spec.script[i].at}` : ''),
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a', WS, HS);
-      field(g, 300, 300, 230, () => { g.save(); g.translate(70, 70); g.scale(0.46, 0.49); F[o.f](g, t); g.restore(); });
+      fieldC(g, 300, 300, 230, () => { g.save(); g.translate(70, 70); g.scale(0.46, 0.49); F[o.f](g, t); g.restore(); });
       const C0 = [300, 700], R = 130; let acc = 0;
       spec.durs.forEach((d, i) => { const a0 = acc / tot, a1 = (acc + d) / tot; acc += d; const on = i === b.i, done = i < b.i; g.save(); g.strokeStyle = OUT; g.lineWidth = 36; g.beginPath(); g.arc(C0[0], C0[1], R, -Math.PI / 2 + a0 * Math.PI * 2, -Math.PI / 2 + a1 * Math.PI * 2 - 0.03); g.stroke(); g.strokeStyle = on ? '#ff9fd0' : done ? '#c2558c' : '#4a3d58'; g.lineWidth = 26; if (on) { g.shadowColor = '#ff9fd0'; g.shadowBlur = 20; } g.stroke(); g.restore(); });
       let f = 0; if (b.i >= 0) { let a = 0; for (let k = 0; k < b.i; k++) a += spec.durs[k]; f = (a + spec.durs[b.i] * clamp(b.bt / b.bd)) / tot; }
@@ -421,7 +424,7 @@ function recap() {
     home: HOME, cams: pos.map(([x, y]) => cam(x, y, 1.5)), anchors: [],
     draw(g, t, b) {
       bgFill(g, '#3a1d47', '#160b1d');
-      pos.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); field(g, x, y, 180, () => { g.save(); g.translate(x - 180, y - 180); g.scale(0.36, 0.385); F[i](g, t); g.restore(); }); if (k[i] > 0.05) glowRing(g, x, y, 195, 195, 0, k[i]); });
+      pos.forEach(([x, y], i) => { k[i] = lerp(k[i], b.i === i ? 1 : 0, 0.08); fieldC(g, x, y, 180, () => { g.save(); g.translate(x - 180, y - 180); g.scale(0.36, 0.385); F[i](g, t); g.restore(); }); if (k[i] > 0.05) glowRing(g, x, y, 195, 195, 0, k[i]); });
     },
   };
 }

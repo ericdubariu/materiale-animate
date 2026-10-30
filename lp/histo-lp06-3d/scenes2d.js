@@ -7,6 +7,9 @@ import {
 } from './kit2d.js';
 import { atlas, mosaic } from './atlas.js';
 
+// field() din kit2d conturează ultima cale desenată; refacem cercul ca să fie conturat cercul, nu ultima formă din interior.
+const fieldC = (g, x, y, r, f, ring) => field(g, x, y, r, () => { f(); g.beginPath(); g.arc(x, y, r, 0, 7); }, ring);
+
 const W = 1000, H = 934;
 const cam = (x, y, z) => ({ x, y, z });
 const HOME = cam(500, 467, 1);
@@ -147,7 +150,7 @@ function fibers3() {
   const br = el.map((p, k) => { const s = p[6 + k * 2]; return wavy(s[0], s[1], s[0] + (k % 2 ? 70 : -70), s[1] + 90, 5, 2, k, 8); });
   let st = 0, lastI = -9;
   const cards = [[150, 'colagen'], [500, 'reticulină'], [850, 'elastice']];
-  const SP = [['#f4e09a', VG.col, 'van Gieson → roșu'], [AG.bg, AG.fib, 'impregnație argentică → negru'], ['#f1e4d6', '#8a4f22', 'orceină → brun (manual)']];
+  const SP = [['#f4e09a', VG.col, 'van Gieson → roșu'], [AG.bg, AG.fib, 'impregnație argentică → negru'], ['#f3dfe9', '#d9a9bf', 'elastice: în HE nu se colorează']];
   return {
     home: HOME, cams: [cam(160, 470, 1.85), cam(500, 470, 1.85), cam(840, 470, 1.85)],
     anchors: [[150, 215], [500, 215], [850, 215]],
@@ -165,7 +168,7 @@ function fibers3() {
         g.beginPath(); g.roundRect(x - 140, 240, 280, 460, 22); g.clip();
         if (i === 0) { const c = k > 0.5 ? VG : HE; bundle(g, wavy(x - 60, 230, x + 40, 710, 16, 2.5, 0), 46, { c, n: 5 }); bundle(g, wavy(x + 50, 230, x - 20, 710, 14, 2.2, 1), 30, { c, n: 4 }); }
         if (i === 1) { if (k > 0.05) { g.globalAlpha = k; drawNet(g, net, AG.fib, 4); g.globalAlpha = 1; } else { g.globalAlpha = 0.12; drawNet(g, net, '#c9a3b8', 3); g.globalAlpha = 1; } }
-        if (i === 2) { g.globalAlpha = Math.max(0.12, k); g.lineCap = 'round'; [...el, ...br].forEach((p) => { g.strokeStyle = k > 0.05 ? '#8a4f22' : '#d9a9bf'; g.lineWidth = 5; g.stroke(smooth(p, false)); }); g.globalAlpha = 1; }
+        if (i === 2) { g.globalAlpha = 0.12 + 0.1 * k; g.lineCap = 'round'; [...el, ...br].forEach((p) => { g.strokeStyle = '#c9a3b8'; g.lineWidth = 5; g.stroke(smooth(p, false)); }); g.globalAlpha = 1; }
         g.restore();
       });
     },
@@ -377,8 +380,8 @@ function ddLax() {
     labels: [lbl([260, 860], 'granulație'), lbl([740, 860], 'conjunctiv lax'), lbl([700, 380], 'lobul mamar', { beats: [2] })],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
-      field(g, 260, 470, 225, () => { g.save(); g.translate(35, 245); g.scale(0.45, 0.48); granField(g, t, { fat: false }); g.restore(); });
-      field(g, 740, 470, 225, () => { g.save(); g.translate(515, 245); g.scale(0.45, 0.48); laxDraw(g, t); g.restore(); });
+      fieldC(g, 260, 470, 225, () => { g.save(); g.translate(35, 245); g.scale(0.45, 0.48); granField(g, t, { fat: false }); g.restore(); });
+      fieldC(g, 740, 470, 225, () => { g.save(); g.translate(515, 245); g.scale(0.45, 0.48); laxDraw(g, t); g.restore(); });
       const hi = (x, y) => glowRing(g, x, y, 235, 235, 0, ease(b.bt * 1.5));
       if (b.i === 0) { hi(260, 470); hi(740, 470); }
       if (b.i === 1) { hi(260, 470); hi(740, 470); }
@@ -396,7 +399,7 @@ function script({ spec }) {
     phase: (i) => (i >= 0 ? `${spec.script[i].tm} · ${spec.script[i].at}` : ''),
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a', WS, HS);
-      field(g, 300, 300, 230, () => { g.save(); g.translate(70, 70); g.scale(0.46, 0.49); if (o.img === 'gr') granField(g, t); else if (o.img === 'col') colField(g, t); else retField(g, t); g.restore(); });
+      fieldC(g, 300, 300, 230, () => { g.save(); g.translate(70, 70); g.scale(0.46, 0.49); if (o.img === 'gr') granField(g, t); else if (o.img === 'col') colField(g, t); else retField(g, t); g.restore(); });
       const C0 = [300, 700], R = 130; let acc = 0;
       spec.durs.forEach((d, i) => { const a0 = acc / tot, a1 = (acc + d) / tot; acc += d; const on = i === b.i, done = i < b.i; g.save(); g.lineCap = 'butt'; g.strokeStyle = OUT; g.lineWidth = 36; g.beginPath(); g.arc(C0[0], C0[1], R, -Math.PI / 2 + a0 * Math.PI * 2, -Math.PI / 2 + a1 * Math.PI * 2 - 0.03); g.stroke(); g.strokeStyle = on ? '#ff9fd0' : done ? '#c2558c' : '#4a3d58'; g.lineWidth = 26; if (on) { g.shadowColor = '#ff9fd0'; g.shadowBlur = 20; } g.stroke(); g.restore(); });
       let f = 0; if (b.i >= 0) { let a = 0; for (let k = 0; k < b.i; k++) a += spec.durs[k]; f = (a + spec.durs[b.i] * clamp(b.bt / b.bd)) / tot; }

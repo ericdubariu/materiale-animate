@@ -86,8 +86,8 @@ export function gpaths() {
   const X = [140, 385, 630, 870]; const MY = 215;
   const COLS = [
     { rc: C.gs, rec: 'β1, β2, β3 · H2', g: 'Gs', steps: ['adenilat-ciclaza ↑', 'ATP → AMPc ↑', 'PKA'], eff: 'cord: contracție ↑\nm. neted: relaxare', ico: 'heart', fast: true },
-    { rc: C.gi, rec: 'α2 · M2 · µ', g: 'Gi', steps: ['adenilat-ciclaza ↓', 'AMPc ↓', 'cord: frecvență ↓', '↓ eliberarea de NA'], eff: 'FRÂNĂ', ico: 'heart', off: true },
-    { rc: C.gq, rec: 'α1 · M1, M3 · H1', g: 'Gq', steps: ['fosfolipaza C ↑', 'PIP2 → IP3 + DAG', 'Ca²⁺ ↑ · PKC'], eff: 'm. neted:\nCONTRACȚIE', ico: 'smooth' },
+    { rc: C.gi, rec: 'α2 · M2', g: 'Gi', steps: ['adenilat-ciclaza ↓', 'AMPc ↓', 'cord: frecvență ↓', '↓ eliberarea de NA'], eff: 'FRÂNĂ', ico: 'heart', off: true },
+    { rc: C.gq, rec: 'α1 · M1,3 · H1', g: 'Gq', steps: ['fosfolipaza C ↑', 'PIP2 → IP3 + DAG', 'Ca²⁺ ↑ · PKC'], eff: 'm. neted:\nCONTRACȚIE', ico: 'smooth' },
     { rc: C.nch, rec: 'N1, N2 · GABA-A', chan: true, steps: ['N1, N2 → Na⁺', 'GABA-A → Cl⁻', 'fără proteină G'], eff: 'rapid' },
   ];
   return {
@@ -203,8 +203,8 @@ export function casc({ spec }) {
     gq: [[30, 215], [EX - 70, MY - 70], [140, 560], [800, 560]],
   }[kind];
   const phases = {
-    smooth: ['D se leagă', 'Gs → AC → AMPc → PKA', 'Ca²⁺ ↓ → relaxare', 'bronhodilatator · tocolitic'],
-    heart: ['E ocupă β1', 'cascada blocată', 'Ca²⁺ ↓ → cord mai lent', 'cardioinhibiție'],
+    smooth: ['S se leagă de β2', 'Gs → AC → AMPc → PKA', 'Ca²⁺ ↓ → relaxare', 'bronhodilatație · tocolitic'],
+    heart: ['M ocupă β1', 'cascada blocată', 'Ca²⁺ ↓ → contracție ↓', 'cardioinhibiție'],
     gq: ['histamina → H1', 'Gq → PLC → IP3 + DAG', 'Ca²⁺ ↑ + PKC', 'bronhoconstricție'],
   }[kind];
   const AH = [RX - 20, MY + 105], BG = [RX + 70, MY + 85];
@@ -221,13 +221,13 @@ export function casc({ spec }) {
       if (kind === 'heart') {
         const e = ease(clamp(p(0) / 0.4));
         receptor(g, RX, MY, col, recLab, { s: 1.05, ly: -120, size: 26 });
-        ligand(g, RX, lerp(60, MY - 66, e), C.gi, 'E', 24, { shape: 'block' });
+        ligand(g, RX, lerp(60, MY - 66, e), C.gi, 'M', 24, { shape: 'block' });
         const na = clamp((p(0) - 0.4) / 0.5); const nx = na < 0.5 ? lerp(420, RX + 30, ease(na * 2)) : lerp(RX + 30, 420, ease((na - 0.5) * 2)); const ny = na < 0.5 ? lerp(70, MY - 120, ease(na * 2)) : lerp(MY - 120, 90, ease((na - 0.5) * 2));
         if (ph >= 0.4) { ligand(g, nx, ny, C.na, 'NA', 22); if (na > 0.45) cross(g, RX + 45, MY - 95, 16, C.key, 1); }
       } else {
         const lp = ease(clamp(p(0) / 0.6));
         receptor(g, RX, MY, col, kind === 'gq' ? '' : recLab, { s: 1.05, glow: p(0) > 0.6 ? 1 : 0, gc: col, ly: -120, size: 26 }); if (kind === 'gq') txt(g, recLab, RX + 85, MY - 70, 26, col);
-        if (kind === 'smooth') ligand(g, RX, lerp(50, MY - 66, lp), C.gs, 'D', 24);
+        if (kind === 'smooth') ligand(g, RX, lerp(50, MY - 66, lp), C.gs, 'S', 24);
         else {
           mastocyte(g, 75, 120, 48, clamp(p(0) * 1.5) * 0.6, t); txt(g, 'mastocit', 75, 186, 16, '#d6a7ff');
           for (let j = 0; j < 5; j++) dot(g, 160 + j * 22, 90 + (j % 2) * 30, 8, '#b06ad0', { ow: 2, alpha: clamp(p(0) * 2) });
@@ -255,21 +255,21 @@ export function casc({ spec }) {
         myofil(g, 740, 820, 280, (1 - rl) * (0.75 + 0.15 * Math.sin(t * 4)));
         txt(g, rl > 0.5 ? 'Ca²⁺ ↓ → RELAXARE' : 'miofilamente', 740, 905, 22, rl > 0.5 ? C.gs : C.cream);
         const e4 = clamp(p(3) / 0.6);
-        if (ph >= 3) { bronchus(g, 905, 530, 55, 0.3 + 0.6 * e4); txt(g, 'bronhodilatator', 905, 600, 17, C.gs, { alpha: e4 }); icon(g, 'uterus', 905, 668, 0.75); txt(g, 'tocolitic', 905, 728, 17, C.gs, { alpha: e4 }); }
+        if (ph >= 3) { bronchus(g, 905, 530, 55, 0.3 + 0.6 * e4); txt(g, 'bronhodilatație', 905, 600, 17, C.gs, { alpha: e4 }); icon(g, 'uterus', 905, 668, 0.75); txt(g, 'tocolitic', 905, 728, 17, C.gs, { alpha: e4 }); }
       } else if (kind === 'heart') {
         // cascada normală estompată, cu ✕ pe fiecare verigă
-        const CH = ['αs-GTP', 'adenilat-ciclaza', 'AMPc ↑', 'PKA', 'calciductina'];
+        const CH = ['αs-GTP', 'adenilat-ciclaza', 'AMPc ↑', 'PKA', 'canale Ca²⁺ tip L'];
         CH.forEach((c, j) => { const y = 340 + j * 62; pill(g, 660, y, 200, 46, '#4a3d58', c, { size: 17, col: '#d8cde0' }); cross(g, 770, y, 12, C.key, clamp(p(1) * 6 - j)); if (j < 4) arr(g, 660, y + 24, 660, y + 38, '#d8cde0', 3, 0.6); });
         txt(g, 'normal', 660, 305, 16, C.dim, { w: 700 });
         channel(g, 880, MY, 0.05, C.nch, { s: 0.6 }); txt(g, 'canal de Ca²⁺', 880, MY - 52, 16, C.nch); cross(g, 925, MY + 40, 11, C.key, clamp(p(1) * 6 - 4));
         const e3 = clamp(p(2) / 0.6);
         for (let j = 0; j < 2; j++) { const v = ((j / 2) + t * 0.3) % 1; dot(g, 880, lerp(MY - 40, MY + 140, v), 9, C.ca, { ow: 2.5, alpha: ph >= 2 ? Math.sin(v * Math.PI) : 0 }); }
         const beat = Math.max(0, Math.sin(t * lerp(4.2, 2, e3))) ** 6; heart(g, 330, 690, lerp(1, 0.85, e3), beat * lerp(1, 0.35, e3));
-        ['frecvență ↓', 'forță ↓', 'conducere ↓', 'O₂ ↓'].forEach((c, j) => pill(g, 120 + (j % 2) * 210, 480 + Math.floor(j / 2) * 62, 190, 48, '#bcdcff', c, { size: 17, alpha: 0.25 + 0.75 * e3 }));
+        ['forță ↓', 'frecvență ↓', 'Ca²⁺ intracelular ↓', 'renină ↓'].forEach((c, j) => pill(g, 120 + (j % 2) * 210, 480 + Math.floor(j / 2) * 62, 190, 48, '#bcdcff', c, { size: 17, alpha: 0.25 + 0.75 * e3 }));
         const e4 = clamp(p(3) / 0.6);
         txt(g, 'CARDIOSTIMULARE', 330, 830, 24, '#ff9a8a', { alpha: 0.4 + 0.6 * e4 }); if (e4 > 0.2) { g.save(); g.strokeStyle = C.key; g.lineWidth = 6; g.beginPath(); g.moveTo(200, 830); g.lineTo(460, 830); g.stroke(); g.restore(); }
         txt(g, 'CARDIOINHIBIȚIE', 760, 830, 30, C.gi, { alpha: 0.3 + 0.7 * e4 });
-        txt(g, 'angină · HTA · aritmii · IC', 760, 880, 19, C.cream, { alpha: e4, w: 700 });
+        txt(g, 'schema din LP', 760, 880, 17, C.dim, { alpha: e4, w: 700 });
       } else {
         // Gq: PIP2 → IP3 + DAG
         const sp = clamp((p(1) - 0.6) / 0.4);

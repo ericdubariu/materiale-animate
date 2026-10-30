@@ -271,13 +271,13 @@
    "ord": 120
   },
   {
-   "id": "recap-farma-02-04-anim",
+   "id": "recap-farma-01-04-anim",
    "subj": "farma",
    "tip": "lp",
-   "title": "Recapitulare OSPE · LP 2–4: cazuri, receptori și experimente",
-   "sub": "Versiunea veche (dinainte de LP-urile oficiale), se reface · Scheletul de punctaj pentru cele 5 + 5 cazuri și cele 4 experimente, formulele de la stație, receptorii, erata și capcanele",
-   "slides": 38,
-   "path": "lp/recap-farma-02-04-anim/index.html",
+   "title": "Recapitulare OSPE · LP 1–4",
+   "sub": "Toate cele 28 de cazuri pe barem + modelul OSPE oficial: hărți, scheme, tabele, capcane",
+   "slides": 44,
+   "path": "lp/recap-farma-01-04-anim/index.html",
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 900
