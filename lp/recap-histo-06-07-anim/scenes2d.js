@@ -119,7 +119,7 @@ function chrom() {
   return {
     home: HOME, cams: [cam(500, 320, 1.3), cam(500, 320, 1.3), cam(330, 700, 1.6), cam(680, 720, 1.35)],
     anchors: [[200, 190], [800, 190], [300, 600], [560, 610]],
-    labels: [lbl([500, 470], 'plagă: fibrocit → fibroblast (reactivare)', { beats: [-1] }), lbl([500, 470], 'FIBROBLAST = ACTIV: nucleu palid', { beats: [0] }), lbl([500, 470], 'FIBROCIT = REPAUS: nucleu închis', { beats: [1] }),
+    labels: [lbl([500, 470], 'fibroblast ↔ fibrocit', { beats: [-1] }), lbl([500, 470], 'fibroblast: nucleu mare, hipocrom', { beats: [0] }), lbl([500, 470], 'fibrocit: nucleu fusiform, hipercrom', { beats: [1] }),
       lbl([300, 850], 'plasmocit: spițe de roată', { beats: [2] }), lbl([700, 870], 'macrofage → celulă gigantă', { beats: [3] })],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
@@ -153,7 +153,7 @@ function fibers({ spec }) {
   return {
     home: HOME, cams: tab ? null : [cam(260, 380, 1.6), cam(500, 380, 1.6), cam(740, 380, 1.6), HOME],
     anchors: tab ? [] : [[C[0][0] - 105, C[0][1] - 120], [C[1][0] - 105, C[1][1] - 120], [C[2][0] - 105, C[2][1] - 120], [60, 640]],
-    labels: [lbl([180, 512], 'colagen<br>van Gieson → roșu'), lbl([500, 512], 'reticulină<br>argentic → negru'), lbl([820, 512], 'elastice<br>orceină → brun (manual)'),
+    labels: [lbl([180, 512], 'colagen<br>van Gieson → roșu'), lbl([500, 512], 'reticulină<br>argentic → negru'), lbl([820, 512], 'elastice<br>nu se văd în HE'),
       lbl([280, 890], 'nu se ramifică'), lbl([720, 890], 'se ramifică + anastomozează')],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
@@ -191,7 +191,7 @@ const CFG = {
   gr: () => ({
     cams: [HOME, cam(620, 380, 1.35), cam(360, 520, 1.9)],
     anchors: [[150, 110], [700, 200], [420, 548]],
-    labels: [lbl([500, 890], 'țesut de reparație: celule + multe vase', { beats: [-1, 0] }), lbl([800, 330], 'vas cu hematii', { beats: [1] }), lbl([290, 405], 'fibroblast: nucleu palid', { beats: [2] }), lbl([430, 690], 'plasmocit', { beats: [2] })],
+    labels: [lbl([500, 890], 'celularitate abundentă + multe vase', { beats: [-1, 0] }), lbl([800, 330], 'vas cu hematii', { beats: [1] }), lbl([290, 405], 'fibroblast: nucleu palid', { beats: [2] }), lbl([430, 690], 'plasmocit', { beats: [2] })],
     ring: (g, b) => { ring(g, b, 1, 665, 370, 60, 150, 0.08); ring(g, b, 2, 300, 470, 75, 40, 0.25); ring(g, b, 2, 420, 610, 58, 48); },
   }),
   col: (F) => ({

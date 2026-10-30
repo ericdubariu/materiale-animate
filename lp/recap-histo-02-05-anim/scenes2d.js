@@ -28,7 +28,7 @@ function cover() {
         fieldThumb(g, ORDER[i], x, y + bob, 90 + kk[i] * 6);
         if (kk[i] > 0.05) glowRing(g, x, y + bob, 104, 104, 0, kk[i]);
       });
-      if (b.i < 0) { const i = Math.floor(t * 0.8) % 12; glowRing(g, pos[i][0], pos[i][1], 102, 102, 0, (t * 0.8) % 1); }
+      if (b.i < 0) { const i = ((Math.floor(t * 0.8) % 12) + 12) % 12; glowRing(g, pos[i][0], pos[i][1], 102, 102, 0, (t * 0.8) % 1); }
     },
   };
 }
@@ -120,27 +120,27 @@ const CFG = {
     cams: [cam(500, 500, 1.0), cam(500, 560, 1.35), cam(F.A.border[0] + 40, F.A.border[1] + 20, 2.5)],
     anchors: [[500, 230], [F.A.band[0] + 20, F.A.band[1] - 30], [F.A.border[0] - 20, F.A.border[1] - 30]],
     labels: [lbl([150, 700], 'lumen', { beats: [-1, 0, 1] }), lbl([500, 760], 'corion în axul pliului', { beats: [1] }), lbl([F.A.band[0] - 30, F.A.band[1] + 80], 'nuclei în bandă, bazali', { beats: [1] }), lbl([F.A.border[0] - 10, F.A.border[1] + 60], 'platou striat = microvilozități', { beats: [2] })],
-    st: (b) => ({ absorb: b.i === 2 || b.i < 0 }),
+    st: () => ({ absorb: false }),
     ring: (g, b) => { ring(g, b, 2, F.A.border[0], F.A.border[1], 30, 60, 0.15); },
   }),
   ps: (F) => ({
     cams: [cam(500, 480, 1.0), cam(500, 560, 1.5), cam(F.tG.x, 400, 2.1)],
     anchors: [[150, 200], [F.A.nucs[0], F.A.nucs[1] - 70], [F.A.cilia[0], F.A.cilia[1] - 40]],
-    labels: [lbl([800, 200], 'pătura de mucus urcă spre faringe', { beats: [-1, 0] }), lbl([500, 760], 'toate celulele ating MB', { beats: [1] }), lbl([F.A.nucs[0] + 160, F.A.nucs[1]], 'nuclei pe 3 niveluri', { beats: [1] }), lbl([F.tG.x, 230], 'cili', { beats: [2] }), lbl([F.tG.x + 120, 420], 'caliciformă: cupă palidă', { beats: [2] })],
+    labels: [lbl([800, 200], 'cili + caliciforme la suprafață', { beats: [-1, 0] }), lbl([500, 760], 'toate celulele ating MB', { beats: [1] }), lbl([F.A.nucs[0] + 160, F.A.nucs[1]], 'nuclei pe 3 niveluri', { beats: [1] }), lbl([F.tG.x, 230], 'cili', { beats: [2] }), lbl([F.tG.x + 120, 420], 'caliciformă: cupă palidă', { beats: [2] })],
     st: (b) => ({ bases: b.i === 1 }),
     ring: (g, b) => { ring(g, b, 2, F.tG.x, F.ys(F.tG.x) + 72, 44, 84); },
   }),
   es: (F) => ({
     cams: [cam(500, 470, 1.0), cam(F.A.bas[0], F.A.bas[1] - 40, 2.2), cam(F.A.spi[0], F.A.spi[1], 2.2), cam(F.A.sup[0], F.A.sup[1] + 20, 2.3)],
     anchors: [[150, 120], [F.A.bas[0] + 50, F.A.bas[1] + 30], [F.A.spi[0] + 30, F.A.spi[1] - 30], [F.A.sup[0] + 60, F.A.sup[1] - 30]],
-    labels: [lbl([800, 500], 'reînnoire: de jos în sus', { beats: [-1, 0] }), lbl([F.A.bas[0], F.A.bas[1] + 80], 'bazal: bazofil, nuclei hipercromi · MB sinuoasă', { beats: [1] }), lbl([F.A.spi[0], F.A.spi[1] + 60], 'spinocelular: poligonale, nucleu central', { beats: [2] }), lbl([F.A.sup[0], F.A.sup[1] + 46], 'superficial: turtite, nucleu picnotic păstrat', { beats: [3] })],
+    labels: [lbl([800, 500], 'reînnoire: de jos în sus', { beats: [-1, 0] }), lbl([F.A.bas[0], F.A.bas[1] + 80], 'bazal: bazofil, nuclei hipocromi · MB sinuoasă', { beats: [1] }), lbl([F.A.spi[0], F.A.spi[1] + 60], 'spinocelular: poligonale, nucleu central', { beats: [2] }), lbl([F.A.sup[0], F.A.sup[1] + 46], 'superficial: turtite, nucleu picnotic păstrat', { beats: [3] })],
     st: (b, t) => ({ tracer: b.i <= 0 ? (t * 0.09) % 1 : null }),
     ring: (g, b) => { ring(g, b, 1, F.A.bas[0], F.A.bas[1], 34, 40); ring(g, b, 2, F.A.spi[0], F.A.spi[1], 54, 44); ring(g, b, 3, F.A.sup[0], F.A.sup[1], 96, 22); },
   }),
   uro: (F) => ({
     cams: [cam(500, 470, 1.0), cam(F.A.bas[0], F.A.bas[1] - 60, 2.0), cam(F.A.rk[0], F.A.rk[1] - 30, 1.9), cam(F.A.umb[0], F.A.umb[1], 2.1)],
     anchors: [[150, 80], [F.A.bas[0] + 40, F.A.bas[1] + 40], [F.A.rk[0] + 50, F.A.rk[1] - 10], [F.A.umb[0], F.A.umb[1] - 70]],
-    labels: [lbl([160, 140], 'lumen (vezica goală: pliuri)', { beats: [-1, 0] }), lbl([F.A.bas[0], F.A.bas[1] + 90], 'bazal cubo-cilindric · MB invizibilă', { beats: [1] }), lbl([F.A.rk[0], F.A.rk[1] + 70], 'rachetă de tenis', { beats: [2] }), lbl([F.A.umb[0], F.A.umb[1] + 110], 'umbreliformă: 1–2 nuclei', { beats: [3] })],
+    labels: [lbl([160, 140], 'lumen', { beats: [-1, 0] }), lbl([F.A.bas[0], F.A.bas[1] + 90], 'bazal cubo-cilindric, nuclei hipocromi · MB invizibilă', { beats: [1] }), lbl([F.A.rk[0], F.A.rk[1] + 70], 'rachetă de tenis', { beats: [2] }), lbl([F.A.umb[0], F.A.umb[1] + 110], 'umbreliformă: 1, rar 2 nuclei hipercromi', { beats: [3] })],
     st: (b, t) => ({ stretch: b.i <= 0 ? 0.5 + 0.5 * Math.sin(t * 1.3) : 0 }),
     ring: (g, b) => { ring(g, b, 2, F.A.rk[0], F.A.rk[1] + 40, 42, 88); ring(g, b, 3, F.A.umb[0], F.A.umb[1] - 10, 112, 70); },
   }),
@@ -162,13 +162,13 @@ const CFG = {
     cams: [cam(500, 467, 1.0), cam(F.A.muc[0], F.A.muc[1], 2.1), cam(F.A.ser[0], F.A.ser[1], 2.1), cam(F.MIX[0], F.MIX[1], 1.9)],
     anchors: [[150, 120], [F.A.muc[0], F.A.muc[1] - 110], [F.A.ser[0], F.A.ser[1] - 75], [F.MIX[0] + 150, F.MIX[1] - 110]],
     labels: [lbl([F.A.muc[0], F.A.muc[1] + 112], 'acin mucos: palid', { beats: [1] }), lbl([F.A.ser[0], F.A.ser[1] + 78], 'acin seros: închis, lumen punctiform', { beats: [2] }), lbl([F.MIX[0], F.MIX[1] + 140], 'acin mixt', { beats: [3] }), lbl([F.MIX[0] - 40, F.MIX[1] - 175], 'semiluna Gianuzzi (seroase)', { beats: [3] })],
-    st: (b) => ({ gran: b.i === 2, squeeze: b.i === 3 }),
+    st: (b) => ({ gran: b.i === 2, squeeze: false }),
     ring: (g, b) => { ring(g, b, 2, F.A.ser[0], F.A.ser[1], 64); ring(g, b, 3, F.MIX[0], F.MIX[1] - 20, 160, 160); },
   }),
   tir: (F) => ({
     cams: [cam(500, 467, 1.0), cam(500, 467, 1.1), cam(F.A.epi[0], F.A.epi[1] + 10, 2.4), cam(F.A.cC[0] + 40, F.A.cC[1] - 10, 2.0)],
     anchors: [[F.A.colloid[0], F.A.colloid[1]], [F.A.small[0], F.A.small[1]], [F.A.epi[0] + 40, F.A.epi[1] - 40], [F.A.cC[0] + 10, F.A.cC[1] - 46]],
-    labels: [lbl([F.A.colloid[0], F.A.colloid[1] + 40], 'coloid roz, omogen', { beats: [-1, 0] }), lbl([F.act.cx, F.act.cy + F.act.ry + 30], 'folicul mic: epiteliu înalt', { beats: [1] }), lbl([F.A.flat[0], F.A.flat[1] + 34], 'folicul mare: celule turtite', { beats: [1] }), lbl([F.A.epi[0], F.A.epi[1] + 54], 'un singur rând (cubic)', { beats: [2] }), lbl([F.A.cC[0] + 20, F.A.cC[1] + 44], 'celulă C (sigur doar prin IHC)', { beats: [3] }), lbl([760, 760], 'capilar', { beats: [3] })],
+    labels: [lbl([F.A.colloid[0], F.A.colloid[1] + 40], 'coloid eozinofil', { beats: [-1, 0] }), lbl([F.act.cx, F.act.cy + F.act.ry + 30], 'celule cilindrice: cele mai active', { beats: [1] }), lbl([F.A.flat[0], F.A.flat[1] + 34], 'celule turtite: repaus', { beats: [1] }), lbl([F.A.epi[0], F.A.epi[1] + 54], 'un singur rând (cubic)', { beats: [2] }), lbl([F.A.cC[0] + 20, F.A.cC[1] + 44], 'celulă C (sigur doar prin IHC)', { beats: [3] }), lbl([760, 760], 'capilar', { beats: [3] })],
     st: (b) => ({ hormone: b.i === 1 || b.i < 0 }),
     ring: (g, b) => { ring(g, b, 0, F.A.colloid[0], F.A.colloid[1], 160, 140); ring(g, b, 1, F.act.cx, F.act.cy, F.act.rx + 40, F.act.ry + 40); ring(g, b, 2, F.A.epi[0], F.A.epi[1], 46, 30); ring(g, b, 3, F.A.cC[0], F.A.cC[1], 34); },
   }),
@@ -180,11 +180,11 @@ const CFG = {
     ring: (g, b) => { ring(g, b, 0, 500, 140, 520, 80); ring(g, b, 1, 500, 410, 300, 180); ring(g, b, 2, 500, 690, 300, 80); ring(g, b, 3, 500, 860, 300, 70); },
   }),
   pan: (F) => ({
-    cams: [cam(500, 467, 1.0), cam(F.I[0], F.I[1], 1.55), cam(F.aHi[0] + 40, F.aHi[1], 2.3), cam(870, 220, 1.8)],
-    anchors: [[F.A.islet[0] - 120, F.A.islet[1] + 20], [F.A.islet[0], F.A.islet[1]], [F.A.acin[0], F.A.acin[1]], [F.A.sept[0] - 55, F.A.sept[1] - 30]],
-    labels: [lbl([F.I[0], F.I[1] + F.I[3] + 30], 'insulă palidă, fără lumen', { beats: [-1, 0, 1] }), lbl([F.I[0], F.I[1] - 20], 'capilare', { beats: [1] }), lbl([F.aHi[0] + 60, F.aHi[1] + 76], 'acin seros → canal', { beats: [2] }), lbl([900, 300], 'sept: fâșie albă', { beats: [3] })],
-    st: (b) => ({ flow: b.i <= 0 || b.i === 1 || b.i === 2 }),
-    ring: (g, b) => { ring(g, b, 1, F.I[0], F.I[1], F.I[2] + 16, F.I[3] + 16); ring(g, b, 2, F.aHi[0], F.aHi[1], 62); },
+    cams: [cam(500, 467, 1.0), cam(F.I[0], F.I[1], 1.55), cam(F.I[0], F.I[1], 2.2), cam(F.aHi[0] + 40, F.aHi[1], 2.3)],
+    anchors: [[F.A.islet[0] - 120, F.A.islet[1] + 20], [F.I[0] - F.I[2] + 10, F.I[1] - F.I[3] + 10], [F.A.islet[0], F.A.islet[1]], [F.A.acin[0], F.A.acin[1]]],
+    labels: [lbl([F.I[0], F.I[1] + F.I[3] + 30], 'insulă rotund-ovalară, palidă', { beats: [-1, 0, 1] }), lbl([F.I[0], F.I[1] - 20], 'celule mici, în cuiburi', { beats: [2] }), lbl([F.aHi[0] + 60, F.aHi[1] + 76], 'acin seros → canal', { beats: [3] })],
+    st: (b) => ({ flow: b.i <= 0 || b.i === 1 || b.i === 3 }),
+    ring: (g, b) => { ring(g, b, 1, F.I[0], F.I[1], F.I[2] + 16, F.I[3] + 16); ring(g, b, 3, F.aHi[0], F.aHi[1], 62); },
   }),
 };
 
@@ -215,7 +215,7 @@ function recap({ spec }) {
     draw(g, t, b) {
       bgFill(g, '#3a1d47', '#160b1d');
       pos.forEach(([x, y], i) => { kk[i] = lerp(kk[i], b.i === i ? 1 : 0, 0.08); const bob = b.i === i ? Math.sin(t * 2) * 3 : 0; fieldThumb(g, keys[i], x, y + bob, 125 + kk[i] * 8); if (kk[i] > 0.05) glowRing(g, x, y + bob, 140, 140, 0, kk[i]); });
-      if (b.i < 0) { const i = Math.floor(t * 0.7) % keys.length; glowRing(g, pos[i][0], pos[i][1], 138, 138, 0, (t * 0.7) % 1); }
+      if (b.i < 0) { const i = ((Math.floor(t * 0.7) % keys.length) + keys.length) % keys.length; glowRing(g, pos[i][0], pos[i][1], 138, 138, 0, (t * 0.7) % 1); }
     },
   };
 }

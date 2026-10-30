@@ -39,7 +39,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const md = (s) => esc(s).replace(/!!(.+?)!!/g, '<b class="key">$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 const plain = (s) => String(s || '').replace(/\*\*|!!/g, '').replace(/<[^>]+>/g, '');
 function glossFor(spec) {
-  const parts = [spec.kick, spec.title, spec.why, spec.say, spec.warn, [].concat(spec.alt || []).join(' '), spec.hud && spec.hud.join(' '), spec.extraText];
+  const parts = [spec.kick, spec.title, spec.why, spec.xtra, spec.say, spec.warn, [].concat(spec.alt || []).join(' '), spec.hud && spec.hud.join(' '), spec.extraText];
   (spec.points || []).forEach((p) => parts.push(p.h, ...(p.d || [])));
   (spec.script || []).forEach((p) => parts.push(p.tm, p.tx));
   if (spec.table) parts.push(spec.table.head.join(' '), spec.table.rows.flat().join(' '));
@@ -93,7 +93,7 @@ function renderText(i) {
     t.innerHTML = `<thead><tr>${s.table.head.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${s.table.rows.map((r) => `<tr>${r.map((c) => `<td>${md(c)}</td>`).join('')}</tr>`).join('')}</tbody>`;
     b.appendChild(t); rowEls = [...t.querySelectorAll('tbody tr')];
   }
-  for (const [cls, key, h] of [['why', 'why', 'De ce?'], ['say', 'say', 'La oral spui așa'], ['warn', 'warn', 'Capcană'], ['alt', 'alt', 'Dacă nu-ți vine']]) {
+  for (const [cls, key, h] of [['why', 'why', 'De ce?'], ['xtra', 'xtra', 'Explicație în plus · nu e în LP'], ['say', 'say', 'La oral spui așa'], ['warn', 'warn', 'Capcană'], ['alt', 'alt', 'Dacă nu-ți vine']]) {
     if (!s[key]) continue;
     const d = document.createElement('div'); d.className = 'box ' + cls;
     d.innerHTML = `<span class="h">${h}</span>${[].concat(s[key]).map((x) => md(x)).join('<br>')}`;

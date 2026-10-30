@@ -274,7 +274,7 @@ function makeEs() {
         else cellP(g, c.pts, '#f0bcd6', '#e2a0c2', null, 2.5, 6);
       }
       for (const r of rows) for (const c of r.cells) {
-        if (r.kind === 'bas') nuc(g, c.c[0], c.c[1] + 4, 10, 17, 0, 'hyper', t);
+        if (r.kind === 'bas') nuc(g, c.c[0], c.c[1] + 4, 10, 17, 0, 'hypo', t);
         else if (r.kind === 'spi') nuc(g, c.c[0], c.c[1], 15, 15, 0, 'eu', t);
         else nuc(g, c.c[0] + c.w * 0.18, c.c[1], 14, 4.5, 0, 'pyk', t); // picnotic, excentric, dar prezent
       }
@@ -285,7 +285,7 @@ function makeEs() {
         const col = u < 0.2 ? '#9d80d8' : u < 0.6 ? '#f5d3e5' : '#f0bcd6'; const x = tx + (u > 0.85 ? (u - 0.85) * 400 : 0); const rot = u > 0.85 ? (u - 0.85) * 2 : 0;
         g.save(); g.globalAlpha = u > 0.9 ? Math.max(0, 1 - (u - 0.9) * 10) : 1; g.translate(x, yy); g.rotate(rot);
         const p = rpoly([[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]], 8); g.shadowColor = '#ffe36e'; g.shadowBlur = 24; g.fillStyle = col; g.fill(p); g.shadowBlur = 0; g.lineWidth = 6; g.strokeStyle = '#ffe36e'; g.stroke(p);
-        if (u < 0.2) nuc(g, 0, 0, 10, 16, 0, 'hyper', t); else if (u < 0.6) nuc(g, 0, 0, 15, 15, 0, 'eu', t); else nuc(g, w * 0.18, 0, lerp(15, 14, (u - 0.6) * 4), lerp(15, 4.5, Math.min(1, (u - 0.6) * 4)), 0, 'pyk', t);
+        if (u < 0.2) nuc(g, 0, 0, 10, 16, 0, 'hypo', t); else if (u < 0.6) nuc(g, 0, 0, 15, 15, 0, 'eu', t); else nuc(g, w * 0.18, 0, lerp(15, 14, (u - 0.6) * 4), lerp(15, 4.5, Math.min(1, (u - 0.6) * 4)), 0, 'pyk', t);
         g.restore();
       }
     },
@@ -317,13 +317,13 @@ function makeUro() {
       g.save(); g.fillStyle = '#f2c3d9'; g.beginPath(); g.moveTo(-60, 1100); for (let x = -60; x <= 1060; x += 20) { const p = wp(x, yb(x)); g.lineTo(p[0], p[1]); } g.lineTo(1060, 1100); g.closePath(); g.fill(); g.restore();
       for (const [x, y, a] of cor) paint(g, spindle(x, y, 40, 11, a, t, x), HE.nuc, HE.nucS, null, bb(x, y, 20, 6), OUT, 2.2);
       for (const c of basal) cellP(g, c.pts, '#c7a2df', '#ab84cf', null, 3, 5);
-      for (const c of basal) nuc(g, c.c[0], c.c[1], 10, 13, 0, 'eu', t, false);
+      for (const c of basal) nuc(g, c.c[0], c.c[1], 10, 13, 0, 'hypo', t, false);
       for (const r of rk1) paint(g, smooth(r.pts), '#f1c2db', '#e4a6c8', '#fff0f7', bbox(r.pts), OUT, 3.5);
       for (const r of rk1) nuc(g, r.head[0], r.head[1], 13, 13, 0, 'eu', t);
       for (const r of rk2) paint(g, smooth(r.pts), '#f3c9df', '#e6abcb', '#fff0f7', bbox(r.pts), OUT, 3.5);
       for (const r of rk2) nuc(g, r.head[0], r.head[1], 13, 13, 0, 'eu', t);
       for (const u of umb) paint(g, smooth(u.pts), '#e45d9c', '#cc4483', '#ff9cc8', bbox(u.pts), OUT, 4.5);
-      for (const u of umb) { if (u.two) { nuc(g, u.c[0] - 26, u.c[1], 15, 15, 0, 'eu', t); nuc(g, u.c[0] + 26, u.c[1] + 4, 15, 15, 0, 'eu', t); } else nuc(g, u.c[0], u.c[1], 16, 16, 0, 'eu', t); }
+      for (const u of umb) { if (u.two) { nuc(g, u.c[0] - 26, u.c[1], 15, 15, 0, 'hyper', t); nuc(g, u.c[0] + 26, u.c[1] + 4, 15, 15, 0, 'hyper', t); } else nuc(g, u.c[0], u.c[1], 16, 16, 0, 'hyper', t); }
       // plăcile apicale (membrana apicală rigidă)
       g.save(); g.lineCap = 'round'; g.strokeStyle = '#ffd1e6'; g.lineWidth = 4; g.setLineDash([22, 10]); g.beginPath(); umb.forEach((u) => { for (let i = 0; i <= 10; i++) { const p = u.pts[i]; if (i) g.lineTo(p[0], p[1] + 6); else g.moveTo(p[0], p[1] + 6); } }); g.stroke(); g.restore();
       g.restore();

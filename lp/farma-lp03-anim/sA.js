@@ -93,7 +93,7 @@ const KEYS = [
   { c: KC.part, ang: 0.5, eff: 0.5, n: 'agonist\nparțial', a: '0 < α < 1' },
   { c: KC.comp, ang: 0, eff: 0, n: 'antagonist\ncompetitiv', a: 'α = 0', bad: true },
   { c: KC.non, ang: 0, eff: 0, n: 'antagonist\nnecompetitiv', a: 'alt situs', non: true },
-  { c: KC.inv, ang: -1, eff: -0.45, n: 'agonist\ninvers', a: 'α < 0' },
+  { c: KC.inv, ang: -1, eff: -0.45, n: 'agonist\ninvers', a: '−1 < α < 0' },
 ];
 export function keys() {
   const X = [110, 300, 500, 700, 890]; const LY = 300, BASE = 690;
@@ -137,8 +137,8 @@ export function keys() {
 /* =================================================== TABELUL LIGANZILOR (coloana îngustă) */
 export function ligRows() {
   const WW = 600, HH = 897; const RH = 140; const Y0 = 22;
-  const R = [{ c: '#9be15d', ang: 1, n: 'mediator (endogen)', a: 'afinitate + α' }, { c: KC.full, ang: 1, n: 'agonist total', a: 'α = 1' }, { c: KC.part, ang: 0.5, n: 'agonist parțial', a: '0 < α < 1' },
-    { c: KC.comp, ang: 0, n: 'antagonist competitiv', a: 'α = 0 · același situs', bad: true }, { c: KC.non, ang: 0, n: 'antagonist necompetitiv', a: 'alt situs', non: true }, { c: KC.inv, ang: -1, n: 'agonist invers', a: 'α < 0 · R* → R' }];
+  const R = [{ c: '#9be15d', ang: 1, n: 'mediator', a: 'α = 1' }, { c: KC.full, ang: 1, n: 'agonist total', a: 'α = 1' }, { c: KC.part, ang: 0.5, n: 'agonist parțial', a: '0 < α < 1' },
+    { c: KC.comp, ang: 0, n: 'antagonist competitiv', a: 'α = 0 · situsul specific', bad: true }, { c: KC.inv, ang: -1, n: 'agonist invers', a: '−1 < α < 0' }, { c: KC.non, ang: 0, n: 'antagonist necompetitiv', a: 'alt situs · α = 0', non: true }];
   return {
     W: WW, H: HH, home: cam(WW / 2, HH / 2, 1), anchors: R.map((_, k) => [34, Y0 + k * (RH + 6) + 26]),
     draw(g, t, b) {
@@ -266,12 +266,12 @@ export function blocks() {
 /* =================================================== CARDUL DE CAZ (enunțul) */
 const DEC = {
   B: [['afinitate', 'da · centrul respirator'], ['activitate intr.', 'da → agonist'], ['mesagerii', 'mesageri secunzi'], ['țesutul', 'centrul respirator'], ['tratament', 'antagonist competitiv']],
-  D: [['afinitate', 'da · receptori Gs'], ['activitate intr.', 'da → agonist'], ['proteina G', 'Gs: AMPc ↑'], ['țesutul', 'bronhii + uter'], ['efect', 'bronhodilatator, tocolitic']],
-  E: [['afinitate', 'da · Gs din cord'], ['activitate intr.', 'nu → antagonist'], ['proteina G', 'Gs blocată'], ['țesutul', 'cord (β1)'], ['efect', 'cardioinhibiție']],
+  S: [['afinitate', 'da · β2 cuplați cu Gs'], ['activitate intr.', 'da → agonist'], ['proteina G', 'Gs: AMPc ↑'], ['țesutul', 'm. neted bronșic + uterin'], ['efect', 'relaxare: bronhodilatație, tocolitic']],
+  M: [['afinitate', 'da · β1 (Gs): cord + aparat JG'], ['activitate intr.', 'nu → antagonist'], ['proteina G', 'Gs blocată: AMPc nu crește'], ['țesutul', 'miocard · nod sinusal · aparat JG'], ['efect', 'cardioinhibiție + renină ↓']],
   alergie: [['ligandul', 'histamina'], ['activitate intr.', 'da → agonist'], ['proteina G', 'Gq: IP3 + DAG'], ['țesutul', 'mușchi neted bronșic'], ['efect', 'bronhoconstricție']],
   soc: [['mecanism', 'hipersensibilitate tip I'], ['prima expunere', 'IgE pe mastocite'], ['re-expunerea', 'degranulare'], ['efecte', 'TA ↓ · dispnee'], ['tratament', 'adrenalină 0,5 mg i.m.']],
 };
-const Q = { B: 'Cu ce tratezi?\nExplicați!', D: 'Ce efect și ce\nindicații?', E: 'Ce efect și ce\nindicații?', alergie: 'Mecanismul\ndispneei?', soc: 'Cauza\ntabloului?' };
+const Q = { B: 'Cu ce tratezi?\nExplicați!', S: 'Ce efect și ce\nindicații?', M: 'Ce efect și ce\nindicații?', alergie: 'Mecanismul\ndispneei?', soc: 'Cauza\ntabloului?' };
 export function caseCard({ spec }) {
   const kd = spec.sceneOpts.kind; const rows = DEC[kd];
   const CX = 560, CW = 420, RY = 458, RH = 76;
@@ -288,14 +288,15 @@ export function caseCard({ spec }) {
         arr(g, 640, 210, 720, 210, C.cream, 6);
         const br = 0.5 + 0.08 * Math.sin(t * 0.9); icon(g, 'bronchi', 830, 190, 1.6 * br + 0.6); txt(g, 'respirație ↓↓', 830, 330, 22, C.gi);
         txt(g, 'T.E., 45 de ani · UPU · supradoză', 500, 400, 19, C.dim, { w: 700 });
-      } else if (kd === 'D') {
-        membrane(g, 60, 360, 230, { h: 44 }); receptor(g, 210, 230, C.gs, 'Gs', { s: 0.9, ly: 80, glow: 0.6, gc: C.gs }); ligand(g, 210, 160, C.gs, 'D', 22);
+      } else if (kd === 'S') {
+        membrane(g, 60, 360, 230, { h: 44 }); receptor(g, 210, 230, C.gs, 'β2 · Gs', { s: 0.9, ly: 80, glow: 0.6, gc: C.gs }); ligand(g, 210, 160, C.gs, 'S', 22);
         bronchus(g, 560, 200, 110, 0.85); txt(g, 'mușchi neted traheobronșic', 560, 345, 19, C.cream);
         icon(g, 'uterus', 830, 190, 1.7); txt(g, 'mușchi neted uterin', 830, 345, 19, C.cream);
-      } else if (kd === 'E') {
-        membrane(g, 60, 360, 230, { h: 44 }); receptor(g, 210, 230, C.gs, 'Gs', { s: 0.9, ly: 80 }); ligand(g, 210, 160, C.gi, 'E', 22, { shape: 'block' }); cross(g, 300, 120, 14, C.key, 1); ligand(g, 330, 90, C.na, 'NA', 20);
-        heart(g, 640, 210, 1.15, beat * 0.5); txt(g, 'receptori Gs din cord', 640, 345, 20, C.cream);
-        txt(g, 'fără activitate\nintrinsecă', 870, 210, 22, C.gi);
+      } else if (kd === 'M') {
+        membrane(g, 60, 360, 230, { h: 44 }); receptor(g, 210, 230, C.gs, 'β1 · Gs', { s: 0.9, ly: 80 }); ligand(g, 210, 160, C.gi, 'M', 22, { shape: 'block' }); cross(g, 300, 120, 14, C.key, 1); ligand(g, 330, 90, C.na, 'NA', 20);
+        heart(g, 560, 210, 1.05, beat * 0.5); txt(g, 'cord', 560, 345, 20, C.cream);
+        icon(g, 'kidney', 800, 200, 1.3); txt(g, 'aparat juxtaglomerular', 800, 345, 19, C.cream);
+        txt(g, 'fără activitate intrinsecă', 560, 400, 20, C.gi);
       } else if (kd === 'alergie') {
         icon(g, 'pill', 120, 150, 1.2, { col: '#9fd3f0' }); txt(g, 'antibiotic', 120, 215, 19, C.cream);
         arr(g, 200, 150, 260, 150, C.cream, 5); ell(g, 330, 150, 52, 52, '#fbf3e2', { ow: 5 }); g.save(); g.strokeStyle = OUT; g.lineWidth = 6; g.lineCap = 'round'; g.beginPath(); g.moveTo(330, 150); g.lineTo(330, 115); g.moveTo(330, 150); g.lineTo(358, 162); g.stroke(); g.restore(); txt(g, 'câteva ore', 330, 230, 19, C.cream);
@@ -334,7 +335,7 @@ export function displace() {
   const wave = (g, x0, x1, y, amp, fr, t, col) => { g.save(); g.lineJoin = 'round'; for (const [c, w] of [[OUT, 9], [col, 5]]) { g.strokeStyle = c; g.lineWidth = w; g.beginPath(); for (let x = x0; x <= x1; x += 4) { const yy = y - amp * Math.sin((x - x0) / 60 * fr - t * 2 * fr); x === x0 ? g.moveTo(x, yy) : g.lineTo(x, yy); } g.stroke(); } g.restore(); };
   return {
     home: HOME, anchors: [[RX[0] - 90, MY - 150], [RX[2] + 110, MY + 150], [930, 110], [80, 690]],
-    phase: (i) => ['B se leagă: agonist', 'mesageri → respirație ↓', 'naloxona deplasează B', 'respirația revine'][i] || '',
+    phase: (i) => ['B se leagă: agonist', 'mesageri → respirație ↓', 'antagonistul competitiv ocupă receptorii', 'respirația revine'][i] || '',
     draw(g, t, b) {
       bg(g);
       const ph = b.i < 0 ? 4 : b.i + clamp(b.bt / (b.bd * 0.8));
@@ -351,13 +352,13 @@ export function displace() {
         const ox = lerp(bx, x + 60 + j * 30, out), oy = lerp(by, 90 + j * 25, out);
         tri(g, ox, oy, 24, '#ff9a4a', 'B');
         // naloxona vine și ia locul
-        const nq = ease(clamp((p(2) - j * 0.08) / 0.6)); if (ph >= 2) tri(g, lerp(880 + j * 30, x, nq), lerp(60 + j * 20, MY - 30, nq), 24, '#e0473d', 'N');
+        const nq = ease(clamp((p(2) - j * 0.08) / 0.6)); if (ph >= 2) tri(g, lerp(880 + j * 30, x, nq), lerp(60 + j * 20, MY - 30, nq), 24, '#e0473d', 'A');
         // mesagerii secunzi
         const mlit = clamp(p(1) * 2) * (1 - clamp(p(2) * 1.5));
-        pill(g, x, MY + 130, 200, 50, mlit > 0.1 ? '#bcdcff' : '#4a3d58', 'Gi → AMPc ↓', { size: 18, alpha: 0.4 + 0.6 * mlit, glow: mlit > 0.5 ? 1 : 0, gc: C.gi, col: mlit > 0.1 ? OUT : '#d8cde0' });
+        pill(g, x, MY + 130, 200, 50, mlit > 0.1 ? '#bcdcff' : '#4a3d58', 'mesageri secunzi', { size: 18, alpha: 0.4 + 0.6 * mlit, glow: mlit > 0.5 ? 1 : 0, gc: C.gi, col: mlit > 0.1 ? OUT : '#d8cde0' });
       });
-      if (ph >= 2) for (let j = 0; j < 4; j++) tri(g, 650 + j * 85, 140 + (j % 2) * 40, 20, '#e0473d', 'N', { alpha: clamp(p(2) * 2) });
-      txt(g, 'mesageri secunzi', 500, MY + 200, 18, C.dim, { w: 700 });
+      if (ph >= 2) for (let j = 0; j < 4; j++) tri(g, 650 + j * 85, 140 + (j % 2) * 40, 20, '#e0473d', 'A', { alpha: clamp(p(2) * 2) });
+      txt(g, 'efect farmacologic: deprimare respiratorie', 500, MY + 200, 18, C.dim, { w: 700 });
       // respirația
       panel(g, 20, 620, 960, 290, {});
       const dep = clamp(p(1)) * (1 - clamp(p(3)));
@@ -365,7 +366,7 @@ export function displace() {
       wave(g, 160, 960, 765, amp, fr, REDUCED ? 0 : t, dep > 0.5 ? C.gi : '#9be15d');
       txt(g, 'respirația', 85, 735, 20, C.cream); txt(g, dep > 0.5 ? 'rară, mică' : 'normală', 85, 790, 19, dep > 0.5 ? C.gi : '#9be15d', { w: 700 });
       txt(g, ph >= 3.2 ? 'respirația revine' : ph >= 1.3 ? 'deprimare respiratorie' : '', 560, 880, 22, ph >= 3.2 ? '#9be15d' : C.gi);
-      txt(g, 'B = agonist · N = naloxona (antagonist competitiv)', 640, 650, 16, C.dim, { w: 700 });
+      txt(g, 'B = agonist · A = antagonist competitiv', 640, 650, 16, C.dim, { w: 700 });
     },
   };
 }

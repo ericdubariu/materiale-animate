@@ -459,7 +459,7 @@ function retRec() {
   return {
     home: HOME, cams: [cam(250, 240, 2.0), cam(500, 467, 1.0), cam(560, 380, 1.9), cam(SPX, 467, 1.0)],
     anchors: [[340, 160], [610, 470], () => (pulse ? [pulse[0], pulse[1] - 30] : [500, 330]), [SPX, 120]],
-    inset: (i) => (i === 3 ? { img: 'splina', cap: 'Splina (eticheta din cutie)' } : i === 2 ? { img: 'ret_mare', cap: 'Ob. mare · rinichi' } : { img: 'ret', cap: 'Așa arată pe lamă · argentic' }),
+    inset: (i) => (i === 3 ? { img: 'splina', cap: 'Splina · argentic (poză din LP)' } : i === 2 ? { img: 'ret_mare', cap: 'Ob. mare · rinichi' } : { img: 'ret', cap: 'Așa arată pe lamă · argentic' }),
     labels: [lbl([230, 230], 'tub renal (în ochi)', { beats: [-1, 0, 1] }), lbl([SPX, 900], 'splina: rețea deasă, fără tubi', { beats: [3] })],
     draw(g, t, b) {
       F = retField(g, t);

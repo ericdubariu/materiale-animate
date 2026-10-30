@@ -78,7 +78,7 @@ export function q10({ spec }) {
       txt(g, `${curL.toFixed(1)}°C`, 430, 800, 24, '#ff8a95');
       if (cyc < 0.35) { [[170, 520], [230, 545], [290, 520]].forEach(([x, y], k) => { paint(g, blob(x, y - 50 * clamp(cyc / 0.3), 14, 14, 0, t, 0.05, 10, k), '#ffe36e', null, null, bb(x, y, 14, 14), OUT, 3); }); txt(g, 'pirogeni → set-point ↑', 250, 600, 22, '#ffe36e'); }
       // frisonul doar cât temperatura reală e sub noul set-point; apoi echilibru; după antipiretic set-point ↓ → vasodilatație + sudorație
-      else if (cyc < 0.72) { if (curL < setL - 0.05) { shiver(g, 230, 500, 1, t); txt(g, 'frison, vasoconstricție', 250, 570, 22, '#7fe8ff'); } else txt(g, 'echilibru la nivel ↑', 250, 570, 22, '#9dff8a'); txt(g, 'feedback normal', 250, 602, 22, '#9dff8a'); }
+      else if (cyc < 0.72) { if (curL < setL - 0.05) { shiver(g, 230, 500, 1, t); txt(g, 'frison, vasoconstricție', 250, 570, 22, '#7fe8ff'); } else txt(g, 'echilibru la nivel ↑', 250, 570, 22, '#9dff8a'); txt(g, 'termogeneza menține nivelul ↑', 250, 602, 20, '#9dff8a'); }
       else { capsule(g, 230, 505, 1.3, -0.4); txt(g, 'antipiretic → ↓ PGE₂', 250, 590, 22, '#ff8a95'); if (curL > setL + 0.05) txt(g, 'vasodilatație, sudorație', 250, 624, 20, '#7fe8ff'); }
       // ---- dreapta: hipertermia
       const fR = b.i === 1 ? clamp(b.bt / (b.bd * 0.95)) : 1; const cycR = b.i === 1 ? fR : (t * 0.12 + 0.5) % 1;
@@ -89,9 +89,8 @@ export function q10({ spec }) {
       txt(g, `${curR.toFixed(1)}°C`, 920, 800, 24, '#ff8a95');
       // soare + flăcări = căldura din mediu / efort
       g.save(); g.fillStyle = '#ffd36e'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.arc(600, 500, 30, 0, 7); g.fill(); g.stroke(); for (let k = 0; k < 8; k++) { const a = k / 8 * 6.28 + t; g.beginPath(); g.moveTo(600 + Math.cos(a) * 40, 500 + Math.sin(a) * 40); g.lineTo(600 + Math.cos(a) * 56, 500 + Math.sin(a) * 56); g.stroke(); } g.restore();
-      if (cycR < 0.72) { flame(g, 740, 510, 0.8, t); txt(g, 'căldură / efort > pierderi', 740, 575, 21, '#ffb38a'); txt(g, 'adaptare depășită', 740, 607, 22, '#ff8a95'); }
-      else { g.save(); g.fillStyle = '#bfe9ff'; g.strokeStyle = OUT; g.lineWidth = 5; for (let k = 0; k < 3; k++) { g.beginPath(); g.roundRect(678 + k * 42, 488, 36, 36, 6); g.fill(); g.stroke(); } g.restore(); txt(g, 'răcire fizică', 740, 590, 22, '#7fe8ff'); }
-      txt(g, 'antipireticele NU ajută', 740, 660, 21, '#d9c8e4', 'center', 700);
+      if (cycR < 0.72) { flame(g, 740, 510, 0.8, t); txt(g, 'mediu cald / efort intens', 740, 575, 21, '#ffb38a'); txt(g, 'termoliza depășită', 740, 607, 22, '#ff8a95'); }
+      else { g.save(); g.fillStyle = '#bfe9ff'; g.strokeStyle = OUT; g.lineWidth = 5; for (let k = 0; k < 3; k++) { g.beginPath(); g.roundRect(678 + k * 42, 488, 36, 36, 6); g.fill(); g.stroke(); } g.restore(); txt(g, 'răcire (metode externe)', 740, 590, 21, '#7fe8ff'); }
     },
   };
 }
@@ -111,20 +110,20 @@ export function q11({ spec }) {
     home: HOME, cams: [cam(260, 280, 1.5), cam(450, 270, 1.35), cam(640, 330, 1.4), cam(780, 380, 1.4), cam(660, 470, 1.08), cam(690, 470, 1.08)],
     anchors: [[90, 280], [360, 290], [560, 110], [960, 300], [650, 612], [912, 600]],
     labels: [],
-    phase: (i) => ['pirogen exogen', 'pirogeni endogeni', 'OVLT → PGE₂', 'set-point ↑', 'prodrom → creștere', 'stare → revenire'][i] || '',
+    phase: (i) => ['pirogen exogen', 'pirogeni endogeni', 'OVLT → PGE₂', 'set-point ↑', 'ascensiunea termică', 'febra scade'][i] || '',
     draw(g, t, b) {
       bgFill(g); const st = stage(b, 6);
       // 1 · LPZ + macrofag
       const eat = b.i === 0 ? ease(b.bt / 4) : st >= 1 ? 1 : 0;
       macrophage(g, MAC[0], MAC[1], 1.15, t, { pseudo: [MAC[0] - 110, MAC[1] - 40, eat], inc: 3 });
       if (eat < 0.95) rod(g, lerp(MAC[0] - 140, MAC[0] + 10, eat), lerp(MAC[1] - 60, MAC[1] - 5, eat), 0.8 * (1 - 0.4 * eat), 0.4, t, '#ff8fb3', true);
-      txt(g, 'LPZ (Gram −)', MAC[0] - 110, MAC[1] - 100, 22, '#ffe36e'); txt(g, 'macrofag', MAC[0] + 10, MAC[1] + 110, 20, '#ffb3d0', 'center', 700); if (st > 1) txt(g, 'IL-1 · TNF-α · IL-6', 470, 150, 21, '#ffe36e');
+      txt(g, 'LPZ (Gram −)', MAC[0] - 110, MAC[1] - 100, 22, '#ffe36e'); txt(g, 'macrofag', MAC[0] + 10, MAC[1] + 110, 20, '#ffb3d0', 'center', 700); if (st > 1) txt(g, 'IL-1 · TNF-α · IFN', 470, 150, 21, '#ffe36e');
       // 2 · citokinele în sânge
       pathLine(g, vessel, 'rgba(255,90,110,.28)', 46);
       if (st > 1) flow(g, vessel, 9, t, 0.12, CYT, 11, clamp(st - 1) * 1.01);
       // 3 · creierul + OVLT
       brain(g, BR[0], BR[1], 0.95, t, clamp(st - 2.4));
-      if (st > 2) { const f = clamp(st - 2); g.save(); g.globalAlpha = f; node(g, 'COX', 560, 420, 90, 50, '#5a3fb0', b.i === 2, 22); arrow(g, 607, 420, 640, 420, '#fff', 5); node(g, 'PGE₂', 690, 420, 96, 50, '#c23a62', b.i === 2, 22); txt(g, 'acid arahidonic', 560, 382, 18, '#d9c8e4', 'center', 700); txt(g, 'OVLT / aria preoptică', BR[0], BR[1] + 115, 18, '#ffe36e', 'center', 700); g.restore(); }
+      if (st > 2) { const f = clamp(st - 2); g.save(); g.globalAlpha = f; node(g, 'COX', 560, 420, 90, 50, '#5a3fb0', b.i === 2, 22); arrow(g, 607, 420, 640, 420, '#fff', 5); node(g, 'PGE₂', 690, 420, 96, 50, '#c23a62', b.i === 2, 22); txt(g, 'OVLT / aria preoptică', BR[0], BR[1] + 115, 18, '#ffe36e', 'center', 700); g.restore(); }
       if (b.i === 2 || b.i < 0) { capsule(g, 445, 420, 0.8, -0.3, '#fff', '#c9b3ff'); txt(g, 'aspirina ⊣ COX', 445, 470, 18, '#ff8a95', 'center', 700); }
       // 4 · set-point
       const sp = 37 + 2 * clamp(st - 3);
@@ -134,14 +133,14 @@ export function q11({ spec }) {
       const setNow = tu > 0.72 ? lerp(sp, 37, ease(clamp((tu - 0.72) / 0.06))) : sp;
       dial(g, DIAL[0], DIAL[1], 95, setNow, b.i >= 4 || b.i < 0 ? realT : 37, '', b.i === 3);
       txt(g, 'set-point', DIAL[0], DIAL[1] - 125, 20, '#ffe36e', 'center', 700);
-      if (st > 2.6) { arrow(g, 740, 420, 772, 420, '#ffe36e', 5); txt(g, 'AMPc', 752, 395, 17, '#ffe36e', 'center', 700); }
+      if (st > 2.6) { arrow(g, 740, 420, 772, 420, '#ffe36e', 5); txt(g, 'AMPc/GMPc', 752, 395, 16, '#ffe36e', 'center', 700); }
       // 5–6 · curba febrei
       g.save(); g.strokeStyle = 'rgba(201,179,255,.4)'; g.lineWidth = 3; g.beginPath(); g.moveTo(CX0, CY0 + 30); g.lineTo(CX1, CY0 + 30); g.moveTo(CX0, CY0 + 30); g.lineTo(CX0, CY1 - 40); g.stroke(); g.setLineDash([10, 8]); g.beginPath(); g.moveTo(CX0, CY0); g.lineTo(CX1, CY0); g.stroke(); g.restore();
       txt(g, '37°C', CX0 - 10, CY0 + 6, 18, '#d9c8e4', 'right', 700);
       if (tu > 0) { g.save(); g.lineCap = 'round'; g.strokeStyle = OUT; g.lineWidth = 16; g.beginPath(); for (let u = 0; u <= tu; u += 0.005) { const x = lerp(CX0, CX1, u), y = curveY(u); u ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); g.strokeStyle = '#ff6b7a'; g.lineWidth = 8; g.stroke(); g.restore();
         const hx = lerp(CX0, CX1, tu), hy = curveY(tu); g.save(); g.fillStyle = '#fff'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.arc(hx, hy, 11, 0, 7); g.fill(); g.stroke(); g.restore(); }
-      [['prodrom', 0.07], ['creștere', 0.29], ['stare', 0.57], ['revenire', 0.86]].forEach(([s, u]) => txt(g, s, lerp(CX0, CX1, u), CY0 + 42, 20, tu >= u - 0.05 ? '#fff' : 'rgba(217,200,228,.5)', 'center', 700));
-      if (tu > 0.15 && tu < 0.45) { shiver(g, lerp(CX0, CX1, 0.29), CY1 - 10, 0.9, t); txt(g, '„mi-e frig”', lerp(CX0, CX1, 0.29) + 6, CY1 - 60, 20, '#7fe8ff'); }
+      [['ascensiune', 0.3], ['nivel ↑', 0.57], ['criza', 0.8]].forEach(([s, u]) => txt(g, s, lerp(CX0, CX1, u), CY0 + 42, 20, tu >= u - 0.05 ? '#fff' : 'rgba(217,200,228,.5)', 'center', 700));
+      if (tu > 0.15 && tu < 0.45) { shiver(g, lerp(CX0, CX1, 0.29), CY1 - 10, 0.9, t); txt(g, 'senzație de frig', lerp(CX0, CX1, 0.29) + 6, CY1 - 60, 20, '#7fe8ff'); }
       if (tu > 0.72) { sweat(g, lerp(CX0, CX1, 0.86), CY1 - 30, 1, t); txt(g, 'vasodilatație, sudorație', lerp(CX0, CX1, 0.8), CY1 - 45, 19, '#7fe8ff'); }
       if (tu > 0.45 && tu <= 0.72) txt(g, 'echilibru la nivel ↑', lerp(CX0, CX1, 0.57), CY1 - 40, 19, '#9dff8a');
       ring(g, b, 0, MAC[0], MAC[1], 120, 100);
@@ -172,19 +171,18 @@ export function q12({ spec }) {
       // ---- costuri (stânga, de sus în jos)
       const sL = b.i < 0 || b.i === 1 ? 5 : clamp(b.bt / (b.bd * 0.75)) * 5;
       const rowsL = [
-        ['FC ↑ · polipnee', (x, y) => { heart(g, x - 40, y, 0.55, t, 2); lungs(g, x + 45, y + 8, 0.55, t, 2); }],
-        ['O₂ ↑ · catabolism', (x, y) => { flame(g, x - 40, y, 0.55, t); txt(g, 'O₂', x + 40, y + 10, 28, '#7fe8ff'); }],
-        ['convulsii febrile', (x, y) => { brain(g, x - 20, y + 6, 0.26, t, 0.6); g.save(); g.strokeStyle = '#ffe36e'; g.lineWidth = 4; g.beginPath(); for (let k = 0; k < 5; k++) g.lineTo(x + 40 + k * 12, y - 10 + (k % 2 ? -9 : 9) * Math.sin(t * 12)); g.stroke(); g.restore(); }],
-        ['gravidă trim. I: tub neural', (x, y) => { paint(g, blob(x, y - 4, 32, 24, 0.3, t, 0.04, 12, 2), '#ffc9a8', null, '#fff', bb(x, y, 40, 30), OUT, 4); g.save(); g.strokeStyle = '#ff4d5e'; g.lineWidth = 4; g.setLineDash([6, 5]); g.beginPath(); g.moveTo(x - 25, y - 6); g.quadraticCurveTo(x, y - 18, x + 25, y - 6); g.stroke(); g.restore(); }],
+        ['FC ↑ 8–12 bpm/°C', (x, y) => { heart(g, x, y, 0.55, t, 2); }],
+        ['metabolism bazal ↑ · O₂ ↑', (x, y) => { flame(g, x - 40, y, 0.55, t); txt(g, 'O₂', x + 40, y + 10, 28, '#7fe8ff'); }],
+        ['somn · delir · convulsii', (x, y) => { brain(g, x - 20, y + 6, 0.26, t, 0.6); g.save(); g.strokeStyle = '#ffe36e'; g.lineWidth = 4; g.beginPath(); for (let k = 0; k < 5; k++) g.lineTo(x + 40 + k * 12, y - 10 + (k % 2 ? -9 : 9) * Math.sin(t * 12)); g.stroke(); g.restore(); }],
       ];
       rowsL.forEach(([s, f], k) => { if (sL < k + 0.3) return; const y = 285 + k * 80; g.save(); g.globalAlpha = clamp(sL - k); f(300, y); g.restore(); txt(g, s, 300, y + 42, 20, '#fff', 'center', 700); });
       // ---- câștig (dreapta)
       const sR = b.i < 0 || b.i === 0 ? 5 : clamp(b.bt / (b.bd * 0.75)) * 5;
       const rowsR = [
-        ['bactericid · antiviral', (x, y) => { rod(g, x - 30, y, 0.6, 0.3, t, '#8ad1a0'); cross(g, x - 30, y, 26); virus(g, x + 50, y, 0.6, t); }],
-        ['↓ Fe, Zn, Cu (hrana bacteriei)', (x, y) => { rod(g, x - 90, y, 0.5, 0, t, '#8ad1a0'); ['Fe', 'Zn', 'Cu'].forEach((e, j) => { const d = REDUCED ? 0.5 : ((t * 0.4 + j / 3) % 1); g.save(); g.globalAlpha = 1 - d; pill(g, e, x - 20 + j * 45 + d * 50, y - 8 + (j - 1) * 6, '#6b7a8f', 17); g.restore(); }); }],
-        ['↑ fagocitoză · interferon · T', (x, y) => { neutrophil(g, x - 50, y, 1, t); g.save(); g.strokeStyle = '#7fe8ff'; g.lineWidth = 5; g.beginPath(); g.arc(x + 10, y, 22, -1.2, 1.2); g.stroke(); g.restore(); tcell(g, x + 60, y, 0.75, t); }],
-        ['↑ proteine de fază acută', (x, y) => { liver(g, x - 30, y, 0.6, t); for (let j = 0; j < 4; j++) { const u = (t * 0.5 + j / 4) % 1; g.save(); g.fillStyle = '#ffe36e'; g.strokeStyle = OUT; g.lineWidth = 2.5; g.beginPath(); g.arc(x + 30 + u * 60, y - 10 + j * 6, 7, 0, 7); g.fill(); g.stroke(); g.restore(); } }],
+        ['celule infectate · virusuri', (x, y) => { rod(g, x - 30, y, 0.6, 0.3, t, '#8ad1a0'); cross(g, x - 30, y, 26); virus(g, x + 50, y, 0.6, t); }],
+        ['↓ Fe, Zn, Cu (bacteriile)', (x, y) => { rod(g, x - 90, y, 0.5, 0, t, '#8ad1a0'); ['Fe', 'Zn', 'Cu'].forEach((e, j) => { const d = REDUCED ? 0.5 : ((t * 0.4 + j / 3) % 1); g.save(); g.globalAlpha = 1 - d; pill(g, e, x - 20 + j * 45 + d * 50, y - 8 + (j - 1) * 6, '#6b7a8f', 17); g.restore(); }); }],
+        ['↑ fagocitoză · ↓ glucoză', (x, y) => { neutrophil(g, x - 20, y, 1, t); g.save(); g.strokeStyle = '#7fe8ff'; g.lineWidth = 5; g.beginPath(); g.arc(x + 40, y, 22, -1.2, 1.2); g.stroke(); g.restore(); }],
+        ['enzime și sinteze proteice ↓', (x, y) => { paint(g, blob(x, y, 30, 24, 0, t, 0.05, 10, 5), '#8ad1a0', null, '#d6ffe2', bb(x, y, 30, 24), OUT, 4); cross(g, x, y, 22); }],
       ];
       rowsR.forEach(([s, f], k) => { if (sR < k + 0.3) return; const y = 285 + k * 80; g.save(); g.globalAlpha = clamp(sR - k); f(720, y); g.restore(); txt(g, s, 720, y + 42, 20, '#fff', 'center', 700); });
     },
@@ -198,7 +196,7 @@ export function q13({ spec }) {
     home: HOME, cams: [cam(330, 260, 1.4), cam(590, 260, 1.4), cam(590, 470, 1.4), cam(780, 470, 1.4), cam(700, 650, 1.35)],
     anchors: [[110, 300], [450, 110], [350, 400], [960, 280], [470, 700]],
     labels: [],
-    phase: (i) => ['fără microb', 'sindrom inflamator', 'IL-1, TNF-α', 'mediatori inflamatori', 'OVLT → PGE₂ → febră'][i] || '',
+    phase: (i) => ['fără microb', 'sindrom inflamator', 'pirogeni endogeni', 'neutrofile, chemotactism', 'reacția febrilă'][i] || '',
     draw(g, t, b) {
       bgFill(g); const st = stage(b, 5);
       // 0 · fără microb
@@ -217,7 +215,7 @@ export function q13({ spec }) {
         macrophage(g, SRC[1][0], SRC[1][1], 0.55, t, { inc: 2 });
         paint(g, blob(SRC[2][0], SRC[2][1], 48, 44, 0.4, t, 0.18, 14, 7), '#e7a0c6', '#cf7aa8', '#fff', bb(SRC[2][0], SRC[2][1], 48, 44), OUT, 5);
         paint(g, blob(SRC[2][0] - 4, SRC[2][1], 24, 20, 0, t, 0.15, 10, 9), '#3a2a8a', null, '#7a6ad0', bb(SRC[2][0], SRC[2][1], 24, 20), OUT, 3);
-        txt(g, 'monocit', SRC[0][0], SRC[0][1] - 58, 18, '#d7cdf7', 'center', 700); txt(g, 'macrofag', SRC[1][0], SRC[1][1] - 58, 18, '#ffb3d0', 'center', 700); txt(g, 'tumoră', SRC[2][0], SRC[2][1] - 58, 18, '#ffb3d0', 'center', 700); txt(g, 'IL-1 · TNF-α', 570, 545, 21, '#ffe36e');
+        txt(g, 'monocit', SRC[0][0], SRC[0][1] - 58, 18, '#d7cdf7', 'center', 700); txt(g, 'macrofag', SRC[1][0], SRC[1][1] - 58, 18, '#ffb3d0', 'center', 700); txt(g, 'tumoră', SRC[2][0], SRC[2][1] - 58, 18, '#ffb3d0', 'center', 700); txt(g, 'IL-1 · TNF-α · IFN', 570, 545, 21, '#ffe36e');
         g.restore();
         SRC.forEach(([x, y], k) => { flow(g, [[x, y + 30], [x, y + 140], [560, 640], [560, 700]], 4, t + k * 0.3, 0.14, CYT, 9, clamp(st - 2.2) * 1.01); });
       }
@@ -228,15 +226,15 @@ export function q13({ spec }) {
         if (f > 0.5) { for (let j = 0; j < 5; j++) { const u = (t * 0.6 + j / 5) % 1; g.save(); g.globalAlpha = 1 - u; g.fillStyle = '#ff8a3d'; g.strokeStyle = OUT; g.lineWidth = 2; g.beginPath(); g.arc(790 - u * 50, 390 + j * 40, 6, 0, 7); g.fill(); g.stroke(); g.restore(); } txt(g, 'mediatori inflamatori', 830, 650, 17, '#ff8a3d', 'center', 700); }
       }
       // 4 · OVLT → PGE₂ → set-point
-      if (st > 3.8) { const f = clamp(st - 3.8); g.save(); g.globalAlpha = f; brain(g, 560, 760, 0.5, t, f); txt(g, 'OVLT', 565, 845, 18, '#ffe36e', 'center', 700); arrow(g, 640, 780, 670, 780, '#fff', 5); node(g, 'PGE₂', 720, 780, 96, 46, '#c23a62', b.i === 4, 20); arrow(g, 770, 780, 800, 780, '#fff', 5); dial(g, 880, 790, 55, 37 + 2 * f, 37 + 2 * clamp(f * 1.2 - 0.2), ''); txt(g, 'set-point ↑ → FEBRĂ', 870, 870, 20, '#ff8a95'); g.restore(); }
+      if (st > 3.8) { const f = clamp(st - 3.8); g.save(); g.globalAlpha = f; brain(g, 560, 760, 0.5, t, f); txt(g, 'hipotalamus', 565, 845, 18, '#ffe36e', 'center', 700); arrow(g, 640, 780, 790, 780, '#fff', 5); dial(g, 880, 790, 55, 37 + 2 * f, 37 + 2 * clamp(f * 1.2 - 0.2), ''); txt(g, 'reacția febrilă', 870, 870, 20, '#ff8a95'); g.restore(); }
     },
   };
 }
 
 /* =============================================================== Î 14 · TIPURILE DE FEBRĂ NON-INFECȚIOASĂ */
 export function q14({ spec }) {
-  const T = [[270, 250], [730, 250], [270, 690], [730, 690]];
-  const TT = ['medicamentoasă', 'posttransfuzională', 'neoplazică', 'autoimună'];
+  const T = [[270, 250], [730, 250], [500, 690]];
+  const TT = ['medicamentoasă', 'posttransfuzională', 'neoplazică'];
   return {
     home: HOME, cams: T.map(([x, y]) => cam(x + 20, y + 30, 1.8)), anchors: T.map(([x, y]) => [x - 165, y - 150]),
     labels: [],
@@ -250,22 +248,17 @@ export function q14({ spec }) {
         txt(g, 'β-lactamine', x + 30, y - 0, 18, '#d9c8e4', 'center', 700); txt(g, 'difenilhidantoină · procainamidă', x + 30, y + 24, 17, '#d9c8e4', 'center', 700);
         // eozinofil (granule roșii, nucleu bilobat)
         paint(g, blob(x + 120, y + 85, 38, 36, 0, tt, 0.05, 12, 3), '#ffd0dc', null, '#fff', bb(x + 120, y + 85, 38, 36), OUT, 4); g.save(); g.fillStyle = '#ff5a6e'; srand(4); for (let j = 0; j < 14; j++) { g.beginPath(); g.arc(x + 120 + rr(-25, 25), y + 85 + rr(-24, 24), 4, 0, 7); g.fill(); } g.fillStyle = '#3b1f8c'; g.beginPath(); g.arc(x + 108, y + 82, 11, 0, 7); g.arc(x + 132, y + 82, 11, 0, 7); g.fill(); g.restore();
-        txt(g, 'eozinofilie', x + 120, y + 150, 18, '#ffb3d0', 'center', 700); shiver(g, x + 10, y + 95, 0.8, tt); txt(g, 'frison', x + 10, y + 150, 18, '#7fe8ff', 'center', 700); }
+        txt(g, 'eozinofilie', x + 120, y + 150, 18, '#ffb3d0', 'center', 700); txt(g, '+ leucocitoză tranzitorie', x + 60, y + 178, 16, '#d9c8e4', 'center', 700); shiver(g, x + 10, y + 95, 0.8, tt); txt(g, 'frison', x + 10, y + 150, 18, '#7fe8ff', 'center', 700); }
       // 2 · posttransfuzională
       { const [x, y] = T[1]; const tt = lt(1); const bag = new Path2D(); bag.roundRect(x - 20, y - 110, 120, 150, 22); paint(g, bag, '#d22a44', '#a8122b', '#ff8a96', [x - 20, y - 110, 120, 150], OUT, 6);
         g.save(); g.strokeStyle = OUT; g.lineWidth = 6; g.beginPath(); g.moveTo(x + 40, y + 40); g.lineTo(x + 40, y + 110); g.stroke(); g.restore(); const u = (tt * 0.8) % 1; g.save(); g.fillStyle = '#d22a44'; g.beginPath(); g.arc(x + 40, y + 50 + u * 60, 7, 0, 7); g.fill(); g.restore();
         // ceasul 30–180 min
         const cx = x + 165, cy = y - 60; g.save(); g.fillStyle = '#f6eef7'; g.strokeStyle = OUT; g.lineWidth = 5; g.beginPath(); g.arc(cx, cy, 45, 0, 7); g.fill(); g.stroke(); g.strokeStyle = '#c23a62'; g.lineWidth = 9; g.beginPath(); g.arc(cx, cy, 32, -1.57 + 0.5, -1.57 + 0.5 + 2.6 * clamp((tt % 6) / 4)); g.stroke(); g.restore();
-        txt(g, '30–180 min', cx - 10, cy + 80, 20, '#ffe36e'); shiver(g, x + 160, y + 75, 0.8, tt); txt(g, 'frison → febră', x + 160, y + 135, 18, '#7fe8ff', 'center', 700); txt(g, 'sânge / derivate', x - 110, y - 40, 18, '#ffb3bd', 'center', 700); }
+        txt(g, '30–180 min', cx - 10, cy + 80, 20, '#ffe36e'); shiver(g, x + 160, y + 75, 0.8, tt); txt(g, 'frison → febră', x + 160, y + 135, 18, '#7fe8ff', 'center', 700); txt(g, 'sânge / derivați', x - 110, y - 40, 18, '#ffb3bd', 'center', 700); txt(g, 'leucocitoză ≤ 12 ore', x + 20, y + 175, 16, '#d9c8e4', 'center', 700); }
       // 3 · neoplazică
       { const [x, y] = T[2]; const tt = lt(2); const cx = x + 120, cy = y + 30; srand(11); for (let j = 0; j < 7; j++) { const a = j / 7 * 6.28, d = j ? 46 : 0; paint(g, blob(cx + Math.cos(a) * d, cy + Math.sin(a) * d * 0.75, 27, 24, a, tt, 0.18, 12, j), '#e7a0c6', '#cf7aa8', '#fff', bb(cx, cy, 27, 24), OUT, 4); g.save(); g.fillStyle = '#3a2a8a'; g.beginPath(); g.arc(cx + Math.cos(a) * d, cy + Math.sin(a) * d * 0.75, 9, 0, 7); g.fill(); g.restore(); }
         flow(g, [[cx + 50, cy - 20], [x + 185, cy - 60], [x + 195, y - 110]], 5, tt, 0.15, CYT, 8);
-        txt(g, 'plurifactorial: tumoră · HS', x + 20, y - 95, 18, '#d9c8e4', 'center', 700); txt(g, 'rejet · tromboze', x + 20, y - 70, 18, '#d9c8e4', 'center', 700); txt(g, 'Hodgkin · leucemii', x - 10, y - 30, 18, '#ffb3d0', 'center', 700); txt(g, 'cancer renal', x - 10, y - 6, 18, '#ffb3d0', 'center', 700); }
-      // 4 · autoimună
-      { const [x, y] = T[3]; const tt = lt(3); // articulație + complexe imune
-        paint(g, blob(x + 40, y - 70, 70, 40, 0, tt, 0.04, 12, 2), '#f2e3c6', null, '#fff', bb(x + 40, y - 70, 70, 40), OUT, 5); paint(g, blob(x + 40, y + 20, 70, 40, 0, tt, 0.04, 12, 5), '#f2e3c6', null, '#fff', bb(x + 40, y + 20, 70, 40), OUT, 5);
-        for (let j = 0; j < 5; j++) { const u = (tt * 0.35 + j / 5) % 1; const ax = lerp(x + 180, x + 50 + (j - 2) * 22, u), ay = lerp(y - 140, y - 25, u); antibody(g, ax, ay, 1.6, 0.4 * Math.sin(j + tt), '#ffe08a'); g.save(); g.fillStyle = '#ff6b7a'; g.strokeStyle = OUT; g.lineWidth = 2.5; g.beginPath(); g.arc(ax, ay - 20, 7, 0, 7); g.fill(); g.stroke(); g.restore(); }
-        flame(g, x + 40, y - 20, 0.45, tt); txt(g, 'LES: complexe imune + citokine', x + 30, y + 85, 18, '#d9c8e4', 'center', 700); txt(g, 'alte: distrucții tisulare, embolie, gută', x + 30, y + 112, 17, '#ffb3d0', 'center', 700); }
+        txt(g, 'plurifactorial: tumori · hipersensibilitate', x + 20, y - 95, 17, '#d9c8e4', 'center', 700); txt(g, 'rejet graft vs. receptor · tromboze', x + 20, y - 70, 17, '#d9c8e4', 'center', 700); txt(g, 'limfom Hodgkin · leucemie acută', x - 40, y - 30, 17, '#ffb3d0', 'center', 700); txt(g, 'cancer renal · sarcoame', x - 40, y - 6, 17, '#ffb3d0', 'center', 700); txt(g, 'citokine din răspunsul gazdei', x - 40, y + 150, 17, '#ffe36e', 'center', 700); }
     },
   };
 }
@@ -282,11 +275,10 @@ export function q15({ spec }) {
       ['CINE', 'CALEA', 'EFECTE'].forEach((s, k) => txt(g, s, C[k], 125, 30, b.i === k ? '#ffe36e' : '#c9b3ff'));
       // ---- cine
       { const x = C[0]; const glow = 0.5 + 0.5 * Math.sin(t * 3);
-        g.save(); g.shadowColor = '#ffe36e'; g.shadowBlur = 18 * glow; rod(g, x - 30, 175, 0.9, 0.2, t, '#ff8fb3', true); g.restore(); txt(g, 'LPZ · Gram −', x + 40, 225, 19, '#ffe36e', 'center', 700); txt(g, '(cel mai puternic)', x + 40, 250, 17, '#ffe36e', 'center', 700);
-        coccus(g, x - 60, 310, 0.9, t, 4, '#6a48c9'); txt(g, 'acid lipoteicoic, peptidoglicani', x + 20, 355, 16, '#9fb3ff', 'center', 700); txt(g, '(Gram +)', x + 20, 377, 16, '#9fb3ff', 'center', 700);
-        virus(g, x - 60, 430, 0.8, t); paint(g, blob(x + 20, 430, 26, 18, 0.5, t, 0.08, 10, 6), '#d8c47a', null, '#fff3c0', bb(x + 20, 430, 26, 18), OUT, 4); capsule(g, x + 90, 430, 0.8, 0.3);
-        txt(g, 'virusuri · fungi · medicamente', x + 10, 478, 16, '#d9c8e4', 'center', 700);
-        antibody(g, x - 20, 530, 1.6, 0, '#ffe08a'); g.save(); g.fillStyle = '#ff6b7a'; g.strokeStyle = OUT; g.lineWidth = 2.5; g.beginPath(); g.arc(x - 20, 508, 8, 0, 7); g.fill(); g.stroke(); g.restore(); txt(g, 'complexe Ag-Ac', x + 60, 538, 17, '#d9c8e4', 'center', 700); }
+        g.save(); g.shadowColor = '#ffe36e'; g.shadowBlur = 18 * glow; rod(g, x - 30, 175, 0.9, 0.2, t, '#ff8fb3', true); g.restore(); txt(g, 'LPZ · Gram −', x + 40, 225, 19, '#ffe36e', 'center', 700); txt(g, '(cei mai puternici)', x + 40, 250, 17, '#ffe36e', 'center', 700);
+        coccus(g, x - 60, 310, 0.9, t, 4, '#6a48c9'); txt(g, 'acid lipoteicoic, peptidoglicani', x + 20, 355, 16, '#9fb3ff', 'center', 700); txt(g, '(Gram +, cei mai puternici)', x + 20, 377, 16, '#9fb3ff', 'center', 700);
+        virus(g, x - 40, 430, 0.8, t); paint(g, blob(x + 50, 430, 26, 18, 0.5, t, 0.08, 10, 6), '#d8c47a', null, '#fff3c0', bb(x + 50, 430, 26, 18), OUT, 4);
+        txt(g, 'virusuri · bacterii · fungi', x + 10, 478, 16, '#d9c8e4', 'center', 700); }
       if (st > 0.8) { g.save(); g.globalAlpha = clamp(st - 0.8); arrow(g, C[0] + 120, 330, C[1] - 120, 330, '#fff', 6); g.restore(); }
       // ---- calea
       if (st > 0.9) { const x = C[1]; const f = clamp(st - 0.9);
@@ -297,16 +289,16 @@ export function q15({ spec }) {
         const eat = b.i === 1 ? ease(clamp((b.bt - 2) / 3)) : st >= 2 ? 1 : 0;
         g.save(); g.globalAlpha = f; macrophage(g, x, 420, 1.0, t, { pseudo: [x, 330, eat], inc: 3 }); g.restore();
         txt(g, 'fagocitoză (macrofag)', x, 530, 18, '#d9c8e4', 'center', 700);
-        if (eat > 0.5) { flow(g, [[x + 60, 450], [x + 140, 520], [x + 200, 560]], 6, t, 0.15, CYT, 10); txt(g, 'IL-1 · TNF-α · IL-6', x, 600, 21, '#ffe36e'); txt(g, '= pirogeni endogeni', x, 630, 18, '#ffe36e', 'center', 700); }
+        if (eat > 0.5) { flow(g, [[x + 60, 450], [x + 140, 520], [x + 200, 560]], 6, t, 0.15, CYT, 10); txt(g, 'IL-1 · TNF-α · IFN', x, 600, 21, '#ffe36e'); txt(g, '= pirogeni endogeni', x, 630, 18, '#ffe36e', 'center', 700); }
       }
       if (st > 1.8) { g.save(); g.globalAlpha = clamp(st - 1.8); arrow(g, C[1] + 115, 470, C[2] - 140, 470, '#fff', 6); g.restore(); }
       // ---- efecte
       if (st > 1.9) { const x = C[2]; const f = clamp(st - 1.9); const e = b.i === 2 ? clamp(b.bt / (b.bd * 0.8)) * 4 : 4;
         g.save(); g.globalAlpha = f;
         if (e > 0) { brain(g, x, 210, 0.55, t, clamp(e)); txt(g, 'central: PGE₂ la OVLT → febră', x, 285, 17, '#ffe36e', 'center', 700); }
-        if (e > 1) { g.save(); g.globalAlpha = clamp(e - 1); g.strokeStyle = '#7fe8ff'; g.lineWidth = 5; g.setLineDash([12, 8]); g.lineDashOffset = -t * 30; g.beginPath(); g.moveTo(x - 100, 380); g.bezierCurveTo(x - 30, 330, x + 30, 410, x + 100, 350); g.stroke(); g.restore(); txt(g, 'direct: fibre viscero-senzitive', x, 420, 17, '#7fe8ff', 'center', 700); }
-        if (e > 2) { g.save(); g.globalAlpha = clamp(e - 2); flame(g, x - 50, 500, 0.5, t); liver(g, x + 50, 505, 0.5, t); g.restore(); txt(g, 'periferic: inflamație, fază acută', x, 565, 17, '#ff8a3d', 'center', 700); }
-        if (e > 3) { g.save(); g.globalAlpha = clamp(e - 3); g.fillStyle = '#7a1a2d'; g.strokeStyle = '#ff4d5e'; g.lineWidth = 5; g.beginPath(); g.roundRect(x - 140, 610, 280, 70, 16); g.fill(); g.stroke(); g.restore(); txt(g, 'prelungit: șoc toxico-septic', x, 655, 18, '#fff', 'center', 800); }
+        if (e > 1) { g.save(); g.globalAlpha = clamp(e - 1); g.strokeStyle = '#7fe8ff'; g.lineWidth = 5; g.setLineDash([12, 8]); g.lineDashOffset = -t * 30; g.beginPath(); g.moveTo(x - 100, 380); g.bezierCurveTo(x - 30, 330, x + 30, 410, x + 100, 350); g.stroke(); g.restore(); txt(g, 'proinflamator: PGE₂, Tx, PAF', x, 420, 17, '#7fe8ff', 'center', 700); }
+        if (e > 2) { g.save(); g.globalAlpha = clamp(e - 2); flame(g, x - 50, 500, 0.5, t); liver(g, x + 50, 505, 0.5, t); g.restore(); txt(g, 'periferic: apărare ↑, fază acută', x, 565, 17, '#ff8a3d', 'center', 700); }
+        if (e > 3) { g.save(); g.globalAlpha = clamp(e - 3); g.fillStyle = '#2f5a4a'; g.strokeStyle = '#9dff8a'; g.lineWidth = 5; g.beginPath(); g.roundRect(x - 140, 610, 280, 70, 16); g.fill(); g.stroke(); g.restore(); txt(g, 'fagocitoză · Fe, Zn ↓ · IFN', x, 655, 18, '#fff', 'center', 800); }
         g.restore(); }
       
     },

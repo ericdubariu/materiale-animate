@@ -228,20 +228,16 @@ function laxMare() {
 }
 function capillaries() {
   return {
-    home: HOME, cams: [cam(500, 250, 1.6), cam(300, 620, 2.0), cam(720, 640, 1.5), cam(500, 467, 1.0)],
-    anchors: [[500, 140], [300, 520], [720, 520], [500, 860]],
-    labels: [lbl([500, 340], '„dinții unui fierăstrău” + hematii în șir indian', { beats: [0] }), lbl([300, 720], '1, maximum 2 nuclei', { beats: [1] }), lbl([720, 780], 'difuzie spre acin', { beats: [2] })],
+    home: HOME, cams: [cam(500, 250, 1.6), cam(300, 620, 2.0)],
+    anchors: [[500, 140], [300, 520]],
+    labels: [lbl([500, 340], '„dinții unui fierăstrău” + hematii în șir indian', { beats: [0] }), lbl([300, 720], '1, maximum 2 nuclei', { beats: [1] })],
     draw(g, t, b) {
       bgFill(g, '#fdf0f6', '#f7dfeb');
       capLong(g, 120, 250, 880, 52, t);
       capTrans(g, 300, 620, 70, t);
       acinus(g, 820, 650, 90, t);
-      // substanța fundamentală: oxigen/nutrienți difuzează de la capilar spre acin
-      const on = b.i === 2 || b.i === 3;
-      for (let k = 0; k < 10; k++) { const u = ((k / 10) + (REDUCED ? 0 : t * 0.15)) % 1; const x = lerp(380, 720, u), y = lerp(600, 640, u) + Math.sin(k * 2 + t) * 30; g.save(); g.globalAlpha = (on ? 1 : 0.35) * Math.sin(u * Math.PI); g.fillStyle = '#7fd8ff'; g.strokeStyle = OUT; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 8, 0, 7); g.fill(); g.stroke(); g.restore(); }
       if (b.i === 0) glowRing(g, 500, 250, 400, 50, 0, ease(b.bt * 1.5));
       if (b.i === 1) glowRing(g, 300, 620, 82, 82, 0, ease(b.bt * 1.5));
-      if (b.i === 3) { g.save(); g.fillStyle = '#9b7ad8'; g.strokeStyle = OUT; g.lineWidth = 6; roundRect(g, 60, 860, 880, 40, 10); g.fill(); g.stroke(); g.fillStyle = '#fff'; g.font = '800 22px Inter, sans-serif'; g.textAlign = 'center'; g.fillText('epiteliu → dedesubt: conjunctiv lax (corion)', 500, 888); g.restore(); }
     },
   };
 }
@@ -253,7 +249,7 @@ function adiRec() {
     home: HOME, cams: [cam(420, 420, 1.6), cam(430, 330, 2.6), cam(560, 470, 2.6), cam(500, 120, 1.6)],
     anchors: [[420, 330], [430, 300], [562, 430], [500, 60]],
     inset: () => ({ img: 'adi', cap: 'Așa arată pe lamă · HE' }),
-    labels: [lbl([420, 520], 'adipocit: vacuolă goală', { beats: [-1, 0] }), lbl([430, 260], 'nucleu turtit = pecetea', { beats: [1] }), lbl([562, 510], 'capilar între celule', { beats: [2] }), lbl([500, 140], 'lobul mamar alături', { beats: [3] })],
+    labels: [lbl([420, 520], 'adipocit: vacuolă goală', { beats: [-1, 0] }), lbl([430, 260], 'nucleu turtit = pecetea', { beats: [1] }), lbl([562, 510], 'celule strâns una lângă alta', { beats: [2] }), lbl([500, 140], 'lobul mamar alături', { beats: [3] })],
     draw(g, t, b) {
       F = adiField(g, t);
       // lobul mamar alături (sus)
@@ -361,7 +357,7 @@ function retWhy() {
   return {
     home: HOME, cams: [cam(260, 470, 1.7), cam(680, 470, 1.6), cam(680, 470, 1.6)],
     anchors: [[260, 220], [680, 220], [680, 720]],
-    labels: [lbl([260, 760], 'corticala: limfocite dese'), lbl([680, 760], 'medulara: se vede rețeaua'), lbl([680, 380], 'fibre de reticulină: de-a lungul prelungirilor (nu se văd în HE)', { beats: [2] })],
+    labels: [lbl([260, 760], 'limfocite dese: rețeaua ascunsă'), lbl([680, 760], 'medulara: se vede rețeaua'), lbl([680, 380], 'pseudorețeaua dublează rețeaua de fibre (nu se văd în HE)', { beats: [2] })],
     draw(g, t, b) {
       bgFill(g, '#2e1838', '#140a1a');
       field(g, 260, 470, 220, () => { g.save(); g.fillStyle = '#fbeef4'; g.fillRect(40, 250, 440, 440); srand(3); for (let k = 0; k < 160; k++) lymphocyte(g, rr(50, 470), rr(260, 680), 0.6, t); g.restore(); });
