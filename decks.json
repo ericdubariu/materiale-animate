@@ -185,6 +185,18 @@
    "added": "2026-10-26",
    "updated": "2026-10-26",
    "ord": 60
+  },
+  {
+   "id": "embrio-lp03-anim",
+   "subj": "embrio",
+   "tip": "lp",
+   "title": "LP 3 · Sistemul digestiv și respirator",
+   "sub": "Intestinul primitiv și cele 3 artere · rotațiile stomacului și ansei · cloaca și canalul anal · ficatul și pancreasul · plămânul · atrezii, gastroschisis vs omfalocel · cazurile din LP",
+   "slides": 26,
+   "path": "lp/embrio-lp03-anim/index.html",
+   "added": "2026-10-30",
+   "updated": "2026-10-30",
+   "ord": 30
   }
  ]
 }
