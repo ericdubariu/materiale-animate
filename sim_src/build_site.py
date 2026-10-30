@@ -69,6 +69,51 @@ SHEET_MAP = {
     ("anatopat-z4-anim", "bp"): ("anatopat_lp0304", [13]),   # bronhopneumonia
 }
 
+# Anatomie patologică: la stații doar pozele reale ale preparatelor de la LP (cele din deck-uri, lp_*.jpg).
+# tema din pachet → (deck, [pozele, prima = cea principală])
+def _L(d, n): return (d, [f"lp_l{n}_mic", f"lp_l{n}_lama"])
+ANA_IMG = {
+    "anatopat_lp0102": [_L("z1", 1), ("z1", ["lp_l2_staza", "lp_l2_lama"]), ("z1", ["lp_l2_inf", "lp_l2_inf_lama"]),
+                        _L("z1", 3), _L("z1", 4), _L("z1", 5),
+                        ("z2", ["lp_p6"]), ("z2", ["lp_p7"]), ("z2", ["lp_p8", "lp_p8_b"]), ("z2", ["lp_p9_b"]),
+                        ("z2", ["lp_p10_c", "lp_p10_b"]), ("z2", ["lp_p11", "lp_p11_b", "lp_p11_c"]), ("z2", ["lp_p12_b"])],
+    "anatopat_lp0304": [_L("z3", 13), _L("z3", 14), _L("z3", 15), _L("z3", 16), _L("z3", 17), _L("z3", 18),
+                        ("z4", ["lp_p19"]), ("z4", ["lp_p20", "lp_p20_b"]), ("z4", ["lp_p21"]), ("z4", ["lp_p22", "lp_p22_b"]),
+                        ("z4", ["lp_p23"]), ("z4", ["lp_p24"]), ("z4", ["lp_p25"]), ("z4", ["lp_p26"])],
+}
+def ana_caption(name):
+    if name.endswith("_lama"): return "Lama la ochiul liber"
+    if "_mic" in name or name in ("lp_l2_staza", "lp_l2_inf"): return "La microscop · HE"
+    return "Piesa" if not name.endswith(("_b", "_c")) else "Piesa · altă imagine"
+def ana_rewrite(p):
+    """Înlocuiește pozele stațiilor cu pozele reale de la LP; câte o stație pe preparat."""
+    plan = ANA_IMG[p["id"]]
+    imgs, keep, seen = {}, [], set()
+    for q in p["questions"]:
+        if not (q.get("station") and q.get("img")):
+            continue
+        t = q["topic"]
+        if t in seen:
+            continue
+        seen.add(t)
+        deck, names = plan[t]
+        files = []
+        for n in names:
+            f = SITE / "lp" / f"anatopat-{deck}-anim" / "img" / f"{n}.jpg"
+            if f.exists():
+                files.append((n, f"../lp/anatopat-{deck}-anim/img/{n}.jpg"))
+        assert files, (p["id"], t, names)
+        k0 = f"t{t}_0"
+        imgs[k0] = files[0][1]
+        q["img"] = k0
+        q["more"] = [{"src": u, "cap": ana_caption(n)} for n, u in files[1:]]
+        q["imgcap"] = ana_caption(files[0][0])
+        q["q"] = "Recunoașteți preparatul (organul / țesutul, leziunea și definiția ei), descrieți modificările patologice, apoi cauzele, complicațiile și diagnosticul diferențial."
+        keep.append(q)
+    assert len(seen) == len(plan), (p["id"], sorted(seen))
+    p["questions"], p["imgs"] = keep, imgs
+    return p
+
 NODE_JS = r"""
 const site = process.argv[process.argv.length - 1];
 const out = { fp: [], sheets: [] };
@@ -121,6 +166,8 @@ def main():
             continue
         f = src / u["file"]
         p = read_pack(f)
+        if u["id"] in ANA_IMG:
+            p = ana_rewrite(p)
         assert p["id"] == u["id"], f
         q = []
         for x in p["questions"]:
@@ -131,7 +178,9 @@ def main():
                       1 if x.get("hot") else 0])  # hot = a picat la examen → șansă mai mare la tragere (oral)
         units.append({"id": u["id"], "subject": u["subject"], "unit": u["unit"], "title": u["title"],
                       "short": u.get("short", ""), "topics": u["topics"], "file": u["file"], "q": q})
-        if src != dst:
+        if u["id"] in ANA_IMG:
+            (dst / u["file"]).write_text("TRV.pack(" + json.dumps(p, ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
+        elif src != dst:
             shutil.copyfile(f, dst / u["file"])
         keep_files.add(u["file"])
     units.sort(key=lambda u: (ORDER.get(u["subject"], 9), not u["id"].startswith("unix_"), u["id"]))

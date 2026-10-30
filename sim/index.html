@@ -388,6 +388,10 @@ details.topics .tu{font:600 12px/1.2 var(--ui);color:var(--faint);margin:12px 0 
 .fisa .tagv{display:block;font-size:11.5px;font-weight:700;color:#8A5A12;letter-spacing:.02em;margin-bottom:2px}
 .fisa .bonus{font-size:12.5px;font-weight:700}
 @media (max-width:640px){.fisa{padding:13px 11px}.fisa table.ev{font-size:12.5px}.fisa table.ev td,.fisa table.ev th{padding:4px 5px}.fisa table.ev td.p{width:46px}.fisa table.ev td.c{width:40px}}
+.qmore{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.qm{display:flex;flex-direction:column;gap:4px;width:150px;padding:0;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:var(--well);color:var(--muted);font:600 12px/1.3 var(--ui);cursor:zoom-in;text-align:left}
+.qm img{width:100%;height:96px;object-fit:cover;display:block}
+.qm span{padding:4px 8px 6px}
 .kp .info{padding:10px 12px;border-radius:12px;border:1px dashed var(--line2);font-size:14px;color:var(--body)}
 .meter{position:relative;height:9px;border-radius:99px;background:var(--line);margin:18px 0 6px;overflow:hidden}
 .meter i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--bad);transition:width .3s var(--ease),background .3s}
@@ -896,8 +900,8 @@ function hit(phrase,T){const P=norm(phrase).trim();if(!P)return false;if(T.inclu
 function autoKP(t,text){const T=norm(text);if(T.trim().length<3)return false;const b=[...String(t).matchAll(/\*\*(.+?)\*\*/g)].map(m=>m[1]);return (b.length?b:[t]).every(s=>hit(s,T))}
 
 /* ============================ elemente comune ============================ */
-const imgHTML=(q,alt="Imaginea întrebării")=>q._img?`<div class="qimg"><img alt="${alt}"><span class="zoom">Atinge pentru mărire</span></div>`:"";
-function wireImg(root,q){const d=$(".qimg",root);if(d&&q._img){$("img",d).src=q._img;d.onclick=()=>lightbox(q._img)}}
+const imgHTML=(q,alt="Imaginea întrebării")=>q._img?`<div class="qimg"><img alt="${alt}"><span class="zoom">${q.imgcap?esc(q.imgcap)+" · ":""}Atinge pentru mărire</span></div>${(q.more||[]).length?`<div class="qmore">${q.more.map((m,i)=>`<button type="button" class="qm" data-i="${i}"><img alt="${esc(m.cap)}" src="${esc(m.src)}"><span>${esc(m.cap)}</span></button>`).join("")}</div>`:""}`:"";
+function wireImg(root,q){const d=$(".qimg",root);if(d&&q._img){$("img",d).src=q._img;d.onclick=()=>lightbox(q._img)}$$(".qm",root).forEach(b=>b.onclick=()=>lightbox(q.more[+b.dataset.i].src))}
 const headPills=(q,show)=>`<span class="schip" style="--c:${sCol(q._subject)}"><i></i>${esc(q._unitLabel)}</span>${show&&q._topic?`<span class="pill">${esc(q._topic)}</span>`:""}${q.diff?`<span class="pill">${DIFF[q.diff]}</span>`:""}${q.hot?`<span class="pill hot">${q._subject==="micro"?"a picat la examen":"apare des"}</span>`:""}`;
 function modelHTML(q,open){return q.model?`<details class="model" ${open?"open":""}><summary>Răspunsul model</summary><div class="md">${String(q.model).split("\n").map(x=>`<p>${md(x)}</p>`).join("")}</div></details>`:""}
 const scoreCls=v=>v>=7.5?"ok-c":v>=5?"mid-c":"no-c";
