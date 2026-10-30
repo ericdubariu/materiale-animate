@@ -65,6 +65,14 @@ SHEET_MAP = {
     ("anatopat-z3-anim", "ab"): ("anatopat_lp0304", [3]),    # abcesele hepatice
     ("anatopat-z3-anim", "tb"): ("anatopat_lp0304", [4]),    # limfadenita tuberculoasă
     ("anatopat-z3-anim", "cs"): ("anatopat_lp0304", [5]),    # granulomul de corp străin
+    ("anatopat-z4-anim", "fg"): ("anatopat_lp0304", [6]),    # steatoza hepatică (piesa)
+    ("anatopat-z4-anim", "pa"): ("anatopat_lp0304", [7]),    # pancreatita acută
+    ("anatopat-z4-anim", "lr"): ("anatopat_lp0304", [8]),    # litiaza renală
+    ("anatopat-z4-anim", "lb"): ("anatopat_lp0304", [9]),    # litiaza biliară
+    ("anatopat-z4-anim", "cp"): ("anatopat_lp0304", [10]),   # pericardita fibrinoasă (piesa)
+    ("anatopat-z4-anim", "ac"): ("anatopat_lp0304", [11]),   # abcesul cerebral
+    ("anatopat-z4-anim", "lm"): ("anatopat_lp0304", [12]),   # leptomeningita purulentă
+    ("anatopat-z4-anim", "bp"): ("anatopat_lp0304", [13]),   # bronhopneumonia
 }
 
 NODE_JS = r"""
@@ -80,7 +88,7 @@ for (const s of fp.SLIDES) {
     kw: kw ? kw.tx.split(' · ').map(x => x.replace(/\*\*/g, '').trim()).filter(Boolean) : [],
     mn: mn ? mn.tx : '', words: s.sceneOpts.words, min: s.sceneOpts.min });
 }
-for (const d of ['anatopat-z1-anim', 'anatopat-z2-anim', 'anatopat-z3-anim']) {
+for (const d of ['anatopat-z1-anim', 'anatopat-z2-anim', 'anatopat-z3-anim', 'anatopat-z4-anim']) {
   const m = await import(site + '/lp/' + d + '/slides.js');
   for (const s of m.SLIDES) if (s.script && s.sceneOpts && s.sceneOpts.f) out.sheets.push({ deck: d, f: s.sceneOpts.f, kick: s.kick, rows: s.script });
 }
@@ -156,7 +164,7 @@ def main():
         unit, topics = SHEET_MAP[k]
         for t in topics:
             sheets[f"{unit}|{t}"] = {"kick": s["kick"], "rows": s["rows"]}
-    assert len(sheets) == 19, len(sheets)
+    assert len(sheets) == 27, len(sheets)
     (dst / "anatopat_fise.js").write_text("TRV.pack(" + json.dumps({"id": "anatopat_fise", "sheets": sheets},
                                           ensure_ascii=False, separators=(",", ":")) + ");\n", encoding="utf-8")
     keep_files.add("anatopat_fise.js")

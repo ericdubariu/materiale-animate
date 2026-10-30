@@ -33,6 +33,11 @@ DECKS = {
     'anatopat-z3-anim': {'unit': 'Lama', 'mine': 'lama ta', 'split': True, 'preps': [
         ('L_hiperk', 13, 'hk', 'hk_mic'), ('L_steatoza', 14, 'st', 'st_mic'), ('L_pericard', 15, 'pc', 'pc_mic'),
         ('L_abcese', 16, 'ab', 'ab_mic'), ('L_tbc', 17, 'tb', 'tb_mic'), ('L_corpstrain', 18, 'cs', 'cs_mic')]},
+    # 19–26: piesele LP 3–4 (deck nou, 30.10.2026); desenul și poza au același nume
+    'anatopat-z4-anim': {'unit': 'Piesa', 'mine': 'piesa ta', 'preps': [
+        ('P_steatoza', 19, 'fg', 'fg'), ('P_pancreatita', 20, 'pa', 'pa'), ('P_litrenal', 21, 'lr', 'lr'),
+        ('P_litbil', 22, 'lb', 'lb'), ('P_pericard', 23, 'cp', 'cp'), ('P_abcescerebral', 24, 'ac', 'ac'),
+        ('P_leptomening', 25, 'lm', 'lm'), ('P_bronhopn', 26, 'bp', 'bp')]},
 }
 # poza de facultate a fiecărui preparat, din deck-ul lui (preferată pozelor din lib.json)
 SIBLING = {k: (deck, photo) for deck, c in DECKS.items() for k, _, _, photo in c['preps']}
