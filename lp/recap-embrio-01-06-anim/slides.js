@@ -119,7 +119,7 @@ export const SLIDES = [
     ],
     why: 'Anomaliile numerice apar în meioză. Spermatogeneza: 4 spermatozoizi; ovogeneza: 1 ovul.',
     extraText: WK, beatDur: 7,
-    xtra: 'Nondisjuncția apare cel mai des în **MI a ovocitului**. Un ovocit ovulat la 40 de ani a stat ~40 de ani în profaza I → riscul de Down crește cu vârsta mamei. Numerele: 7 milioane (luna 5) → < 1 milion (naștere) → ~40 000 (pubertate) → ~400–500 ovulate (curs 1 + Langman).',
+    xtra: 'Nondisjuncția apare cel mai des în **MI a ovocitului**: cu cât ovocitul stă mai mult în profaza I, cu atât crește riscul de Down (vârsta mamei).',
   },
   {
     scene: 'l1.classif', anim: false, spec: 'Static: cariotipul (22 de perechi + XY) cu tabla celor două criterii; badge-urile pe tipul de anomalie / grupul de cromozomi din punct.',
@@ -180,7 +180,6 @@ export const SLIDES = [
       { h: 'Teratomul', d: ['tumoră cu **os, păr, mușchi, epiteliu, dinți** (toate cele 3 foițe)', '**mecanism:** !!CGP / celule de epiblast pluripotente rătăcite!!'] },
     ],
     extraText: WK, beatDur: 6,
-    xtra: 'Nondisjuncția 21 apare cel mai des în MI a ovocitului, iar riscul crește cu vârsta mamei. Patau: și holoprozencefalie, polidactilie. Turner: singura monosomie viabilă. Klinefelter: testosteron ↓. Cri-du-chat: plânsul ca mieunatul unei pisici. Angelman: râs frecvent, retard sever; Prader-Willi: hipotonie.',
   },
 
   // ================================================================ LP 2
@@ -190,15 +189,14 @@ export const SLIDES = [
     hud: ['culoarea = arcul'],
     points: [
       { h: 'Arcul 1 · V2 + V3 (trigemen) · a. maxilară (o parte)', d: ['cartilajul Meckel → !!ciocan, nicovală!!; maxila, zigomatic, temporal (o parte); lig. anterior al ciocanului, sfenomandibular', 'masticatori, milohioid, pântec ant. digastric, tensorul vălului palatin, tensorul timpanului'] },
-      { h: 'Arcul 2 · VII facial · a. hioidă + a. stapedială', d: ['**scărița**, proc. stiloid, cornul mic + partea sup. a corpului hioid; lig. stilohioid', '!!mimica!!, pântec post. digastric, stilohioid, stapedius'] },
+      { h: 'Arcul 2 · VII facial · a. hioidă + a. stapedială', d: ['**scărița**, procesul stiloid, cornul mic + partea sup. a corpului hioid; lig. stilohioid', '!!mimica!!, pântec post. digastric, stilohioid, stapedius'] },
       { h: 'Arcul 3 · IX glosofaringian · a. carotidă comună + internă', d: ['cornul mare + partea inf. a corpului hioid', 'un singur mușchi: **stilofaringian**'] },
       { h: 'Arcul 4 · X (vag): n. laringeu superior', d: ['artera: !!stg. → arcul aortei · dr. → a. subclavie dr.!!', 'mușchii arcurilor 4 + 6: pe un rând în LP'] },
       { h: 'Arcul 6 · X (vag): n. laringeu recurent', d: ['artera: stg. → ductus arteriosus · dr. → a. pulmonară dr.', 'arcurile 4 + 6 fuzionate → **cartilajele laringelui** și mușchii lor (pe un rând în LP)'] },
     ],
-    why: 'Arcurile 1–2 → fața, 3–4 → gâtul, 4 + 6 → laringele. Aparatul faringian = 4 componente: arc (mezoderm + creasta neurală), șanț (ectoderm, extern), membrană (3 straturi), pungă (endoderm, intern).',
-    warn: 'LP-ul pune chorda tympani la arcul 1; anatomic e ramură a n. facial (VII, arcul 2). La grilă: nervul arcului 1 = trigemenul (V2 + V3). Mușchii 4 + 6 sunt pe un rând în LP; împărțirea Langman e în chenarul albastru.',
+    why: 'Arcurile 1–2 → fața, 3–4 → gâtul, 4 + 6 → laringele.',
+    warn: 'LP-ul pune chorda tympani la arcul 1 (anatomic e ramură a n. facial). La grilă: nervul arcului 1 = trigemenul (V2 + V3).',
     extraText: WK, beatDur: 6,
-    xtra: 'Langman: arcul 4 → cricotiroidian, ridicătorul vălului palatin, constrictorii faringelui; arcul 6 → intrinsecii laringelui.',
   },
   {
     scene: 'l2.clefts', anim: true, spec: 'Scena clefts din LP 2, vedere laterală în secțiune (ectodermul în stânga): pe punctul 2 mezenchimul arcului 2 crește în jos peste arcurile 3, 4, 6; pe 3 fuzionează cu creasta epicardică și închide șanțurile 2–4 în sinusul cervical; pe 4 sinusul se obliterează și gâtul devine neted. Șanțul 1 rămâne meatul acustic extern.',
@@ -360,7 +358,7 @@ export const SLIDES = [
       { h: 'Malrotație', d: ['rotația se oprește la 90° (nonrotație) → **colonul pe stânga** · incompletă → cec subhepatic · risc de **volvulus**'] },
       { h: 'Hipoplazie pulmonară · atrezia traheală', d: ['prea puține alveole și vase (bi- sau unilateral) → insuficiență respiratorie', 'atrezia traheală: traheea închisă → obstrucție severă la naștere'] },
     ],
-    warn: 'LP-ul scrie „atrezie esofagiană – absența esofagului”. Corect: esofagul superior se termină orb (fund de sac), de obicei cu fistulă distală spre trahee. Dacă grila reia formularea LP-ului, o recunoști.',
+    warn: 'LP-ul scrie „atrezie esofagiană – absența esofagului”. Corect: esofagul superior se termină în fund de sac, de obicei cu fistulă spre trahee.',
     extraText: WK, beatDur: 6,
   },
 
@@ -472,7 +470,7 @@ export const SLIDES = [
     ],
     why: 'Fiecare generație apare mai jos și mai târziu. Canalul Wolff e întâi canalul rinichiului provizoriu, apoi calea genitală masculină: de aceea malformațiile urinare și genitale se asociază des.',
     extraText: WK, beatDur: 6,
-    xtra: 'Langman: mezonefrosul pornește de la nivelul toracic superior. Cele 2 surse ale metanefrosului se induc reciproc; eșecul inducției → agenezie / displazie.',
+    xtra: 'Cele 2 surse ale metanefrosului se induc reciproc; eșecul inducției → agenezie / displazie.',
   },
   {
     scene: 'l5.cloaca', anim: false, spec: 'Static: secțiune sagitală ~S7: septul urorectal (roșu) separă sinusul urogenital (galben, în față) de canalul anorectal (mov, în spate); părțile vezicală, pelvină, falică etichetate; alantoida → uraca sus.',
@@ -545,7 +543,7 @@ export const SLIDES = [
       { h: 'Tumora Wilms', d: ['!!mutația genei WT1!! · tumoră renală a copilului; în WAGR și Denys-Drash'] },
       { h: 'Exstrofia vezicii / cloacei', d: ['peretele abdominal anterior nu fuzionează în regiunea pelvină → mucoasa vezicii expusă + **epispadias**; cloaca: + imperforație anală'] },
     ],
-    warn: 'WAGR = Wilms + Aniridie + anomalii Genito-urinare + Retard mintal (LP-ul mai listează hemihipertrofia; manualul nu o pune în WAGR). Denys-Drash = insuficiență renală + hermafroditism (manualul: pseudohermafroditism) + Wilms.',
+    warn: 'WAGR = Wilms + Aniridie + anomalii Genito-urinare + Retard mintal. Denys-Drash = insuficiență renală + hermafroditism + Wilms.',
     extraText: WK, beatDur: 6,
     xtra: 'Agenezia renală bilaterală → oligohidramnios.',
   },
@@ -563,7 +561,7 @@ export const SLIDES = [
       { h: 'Criptorhidie', d: ['testiculul nu coboară în scrot (întrebarea din LP); detaliile: chenarul albastru'] },
     ],
     extraText: WK, beatDur: 6,
-    xtra: 'Criptorhidia: coborârea se oprește pe traiect (androgeni insuficienți) → scrot gol; testicul inghinal sau abdominal; ~30% la prematuri. Coborârea normală (Langman): inghinal S12, canalul inghinal S28, scrot S33.',
+    xtra: 'Criptorhidia: coborârea se oprește pe traiect (androgeni insuficienți) → scrot gol; testicul inghinal sau abdominal.',
   },
 
   // ================================================================ LP 6
@@ -686,11 +684,10 @@ export const SLIDES = [
       { h: 'LP 3', d: ['S3 tub + diverticul hepatic · S4 3 segmente, stomac, diverticul respirator, gura se deschide · S5 bronhii lobare', 'S5–S6 duodenul se astupă · !!S6 → S10 hernia fiziologică!! · S7 cloaca: 2 orificii · S8 duodenul se recanalizează'] },
       { h: 'LP 4', d: ['S3 aria cardiogenă, 2 tuburi · zilele 21–23 inima bate · S4 cordul sigmoid · S4–5 începe septarea', 'st. 13 (≈ S5) septum primum · st. 18–21 septum secundum · st. 19–20 (≈ S7–8) se închide foramenul interventricular'] },
       { h: 'LP 5', d: ['S4 → S5 pronefros · S5 metanefros, germinalele ajung · S6 intră în creste · S4–S7 septul urorectal', 'S7 ovar: cordoane corticale · S8 Leydig → testosteron · S12 prostata'] },
-      { h: 'LP 6', d: ['Z18 placa neurală · S3–S4 defectele de tub neural · S4 → S5: 3 → 5 vezicule', 'sf. S4 vezicula optică + placoda otică · S7 fisura coroidă · S10 unghiile · S13 măduva · S16 părul'] },
+      { h: 'LP 6', d: ['ziua 18: placa neurală · S3–S4 defectele de tub neural · S4 → S5: 3 → 5 vezicule', 'sfârșitul S4: vezicula optică + placoda otică · S7 fisura coroidă · S10 unghiile · S13 măduva · S16 părul'] },
     ],
     why: '!!S1–S2 tot sau nimic · S3–S8 malformații majore · fetal: minore!!; SNC rămâne sensibil până la naștere.',
-    extraText: WK + ' CGP DTN SA', beatDur: 6,
-    xtra: 'Axa = săptămâni de la fecundație; în SA (săptămâni de amenoree) adaugi 2: S8 = 10 SA, termenul = 40 SA. Neuroporii se închid în Z29 / Z30 (curs).',
+    extraText: WK, beatDur: 6,
   },
   {
     scene: 'axis', sceneOpts: { map: [0, 0, 0, 0, 1, 1, 2, 2, 2] }, anim: false, spec: 'Static: axa comună; rândul LP-ului din rândul de tabel se aprinde.',
@@ -711,7 +708,6 @@ export const SLIDES = [
       ],
     },
     extraText: WK, beatDur: 5,
-    xtra: 'Termen: 40 SA = 38 săpt. de la fecundație (diferență: 2 săptămâni). Triploidie = 69 de cromozomi.',
   },
   {
     scene: 'axis', sceneOpts: { map: [3, 3, 3, 4, 4, 4, 5, 5] }, anim: false, spec: 'Static: axa comună; rândul LP-ului din rândul de tabel se aprinde.',

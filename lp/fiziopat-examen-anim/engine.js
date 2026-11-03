@@ -122,7 +122,7 @@ function autoFit() {
   const body = $('body');
   let z = 1.3; body.style.zoom = z;
   let guard = 0;
-  while (body.scrollHeight > body.clientHeight + 1 && z > 0.62 && guard++ < 40) { z -= 0.02; body.style.zoom = z; }
+  body.style.paddingBottom = "8px"; while (body.scrollHeight > body.clientHeight + 1 && z > 0.62 && guard++ < 40) { z -= 0.02; body.style.zoom = z; }
   body.dataset.zoom = z.toFixed(2);
 }
 
@@ -364,3 +364,6 @@ show(start, { fromParent: true });
 requestAnimationFrame(loop);
 if (!solo) parent.postMessage({ type: 'lp3d-ready', n: SLIDES.length }, '*');
 window.__deck = { show, step, jumpTo: (pi) => { const k = cur.beats.findIndex((b) => b.i === pi); if (k >= 0) { cur.k = k; cur.bt = 0; setActive(pi); } }, get cur() { return cur; }, SLIDES };
+
+// refit după încărcarea fonturilor (altfel textul se poate tăia jos pe alte browsere)
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { try { autoFit(); } catch (e) { /* încă nu e randat */ } });
