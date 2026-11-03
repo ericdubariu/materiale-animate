@@ -305,6 +305,18 @@
    "added": "2026-10-30",
    "updated": "2026-10-30",
    "ord": 10
+  },
+  {
+   "id": "embrio-curs-unix-anim",
+   "subj": "embrio",
+   "tip": "curs",
+   "title": "Curs · Embriologie (UNIX)",
+   "sub": "Cele 7 cursuri pentru grila UNIX: reproducerea, anexele fetale și placenta, cardiovascular, digestiv, urogenital, sistemul nervos, simțuri și tegument · capcanele + 2 tabele de perechi",
+   "slides": 32,
+   "path": "lp/embrio-curs-unix-anim/index.html",
+   "added": "2026-11-03",
+   "updated": "2026-11-03",
+   "ord": 100
   }
  ]
 }
