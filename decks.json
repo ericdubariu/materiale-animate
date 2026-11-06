@@ -317,6 +317,18 @@
    "added": "2026-11-03",
    "updated": "2026-11-03",
    "ord": 100
+  },
+  {
+   "id": "recap-histo-ospe-anim",
+   "subj": "histo",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · LP 2–7 · fișa de evaluare",
+   "sub": "Toate cele 19 lame pe fișa oficială: diagnostic + colorație (1 p) → noțiunile de diagnostic pozitiv cu punctajul lor (6 p) → DD cu partenerul (2 p) → bonus · capcane și tabele finale",
+   "slides": 25,
+   "path": "lp/recap-histo-ospe-anim/index.html",
+   "added": "2026-11-06",
+   "updated": "2026-11-06",
+   "ord": 904
   }
  ]
 }
