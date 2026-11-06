@@ -84,8 +84,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "4 p",
-    "tx": "● ob. mic: spații alveolare pline cu o **substanță omogenă, eozinofilă** (edem alveolar) ● septuri interalveolare **ușor expandate** de lichid (edem interstițial) ● lichidul de edem (**transsudat**), extravazat brusc, amestecat cu **spații optic goale: bule de aer** ● !!vase congestionate!!."
+    "at": "5 p",
+    "tx": "● ob. mic: spații alveolare pline cu o **substanță omogenă, eozinofilă** (edem alveolar) ● septuri interalveolare **ușor expandate** de lichid (edem interstițial) ● lichidul de edem (**transsudat**), extravazat brusc, amestecat cu **spații optic goale: bule de aer** ● !!vase congestionate!! ● pe piesă: plămâni de **volum și greutate crescute**; la secțiune se elimină lichid **roz, spumos, aerat**."
    },
    {
     "tm": "4 · Cauze",
@@ -95,12 +95,12 @@ export const PREPS = {
    {
     "tm": "5 · Complicații",
     "at": "",
-    "tx": "LP nu dă complicații pentru edemul pulmonar acut. Pe piesă: plămâni de volum și greutate crescute; la secțiune se elimină lichid roz, spumos, aerat."
+    "tx": "LP nu dă complicații pentru edemul pulmonar acut."
    },
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Plămân de stază cronică + infarct pulmonar** (lama 2). = Ambele: plămân în HE, cu vase congestionate. ≠ ① La mine alveolele sunt pline cu substanță omogenă, eozinofilă (transsudat), cu bule de aer; la stază alveolele conțin siderofage (celule cardiace) cu pigment brun. ② La mine septurile sunt doar ușor expandate de lichid; la stază septurile sunt îngroșate și fibrozate. ③ La mine nu există necroză; lama 2 are și o zonă de infarct: alveole inundate hemoragic, septuri fără nuclei, cu lizereu congestiv. Alternative: Infarctul pulmonar (zona de infarct din lama 2) · Pericardită fibrinoasă."
+    "tx": "Cu **stază cronică + infarct pulmonar** (lama 2). = plămân în HE, cu vase congestionate. ≠ ① în alveole transsudat omogen, eozinofil, cu bule de aer, nu siderofage cu pigment brun ② septuri doar ușor expandate de lichid, nu îngroșate, fibrozate ③ fără necroză; lama 2 are și zonă de infarct (alveole inundate hemoragic, septuri fără nuclei, lizereu congestiv). Alternative: **zona de infarct din lama 2** (septuri necrozate, fără nuclei; la mine septuri viabile) · **pericardită fibrinoasă** (lama 15: fibrină pe epicard, nu lichid în alveole)."
    }
   ]
  },
@@ -228,8 +228,8 @@ export const PREPS = {
    },
    {
     "tm": "4 · Descriere · infarctul",
-    "at": "4 p",
-    "tx": "● **zonă bine delimitată**, cu alveole **inundate hemoragic** și alveolocite necrozate ● **arhitectura păstrată**, aspect umbriform, **fără nuclei** ● parenchimul adiacent cu **modificări de stază cronică** ● la limită: !!lizereu congestiv!! (vase congestionate, eritrocite extravazate, infiltrat inflamator acut)."
+    "at": "5 p",
+    "tx": "● **zonă bine delimitată**, cu alveole **inundate hemoragic** și alveolocite necrozate ● **arhitectura păstrată**, aspect umbriform, **fără nuclei** ● parenchimul adiacent cu **modificări de stază cronică** ● la limită: !!lizereu congestiv!! (vase congestionate, eritrocite extravazate, infiltrat inflamator acut) ● un **sept conjunctiv intersegmentar** limitează pătrunderea sângelui în teritoriile vecine."
    },
    {
     "tm": "5 · Cauze",
@@ -244,7 +244,7 @@ export const PREPS = {
    {
     "tm": "7 · DD",
     "at": "✓",
-    "tx": "Cu **Edem pulmonar acut** (lama 1). = Ambele: plămân în HE, cu vase congestionate. ≠ ① La mine, în alveole, siderofage (celule cardiace) cu pigment brun de hemosiderină; la edem alveolele sunt pline cu substanță omogenă, eozinofilă, cu bule de aer. ② La mine septurile sunt îngroșate, fibrozate; la edem septurile sunt doar ușor expandate de lichid. ③ La mine și o zonă de infarct: alveole inundate hemoragic, septuri fără nuclei, lizereu congestiv; la edem nu există necroză. Alternative: Infarct renal · Tromb mixt."
+    "tx": "Cu **edem pulmonar acut** (lama 1). = plămân în HE, cu vase congestionate. ≠ ① în alveole siderofage (celule cardiace) cu pigment brun, nu substanță omogenă cu bule de aer ② septuri îngroșate, fibrozate, nu doar ușor expandate ③ am și zonă de infarct (alveole inundate hemoragic, septuri fără nuclei, lizereu congestiv); edemul nu are necroză. Alternative: **infarct renal** (lama 3: infarct alb, palid, nu inundat hemoragic) · **tromb mixt** (lama 5: hematiile stau în straturi, în lumenul vasului, nu în alveole)."
    }
   ]
  },
@@ -355,9 +355,10 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct miocardic acut** (lama 4). = Ambele: zonă de infarct cu pierderea nucleilor și lizereu congestiv la limită. ≠ ① La mine se recunosc tubi și glomeruli „fantomă”; la IMA fibre musculare fără nuclei, cu sarcoplasmă omogenă, intens eozinofilă. ② La mine lizereul e o singură bandă: capilare congestionate + infiltrat inflamator acut; la IMA lizereul are două benzi: internă de granulocite, externă de congestie. ③ La mine parenchimul din jur e renal normal; la IMA zona necrozată e delimitată de țesut de granulație care pătrunde printre fibrele normale. Alternative: Infarctul pulmonar (zona de infarct din lama 2) · Abcese hepatice."
+    "tx": "Cu **infarct miocardic acut** (lama 4). = zonă de infarct fără nuclei, cu lizereu congestiv la limită. ≠ ① tubi și glomeruli „fantomă”, nu fibre musculare cu sarcoplasmă intens eozinofilă ② lizereul are o bandă (capilare congestionate + infiltrat acut), nu două (granulocite intern, congestie extern) ③ alături parenchim renal normal, nu țesut de granulație printre fibre. Alternative: **zona de infarct din lama 2** (infarct roșu, inundat hemoragic, nu palid) · **abcese hepatice** (lama 16: țesutul lipsește, înlocuit de puroi; la mine arhitectura rămâne)."
    }
-  ]
+  ],
+  "xtra": "Evoluția (nu e în LP, deci nu o pui la complicații): zona necrozată e înlocuită de țesut de granulație, apoi de o cicatrice."
  },
  "4": {
   "scene": "prep",
@@ -450,8 +451,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "4 p",
-    "tx": "● zonă **bine conturată**: fibre musculare **lipsite de nuclei**, sarcoplasmă **omogenă, intens eozinofilă** ● la periferie: !!lizereu congestiv!!: bandă internă de **granulocite**, bandă externă de **congestie** ● zona necrozată delimitată de **țesut de granulație** (capilare neoformate, histiocite, limfocite, fibroblaști) ● țesutul de granulație pătrunde și printre **fibrele normale** ale miocardului vecin."
+    "at": "5 p",
+    "tx": "● zonă **bine conturată**: fibre musculare **lipsite de nuclei**, sarcoplasmă **omogenă, intens eozinofilă** ● la periferie: !!lizereu congestiv!!: bandă internă de **granulocite**, bandă externă de **congestie** ● zona necrozată delimitată de **țesut de granulație** (capilare neoformate, histiocite, limfocite, fibroblaști) ● țesutul de granulație pătrunde și printre **fibrele normale** ale miocardului vecin ● necroza e **vizibilă microscopic după 4–6 ore**."
    },
    {
     "tm": "4 · Cauze",
@@ -466,7 +467,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct renal** (lama 3). = Ambele: zonă de infarct cu pierderea nucleilor și lizereu congestiv la limită. ≠ ① La mine fibre musculare fără nuclei, cu sarcoplasmă omogenă, intens eozinofilă; la infarctul renal tubi și glomeruli „fantomă”. ② La mine lizereul are două benzi: internă de granulocite, externă de congestie; la infarctul renal o bandă de capilare congestionate și infiltrat inflamator acut. ③ La mine necroza e delimitată de țesut de granulație (capilare neoformate, histiocite, limfocite, fibroblaști); la infarctul renal, alături, parenchim renal normal. Alternative: Pericardită fibrinoasă · Abcese hepatice."
+    "tx": "Cu **infarct renal** (lama 3). = zonă de infarct fără nuclei, cu lizereu congestiv la limită. ≠ ① fibre musculare fără nuclei, sarcoplasmă omogenă, intens eozinofilă, nu tubi și glomeruli „fantomă” ② lizereul are două benzi (granulocite intern, congestie extern), nu una ③ necroza e delimitată de țesut de granulație, nu de parenchim normal. Alternative: **pericardită fibrinoasă** (lama 15: fibrină pe epicard, miocardul păstrat) · **abcese hepatice** (lama 16: țesutul lipsește, cu puroi; la mine fibrele își păstrează conturul)."
    }
   ]
  },
@@ -592,7 +593,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Pericardită fibrinoasă** (lama 15). = Ambele: depozit eozinofil de fibrină, cu celule ale sângelui prinse în ochiurile rețelei. ≠ ① La mine masa e în lumenul unui vas arterial, aderentă de perete; la pericardită fibrina e pe suprafața seroasei, ulcerată. ② La mine straturi alternante: slab eozinofile (trombocite + fibrină) și roșii (hematii) = liniile lui Zahn; la pericardită o rețea de filamente grosolane roșu-roz, cu granulocite și histiocite. ③ La mine dedesubt e peretele vasului; la pericardită țesut subepicardic îngroșat, cu capilare congestionate și infiltrat inflamator, peste miocardul păstrat. Alternative: Infarctul pulmonar (zona de infarct din lama 2) · Hipercheratoză."
+    "tx": "Cu **pericardită fibrinoasă** (lama 15). = fibrină eozinofilă în rețea, cu celule prinse în ochiuri. ≠ ① masa e în lumenul unui vas arterial, aderentă de perete, nu pe seroasa ulcerată ② straturi alternante palide (trombocite + fibrină) și roșii (hematii) = liniile lui Zahn, nu filamente grosolane cu granulocite și histiocite ③ dedesubt peretele vasului, nu țesut subepicardic îngroșat peste miocard. Alternative: **zona de infarct din lama 2** (hematiile inundă alveolele, nu stau în straturi) · **hipercheratoză** (lama 13: straturi de cheratină fără nuclei, peste epiderm)."
    }
   ]
  },
@@ -703,7 +704,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Tromb călăreț** (piesa 7). = Ambele: aortă cu tromb aderent de perete (coagulare intravasculară și intravitală). ≠ ① La mine trombul e parietal, pe peretele aortei; la trombul călăreț trombul stă călare pe bifurcația aortei. ② La mine trombul e lipit de peretele aortei (parietal); la trombul călăreț intră în ambele artere iliace comune. ③ La mine se văd plăcile aterosclerotice ale intimei; la trombul călăreț piesa arată mai ales trombul mixt stratificat, mat, friabil. Alternative: Pericardită fibrinoasă · Hemoragii intracraniene."
+    "tx": "Cu **tromb călăreț** (piesa 7). = aortă cu tromb aderent de perete (coagulare intravasculară și intravitală). ≠ ① tromb parietal, pe peretele aortei, nu călare pe bifurcație ② rămâne lipit de perete, nu intră în ambele artere iliace comune ③ se văd plăcile aterosclerotice ale intimei; la piesa 7 se vede mai ales trombul mixt stratificat, mat, friabil. Alternative: **pericardită fibrinoasă** (piesa 23: fibrină pe pericard, „limbă de pisică”) · **hemoragii intracraniene** (piesa 11: sânge extravazat în creier, nu coagulat intravital în aortă)."
    }
   ]
  },
@@ -823,7 +824,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Aortă cu tromb parietal** (piesa 6). = Ambele: aortă cu tromb aderent de perete (coagulare intravasculară și intravitală). ≠ ① La mine trombul stă călare pe bifurcația aortei; la aortă trombul e parietal, pe peretele aortei. ② La mine trombul intră în ambele artere iliace comune; la aortă trombul e lipit de peretele aortei (parietal). ③ La mine piesa arată trombul mixt stratificat, mat, friabil; la aortă se văd și plăcile aterosclerotice ale intimei. Alternative: Infarct pulmonar · Hemoragii intracraniene."
+    "tx": "Cu **aortă cu tromb parietal** (piesa 6). = aortă cu tromb aderent de perete (coagulare intravasculară și intravitală). ≠ ① trombul stă călare pe bifurcația aortei, nu parietal ② intră în ambele artere iliace comune, nu rămâne lipit de perete ③ se vede trombul mixt stratificat, mat, friabil; la piesa 6 se văd și plăcile aterosclerotice. Alternative: **infarct pulmonar** (piesa 9: zonă triunghiulară roșie-negricioasă, în plămân) · **hemoragii intracraniene** (piesa 11: sânge extravazat, nu coagulat intravital)."
    }
   ]
  },
@@ -922,7 +923,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● **zonă de infarct palidă**, bine conturată ● vizibilă și pe **suprafața externă** a rinichiului ● conturată de **lizereul congestiv** ● restul: **parenchim renal normal**."
+    "tx": "● **zonă de infarct palidă**, bine conturată ● vizibilă și pe **suprafața externă** a rinichiului ● conturată de !!lizereul congestiv!! ● restul: **parenchim renal normal**."
    },
    {
     "tm": "4 · Cauze",
@@ -937,9 +938,10 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct pulmonar** (piesa 9). = Ambele: infarct = necroza unui țesut prin aport insuficient de sânge oxigenat; zonă bine delimitată. ≠ ① La mine infarct alb (anemic), zonă palidă; la infarctul pulmonar zona e roșie-negricioasă (hemoragic). ② La mine rinichiul are circulație unică; plămânul are circulație dublă, iar infarctul apare doar pe stază cronică. ③ La mine zona e conturată de un lizereu congestiv, vizibilă pe suprafața externă; la infarctul pulmonar parenchimul din jur are stază cronică (indurație brună). Alternative: Rinichi de șoc · Litiază renală."
+    "tx": "Cu **infarct pulmonar** (piesa 9). = infarct (necroză prin aport insuficient de sânge oxigenat), zonă bine delimitată. ≠ ① zonă palidă, infarct alb (anemic), nu roșie-negricioasă ② rinichiul are circulație unică; plămânul are circulație dublă, cu infarct doar pe stază cronică ③ zona e conturată de lizereu congestiv, vizibilă pe suprafața externă; în jurul infarctului pulmonar e stază cronică. Alternative: **rinichi de șoc** (piesa 12: toată corticala palidă, nu o singură zonă) · **litiază renală** (piesa 21: calculi, calice dilatate, fără necroză)."
    }
-  ]
+  ],
+  "xtra": "Evoluția (nu e în LP, deci nu o pui la complicații): zona necrozată devine, cu timpul, o cicatrice retractată."
  },
  "9": {
   "scene": "prep",
@@ -1026,7 +1028,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● zonă de infarct, pe secțiune **triunghiulară**, cu **vârful spre hil** (vasul obstrucționat) ● **margini bine delimitate** ● culoare **roșie-negricioasă** ● plămânul din jur: **stază cronică (indurație brună)**: greutate crescută, brun (siderofage), consistență fermă."
+    "tx": "● zonă de infarct, pe secțiune !!triunghiulară, cu vârful spre hil!! (vasul obstrucționat) ● **margini bine delimitate** ● culoare **roșie-negricioasă** ● plămânul din jur: **stază cronică (indurație brună)**: greutate crescută, brun (siderofage), consistență fermă."
    },
    {
     "tm": "4 · Cauze",
@@ -1041,7 +1043,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct renal** (piesa 8). = Ambele: infarct = necroza unui țesut prin aport insuficient de sânge oxigenat; zonă bine delimitată. ≠ ① La mine zona e roșie-negricioasă (hemoragic); la infarctul renal zona e palidă (alb, anemic). ② La mine plămânul are circulație dublă și infarctul apare doar pe stază cronică; rinichiul are circulație unică. ③ La mine parenchimul din jur are stază cronică (indurație brună); la infarctul renal zona e conturată de un lizereu congestiv, restul rinichiului e normal. Alternative: Bronhopneumonie · Tromb călăreț."
+    "tx": "Cu **infarct renal** (piesa 8). = infarct (necroză prin aport insuficient de sânge oxigenat), zonă bine delimitată. ≠ ① zonă roșie-negricioasă (hemoragic), nu palidă ② plămânul are circulație dublă, infarctul apare doar pe stază cronică; rinichiul are circulație unică ③ în jur stază cronică (indurație brună), nu lizereu congestiv cu parenchim normal. Alternative: **bronhopneumonie** (piesa 26: focare multiple, bilaterale, nu o singură zonă triunghiulară) · **tromb călăreț** (piesa 7: tromb pe bifurcația aortei, nu necroză în plămân)."
    }
   ]
  },
@@ -1136,8 +1138,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "4 p",
-    "tx": "● în peretele VS: **zonă hiperemică** (aspect la aprox. 12–24 h) ● zona pe cale de necroză e **mai palidă**, înconjurată de un **halou hiperemic** ● după 2–3 zile: **galben ca lutul**, omogen, consistență moale ● după câteva săptămâni: **țesut cicatriceal alb-sidefiu**."
+    "at": "5 p",
+    "tx": "● în peretele VS: **zonă hiperemică** (aspect la aprox. 12–24 h) ● zona pe cale de necroză e **mai palidă**, înconjurată de un **halou hiperemic** ● după 2–3 zile: **galben ca lutul**, omogen, consistență moale ● după câteva săptămâni: **țesut cicatriceal alb-sidefiu** ● extinderea: **transmural** (toată grosimea), **intramural** sau **subendocardic** (1/3 internă)."
    },
    {
     "tm": "4 · Cauze",
@@ -1152,7 +1154,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Pericardită fibrinoasă** (piesa 23). = Ambele: cord; IMA poate da chiar pericardită (pericardita epistenocardică, sindromul Dressler). ≠ ① La mine leziunea e în grosimea miocardului; la pericardită depozitele de fibrină sunt pe suprafața pericardului. ② La mine zona e mai palidă, cu halou hiperemic (după 2–3 zile galbenă, moale); la pericardită suprafața e mată, rugoasă, cu aspect de „limbă de pisică”. ③ La mine complicația gravă e ruptura (miomalacie) cu hemopericard; la pericardită evoluția e spre aderențe fibroase (pericardită constrictivă). Alternative: Infarct renal · Aortă cu tromb parietal."
+    "tx": "Cu **pericardită fibrinoasă** (piesa 23). = cord; IMA poate da chiar pericardită (epistenocardică, sindromul Dressler). ≠ ① leziunea e în grosimea miocardului, nu pe suprafața pericardului ② zonă mai palidă, cu halou hiperemic (2–3 zile: galbenă, moale), nu suprafață mată, „limbă de pisică” ③ complicația gravă e ruptura (miomalacie) cu hemopericard, nu aderențele fibroase. Alternative: **infarct renal** (piesa 8: infarct alb, cu lizereu, în rinichi) · **aortă cu tromb parietal** (piesa 6: tromb pe intimă, nu leziune în miocard)."
    }
   ]
  },
@@ -1208,10 +1210,13 @@ export const PREPS = {
    },
    "bad": [
     [
+     "m"
+    ],
+    null,
+    [
      "m",
      0
     ],
-    null,
     [
      "s"
     ],
@@ -1228,8 +1233,9 @@ export const PREPS = {
     "Organ · leziune",
     "Definiție",
     "Descriere",
+    "Descriere · alt borcan",
     "Cauze",
-    "Celelalte tipuri",
+    "Complicații",
     "DD"
    ],
    "cred": "Pozele: preparatele de la LP (cum le vezi la examen)."
@@ -1248,7 +1254,12 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "3 p",
-    "tx": "● sânge în **parenchimul cerebral**: hematom intracerebral ● sânge în **ventriculul lateral**: hematom intraventricular (inundare ventriculară) ● ventriculii se inundă direct, dintr-o hemoragie cerebrală adiacentă, sau prin comunicarea cu spațiul subarahnoidian."
+    "tx": "● sânge în **parenchimul cerebral**: hematom intracerebral ● sânge în **ventriculul lateral**: hematom intraventricular (!!inundare ventriculară!!) ● ventriculii se inundă direct, dintr-o hemoragie cerebrală adiacentă, sau prin comunicarea cu spațiul subarahnoidian."
+   },
+   {
+    "tm": "3 · Descriere · alt borcan",
+    "at": "",
+    "tx": "Dacă primești alt borcan (LP are piese și pentru): ● **hematom subdural** (craniu secționat): între dura mater și arahnoidă ● **hematom subarahnoidian**: între arahnoidă și pia mater, vizibil și în spațiile intergirale. Fără piesă: ● **epidural**: între oasele craniene și dura mater, de obicei traumatic."
    },
    {
     "tm": "4 · Cauze",
@@ -1256,14 +1267,14 @@ export const PREPS = {
     "tx": "● **întreruperea continuității peretelui vascular** (ruperea unei ramuri intracerebrale) ● **erodarea peretelui** (proces neoplazic de vecinătate, tuberculom) ● **diapedeza** (peretele rămâne integru)."
    },
    {
-    "tm": "5 · Celelalte tipuri",
+    "tm": "5 · Complicații",
     "at": "",
-    "tx": "LP are piese și pentru: ● **hematom subdural** (craniu secționat): între dura mater și arahnoidă ● **hematom subarahnoidian**: între arahnoidă și pia mater, vizibil și în spațiile intergirale. Fără piesă: ● **epidural**: între oasele craniene și dura mater, de obicei traumatic."
+    "tx": "LP nu dă complicații pentru hemoragiile intracraniene."
    },
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Abces cerebral** (piesa 24). = Ambele: creier pe secțiune, cu o leziune în parenchim. ≠ ① La mine conținutul e sânge (hematom); la abces e puroi, într-o cavitate rotund-ovalară. ② La mine sângele vine din ruperea unei ramuri vasculare intracerebrale; la abces țesutul suferă necroză de colicvație, cu membrană piogenă la periferie. ③ La mine sângele poate inunda ventriculii (hematom intraventricular); la abces complicația cea mai severă e hernierea tonsilelor cerebeloase. Alternative: Leptomeningită purulentă · Tromb călăreț."
+    "tx": "Cu **abces cerebral** (piesa 24). = creier pe secțiune, cu o leziune în parenchim. ≠ ① conținutul e sânge, nu puroi într-o cavitate rotund-ovalară ② vine din ruperea unei ramuri vasculare intracerebrale, nu din necroză de colicvație cu membrană piogenă ③ sângele poate inunda ventriculii; la abces complicația cea mai severă e hernierea tonsilelor cerebeloase. Alternative: **leptomeningită purulentă** (piesa 25: puroi pe leptomeninge, nu sânge în parenchim) · **tromb călăreț** (piesa 7: sânge coagulat intravital, în aortă)."
    }
   ]
  },
@@ -1371,7 +1382,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● **corticala renală palidă** ● **medulara renală hiperemică** ● corticala palidă **bine delimitată** de medulara hiperemică ● microscopic: **necroză tubulară renală reversibilă**, cu glomeruli neafectați."
+    "tx": "● **corticala renală palidă** ● **medulara renală hiperemică** ● corticala palidă !!bine delimitată de medulara hiperemică!! ● microscopic: **necroză tubulară renală reversibilă**, cu glomeruli neafectați."
    },
    {
     "tm": "4 · Cauze",
@@ -1386,7 +1397,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct renal** (piesa 8). = Ambele: rinichi cu zone palide, în contrast cu zone congestionate. ≠ ① La mine toată corticala e palidă; la infarct o singură zonă palidă, bine conturată. ② La mine roșul e în medulara hiperemică, bine delimitată de corticală; la infarct roșul e lizereul congestiv din jurul zonei. ③ La mine leziunea e reversibilă (necroză tubulară, glomeruli neafectați); la infarct e necroza unei porțiuni de parenchim, prin obstrucția ramurii arteriale. Alternative: Litiază renală · Steatoză hepatică."
+    "tx": "Cu **infarct renal** (piesa 8). = rinichi cu zone palide, în contrast cu zone congestionate. ≠ ① toată corticala e palidă, nu o singură zonă conturată ② roșul e medulara hiperemică, nu lizereul congestiv din jurul zonei ③ leziune reversibilă (necroză tubulară, glomeruli neafectați), nu necroza unei porțiuni de parenchim prin obstrucție arterială. Alternative: **litiază renală** (piesa 21: calculi coraliformi, calice dilatate) · **steatoză hepatică** (piesa 19: ficat mărit, gălbui, grăsos la secțiune)."
    }
   ]
  },
@@ -1482,7 +1493,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "5 p",
-    "tx": "● epiderm cu **strat cornos îngroșat**: creșterea cantității de cheratină, superficial ● strat cornos **fără nuclei** ● restul straturilor **fără modificări** (pe una din imagini: acantoză moderată); **fără proliferare epitelială** ● **derm și hipoderm normale** ● macro: **leziune albă, relativ bine delimitată, sub formă de placă**."
+    "tx": "● epiderm cu !!strat cornos îngroșat!!: creșterea cantității de cheratină, superficial ● strat cornos **fără nuclei** ● restul straturilor **fără modificări** (pe una din imagini: acantoză moderată); **fără proliferare epitelială** ● **derm și hipoderm normale** ● macro: **leziune albă, relativ bine delimitată, sub formă de placă**."
    },
    {
     "tm": "4 · Cauze",
@@ -1497,7 +1508,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Granulom de corp străin** (lama 18). = Ambele: leziune bine delimitată (placa de hipercheratoză, respectiv formațiunea nodulară a granulomului). ≠ ① La mine leziunea e la suprafața pielii: strat cornos îngroșat; la corp străin formațiunea e în țesutul mamar. ② La mine materialul acumulat e cheratină, fără nuclei; la corp străin cristale de colesterol (spații aciculare optic goale). ③ La mine fără celule gigante, dermul normal; la corp străin celule gigante multinucleate de corp străin și infiltrat inflamator cronic, delimitate de fibroză. Alternative: Pericardită fibrinoasă · Tromb mixt."
+    "tx": "Cu **granulom de corp străin** (lama 18). = leziune bine delimitată (placa, respectiv formațiunea nodulară). ≠ ① la suprafața pielii (strat cornos îngroșat), nu în țesutul mamar ② s-a acumulat cheratină fără nuclei, nu cristale de colesterol ③ fără celule gigante, dermul normal; la lama 18 celule gigante de corp străin, infiltrat cronic, fibroză. Alternative: **pericardită fibrinoasă** (lama 15: fibrină cu granulocite, pe seroasă) · **tromb mixt** (lama 5: straturi de trombocite + fibrină și hematii, în lumenul unui vas)."
    }
   ]
  },
@@ -1585,8 +1596,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "5 p",
-    "tx": "● **structura lobulară păstrată** (spații porte, vene centrolobulare) ● hepatocite cu **vacuole optic goale**, rotunde, bine conturate, net delimitate, de mărimi diferite ● microvacuolele **confluează în macrovacuole** ● vacuolele voluminoase **împing nucleul la periferie** ● vacuolele sunt goale: lipidele s-au pierdut la procesare (se evidențiază cu **Sudan III**)."
+    "at": "6 p",
+    "tx": "● **structura lobulară păstrată** (spații porte, vene centrolobulare) ● hepatocite cu !!vacuole optic goale!!, rotunde, bine conturate, net delimitate, de mărimi diferite ● microvacuolele **confluează în macrovacuole** ● vacuolele voluminoase **împing nucleul la periferie** ● vacuolele sunt goale: lipidele s-au pierdut la procesare (se evidențiază cu **Sudan III**) ● distribuția în lobul: **periferolobulară, centrolobulară sau difuză**."
    },
    {
     "tm": "4 · Cauze",
@@ -1601,7 +1612,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Abcese hepatice** (lama 16). = Ambele: ficat în HE, cu structura lobulară păstrată. ≠ ① La mine vacuole optic goale în hepatocite, nucleul împins la periferie; la abcese teritorii în care lipsește țesutul hepatic, pline de granulocite. ② La mine leziunea cuprinde hepatocitele, difuz sau pe zone ale lobulului; la abcese zone mici, rotunde sau neregulate, delimitate de proliferare de țesut conjunctiv. ③ La mine nu există puroi; la abcese globule de puroi, colonii de microbi (grămezi intens bazofile) și hepatocite pe cale de necroză. Alternative: Edem pulmonar acut · Pericardită fibrinoasă (țesutul adipos epicardic)."
+    "tx": "Cu **abcese hepatice** (lama 16). = ficat în HE, cu structura lobulară păstrată. ≠ ① vacuole optic goale în hepatocite, nucleul împins la periferie, nu teritorii fără țesut hepatic, pline de granulocite ② difuz sau pe zone ale lobulului, nu focare mici delimitate de țesut conjunctiv ③ fără puroi; la abcese globule de puroi, colonii de microbi, hepatocite pe cale de necroză. Alternative: **edem pulmonar acut** (lama 1: lichid omogen, eozinofil, în alveole) · **pericardită fibrinoasă** (lama 15: țesut adipos epicardic, nu vacuole în hepatocite)."
    }
   ]
  },
@@ -1697,7 +1708,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "5 p",
-    "tx": "● **structura miocardului păstrată** ● țesut subepicardic **îngroșat**, cu **numeroase capilare congestionate** ● celule conjunctive și **infiltrat inflamator**: granulocite, limfocite, histiocite ● suprafața seroasă **ulcerată**, cu abundentă depunere de fibrină ● fibrina: **rețea de filamente grosolane, roșu-roz**, cu granulocite și histiocite în ochiuri."
+    "tx": "● **structura miocardului păstrată** ● țesut subepicardic **îngroșat**, cu **numeroase capilare congestionate** ● celule conjunctive și **infiltrat inflamator**: granulocite, limfocite, histiocite ● suprafața seroasă **ulcerată**, cu abundentă depunere de fibrină ● fibrina: !!rețea de filamente grosolane, roșu-roz!!, cu granulocite și histiocite în ochiuri."
    },
    {
     "tm": "4 · Cauze",
@@ -1707,12 +1718,12 @@ export const PREPS = {
    {
     "tm": "5 · Complicații",
     "at": "3 p",
-    "tx": "● **liza** exsudatului fibrinos ● **aderențe fibroase** ● **pericardită constrictivă/restrictivă**."
+    "tx": "● **liza** exsudatului fibrinos ● **aderențe fibroase** ● **pericardită constrictivă/restrictivă**. Clinic: frecătură pericardică, modificări ECG."
    },
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Tromb mixt** (lama 5). = Ambele: fibrină eozinofilă în rețea, cu celule prinse în ochiuri. ≠ ① La mine fibrina e pe suprafața seroasă (epicard), ulcerată; la tromb masa e în lumenul unui vas arterial, aderentă de perete. ② La mine rețea de filamente grosolane cu granulocite și histiocite; la tromb straturi alternante de trombocite + fibrină și hematii (liniile lui Zahn). ③ La mine dedesubt țesut subepicardic îngroșat, cu capilare congestionate și infiltrat, apoi miocardul; la tromb peretele vasului arterial. Alternative: Infarct miocardic acut · Hipercheratoză."
+    "tx": "Cu **tromb mixt** (lama 5). = fibrină eozinofilă în rețea, cu celule prinse în ochiuri. ≠ ① fibrina e pe seroasa ulcerată a epicardului, nu în lumenul unui vas arterial ② filamente grosolane cu granulocite și histiocite, nu straturi alternante (liniile lui Zahn) ③ dedesubt țesut subepicardic îngroșat, congestionat, cu infiltrat, apoi miocardul, nu peretele vasului. Alternative: **infarct miocardic acut** (lama 4: fibre fără nuclei; la mine miocardul e păstrat) · **hipercheratoză** (lama 13: cheratină fără nuclei, peste epiderm)."
    }
   ]
  },
@@ -1808,7 +1819,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "5 p",
-    "tx": "● macro: în grosimea ficatului **cavități mici, cu conținut vâscos, galben-verzui** ● **structura lobulară păstrată** ● teritorii mici, rotunde sau neregulate, unde **lipsește țesutul hepatic**, cu **număr mare de granulocite** ● **grămezi intens bazofile** (colonii de microbi), **globule de puroi**, hepatocite pe cale de necroză ● delimitate de parenchim cu **proliferare de țesut conjunctiv** (abcesul cronic: membrană piogenă)."
+    "tx": "● macro: în grosimea ficatului **cavități mici, cu conținut vâscos, galben-verzui** ● **structura lobulară păstrată** ● teritorii mici, rotunde sau neregulate, unde **lipsește țesutul hepatic**, cu !!număr mare de granulocite!! ● **grămezi intens bazofile** (colonii de microbi), **globule de puroi**, hepatocite pe cale de necroză ● delimitate de parenchim cu **proliferare de țesut conjunctiv** (abcesul cronic: membrană piogenă)."
    },
    {
     "tm": "4 · Cauze",
@@ -1823,7 +1834,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Limfadenită tuberculoasă** (lama 17). = Ambele: leziuni focale cu necroză în centru, delimitate de țesutul din jur. ≠ ① La mine în centru granulocite, globule de puroi, colonii de microbi; la TBC necroză cazeoasă (teritoriu omogen sau fin granular, acidofil, fără structuri). ② La mine leziunea e delimitată de membrana piogenă și proliferare de țesut conjunctiv; la TBC strat gros de celule epiteloide și celule gigante Langhans, apoi coroana limfocitară. ③ La mine în jur parenchim hepatic cu structura lobulară păstrată; la TBC nodul limfatic cu țesut limfoid restant, cu foliculi. Alternative: Distrofie adipoasă hepatică (steatoză) · Infarct renal."
+    "tx": "Cu **limfadenită tuberculoasă** (lama 17). = leziuni focale cu necroză în centru, delimitate de țesutul din jur. ≠ ① în centru granulocite, globule de puroi, colonii de microbi, nu necroză cazeoasă ② delimitate de membrana piogenă și țesut conjunctiv, nu de epiteloide, Langhans și coroana limfocitară ③ în jur parenchim hepatic cu lobul păstrat, nu țesut limfoid cu foliculi. Alternative: **steatoză hepatică** (lama 14: vacuole optic goale, fără granulocite) · **infarct renal** (lama 3: necroză cu arhitectura păstrată, nu țesut înlocuit de puroi)."
    }
   ]
  },
@@ -1919,7 +1930,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "6 p",
-    "tx": "● macro: pe secțiune **focare alb-gălbui** ● structura **parțial înlocuită de granuloame** izolate sau confluente ● în centru: **necroză cazeoasă** (omogenă sau fin granulară, acidofilă, fără structuri) ● **strat gros de celule epiteloide** ● **celule gigante Langhans** (50–150 microni, ~100 nuclei la periferie, coroană sau potcoavă) ● la periferie: **coroana limfocitară**; țesut limfoid restant, cu foliculi."
+    "tx": "● macro: pe secțiune **focare alb-gălbui** ● structura **parțial înlocuită de granuloame** izolate sau confluente ● în centru: !!necroză cazeoasă!! (omogenă sau fin granulară, acidofilă, fără structuri) ● **strat gros de celule epiteloide** ● **celule gigante Langhans** (50–150 microni, ~100 nuclei la periferie, coroană sau potcoavă) ● la periferie: **coroana limfocitară**; țesut limfoid restant, cu foliculi."
    },
    {
     "tm": "4 · Cauze",
@@ -1934,7 +1945,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Granulom de corp străin** (lama 18). = Ambele: inflamație cu granuloame și celule gigante multinucleate. ≠ ① La mine în centru necroză cazeoasă; la corp străin cristale de colesterol (spații aciculare optic goale). ② La mine celula Langhans: nuclei la periferie, în coroană sau potcoavă; la corp străin nuclei răspândiți fără nicio ordine în citoplasma abundentă, eozinofilă. ③ La mine granuloamele sunt într-un nodul limfatic, cu țesut limfoid restant; la corp străin în țesutul mamar, delimitate de fibroză. Alternative: Abcese hepatice · Infarct renal."
+    "tx": "Cu **granulom de corp străin** (lama 18). = inflamație cu granuloame și celule gigante multinucleate. ≠ ① în centru necroză cazeoasă, nu cristale de colesterol ② celula Langhans: nuclei la periferie, în coroană sau potcoavă, nu răspândiți fără ordine ③ granuloamele sunt într-un nodul limfatic, cu țesut limfoid restant, nu în țesut mamar. Alternative: **abcese hepatice** (lama 16: granulocite și puroi, fără epiteloide și Langhans) · **infarct renal** (lama 3: arhitectura păstrată; în cazeum nu mai sunt structuri)."
    }
   ]
  },
@@ -2030,7 +2041,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "6 p",
-    "tx": "● **formațiune nodulară bine delimitată** de un proces de fibroză ● **cristale de colesterol**: spații aciculare optic goale ● **celule gigante multinucleate de corp străin** (50–100 microni), din fuziunea macrofagelor ● nuclei numeroși, **răspândiți fără nicio ordine** în citoplasma abundentă, eozinofilă ● **infiltrat inflamator cronic**, macrofage, capilare de neoformație, țesut de granulație ● în jur: **țesut mamar normal**."
+    "tx": "● **formațiune nodulară bine delimitată** de un proces de fibroză ● **cristale de colesterol**: spații aciculare optic goale ● **celule gigante multinucleate de corp străin** (50–100 microni), din fuziunea macrofagelor ● nuclei numeroși, !!răspândiți fără nicio ordine!! în citoplasma abundentă, eozinofilă ● **infiltrat inflamator cronic**, macrofage, capilare de neoformație, țesut de granulație ● în jur: **țesut mamar normal**."
    },
    {
     "tm": "4 · Cauze",
@@ -2045,7 +2056,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Limfadenită tuberculoasă** (lama 17). = Ambele: inflamație cu granuloame și celule gigante multinucleate. ≠ ① La mine în centru cristale de colesterol (spații aciculare optic goale); la TBC necroză cazeoasă. ② La mine nuclei răspândiți fără nicio ordine în citoplasma abundentă, eozinofilă; la TBC celula Langhans, nuclei la periferie, în coroană sau potcoavă. ③ La mine formațiunea e în țesutul mamar, delimitată de fibroză; la TBC granuloame într-un nodul limfatic, cu țesut limfoid restant. Alternative: Abcese hepatice · Hipercheratoză."
+    "tx": "Cu **limfadenită tuberculoasă** (lama 17). = inflamație cu granuloame și celule gigante multinucleate. ≠ ① în centru cristale de colesterol (spații aciculare optic goale), nu necroză cazeoasă ② nuclei fără nicio ordine, în citoplasmă abundentă, eozinofilă, nu în coroană sau potcoavă (Langhans) ③ în țesut mamar, delimitat de fibroză, nu într-un nodul limfatic. Alternative: **abcese hepatice** (lama 16: granulocite și puroi, fără celule gigante) · **hipercheratoză** (lama 13: strat cornos îngroșat, la suprafața pielii)."
    }
   ]
  },
@@ -2135,7 +2146,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "6 p",
-    "tx": "● ficat **mărit de volum și greutate** ● suprafața **netedă, lucioasă**, capsula **tensă** ● marginea anterioară **rotunjită** ● parenchim **friabil**, de culoare **gălbuie** ● pe suprafața de secțiune parenchimul **prolabează peste capsulă** ● după secțiune, lama cuțitului are **aspect grăsos**."
+    "tx": "● ficat **mărit de volum și greutate** ● suprafața **netedă, lucioasă**, capsula **tensă** ● marginea anterioară **rotunjită** ● parenchim **friabil**, de culoare **gălbuie** ● pe suprafața de secțiune parenchimul **prolabează peste capsulă** ● după secțiune, lama cuțitului are !!aspect grăsos!!."
    },
    {
     "tm": "4 · Cauze",
@@ -2150,7 +2161,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Pancreatită acută** (piesa 20). = Ambele: organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatoză = grăsimi în hepatocite; steatonecroză = necroza țesutului gras). ≠ ① La mine tot ficatul e mărit, gălbui, uniform; la pancreatită țesut cu structură inomogenă, cu focare multiple (2–6 mm) gălbui-albicioase de steatonecroză. ② La mine suprafața e netedă, lucioasă, capsula tensă, fără hemoragii; la pancreatită zone extinse de hemoragie, negricioase după fixare. ③ La mine după secțiune lama cuțitului are aspect grăsos, parenchimul prolabează peste capsulă; la pancreatită focarele se extind și în țesutul adipos peripancreatic. Alternative: Rinichi de șoc · Infarct renal."
+    "tx": "Cu **pancreatită acută** (piesa 20). = organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatoza = grăsimi în hepatocite; steatonecroza = necroza țesutului gras). ≠ ① tot ficatul e mărit, gălbui, uniform, nu inomogen, cu focare gălbui-albicioase de 2–6 mm ② suprafață netedă, lucioasă, fără hemoragii, nu zone negricioase de hemoragie ③ lama cuțitului are aspect grăsos, parenchimul prolabează; la pancreatită focarele trec în grăsimea peripancreatică. Alternative: **rinichi de șoc** (piesa 12: corticală palidă, în rinichi) · **infarct renal** (piesa 8: zonă palidă localizată; la mine leziunea e difuză)."
    }
   ]
  },
@@ -2252,7 +2263,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● țesut pancreatic cu **structură inomogenă** ● **focare multiple de steatonecroză** (2–6 mm), **gălbui-albicioase** ● focarele se extind și în **țesutul adipos peripancreatic** ● **zone extinse de hemoragie**, cu aspect negricios după fixarea în formol."
+    "tx": "● țesut pancreatic cu **structură inomogenă** ● !!focare multiple de steatonecroză!! (2–6 mm), **gălbui-albicioase** ● focarele se extind și în **țesutul adipos peripancreatic** ● **zone extinse de hemoragie**, cu aspect negricios după fixarea în formol."
    },
    {
     "tm": "4 · Cauze",
@@ -2267,7 +2278,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Steatoză hepatică** (piesa 19). = Ambele: organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatonecroză = necroza țesutului gras; steatoză = grăsimi în hepatocite). ≠ ① La mine focare multiple, mici (2–6 mm), gălbui-albicioase de steatonecroză pe un țesut inomogen; la steatoză ficatul e gălbui uniform. ② La mine zone extinse de hemoragie, negricioase după fixare; la steatoză suprafața e netedă, lucioasă, fără hemoragii. ③ La mine focarele se extind și în țesutul adipos peripancreatic; la steatoză grăsimea e în citoplasma hepatocitelor, lama cuțitului are aspect grăsos. Alternative: Infarct pulmonar · Litiază biliară."
+    "tx": "Cu **steatoză hepatică** (piesa 19). = organ abdominal cu leziune legată de grăsime, cu zone gălbui (steatonecroza = necroza țesutului gras; steatoza = grăsimi în hepatocite). ≠ ① focare multiple, mici (2–6 mm), gălbui-albicioase, pe țesut inomogen, nu ficat gălbui uniform ② zone extinse de hemoragie, negricioase după fixare, nu suprafață netedă, lucioasă ③ focarele trec și în țesutul adipos peripancreatic; la steatoză grăsimea e în hepatocite. Alternative: **infarct pulmonar** (piesa 9: zonă hemoragică în plămân, fără steatonecroză) · **litiază biliară** (piesa 22: calculi în colecist; cauză a pancreatitei în 35–60% din cazuri)."
    }
   ]
  },
@@ -2362,8 +2373,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "4 p",
-    "tx": "● rinichi secționat, cu țesut adipos perirenal ● **calculi renali coraliformi**: ocupă și preiau forma sistemului pielo-caliceal ● **calice dilatate** ● **parenchim renal atrofic** (subțiat): hidronefroză."
+    "at": "5 p",
+    "tx": "● rinichi secționat, cu țesut adipos perirenal ● !!calculi renali coraliformi!!: ocupă și preiau forma sistemului pielo-caliceal ● adesea **mai mulți calculi** în același rinichi ● **calice dilatate** ● **parenchim renal atrofic** (subțiat): hidronefroză."
    },
    {
     "tm": "4 · Cauze",
@@ -2378,7 +2389,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Litiază biliară** (piesa 22). = Ambele: calculi formați în cavitățile unui organ (litiază), care pot migra și pot produce obstrucție. ≠ ① La mine calculii sunt în calice și bazinet; la litiaza biliară sunt în colecist. ② La mine calculi coraliformi, care preiau forma sistemului pielo-caliceal; la litiaza biliară calculi colesterolici galbeni sau pigmentari multipli, mici, fațetați. ③ La mine calice dilatate și parenchim renal atrofic: hidronefroză; la litiaza biliară calculul migrat în cistic dă stază biliară, empiem. Alternative: Rinichi de șoc · Infarct renal."
+    "tx": "Cu **litiază biliară** (piesa 22). = calculi formați în cavitățile unui organ, care pot migra și pot produce obstrucție. ≠ ① calculii sunt în calice și bazinet, nu în colecist ② coraliformi, preiau forma sistemului pielo-caliceal, nu colesterolici galbeni sau pigmentari fațetați ③ dau hidronefroză (calice dilatate, parenchim atrofic), nu stază biliară și empiem. Alternative: **rinichi de șoc** (piesa 12: corticală palidă, fără calculi) · **infarct renal** (piesa 8: zonă palidă cu lizereu, în parenchim)."
    }
   ]
  },
@@ -2467,7 +2478,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● colecist deschis, cu **calculi** în lumen ● calculi **colesterolici**: galbeni, friabili, cu centrul mai negricios ● calculi **pigmentari**: multipli, mai mici, până la câteva zeci, **fațetați** ● cu săruri de calciu depuse: **albicioși, cretoși, ca zarurile**."
+    "tx": "● colecist deschis, cu **calculi** în lumen ● calculi **colesterolici**: galbeni, friabili, cu centrul mai negricios ● calculi **pigmentari**: multipli, mai mici, până la câteva zeci, **fațetați** ● cu săruri de calciu depuse: !!albicioși, cretoși, ca zarurile!!."
    },
    {
     "tm": "4 · Cauze",
@@ -2482,7 +2493,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Litiază renală** (piesa 21). = Ambele: calculi formați în cavitățile unui organ (litiază), care pot migra și pot produce obstrucție. ≠ ① La mine calculii sunt în colecist; la litiaza renală sunt în calice și bazinet. ② La mine calculi pigmentari multipli, fațetați sau colesterolici galbeni, friabili (cu săruri de calciu: albicioși, ca zarurile); la litiaza renală calculi coraliformi. ③ La mine calculul migrat în cistic dă stază biliară, empiem, perforație, fistule; la litiaza renală obstrucția dă hidronefroză. Alternative: Pancreatită acută · Steatoză hepatică."
+    "tx": "Cu **litiază renală** (piesa 21). = calculi formați în cavitățile unui organ, care pot migra și pot produce obstrucție. ≠ ① calculii sunt în colecist, nu în calice și bazinet ② pigmentari multipli, fațetați sau colesterolici galbeni, friabili (cu calciu: albicioși, ca zarurile), nu coraliformi ③ calculul migrat în cistic dă stază biliară, empiem, perforație, fistule, nu hidronefroză. Alternative: **pancreatită acută** (piesa 20: steatonecroză și hemoragii; litiaza biliară îi e cauză) · **steatoză hepatică** (piesa 19: ficat gras, fără calculi)."
    }
   ]
  },
@@ -2578,7 +2589,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "5 p",
-    "tx": "● pericard cu **luciu, umiditate și transparență pierdute**, aspect uscat ● suprafață **mată, rugoasă** ● **depozite albicioase-cenușii**, neregulate, formate din **fibrină** (falsă membrană) ● aspect **vilos, păros**: „**limbă de pisică**” sau „pâine unsă cu unt” ● la bază, **vasele mari**."
+    "tx": "● pericard cu **luciu, umiditate și transparență pierdute**, aspect uscat ● suprafață **mată, rugoasă** ● **depozite albicioase-cenușii**, neregulate, formate din **fibrină** (falsă membrană) ● aspect **vilos, păros**: !!„limbă de pisică”!! sau „pâine unsă cu unt” ● la bază, **vasele mari**."
    },
    {
     "tm": "4 · Cauze",
@@ -2593,7 +2604,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct miocardic acut** (piesa 10). = Ambele: cord cu leziune vizibilă macroscopic; IMA e și o cauză a pericarditei (pericardita epistenocardică, sindromul Dressler). ≠ ① La mine leziunea e pe suprafața pericardului, difuză; la IMA zona e în peretele ventriculului stâng, văzută pe secțiune. ② La mine depozite albicioase-cenușii de fibrină, suprafață mată, rugoasă („limbă de pisică”); la IMA zonă mai palidă, cu halou hiperemic (12–24 h). ③ La mine pericardul și-a pierdut luciul, umiditatea și transparența; la IMA modificarea e în miocard (după 2–3 zile galben ca lutul, moale). Alternative: Aortă cu tromb parietal · Leptomeningită purulentă."
+    "tx": "Cu **infarct miocardic acut** (piesa 10). = cord cu leziune vizibilă macroscopic; IMA e și cauză de pericardită (epistenocardică, sindromul Dressler). ≠ ① leziunea e pe suprafața pericardului, difuză, nu în peretele VS ② depozite albicioase-cenușii de fibrină („limbă de pisică”), nu zonă palidă cu halou hiperemic ③ pericardul și-a pierdut luciul, umiditatea, transparența; la IMA miocardul devine galben ca lutul, moale. Alternative: **aortă cu tromb parietal** (piesa 6: tromb pe intima aortei) · **leptomeningită purulentă** (piesa 25: exsudat purulent pe leptomeninge, nu fibrinos)."
    }
   ]
  },
@@ -2690,7 +2701,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● cavitate **intraparenchimatoasă** ● **rotund-ovalară**, bine delimitată ● **conținut purulent** ● la periferie, **membrana piogenă** (micro: exsudat granulocitar și detritusuri, delimitate printr-o membrană fibroasă)."
+    "tx": "● cavitate **intraparenchimatoasă** ● **rotund-ovalară**, bine delimitată ● **conținut purulent** ● la periferie, !!membrana piogenă!! (micro: exsudat granulocitar și detritusuri, delimitate printr-o membrană fibroasă)."
    },
    {
     "tm": "4 · Cauze",
@@ -2705,7 +2716,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Hemoragii intracraniene (hematom intracerebral)** (piesa 11). = Ambele: creier pe secțiune, cu o leziune intraparenchimatoasă care ocupă spațiu. ≠ ① La mine cavitate rotund-ovalară cu conținut purulent; la hematom impregnarea hematică a parenchimului (sânge). ② La mine leziunea e delimitată de o membrană piogenă; la hematom sângele provine din ruperea unei ramuri vasculare intracerebrale. ③ La mine țesutul cerebral a suferit necroză de colicvație, înlocuit cu puroi; la hematom sângele poate inunda și ventriculii (hemoragie intraventriculară). Alternative: Leptomeningită purulentă · Bronhopneumonie."
+    "tx": "Cu **hemoragii intracraniene · hematom intracerebral** (piesa 11). = creier pe secțiune, cu o leziune intraparenchimatoasă care ocupă spațiu. ≠ ① cavitate rotund-ovalară cu puroi, nu sânge care impregnează parenchimul ② e delimitată de membrana piogenă; hematomul vine din ruperea unei ramuri vasculare ③ țesutul a suferit necroză de colicvație; hematomul poate inunda ventriculii. Alternative: **leptomeningită purulentă** (piesa 25: puroi difuz, pe meninge, fără membrană piogenă) · **bronhopneumonie** (piesa 26: focare de condensare în plămân, care se pot complica cu abcese)."
    }
   ]
  },
@@ -2794,7 +2805,7 @@ export const PREPS = {
    {
     "tm": "3 · Descriere",
     "at": "4 p",
-    "tx": "● exsudat purulent care **acoperă suprafața leptomeningelui** ● **girusuri aplatizate** ● **șanțuri îngustate**, prin edemațierea leptomeningelui pe seama puroiului ● puroi pe convexitate: „**meningită în șapcă**”."
+    "tx": "● exsudat purulent care **acoperă suprafața leptomeningelui** ● !!girusuri aplatizate!! ● **șanțuri îngustate**, prin edemațierea leptomeningelui pe seama puroiului ● puroi pe convexitate: „**meningită în șapcă**”."
    },
    {
     "tm": "4 · Cauze",
@@ -2809,7 +2820,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Abces cerebral** (piesa 24). = Ambele: inflamație purulentă în cutia craniană, cu semne de hipertensiune intracraniană (redoare de ceafă, vărsături). ≠ ① La mine puroiul e în spațiul meningeal, pe suprafața creierului; la abces e în parenchim. ② La mine inflamația e difuză (flegmonoasă): girusuri aplatizate, șanțuri îngustate, „meningită în șapcă”; la abces proces localizat, bine delimitat. ③ La mine nu există membrană piogenă; la abces cavitate rotund-ovalară înconjurată de membrană piogenă. Alternative: Hemoragii intracraniene (hematom intracerebral) · Pericardită fibrinoasă."
+    "tx": "Cu **abces cerebral** (piesa 24). = inflamație purulentă în cutia craniană, cu semne de hipertensiune intracraniană. ≠ ① puroiul e în spațiul meningeal, pe suprafața creierului, nu în parenchim ② inflamație difuză (flegmonoasă): girusuri aplatizate, șanțuri îngustate, nu proces localizat ③ nu există membrană piogenă; abcesul e o cavitate înconjurată de membrană piogenă. Alternative: **hemoragii intracraniene** (piesa 11: sânge în parenchim, nu puroi pe meninge) · **pericardită fibrinoasă** (piesa 23: exsudat fibrinos pe pericard)."
    }
   ]
  },
@@ -2904,8 +2915,8 @@ export const PREPS = {
    },
    {
     "tm": "3 · Descriere",
-    "at": "6 p",
-    "tx": "● leziune **multifocală, bilaterală** ● pe secțiune, **mai multe focare de condensare**, de **consistență crescută** ● culoare **roșu închis**, diametre variabile ● inițial **în jurul bronhiilor și bronhiolelor**, apoi în spațiile alveolare adiacente ● focare separate de **țesut pulmonar normal aerat**, uneori cu emfizem compensator ● focarele pot **conflua**: bronhopneumonie confluentă."
+    "at": "7 p",
+    "tx": "● leziune !!multifocală, bilaterală!! ● pe secțiune, **mai multe focare de condensare**, de **consistență crescută** ● culoare **roșu închis**, diametre variabile ● inițial **în jurul bronhiilor și bronhiolelor**, apoi în spațiile alveolare adiacente ● focare separate de **țesut pulmonar normal aerat**, uneori cu emfizem compensator ● focarele pot **conflua**: bronhopneumonie confluentă ● cel mai frecvent **lobii inferiori**, bilateral, și zonele paravertebrale."
    },
    {
     "tm": "4 · Cauze",
@@ -2920,7 +2931,7 @@ export const PREPS = {
    {
     "tm": "6 · DD",
     "at": "✓",
-    "tx": "Cu **Infarct pulmonar** (piesa 9). = Ambele: plămân pe secțiune cu zone de consistență crescută, de culoare roșu închis. ≠ ① La mine focare multiple, bilaterale, cu diametre variabile; la infarct o zonă de infarct roșu (hemoragic), bine delimitată. ② La mine focarele sunt în jurul bronhiilor și bronhiolelor, apoi în alveolele adiacente; la infarct zona corespunde ramurii obstruate a arterei pulmonare (TEP). ③ La mine focarele sunt separate de țesut pulmonar normal aerat și pot conflua; la infarct parenchimul din jur are modificări de stază cronică. Alternative: Leptomeningită purulentă · Abces cerebral."
+    "tx": "Cu **infarct pulmonar** (piesa 9). = plămân pe secțiune, cu zone de consistență crescută, roșu închis. ≠ ① focare multiple, bilaterale, de diametre variabile, nu o singură zonă bine delimitată ② pornesc din jurul bronhiilor și bronhiolelor, nu din teritoriul unei ramuri obstruate a arterei pulmonare (TEP) ③ între focare țesut normal aerat, focarele pot conflua; la infarct, în jur, stază cronică. Alternative: **leptomeningită purulentă** (piesa 25: puroi pe meninge; tot pneumococul e cauza) · **abces cerebral** (piesa 24: cavitate cu puroi; bronhopneumonia se poate complica cu abcese)."
    }
   ]
  }

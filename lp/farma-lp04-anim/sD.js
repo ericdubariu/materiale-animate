@@ -167,9 +167,10 @@ export function ionDist() {
         const on = b.i === k; panel(g, x, 30, 230, 420, { stroke: on ? C.hi : 'rgba(255,225,180,.2)', lw: on ? 5 : 3 });
         txt(g, h, x + 115, 68, 24, C.hi); txt(g, s, x + 115, 100, 17, C.cream, { w: 700 });
         membrane(g, x + 10, x + 220, 265, { h: 40 });
-        txt(g, k === 1 ? 'puțini' : 'mulți', x + 115, 140, 16, C.dim, { w: 700 }); txt(g, k === 1 ? 'mulți' : 'puțini', x + 115, 420, 16, C.dim, { w: 700 });
-        for (let j = 0; j < (k === 1 ? 2 : 7); j++) dot(g, x + 40 + (j * 37) % 150, 170 + (j % 2) * 26, 7, C.na, { ow: 2 });
-        for (let j = 0; j < (k === 1 ? 7 : 2); j++) dot(g, x + 40 + (j * 37) % 150, 350 + (j % 2) * 26, 7, C.na, { ow: 2 });
+        // sus = partea cu mulți ioni, jos = partea cu puțini: pompa urcă bilele (puțini → mulți, împotriva gradientului), canalul le coboară (mulți → puțini)
+        txt(g, 'mulți', x + 115, 140, 16, C.dim, { w: 700 }); txt(g, 'puțini', x + 115, 420, 16, C.dim, { w: 700 });
+        for (let j = 0; j < 7; j++) dot(g, x + 40 + (j * 37) % 150, 170 + (j % 2) * 26, 7, C.na, { ow: 2 });
+        for (let j = 0; j < 2; j++) dot(g, x + 40 + (j * 37) % 150, 350 + (j % 2) * 26, 7, C.na, { ow: 2 });
         if (k === 1) { const pp = new Path2D(); pp.roundRect(x + 85, 230, 60, 70, 14); paint(g, pp, '#7fe8ff', null, null, [x + 85, 230, 60, 70], OUT, 4); pill(g, x + 182, 320, 60, 30, '#ffe7a0', 'ATP', { size: 14, r: 10, ow: 3 }); }
         else channel(g, x + 115, 265, 0.8, C.nch, { s: 0.55 });
         const mv = on ? 1 : 0.35; for (let j = 0; j < 2; j++) { const v = ((j / 2) + t * 0.5) % 1; dot(g, x + 115, k === 1 ? lerp(340, 190, v) : lerp(190, 340, v), 9, C.na, { ow: 2.5, alpha: mv * Math.sin(v * Math.PI) }); }
