@@ -94,8 +94,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru edemul pulmonar acut."
+    "at": "3 p",
+    "tx": "● **insuficiență respiratorie acută** (alveolele pline cu lichid fac greu schimbul de gaze) ● **suprainfecție → bronhopneumonie** (preparatul 26) ● dacă insuficiența cardiacă stângă persistă: **stază pulmonară cronică cu fibroză** (preparatul 2). (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -238,8 +238,8 @@ export const PREPS = {
    },
    {
     "tm": "6 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații separate pentru staza cronică și infarctul pulmonar."
+    "at": "3 p",
+    "tx": "● **hemoptizie** (sânge în spută) ● **pleurită fibrinoasă** deasupra infarctului (ca pericardita fibrinoasă, preparatele 15, 23) ● **suprainfecție → abces pulmonar** (ca abcesele hepatice, preparatul 16). (nu sunt în LP)"
    },
    {
     "tm": "7 · DD",
@@ -349,8 +349,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru infarctul renal."
+    "at": "3 p",
+    "tx": "● **hematurie** (sânge în urină) ● uneori **hipertensiune arterială** (zona ischemică din jurul infarctului secretă renină) ● infarcte multiple, **bilaterale** → **insuficiență renală** (ca la rinichiul de șoc, preparatul 12). (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -358,7 +358,7 @@ export const PREPS = {
     "tx": "Cu **infarct miocardic acut** (lama 4). = zonă de infarct fără nuclei, cu lizereu congestiv la limită. ≠ ① tubi și glomeruli „fantomă”, nu fibre musculare cu sarcoplasmă intens eozinofilă ② lizereul are o bandă (capilare congestionate + infiltrat acut), nu două (granulocite intern, congestie extern) ③ alături parenchim renal normal, nu țesut de granulație printre fibre. Alternative: **zona de infarct din lama 2** (infarct roșu, inundat hemoragic, nu palid) · **abcese hepatice** (lama 16: țesutul lipsește, înlocuit de puroi; la mine arhitectura rămâne)."
    }
   ],
-  "xtra": "Evoluția (nu e în LP, deci nu o pui la complicații): zona necrozată e înlocuită de țesut de granulație, apoi de o cicatrice."
+  "xtra": "Evoluția (nu e în LP): zona necrozată e înlocuită de țesut de granulație, apoi de o cicatrice."
  },
  "4": {
   "scene": "prep",
@@ -932,8 +932,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru infarctul renal."
+    "at": "3 p",
+    "tx": "● **hematurie** (sânge în urină) ● uneori **hipertensiune arterială** (zona ischemică din jurul infarctului secretă renină) ● infarcte multiple, **bilaterale** → **insuficiență renală** (ca la rinichiul de șoc, preparatul 12). (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -941,7 +941,7 @@ export const PREPS = {
     "tx": "Cu **infarct pulmonar** (piesa 9). = infarct (necroză prin aport insuficient de sânge oxigenat), zonă bine delimitată. ≠ ① zonă palidă, infarct alb (anemic), nu roșie-negricioasă ② rinichiul are circulație unică; plămânul are circulație dublă, cu infarct doar pe stază cronică ③ zona e conturată de lizereu congestiv, vizibilă pe suprafața externă; în jurul infarctului pulmonar e stază cronică. Alternative: **rinichi de șoc** (piesa 12: toată corticala palidă, nu o singură zonă) · **litiază renală** (piesa 21: calculi, calice dilatate, fără necroză)."
    }
   ],
-  "xtra": "Evoluția (nu e în LP, deci nu o pui la complicații): zona necrozată devine, cu timpul, o cicatrice retractată."
+  "xtra": "Evoluția (nu e în LP): zona necrozată devine, cu timpul, o cicatrice retractată."
  },
  "9": {
   "scene": "prep",
@@ -1037,8 +1037,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru infarctul pulmonar."
+    "at": "3 p",
+    "tx": "● **hemoptizie** (sânge în spută) ● **pleurită fibrinoasă** deasupra infarctului (ca pericardita fibrinoasă, preparatele 15, 23) ● **suprainfecție → abces pulmonar** (ca abcesele hepatice, preparatul 16). (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -1268,8 +1268,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru hemoragiile intracraniene."
+    "at": "3 p",
+    "tx": "● **hipertensiune intracraniană → herniere cerebrală** (în final a tonsilelor cerebeloase în foramen magnum, ca la abcesul cerebral, preparatul 24) ● **hidrocefalie** (sângele din ventriculi blochează circulația LCR) ● **sechele neurologice** (hemiplegie, afazie) sau **deces**. (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -1391,8 +1391,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru rinichiul de șoc. Poți spune evoluția: **stare reversibilă**, funcția de filtrare se suplinește temporar prin **hemodializă**."
+    "at": "3 p",
+    "tx": "● **insuficiență renală acută** (necroză tubulară acută, ca în pancreatita acută, preparatul 20) ● **hiperkaliemie → tulburări de ritm** (ca în IMA, preparatele 4, 10) ● **supraîncărcare cu lichide → edem pulmonar acut** (preparatul 1). (nu sunt în LP) Evoluția: **stare reversibilă**, funcția de filtrare se suplinește temporar prin **hemodializă**."
    },
    {
     "tm": "6 · DD",
@@ -1502,8 +1502,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru hipercheratoză."
+    "at": "3 p",
+    "tx": "● **durere** la presiune și la mers ● **fisuri** ale pielii → **suprainfecție** bacteriană ● **ulcerație** (mai ales la diabetici, pe picior). (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
@@ -1828,8 +1828,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru abcesele hepatice. Abcesul recent: limite imprecise; abcesul cronic: bine delimitat, cu membrană piogenă."
+    "at": "3 p",
+    "tx": "● **ruptură în peritoneu → peritonită** ● **septicemie** (diseminarea germenilor pe cale sanguină) ● extindere prin diafragm → **empiem pleural** (ca la bronhopneumonie, preparatul 26). (nu sunt în LP) Abcesul recent: limite imprecise; abcesul cronic: bine delimitat, cu membrană piogenă."
    },
    {
     "tm": "6 · DD",
@@ -2050,8 +2050,8 @@ export const PREPS = {
    },
    {
     "tm": "5 · Complicații",
-    "at": "",
-    "tx": "LP nu dă complicații pentru granulomul de corp străin."
+    "at": "3 p",
+    "tx": "● **fibroză** → nodul dur, palpabil, care poate fi **confundat cu o tumoră** ● **suprainfecție → abces** ● **calcificare** (ca în limfadenita TBC vindecată, preparatul 17), vizibilă pe mamografie. (nu sunt în LP)"
    },
    {
     "tm": "6 · DD",
