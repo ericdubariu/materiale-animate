@@ -112,11 +112,35 @@ function renderText(i) {
 }
 function autoFit() {
   const body = $('body');
+  if (!body.clientHeight) { requestAnimationFrame(() => { if ($('body').clientHeight) autoFit(); }); }
+  body.scrollTop = 0;
   let z = 1.3; body.style.zoom = z;
   let guard = 0;
   body.style.paddingBottom = "8px"; while (body.scrollHeight > body.clientHeight + 1 && z > 0.62 && guard++ < 40) { z -= 0.02; body.style.zoom = z; }
   body.dataset.zoom = z.toFixed(2);
+  body.scrollTop = 0; updMore();
 }
+
+/* ---------- scroll în textul din stânga (când nu încape) ---------- */
+function updMore() {
+  const b = $('body'), t = $('txt'); if (!b || !t) return;
+  const more = b.scrollHeight - b.clientHeight - b.scrollTop > 3;
+  t.classList.toggle('more', more);
+  let h = $('moreHint');
+  if (!h) { h = document.createElement('div'); h.id = 'moreHint'; h.textContent = '↓ mai e text'; t.appendChild(h); }
+  if (more) { const br = b.getBoundingClientRect(), tr = t.getBoundingClientRect(), s = tr.width / (t.offsetWidth || 1) || 1; h.style.top = ((br.bottom - tr.top) / s - 28) + 'px'; }
+}
+function keepVisible(el) {
+  const b = $('body'); if (!el || b.scrollHeight <= b.clientHeight + 1) return;
+  const br = b.getBoundingClientRect(), er = el.getBoundingClientRect();
+  const r = b.clientHeight / (br.height || 1), pad = 10;
+  let d = 0;
+  if (er.bottom > br.bottom - 24) d = Math.min(er.bottom - br.bottom + 24, er.top - br.top - pad);
+  else if (er.top < br.top) d = er.top - br.top - pad;
+  if (Math.abs(d) < 1) return;
+  b.scrollTo({ top: Math.max(0, b.scrollTop + d * r), behavior: reduced ? 'auto' : 'smooth' });
+}
+
 
 /* ---------- scene ---------- */
 const cache = new Map();
@@ -198,7 +222,7 @@ function setActive(pi) {
   badgeEls.forEach((e, k) => e && e.classList.toggle('on', k === pi));
   $('phase').textContent = (cur.sc.phase ? cur.sc.phase(pi) : '') || '';
   const el = pointEls[pi] || secEls[pi] || rowEls[pi];
-  if (el && el.scrollIntoView) { const body = $('body'); if (el.offsetTop + el.offsetHeight > body.scrollTop + body.clientHeight) el.scrollIntoView({ block: 'nearest' }); }
+  if (el) keepVisible(el);
   $('stepInfo').textContent = cur.beats.length > 1 ? `${Math.max(0, cur.k)} / ${cur.beats.length - 1}` : '';
 }
 
@@ -344,6 +368,9 @@ function toggleFs() {
 $('fsBtn').addEventListener('click', toggleFs);
 
 addEventListener('resize', fit);
+$('body').addEventListener('scroll', updMore, { passive: true });
+addEventListener('resize', () => { try { updMore(); } catch (e) { /* încă nu e randat */ } });
+if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', () => { try { autoFit(); } catch (e) { /* încă nu e randat */ } });
 fit();
 let start = 0;
 const h = (location.hash || '').match(/^#s(\d+)$/);
