@@ -281,5 +281,5 @@ beatDur: 5,
   },
 ];
 
-const PREP_SLIDES = Array.from({ length: 26 }, (_, k) => PREPS[k + 1]).filter(Boolean);
+const PREP_SLIDES = Array.from({ length: 26 }, (_, k) => PREPS[k + 1] || []).flat();
 export const SLIDES = [...INTRO, ...PREP_SLIDES, ...DDS, ...CAPCANE, ...TABLES];

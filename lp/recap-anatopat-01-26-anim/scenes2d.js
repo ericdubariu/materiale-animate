@@ -51,21 +51,23 @@ function wrapText(g, s, x, y, maxW, lh, size = 10.5, col = 'rgba(246,238,247,.62
   if (line) g.fillText(line, x, yy); g.restore();
 }
 
-/* =========================================================== PREPARATUL (o scenă pe preparat, layout „script”) */
+/* =========================================================== PREPARATUL (o scenă pe preparat; layout ca la Histo: puncte în stânga, poza mare în dreapta) */
 // sceneOpts: main {img,W,H,marks}, sub {img,W,H,marks,cap}, dd {img,cap}, bad: [null|['m',k]|['s',k]|['s']|['d']] (pe rânduri), phase, cred
 function prep({ spec }) {
-  const o = spec.sceneOpts; const SW = 452, SH = 676;
-  const MB = [6, 48, 440, 352], SB = [6, 410, 216, 214], DB = [230, 410, 216, 214];
+  const o = spec.sceneOpts; const NARROW = spec.layout === 'script'; const SW = NARROW ? 452 : 724, SH = 676;
+  // layout ca la Histo (text 478 px stânga, scena lată): poza mare sus, detaliul + partenerul DD jos
+  const MB = NARROW ? [6, 48, 440, 352] : [8, 48, 708, 356], SB = NARROW ? [6, 410, 216, 214] : [8, 412, 350, 236], DB = NARROW ? [230, 410, 216, 214] : [366, 412, 350, 236];
+  const COVER = NARROW; // în layoutul lat, detaliul și partenerul se văd întregi (nu se taie cercurile)
   const m = o.main, s = o.sub, d = o.dd;
   const TM = fitT(m.W, m.H, ...MB, false);
-  const TS = s ? fitT(s.W, s.H, ...SB, true) : null;
+  const TS = s ? fitT(s.W, s.H, ...SB, COVER) : null;
   const dIm = img(d.img); // dimensiunile partenerului vin după încărcare
-  const TD = () => (ready(dIm) ? fitT(dIm.naturalWidth, dIm.naturalHeight, ...DB, true) : null);
+  const TD = () => (ready(dIm) ? fitT(dIm.naturalWidth, dIm.naturalHeight, ...DB, COVER) : null);
   const mpos = (mm, T) => [T.ox + mm.x * T.r, T.oy + (mm.y - (mm.ry ?? mm.rx)) * T.r - 8];
   const anchors = o.bad.map((b) => {
     if (!b) return null;
     if (b[0] === 'm') return b[1] != null ? mpos(m.marks[b[1]], TM) : [MB[0] + MB[2] / 2, MB[1] + 22];
-    if (b[0] === 's') return b[1] != null ? mpos(s.marks[b[1]], TS) : [SB[0] + SB[2] / 2, SB[1] + 16];
+    if (b[0] === 's') return b[1] != null ? mpos(s.marks[b[1]], TS) : NARROW ? [SB[0] + SB[2] / 2, SB[1] + 16] : [SB[0] + 26, SB[1] + 24];
     return [DB[0] + DB[2] - 20, DB[1] + 20];
   }).map((p) => (p ? [clamp(p[0], 18, SW - 18), clamp(p[1], 58, SH - 18)] : null));
   const labels = (m.marks || []).filter((mm) => mm.lab).map((mm) => {
@@ -95,7 +97,7 @@ function prep({ spec }) {
       }
       const T = TD(); if (T) photo(g, d.img, DB, T, dIm.naturalWidth, dIm.naturalHeight);
       frame(g, DB, cur[0] === 'd'); tag(g, d.cap, DB[0] + 8, DB[1] + DB[3] - 31, '#ffe36e');
-      wrapText(g, o.cred, 8, 640, 380, 13);
+      wrapText(g, o.cred, 8, NARROW ? 640 : 664, NARROW ? 380 : 700, 13);
     },
   };
 }
