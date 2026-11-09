@@ -50,13 +50,37 @@ export const SLIDES = [
   "beatDur": 5
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "pav",
-   "dd": "cub"
+   "main": {
+    "img": "pav",
+    "cap": "Pe lamă: mezenter etalat · argentic"
+   },
+   "dd": {
+    "img": "cub",
+    "cap": "DD: medulara renală · HE"
+   },
+   "seq": [
+    {
+     "img": "pav",
+     "cap": "Pe lamă: mezenter etalat · argentic"
+    },
+    {
+     "img": "z_pav_0",
+     "cap": "Celulă poligonală pe lamă"
+    },
+    {
+     "img": "z_pav_1",
+     "cap": "Limită crenelată pe lamă"
+    },
+    {
+     "img": "cub",
+     "cap": "DD: medulara renală · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere, ionii de argint (puncte negre) coboară și precipită doar în spațiile dintre celule, până se închid toate contururile crenelate (≈3,5 s), apoi rămân fixe; ob. mic încercuiește o celulă poligonală, ob. mare o limită crenelată.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 2 · Lama 1 din 19 · argentic · mezenter",
   "title": "Epiteliul simplu pavimentos",
   "hud": [
@@ -97,34 +121,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Secțiune prin mezenter” = greșit: e un **etalat**. „Nuclei turtiți” la argentic = greșit: nucleii nu se colorează; nu descrie ce nu se vede.",
-  "insets": [
-   {
-    "img": "pav",
-    "cap": "Pe lamă: mezenter etalat · argentic"
-   },
-   {
-    "img": "z_pav_0",
-    "cap": "Celulă poligonală pe lamă"
-   },
-   {
-    "img": "z_pav_1",
-    "cap": "Limită crenelată pe lamă"
-   },
-   {
-    "img": "cub",
-    "cap": "Partenerul de DD pe lamă: medulara renală · HE"
-   }
-  ]
+  "warn": "„Secțiune prin mezenter” = greșit: e un **etalat**. „Nuclei turtiți” la argentic = greșit: nucleii nu se colorează; nu descrie ce nu se vede."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "cub",
-   "dd": "pri"
+   "main": {
+    "img": "cub",
+    "cap": "Pe lamă: medulara renală · HE"
+   },
+   "dd": {
+    "img": "pri",
+    "cap": "DD: vezica biliară · HE"
+   },
+   "seq": [
+    {
+     "img": "cub",
+     "cap": "Pe lamă: medulara renală · HE"
+    },
+    {
+     "img": "z_cub_0",
+     "cap": "Tub colector: un rând, lumen gol"
+    },
+    {
+     "img": "z_cub_1",
+     "cap": "Nucleu rotund, central pe lamă"
+    },
+    {
+     "img": "pri",
+     "cap": "DD: vezica biliară · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Tub colector fix; pe ob. mare o riglă măsoară o celulă: înălțimea crește până egalează lățimea (≈1,5 s) și se oprește; badge-urile pe lumen și pe nucleul rotund, central.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 2 · Lama 2 din 19 · HE · rinichi",
   "title": "Epiteliul simplu cubic",
   "hud": [
@@ -166,34 +196,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Cubic sau tiroidă? Tubul colector: lumen gol. Foliculul tiroidian: cavitate cu **coloid** eozinofil.",
-  "insets": [
-   {
-    "img": "cub",
-    "cap": "Pe lamă: medulara renală · HE"
-   },
-   {
-    "img": "z_cub_0",
-    "cap": "Tub colector: un rând, lumen gol"
-   },
-   {
-    "img": "z_cub_1",
-    "cap": "Nucleu rotund, central pe lamă"
-   },
-   {
-    "img": "pri",
-    "cap": "Partenerul de DD pe lamă: vezica biliară · HE"
-   }
-  ]
+  "warn": "Cubic sau tiroidă? Tubul colector: lumen gol. Foliculul tiroidian: cavitate cu **coloid** eozinofil."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "pri",
-   "dd": "cub"
+   "main": {
+    "img": "pri",
+    "cap": "Pe lamă: vezica biliară · HE"
+   },
+   "dd": {
+    "img": "cub",
+    "cap": "DD: medulara renală · HE"
+   },
+   "seq": [
+    {
+     "img": "pri",
+     "cap": "Pe lamă: vezica biliară · HE"
+    },
+    {
+     "img": "z_pri_3",
+     "cap": "Un singur rând de celule cilindrice"
+    },
+    {
+     "img": "z_pri_0",
+     "cap": "Platoul striat pe lamă"
+    },
+    {
+     "img": "cub",
+     "cap": "DD: medulara renală · HE"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix de epiteliu cilindric pe pliuri; încercuiește banda de nuclei bazali (ob. mic), apoi platoul striat (ob. mare).",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 2 · Lama 3 din 19 · HE · vezica biliară",
   "title": "Epiteliul simplu prismatic (cilindric)",
   "hud": [
@@ -234,34 +270,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Prismatic sau pseudostratificat? Prismaticul: nuclei la același nivel, platou striat, **fără cili, fără caliciforme**. Pseudostratificatul: nuclei la înălțimi diferite, cili, caliciforme.",
-  "insets": [
-   {
-    "img": "pri",
-    "cap": "Pe lamă: vezica biliară · HE"
-   },
-   {
-    "img": "z_pri_3",
-    "cap": "Un singur rând de celule cilindrice"
-   },
-   {
-    "img": "z_pri_0",
-    "cap": "Platoul striat pe lamă"
-   },
-   {
-    "img": "cub",
-    "cap": "Partenerul de DD pe lamă: medulara renală · HE"
-   }
-  ]
+  "warn": "Prismatic sau pseudostratificat? Prismaticul: nuclei la același nivel, platou striat, **fără cili, fără caliciforme**. Pseudostratificatul: nuclei la înălțimi diferite, cili, caliciforme."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "ps",
-   "dd": "uro"
+   "main": {
+    "img": "ps",
+    "cap": "Pe lamă: trahee · HE"
+   },
+   "dd": {
+    "img": "uro",
+    "cap": "DD: vezica urinară · HE"
+   },
+   "seq": [
+    {
+     "img": "ps",
+     "cap": "Pe lamă: trahee · HE"
+    },
+    {
+     "img": "z_ps_0",
+     "cap": "Nuclei la înălțimi diferite"
+    },
+    {
+     "img": "z_ps_1",
+     "cap": "Polul apical cu cili pe lamă"
+    },
+    {
+     "img": "uro",
+     "cap": "DD: vezica urinară · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Câmp de epiteliu pseudostratificat; pe ob. mic fiecare celulă se luminează de la suprafață până la MB (toate ating MB), apoi fix; pe ob. mare încercuiește cilii și o caliciformă.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 3 · Lama 4 din 19 · HE · trahee",
   "title": "Epiteliul pseudostratificat",
   "hud": [
@@ -302,34 +344,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Pseudostratificatul e stratificat” = greșit: e **epiteliu simplu** (toate celulele pe MB).",
-  "insets": [
-   {
-    "img": "ps",
-    "cap": "Pe lamă: trahee · HE"
-   },
-   {
-    "img": "z_ps_0",
-    "cap": "Nuclei la înălțimi diferite"
-   },
-   {
-    "img": "z_ps_1",
-    "cap": "Polul apical cu cili pe lamă"
-   },
-   {
-    "img": "uro",
-    "cap": "Partenerul de DD pe lamă: vezica urinară · HE"
-   }
-  ]
+  "warn": "„Pseudostratificatul e stratificat” = greșit: e **epiteliu simplu** (toate celulele pe MB)."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "es",
-   "dd": "uro"
+   "main": {
+    "img": "es",
+    "cap": "Pe lamă: esofag · HE"
+   },
+   "dd": {
+    "img": "uro",
+    "cap": "DD: vezica urinară · HE"
+   },
+   "seq": [
+    {
+     "img": "es",
+     "cap": "Pe lamă: esofag · HE"
+    },
+    {
+     "img": "z_es_0",
+     "cap": "Stratul bazal pe lamă"
+    },
+    {
+     "img": "z_es_1",
+     "cap": "Stratul spinocelular pe lamă"
+    },
+    {
+     "img": "z_es_2",
+     "cap": "Stratul superficial pe lamă"
+    },
+    {
+     "img": "uro",
+     "cap": "DD: vezica urinară · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere, o celulă urcă din stratul bazal prin spinocelular până sus, se turtește, nucleul devine picnotic și se descuamează; ciclul se reia; pe straturi animația se oprește și se încercuiește stratul punctului.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 3 · Lama 5 din 19 · HE · esofag",
   "title": "Epiteliul stratificat pavimentos necheratinizat",
   "hud": [
@@ -375,38 +427,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Stratul bazal are nuclei **hipocromi**, nu hipercromi; hipercrom (picnotic) = stratul superficial.",
-  "insets": [
-   {
-    "img": "es",
-    "cap": "Pe lamă: esofag · HE"
-   },
-   {
-    "img": "z_es_0",
-    "cap": "Stratul bazal pe lamă"
-   },
-   {
-    "img": "z_es_1",
-    "cap": "Stratul spinocelular pe lamă"
-   },
-   {
-    "img": "z_es_2",
-    "cap": "Stratul superficial pe lamă"
-   },
-   {
-    "img": "uro",
-    "cap": "Partenerul de DD pe lamă: vezica urinară · HE"
-   }
-  ]
+  "warn": "Stratul bazal are nuclei **hipocromi**, nu hipercromi; hipercrom (picnotic) = stratul superficial."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "uro",
-   "dd": "es"
+   "main": {
+    "img": "uro",
+    "cap": "Pe lamă: vezica urinară · HE"
+   },
+   "dd": {
+    "img": "es",
+    "cap": "DD: esofag · HE"
+   },
+   "seq": [
+    {
+     "img": "uro",
+     "cap": "Pe lamă: vezica urinară · HE"
+    },
+    {
+     "img": "z_uro_2",
+     "cap": "Stratul bazal pe lamă"
+    },
+    {
+     "img": "z_uro_1",
+     "cap": "Celule în rachetă pe lamă"
+    },
+    {
+     "img": "z_uro_0",
+     "cap": "Celule umbreliforme pe lamă"
+    },
+    {
+     "img": "es",
+     "cap": "DD: esofag · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere, peretele se întinde și revine lent (umbreliformele se turtesc la întindere); pe straturi animația se oprește și se încercuiește stratul bazal, rachetele, apoi umbreliformele.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 3 · Lama 6 din 19 · HE · vezica urinară",
   "title": "Uroteliul (epiteliul tranzițional)",
   "hud": [
@@ -453,38 +511,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "MB la uroteliu: **invizibilă în HE**, nu o descrie (la esofag e sinuoasă, vizibilă). Stratul mijlociu: esofag = spinocelular, uroteliu = rachete; nu le amesteca.",
-  "insets": [
-   {
-    "img": "uro",
-    "cap": "Pe lamă: vezica urinară · HE"
-   },
-   {
-    "img": "z_uro_2",
-    "cap": "Stratul bazal pe lamă"
-   },
-   {
-    "img": "z_uro_1",
-    "cap": "Celule în rachetă pe lamă"
-   },
-   {
-    "img": "z_uro_0",
-    "cap": "Celule umbreliforme pe lamă"
-   },
-   {
-    "img": "es",
-    "cap": "Partenerul de DD pe lamă: esofag · HE"
-   }
-  ]
+  "warn": "MB la uroteliu: **invizibilă în HE**, nu o descrie (la esofag e sinuoasă, vizibilă). Stratul mijlociu: esofag = spinocelular, uroteliu = rachete; nu le amesteca."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "tub",
-   "dd": "sub"
+   "main": {
+    "img": "tub",
+    "cap": "Pe lamă: colon · HE"
+   },
+   "dd": {
+    "img": "sub",
+    "cap": "DD: submandibulara · HE"
+   },
+   "seq": [
+    {
+     "img": "tub",
+     "cap": "Pe lamă: colon · HE"
+    },
+    {
+     "img": "z_tub_0",
+     "cap": "Glandă dreaptă, paralelă"
+    },
+    {
+     "img": "z_tub_1",
+     "cap": "Celulă caliciformă pe lamă"
+    },
+    {
+     "img": "sub",
+     "cap": "DD: submandibulara · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere și pe ob. mare, picături de mucus ies din caliciforme în lumenul îngust și urcă spre suprafață; pe ob. mic fix, încercuiește glanda (fund, corp, gât).",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 4 · Lama 7 din 19 · HE · colon",
   "title": "Glanda tubulară simplă",
   "hud": [
@@ -525,34 +585,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Golurile” din caliciforme nu sunt artefacte: sunt **mucus** (în colorația albastru alcian, mucusul apare albastru).",
-  "insets": [
-   {
-    "img": "tub",
-    "cap": "Pe lamă: colon · HE"
-   },
-   {
-    "img": "z_tub_0",
-    "cap": "Glandă dreaptă, paralelă"
-   },
-   {
-    "img": "z_tub_1",
-    "cap": "Celulă caliciformă pe lamă"
-   },
-   {
-    "img": "sub",
-    "cap": "Partenerul de DD pe lamă: submandibulara · HE"
-   }
-  ]
+  "warn": "„Golurile” din caliciforme nu sunt artefacte: sunt **mucus** (în colorația albastru alcian, mucusul apare albastru)."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "seb",
-   "dd": "sub"
+   "main": {
+    "img": "seb",
+    "cap": "Pe lamă: buză · HE"
+   },
+   "dd": {
+    "img": "sub",
+    "cap": "DD: submandibulara · HE"
+   },
+   "seq": [
+    {
+     "img": "seb",
+     "cap": "Pe lamă: buză · HE"
+    },
+    {
+     "img": "z_seb_0",
+     "cap": "Celule mari, vacuolare"
+    },
+    {
+     "img": "z_seb_1",
+     "cap": "Celulele bazale pe lamă"
+    },
+    {
+     "img": "z_seb_2",
+     "cap": "Dezintegrare spre canal"
+    },
+    {
+     "img": "sub",
+     "cap": "DD: submandibulara · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe punctul „spre canal”, o celulă bazală se umple de vacuole, nucleul devine picnotic și celula se dezintegrează în canal = sebum (ciclu lent); restul punctelor fix, încercuite.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 4 · Lama 8 din 19 · HE · buză",
   "title": "Glanda alveolară simplă (sebacee)",
   "hud": [
@@ -598,38 +668,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Golurile = **sebum** dizolvat (colorația Szekely evidențiază conținutul lipidic), nu artefacte.",
-  "insets": [
-   {
-    "img": "seb",
-    "cap": "Pe lamă: buză · HE"
-   },
-   {
-    "img": "z_seb_0",
-    "cap": "Celule mari, vacuolare"
-   },
-   {
-    "img": "z_seb_1",
-    "cap": "Celulele bazale pe lamă"
-   },
-   {
-    "img": "z_seb_2",
-    "cap": "Dezintegrare spre canal"
-   },
-   {
-    "img": "sub",
-    "cap": "Partenerul de DD pe lamă: submandibulara · HE"
-   }
-  ]
+  "warn": "Golurile = **sebum** dizolvat (colorația Szekely evidențiază conținutul lipidic), nu artefacte."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "sub",
-   "dd": "tub"
+   "main": {
+    "img": "sub",
+    "cap": "Pe lamă: submandibulara · HE"
+   },
+   "dd": {
+    "img": "tub",
+    "cap": "DD: colon · HE"
+   },
+   "seq": [
+    {
+     "img": "sub",
+     "cap": "Pe lamă: submandibulara · HE"
+    },
+    {
+     "img": "z_sub_1",
+     "cap": "Acin mucos pe lamă"
+    },
+    {
+     "img": "z_sub_0",
+     "cap": "Acini seroși pe lamă (mici, granulari, mai închiși)"
+    },
+    {
+     "img": "sub",
+     "cap": "Lama întreagă (acinul mixt nemarcat)"
+    },
+    {
+     "img": "tub",
+     "cap": "DD: colon · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe acinul seros, granule de zimogen (roz) se aprind la polul apical și pălesc în ciclu; restul fix, cu acinul mucos, seros, apoi mixtul cu semiluna încercuite pe rând.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 4 · Lama 9 din 19 · HE · submandibulara",
   "title": "Glanda tubulo-acinoasă (submandibulară)",
   "hud": [
@@ -675,38 +751,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "În LP, textul și eticheta pozei spun la acinul seros **nucleu situat bazal**; tabelul de DD scrie „rotund, central”. Semiluna: text **3–5** celule seroase, tabel 3–4 → spui „3–5”.",
-  "insets": [
-   {
-    "img": "sub",
-    "cap": "Pe lamă: submandibulara · HE"
-   },
-   {
-    "img": "z_sub_1",
-    "cap": "Acin mucos pe lamă"
-   },
-   {
-    "img": "z_sub_0",
-    "cap": "Acini seroși pe lamă (mici, granulari, mai închiși)"
-   },
-   {
-    "img": "sub",
-    "cap": "Lama întreagă (acinul mixt nemarcat)"
-   },
-   {
-    "img": "tub",
-    "cap": "Partenerul de DD pe lamă: colon · HE"
-   }
-  ]
+  "warn": "În LP, textul și eticheta pozei spun la acinul seros **nucleu situat bazal**; tabelul de DD scrie „rotund, central”. Semiluna: text **3–5** celule seroase, tabel 3–4 → spui „3–5”."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "tir",
-   "dd": "sr"
+   "main": {
+    "img": "tir",
+    "cap": "Pe lamă: tiroida · HE"
+   },
+   "dd": {
+    "img": "sr",
+    "cap": "DD: suprarenala · HE"
+   },
+   "seq": [
+    {
+     "img": "tir",
+     "cap": "Pe lamă: tiroida · HE"
+    },
+    {
+     "img": "z_tir_0",
+     "cap": "Coloidul pe lamă"
+    },
+    {
+     "img": "z_tir_1",
+     "cap": "Un singur rând de celule foliculare"
+    },
+    {
+     "img": "z_tir_3",
+     "cap": "Printre foliculi (celulele C: doar IHC)"
+    },
+    {
+     "img": "sr",
+     "cap": "DD: suprarenala · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere și pe folicul, picături pornesc din coloid prin celulele foliculare spre capilar (T3, T4), în ciclu; pe celulele foliculare și C fix, încercuite.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 5 · Lama 10 din 19 · HE · tiroida",
   "title": "Glanda tiroidă: celule endocrine în foliculi",
   "hud": [
@@ -752,38 +834,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Cavitatea foliculului = depozit de coloid, nu lumen de glandă exocrină. „Văd celulele C” în HE = greșit: se identifică prin **IHC**.",
-  "insets": [
-   {
-    "img": "z_tir_2",
-    "cap": "Foliculi de mărimi diferite"
-   },
-   {
-    "img": "z_tir_0",
-    "cap": "Coloidul pe lamă"
-   },
-   {
-    "img": "z_tir_1",
-    "cap": "Un singur rând de celule foliculare"
-   },
-   {
-    "img": "z_tir_3",
-    "cap": "Printre foliculi (celulele C: doar IHC)"
-   },
-   {
-    "img": "sr",
-    "cap": "Partenerul de DD pe lamă: suprarenala · HE"
-   }
-  ]
+  "warn": "Cavitatea foliculului = depozit de coloid, nu lumen de glandă exocrină. „Văd celulele C” în HE = greșit: se identifică prin **IHC**."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "sr",
-   "dd": "tir"
+   "main": {
+    "img": "sr",
+    "cap": "Pe lamă: suprarenala · HE (glomerulara nu e în cadru)"
+   },
+   "dd": {
+    "img": "tir",
+    "cap": "DD: tiroida · HE"
+   },
+   "seq": [
+    {
+     "img": "sr",
+     "cap": "Pe lamă (glomerulara nu e în cadru)"
+    },
+    {
+     "img": "z_sr_0",
+     "cap": "Zona fasciculată pe lamă"
+    },
+    {
+     "img": "z_sr_1",
+     "cap": "Zona reticulată pe lamă"
+    },
+    {
+     "img": "z_sr_2",
+     "cap": "Medulara pe lamă"
+    },
+    {
+     "img": "tir",
+     "cap": "DD: tiroida · HE"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Coloană fixă capsulă → glomerulară → fasciculată → reticulată → medulară; zona punctului se încercuiește.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 5 · Lama 11 din 19 · HE · suprarenala",
   "title": "Glanda suprarenală: cuiburi și cordoane",
   "hud": [
@@ -828,38 +916,44 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Periferie → centru: **glomerulară → fasciculată → reticulată → medulară**.",
-  "insets": [
-   {
-    "img": "sr",
-    "cap": "Pe lamă (glomerulara nu e în cadru)"
-   },
-   {
-    "img": "z_sr_0",
-    "cap": "Zona fasciculată pe lamă"
-   },
-   {
-    "img": "z_sr_1",
-    "cap": "Zona reticulată pe lamă"
-   },
-   {
-    "img": "z_sr_2",
-    "cap": "Medulara pe lamă"
-   },
-   {
-    "img": "tir",
-    "cap": "Partenerul de DD pe lamă: tiroida · HE"
-   }
-  ]
+  "warn": "Periferie → centru: **glomerulară → fasciculată → reticulată → medulară**."
  },
  {
-  "scene": "a.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "pan",
-   "dd": "sr"
+   "main": {
+    "img": "pan",
+    "cap": "Pe lamă: pancreas · HE"
+   },
+   "dd": {
+    "img": "sr",
+    "cap": "DD: suprarenala · HE"
+   },
+   "seq": [
+    {
+     "img": "pan",
+     "cap": "Pe lamă: pancreas · HE"
+    },
+    {
+     "img": "z_pan_0",
+     "cap": "Insulă Langerhans pe lamă"
+    },
+    {
+     "img": "z_pan_0",
+     "cap": "Celule mici, palide, în cuiburi"
+    },
+    {
+     "img": "z_pan_1",
+     "cap": "Acini seroși pe lamă"
+    },
+    {
+     "img": "sr",
+     "cap": "DD: suprarenala · HE"
+    }
+   ]
   },
-  "anim": true,
-  "spec": "Pe recunoaștere și pe ob. mic, secreția acinilor curge spre canal în ciclu; pe insulă fix, încercuită; la DD, față în față cu suprarenala.",
+  "anim": false,
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 5 · Lama 12 din 19 · HE · pancreas",
   "title": "Insula Langerhans (pancreasul endocrin)",
   "hud": [
@@ -905,38 +999,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Văd celulele beta” = greșit: α, β, δ, F (PP) nu se identifică în HE; spui că e nevoie de **IHC**.",
-  "insets": [
-   {
-    "img": "pan",
-    "cap": "Pe lamă: pancreas · HE"
-   },
-   {
-    "img": "z_pan_0",
-    "cap": "Insulă Langerhans pe lamă"
-   },
-   {
-    "img": "z_pan_0",
-    "cap": "Celule mici, palide, în cuiburi"
-   },
-   {
-    "img": "z_pan_1",
-    "cap": "Acini seroși pe lamă"
-   },
-   {
-    "img": "sr",
-    "cap": "Partenerul de DD pe lamă: suprarenala · HE"
-   }
-  ]
+  "warn": "„Văd celulele beta” = greșit: α, β, δ, F (PP) nu se identifică în HE; spui că e nevoie de **IHC**."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "gr",
-   "dd": "lax"
+   "main": {
+    "img": "gr",
+    "cap": "Pe lamă: țesut de granulație · HE"
+   },
+   "dd": {
+    "img": "lax",
+    "cap": "DD: glanda mamară · HE (lax)"
+   },
+   "seq": [
+    {
+     "img": "gr",
+     "cap": "Pe lamă: țesut de granulație · HE"
+    },
+    {
+     "img": "z_gr_1",
+     "cap": "Capilar cu o hematie pe lamă"
+    },
+    {
+     "img": "z_gr_0",
+     "cap": "Nuclei rotunzi, închiși: limfocite, plasmocite"
+    },
+    {
+     "img": "lax",
+     "cap": "DD: glanda mamară · HE (lax)"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix de țesut de granulație; încercuiește vasul cu hematii (ob. mic), apoi fibroblastul și plasmocitul (ob. mare); la DD, față în față cu laxul.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 6 · Lama 13 din 19 · HE · țesut de granulație",
   "title": "Celulele țesutului conjunctiv: celularitate abundentă, multe vase",
   "hud": [
@@ -976,34 +1072,40 @@ export const SLIDES = [
      "asemănarea (nepunctată): ambele țesut conjunctiv colorat HE: celule + fibre de colagen + SF, cu vase"
     ]
    }
-  ],
-  "insets": [
-   {
-    "img": "gr",
-    "cap": "Pe lamă: țesut de granulație · HE"
-   },
-   {
-    "img": "z_gr_1",
-    "cap": "Capilar cu o hematie pe lamă"
-   },
-   {
-    "img": "z_gr_0",
-    "cap": "Nuclei rotunzi, închiși: limfocite, plasmocite"
-   },
-   {
-    "img": "lax",
-    "cap": "Partenerul de DD pe lamă: glanda mamară · HE (lax)"
-   }
   ]
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "col",
-   "dd": "ret"
+   "main": {
+    "img": "col",
+    "cap": "Pe lamă: glanda mamară · van Gieson"
+   },
+   "dd": {
+    "img": "ret",
+    "cap": "DD: rinichi · argentic"
+   },
+   "seq": [
+    {
+     "img": "col",
+     "cap": "Pe lamă: glanda mamară · van Gieson"
+    },
+    {
+     "img": "z_col_0",
+     "cap": "Fibre roșii, sinuoase"
+    },
+    {
+     "img": "z_col_1",
+     "cap": "Nuclei negru-cafenii pe lamă"
+    },
+    {
+     "img": "ret",
+     "cap": "DD: rinichi · argentic"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix în van Gieson; încercuiește fasciculul grosier și adipocitele (ob. mic), apoi un nucleu turtit de fibrocit (ob. mare); la DD, față în față cu reticulina.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 6 · Lama 14 din 19 · van Gieson · glanda mamară",
   "title": "Fibrele de colagen: roșii, sinuoase, în fascicule",
   "hud": [
@@ -1044,34 +1146,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Colagenul se ramifică” = greșit: fibrele trec dintr-un fascicul în altul, dar nu se ramifică și nu se anastomozează. Reticulina da.",
-  "insets": [
-   {
-    "img": "col",
-    "cap": "Pe lamă: glanda mamară · van Gieson"
-   },
-   {
-    "img": "z_col_0",
-    "cap": "Fibre roșii, sinuoase"
-   },
-   {
-    "img": "z_col_1",
-    "cap": "Nuclei negru-cafenii pe lamă"
-   },
-   {
-    "img": "ret",
-    "cap": "Partenerul de DD pe lamă: rinichi · argentic"
-   }
-  ]
+  "warn": "„Colagenul se ramifică” = greșit: fibrele trec dintr-un fascicul în altul, dar nu se ramifică și nu se anastomozează. Reticulina da."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "ret",
-   "dd": "col"
+   "main": {
+    "img": "ret",
+    "cap": "Pe lamă: rinichi · argentic"
+   },
+   "dd": {
+    "img": "col",
+    "cap": "DD: glanda mamară · van Gieson"
+   },
+   "seq": [
+    {
+     "img": "ret",
+     "cap": "Pe lamă: rinichi · argentic"
+    },
+    {
+     "img": "z_ret_0",
+     "cap": "Ochi al rețelei: tub renal"
+    },
+    {
+     "img": "z_ret_1",
+     "cap": "Fibre ramificate între tubi"
+    },
+    {
+     "img": "col",
+     "cap": "DD: glanda mamară · van Gieson"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix argentic (tubi renali + rețea neagră); încercuiește un tub în ochiul rețelei (ob. mic), apoi o ramificare cu anastomoze (ob. mare); la DD, față în față cu colagenul.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 6 · Lama 15 din 19 · argentic · splină (pe fișă)",
   "title": "Fibrele de reticulină: singura lamă neagră, o rețea",
   "hud": [
@@ -1112,34 +1220,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Tot argentic e și epiteliul simplu pavimentos (LP 2): acolo vezi **contururi de celule** pe un etalat, aici **fibre** pe o secțiune. Organul: pe fișa oficială e **splina** (lama din LP e pe rinichi) → spui „splină”.",
-  "insets": [
-   {
-    "img": "ret",
-    "cap": "Pe lamă: rinichi · argentic"
-   },
-   {
-    "img": "z_ret_0",
-    "cap": "Ochi al rețelei: tub renal"
-   },
-   {
-    "img": "z_ret_1",
-    "cap": "Fibre ramificate între tubi"
-   },
-   {
-    "img": "col",
-    "cap": "Partenerul de DD pe lamă: glanda mamară · van Gieson"
-   }
-  ]
+  "warn": "Tot argentic e și epiteliul simplu pavimentos (LP 2): acolo vezi **contururi de celule** pe un etalat, aici **fibre** pe o secțiune. Organul: pe fișa oficială e **splina** (lama din LP e pe rinichi) → spui „splină”."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "lax",
-   "dd": "adi"
+   "main": {
+    "img": "lax",
+    "cap": "Pe lamă: glanda mamară · HE (lax)"
+   },
+   "dd": {
+    "img": "adi",
+    "cap": "DD: glanda mamară · HE (adipos)"
+   },
+   "seq": [
+    {
+     "img": "lax",
+     "cap": "Pe lamă: glanda mamară · HE (lax)"
+    },
+    {
+     "img": "z_lax_1",
+     "cap": "Laxul din lobul pe lamă"
+    },
+    {
+     "img": "z_lax_mare_0",
+     "cap": "Capilar cu hematii pe lamă"
+    },
+    {
+     "img": "adi",
+     "cap": "DD: glanda mamară · HE (adipos)"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix de glandă mamară (lobuli + conjunctiv dens între ei); încercuiește lobulul (ob. mic), apoi un fibroblast și un capilar transversal (ob. mare); la DD, față în față cu adiposul.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 7 · Lama 16 din 19 · HE · glanda mamară",
   "title": "Conjunctivul lax: în lobulul mamar, proporții egale",
   "hud": [
@@ -1180,34 +1294,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Laxul e **în lobul**: nu descrie densul de lângă.",
-  "insets": [
-   {
-    "img": "lax",
-    "cap": "Pe lamă: glanda mamară · HE (lax)"
-   },
-   {
-    "img": "z_lax_1",
-    "cap": "Laxul din lobul pe lamă"
-   },
-   {
-    "img": "z_lax_mare_0",
-    "cap": "Capilar cu hematii pe lamă"
-   },
-   {
-    "img": "adi",
-    "cap": "Partenerul de DD pe lamă: glanda mamară · HE (adipos)"
-   }
-  ]
+  "warn": "Laxul e **în lobul**: nu descrie densul de lângă."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "adi",
-   "dd": "lax"
+   "main": {
+    "img": "adi",
+    "cap": "Pe lamă: glanda mamară · HE (adipos)"
+   },
+   "dd": {
+    "img": "lax",
+    "cap": "DD: glanda mamară · HE (lax)"
+   },
+   "seq": [
+    {
+     "img": "adi",
+     "cap": "Pe lamă: glanda mamară · HE (adipos)"
+    },
+    {
+     "img": "z_adi_0",
+     "cap": "Adipocit pe lamă"
+    },
+    {
+     "img": "z_adi_mare_1",
+     "cap": "Nucleu turtit, la margine"
+    },
+    {
+     "img": "lax",
+     "cap": "DD: glanda mamară · HE (lax)"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Fagure fix de adipocite; încercuiește un capilar dintre celule (ob. mic), apoi nucleul turtit al unei celule (ob. mare); la DD, față în față cu laxul.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 7 · Lama 17 din 19 · HE · glanda mamară",
   "title": "Țesutul adipos alb: celule mari, optic goale",
   "hud": [
@@ -1248,34 +1368,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Adipos sau sebacee (LP 4)? Adipos: **o vacuolă**, nucleu turtit, excentric. Sebacee: citoplasmă vacuolară, nucleu rotund central (apoi picnotic), rând de celule bazale.",
-  "insets": [
-   {
-    "img": "adi",
-    "cap": "Pe lamă: glanda mamară · HE (adipos)"
-   },
-   {
-    "img": "z_adi_0",
-    "cap": "Adipocit pe lamă"
-   },
-   {
-    "img": "z_adi_mare_1",
-    "cap": "Nucleu turtit, la margine"
-   },
-   {
-    "img": "lax",
-    "cap": "Partenerul de DD pe lamă: glanda mamară · HE (lax)"
-   }
-  ]
+  "warn": "Adipos sau sebacee (LP 4)? Adipos: **o vacuolă**, nucleu turtit, excentric. Sebacee: citoplasmă vacuolară, nucleu rotund central (apoi picnotic), rând de celule bazale."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "ten",
-   "dd": "lax"
+   "main": {
+    "img": "ten",
+    "cap": "Pe lamă: tendon · HE"
+   },
+   "dd": {
+    "img": "lax",
+    "cap": "DD: glanda mamară · HE (lax)"
+   },
+   "seq": [
+    {
+     "img": "ten",
+     "cap": "Pe lamă: tendon · HE"
+    },
+    {
+     "img": "z_ten_0",
+     "cap": "Fascicul de colagen pe lamă"
+    },
+    {
+     "img": "z_ten_mare_0",
+     "cap": "„Nuclei gemeni” pe lamă"
+    },
+    {
+     "img": "lax",
+     "cap": "DD: glanda mamară · HE (lax)"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix de tendon (fascicule oblice paralele); încercuiește o fantă albă (ob. mic), apoi o pereche de nuclei gemeni (ob. mare); la DD, față în față cu laxul.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 7 · Lama 18 din 19 · HE · tendon",
   "title": "Conjunctivul tendinos: fascicule paralele și nuclei gemeni",
   "hud": [
@@ -1316,34 +1442,40 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "Nucleii „cap la cap” (**nuclei gemeni**) sunt aspectul caracteristic țesutului tendinos: spune-i pe nume.",
-  "insets": [
-   {
-    "img": "ten",
-    "cap": "Pe lamă: tendon · HE"
-   },
-   {
-    "img": "z_ten_0",
-    "cap": "Fascicul de colagen pe lamă"
-   },
-   {
-    "img": "z_ten_mare_0",
-    "cap": "„Nuclei gemeni” pe lamă"
-   },
-   {
-    "img": "lax",
-    "cap": "Partenerul de DD pe lamă: glanda mamară · HE (lax)"
-   }
-  ]
+  "warn": "Nucleii „cap la cap” (**nuclei gemeni**) sunt aspectul caracteristic țesutului tendinos: spune-i pe nume."
  },
  {
-  "scene": "b.lama",
+  "scene": "photo",
   "sceneOpts": {
-   "k": "rt",
-   "dd": "ret"
+   "main": {
+    "img": "rt",
+    "cap": "Pe lamă: nodul limfatic · HE"
+   },
+   "dd": {
+    "img": "ret",
+    "cap": "DD: rinichi · argentic"
+   },
+   "seq": [
+    {
+     "img": "rt",
+     "cap": "Pe lamă: nodul limfatic · HE"
+    },
+    {
+     "img": "z_rt_0",
+     "cap": "Limfocite rare: rețeaua se vede"
+    },
+    {
+     "img": "z_rt_mare_0",
+     "cap": "Celulă reticulară pe lamă"
+    },
+    {
+     "img": "ret",
+     "cap": "DD: rinichi · argentic"
+    }
+   ]
   },
   "anim": false,
-  "spec": "Câmp fix de medulară (celule reticulare stelate + limfocite); încercuiește un cordon dens (ob. mic), apoi o celulă reticulară și un limfocit (ob. mare); la DD, față în față cu fibrele de reticulină.",
+  "spec": "Static: sus poza lamei de la LP, mare; jos-stânga decupajul de pe lamă al punctului activ; jos-dreapta partenerul de DD (poza de la LP); badge-ul și chenarul galben pe poza punctului.",
   "kick": "LP 7 · Lama 19 din 19 · HE · nodul limfatic",
   "title": "Conjunctivul reticular: celule stelate și limfocite în ochiuri",
   "hud": [
@@ -1384,25 +1516,7 @@ export const SLIDES = [
     ]
    }
   ],
-  "warn": "„Văd fibrele de reticulină” la HE = greșit: vezi celulele reticulare; fibrele negre = LP 6, argentic.",
-  "insets": [
-   {
-    "img": "rt",
-    "cap": "Pe lamă: nodul limfatic · HE"
-   },
-   {
-    "img": "z_rt_0",
-    "cap": "Limfocite rare: rețeaua se vede"
-   },
-   {
-    "img": "z_rt_mare_0",
-    "cap": "Celulă reticulară pe lamă"
-   },
-   {
-    "img": "ret",
-    "cap": "Partenerul de DD pe lamă: rinichi · argentic"
-   }
-  ]
+  "warn": "„Văd fibrele de reticulină” la HE = greșit: vezi celulele reticulare; fibrele negre = LP 6, argentic."
  },
  {
   "scene": "a.mosaic",
