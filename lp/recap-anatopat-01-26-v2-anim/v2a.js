@@ -71,53 +71,57 @@ export function scope({ spec }) {
     const s = clamp((0.44 * R) / Math.max(m.rx, m.ry ?? m.rx), s0 * 1.7, 1.9); const hw = (0.72 * R) / s;
     views.push({ x: clamp(m.x, Math.min(o.W / 2, hw), Math.max(o.W / 2, o.W - hw)), y: clamp(m.y, Math.min(o.H / 2, hw), Math.max(o.H / 2, o.H - hw)), s });
   });
+  // SEQ[i] = ce se vede la punctul i: 0 = toată poza, k + 1 = structura k (cercul k din fișa veche)
+  const SEQ = o.seq || [0, ...o.marks.map((_, k) => k + 1)]; const ALL = o.allOn || []; const PIECE = !!o.piece;
   const viewAt = (b) => {
-    const vi = Math.max(0, b.i), pv = views[Math.max(0, vi - 1)], cv = views[vi];
-    const u = b.i <= 0 ? 1 : RED ? 1 : ease(clamp(b.bt / 1.5));
+    const cv = views[b.i < 0 ? 0 : SEQ[b.i]], pv = views[b.i <= 0 ? 0 : SEQ[b.i - 1]];
+    const u = b.i <= 0 || pv === cv ? 1 : RED ? 1 : ease(clamp(b.bt / 1.5));
     return { x: lerp(pv.x, cv.x, u), y: lerp(pv.y, cv.y, u), s: Math.exp(lerp(Math.log(pv.s), Math.log(cv.s), u)), u };
   };
   // badge-ul structurii active o urmărește pe ecran (în vizor); celelalte stau ascunse, ca să nu se calce
   let LV = views[0], LI = -1;
-  const anchors = [[CX - R * 0.7, CY - R * 0.7 - 6], ...o.marks.map((m, k) => () => { if (LI !== k + 1) return [-999, -999]; const x = CX + (m.x - LV.x) * LV.s, y = CY + (m.y - (m.ry ?? m.rx) - LV.y) * LV.s - 14; return Math.hypot(x - CX, y - CY) < R - 12 ? [x, y] : [-999, -999]; })];
+  const anchors = SEQ.map((v, i) => { if (!v) return null; const m = o.marks[v - 1]; return () => { if (LI !== i) return [-999, -999]; const x = CX + (m.x - LV.x) * LV.s, y = CY + (m.y - (m.ry ?? m.rx) - LV.y) * LV.s - 14; return Math.hypot(x - CX, y - CY) < R - 12 ? [x, y] : [-999, -999]; }; });
   const TB = [586, 92, 130, 96]; const TT = fitT(o.W, o.H, ...TB);
   return {
     W: SW, H: SH, home: { x: SW / 2, y: SH / 2, z: 1 }, anchors,
-    phase: (i) => (i <= 0 ? 'obiectiv mic' : 'obiectiv mare'),
+    phase: (i) => { const z = i >= 0 && SEQ[i] > 0; return PIECE ? (z ? 'de aproape' : 'toată piesa') : z ? 'obiectiv mare' : 'obiectiv mic'; },
     draw(g, t, b) {
-      dark(g); const im = img(o.img); const v = viewAt(b); const big = b.i >= 1; LV = v; LI = b.i;
+      dark(g); const im = img(o.img); const v = viewAt(b); const am = b.i >= 0 ? SEQ[b.i] - 1 : -1; const big = am >= 0; const all = ALL.includes(b.i); LV = v; LI = b.i;
       // vizorul
       g.save(); g.beginPath(); g.arc(CX, CY, R, 0, 7); g.fillStyle = '#05030a'; g.fill(); g.clip();
       if (ready(im)) g.drawImage(im, CX - v.x * v.s, CY - v.y * v.s, o.W * v.s, o.H * v.s);
       o.marks.forEach((m, k) => {
-        const on = b.i === k + 1; const a = on ? (RED ? 1 : sg(b.bt, 1.2, 0.5)) : b.i <= 0 ? 0.55 : 0.3;
+        const on = am === k; const a = on ? (RED ? 1 : sg(b.bt, 1.2, 0.5)) : all ? 1 : !big ? 0.55 : 0.3;
         ell(g, CX + (m.x - v.x) * v.s, CY + (m.y - v.y) * v.s, m.rx * v.s, (m.ry ?? m.rx) * v.s, m.rot, COLS[k % COLS.length], on, a);
       });
       const vg = g.createRadialGradient(CX, CY, R * 0.72, CX, CY, R); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.62)'); g.fillStyle = vg; g.fillRect(CX - R, CY - R, 2 * R, 2 * R);
       g.restore();
       g.save(); g.strokeStyle = '#0b0610'; g.lineWidth = 18; g.beginPath(); g.arc(CX, CY, R + 6, 0, 7); g.stroke(); g.strokeStyle = '#6b5a7c'; g.lineWidth = 4; g.beginPath(); g.arc(CX, CY, R + 14, 0, 7); g.stroke(); g.strokeStyle = 'rgba(255,255,255,.25)'; g.lineWidth = 3; g.lineCap = 'round'; g.beginPath(); g.arc(CX, CY, R - 10, -2.5, -1.95); g.stroke(); g.restore();
       // eticheta structurii (sub vizor)
-      const lab = b.i >= 1 ? o.marks[b.i - 1].lab : 'ansamblul lamei';
+      const lab = big ? o.marks[am].lab : PIECE ? 'toată piesa' : 'ansamblul lamei';
       g.save(); g.font = '700 16px Inter, sans-serif'; const lw = g.measureText(lab).width + 14; g.restore();
-      tag(g, lab, CX - lw / 2, CY + R + 26, b.i >= 1 ? COLS[(b.i - 1) % COLS.length] : '#f6eef7', 16);
+      tag(g, lab, CX - lw / 2, CY + R + 26, big ? COLS[am % COLS.length] : '#f6eef7', 16);
       // harta lamei (unde ești)
-      small(g, 'unde ești pe lamă', TB[0] + TB[2] / 2, TB[1] - 14, 12, 'rgba(246,238,247,.8)', 'center', 700);
+      small(g, PIECE ? 'unde ești pe piesă' : 'unde ești pe lamă', TB[0] + TB[2] / 2, TB[1] - 14, 12, 'rgba(246,238,247,.8)', 'center', 700);
       g.save(); g.beginPath(); g.roundRect(TT.ox, TT.oy, o.W * TT.r, o.H * TT.r, 6); g.fillStyle = '#05030a'; g.fill(); g.clip();
       if (ready(im)) g.drawImage(im, TT.ox, TT.oy, o.W * TT.r, o.H * TT.r);
       g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(TT.ox, TT.oy, o.W * TT.r, o.H * TT.r);
       g.strokeStyle = '#ffe36e'; g.lineWidth = 2.5; g.beginPath(); g.arc(TT.ox + v.x * TT.r, TT.oy + v.y * TT.r, Math.max(5, (R / v.s) * TT.r), 0, 7); g.stroke(); g.restore();
       g.save(); g.strokeStyle = 'rgba(255,255,255,.3)'; g.lineWidth = 1.5; g.beginPath(); g.roundRect(TT.ox, TT.oy, o.W * TT.r, o.H * TT.r, 6); g.stroke(); g.restore();
       // revolverul cu obiective: cel scurt = mic, cel lung = mare
-      const ox = 651, oy = 286; const u = b.i <= 0 ? 0 : b.i === 1 ? v.u : 1;
+      const ox = 651, oy = 286; const u = big ? (b.i > 0 && SEQ[b.i - 1] === 0 ? v.u : 1) : b.i > 0 && SEQ[b.i - 1] > 0 ? 1 - v.u : 0;
+      if (!PIECE) {
       g.save(); g.lineJoin = 'round'; g.strokeStyle = OUT; g.lineWidth = 5;
       g.fillStyle = '#4a3b5a'; g.beginPath(); g.roundRect(ox - 58, oy, 116, 26, 10); g.fill(); g.stroke();
       const barrel = (x, len, wd, onK) => { const c = onK > 0.5 ? '#ffe36e' : '#8d7fa0'; g.save(); if (onK > 0.5) { g.shadowColor = '#ffe36e'; g.shadowBlur = 18; } g.fillStyle = c; g.beginPath(); g.roundRect(x - wd / 2, oy + 26, wd, len, 6); g.fill(); g.restore(); g.beginPath(); g.roundRect(x - wd / 2, oy + 26, wd, len, 6); g.stroke(); g.fillStyle = '#20102a'; g.fillRect(x - wd / 2 + 4, oy + 26 + len - 12, wd - 8, 4); };
       barrel(ox - 28, 46, 36, 1 - u); barrel(ox + 28, 86, 26, u); g.restore();
       small(g, 'ob. mic', ox - 28, oy + 90, 12, u < 0.5 ? '#ffe36e' : 'rgba(246,238,247,.6)', 'center', 700);
       small(g, 'ob. mare', ox + 28, oy + 130, 12, u >= 0.5 ? '#ffe36e' : 'rgba(246,238,247,.6)', 'center', 700);
+      }
       small(g, 'Aceeași poză ca la stație', 651, 470, 11, 'rgba(246,238,247,.62)', 'center');
       small(g, '(preparatul de la LP),', 651, 485, 11, 'rgba(246,238,247,.62)', 'center');
       small(g, 'doar mărită pe ecran.', 651, 500, 11, 'rgba(246,238,247,.62)', 'center');
-      small(g, big ? 'cerc = adnotarea din fișă' : 'cercuri = ce urmează', 651, 530, 11, 'rgba(246,238,247,.62)', 'center');
+      small(g, big ? 'cerc = adnotarea din fișă' : 'cercuri = adnotările din fișă', 651, 530, 11, 'rgba(246,238,247,.62)', 'center');
     },
   };
 }
@@ -145,12 +149,13 @@ export function ddFace({ spec }) {
   };
   return {
     W: SW, H: SH, home: { x: SW / 2, y: SH / 2, z: 1 }, anchors: [], labels,
-    phase: (i) => ['față în față', 'asemănarea', 'diferența 1', 'diferența 2', 'diferența 3', 'alternativele'][i + 1] || '',
+    phase: (i) => (o.phase || ['față în față', 'asemănarea', 'diferența 1', 'diferența 2', 'diferența 3', 'alternativele'])[i + 1] || '',
     draw(g, t, b) {
-      dark(g); const same = b.i === 0, dif = b.i >= 1 && b.i <= 3; const c = same ? '#9dff8a' : '#ffe36e'; const Tb = TBf();
+      dark(g); const same = !o.plain && b.i === 0, dif = !o.plain && b.i >= 1 && b.i <= 3; const c = same ? '#9dff8a' : '#ffe36e'; const Tb = TBf();
       box(g, BA, o.a.img, TA, o.a.W, o.a.H, o.a.marks, same || dif, c, t);
       box(g, BB, o.b.img, Tb, o.b.W || bIm.naturalWidth, o.b.H || bIm.naturalHeight, o.b.W ? o.b.marks : [], same || dif, c, t);
       tag(g, o.a.cap, BA[0] + 8, BA[1] + 8, '#ffffff', 14); tag(g, o.b.cap, BB[0] + 8, BB[1] + 8, '#ffe36e', 14);
+      if (o.plain) { small(g, o.cred || '', 10, 666, 10.5); return; }
       const s = b.i < 0 ? 'DD' : same ? '=' : dif ? '≠ ' + '①②③'[b.i - 1] : '+2';
       g.save(); g.font = '800 24px Inter, sans-serif'; const w = Math.max(54, g.measureText(s).width + 30); g.fillStyle = '#160d1c'; g.strokeStyle = b.i < 0 || b.i > 3 ? 'rgba(255,255,255,.5)' : c; g.lineWidth = 4; g.beginPath(); g.roundRect(MID[0] - w / 2, MID[1] - 23, w, 46, 23); g.fill(); g.stroke();
       g.fillStyle = b.i < 0 || b.i > 3 ? '#f6eef7' : c; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(s, MID[0], MID[1] + 1); g.restore();
