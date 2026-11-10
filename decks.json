@@ -353,6 +353,18 @@
    "added": "2026-11-06",
    "updated": "2026-11-09",
    "ord": 904
+  },
+  {
+   "id": "recap-histo-ospe-v2-anim",
+   "subj": "histo",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · LP 2–7 · fișa de evaluare (nou, în probă)",
+   "sub": "Aceleași 19 lame pe fișa oficială, cu aceleași poze, plus: scheletul stației, „la microscop” (de la ansamblu la detaliile încercuite, pe aceeași poză) înaintea fiecărei fișe și DD față în față cu partenerul după ea · recapitularea veche rămâne mai sus",
+   "slides": 64,
+   "path": "lp/recap-histo-ospe-v2-anim/index.html",
+   "added": "2026-11-10",
+   "updated": "2026-11-10",
+   "ord": 914
   }
  ]
 }
