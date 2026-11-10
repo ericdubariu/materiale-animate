@@ -2,7 +2,7 @@
 // Cele 25 de slide-uri vechi vin NESCHIMBATE din slides_base.js (text, poze, scene). Aici se ADAUGĂ doar:
 //  1) „scheletul stației” (ordinea de punctaj), după slide-ul 1;
 //  2) pentru fiecare dintre cele 19 lame: „la microscop” ÎNAINTE de fișă și „DD față în față” DUPĂ fișă.
-// Slide-urile noi nu aduc fapte noi: textul lor e luat automat din fișa aceleiași lame (diagnosticul, noțiunile de 1 p, rândurile de DD),
+// Slide-urile noi nu aduc fapte noi: „la microscop” are doar legendele pozelor (fără textul fișei, ca să nu se repete), iar DD-ul e luat automat din rândurile de DD ale fișei,
 // iar pozele și legendele sunt cele din slide-ul vechi (sceneOpts.main / seq / dd). Pozițiile decupajelor pe lamă: rects.js.
 import { GLOS as G0, TERMS as T0, SLIDES as S0 } from './slides_base.js';
 import { RECTS } from './rects.js';
@@ -10,20 +10,16 @@ import { RECTS } from './rects.js';
 const strip = (s) => s.replace(/!{2}|\*{2}/g, '');
 const noPts = (h) => h.replace(/ · [\d,]+ p( · obligatoriu)?$/, '');
 const short = (t) => t.split(':')[0].trim();
-// noțiunile de 1 p dintr-un punct al fișei (fără marcaje)
-const onePt = (p) => p.d.flatMap((x) => x.split(' · ')).filter((x) => /\(1 p\)\s*$/.test(x)).map((x) => strip(x).replace(/\s*\(1 p\)\s*$/, ''));
 
 function micSlide(s) {
   const o = s.sceneOpts; const n = s.points.length; const m = RECTS[o.seq[1].img] || Object.values(RECTS).find((r) => r.img === o.main.img);
   const steps = [{ mode: 'full', img: o.main.img, cap: o.main.cap }];
-  const points = [{ h: 'Ansamblul · întâi spui diagnosticul', d: [s.points[0].d[0]] }];
+  const points = [{ h: 'Ansamblul', d: [`pe poză: **${o.main.cap.replace(/^Pe lamă: /, '')}**`] }];
   for (let i = 1; i < n - 1; i++) {
     const e = o.seq[i]; const r = RECTS[e.img];
     const mode = e.img === o.main.img ? 'full' : r && r.img === o.main.img ? 'zoom' : 'swap';
     steps.push({ mode, img: e.img, cap: e.cap, rect: r && r.rect });
-    const one = onePt(s.points[i]);
     const d = [`pe poză: **${e.cap}**` + (mode === 'swap' ? ' (decupaj la obiectiv mare)' : '')];
-    if (one.length) d.push(`noțiunile de 1 p ale punctului: ${one.join(' · ')}`);
     points.push({ h: noPts(s.points[i].h), d });
   }
   return {
