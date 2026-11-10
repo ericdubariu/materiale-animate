@@ -280,7 +280,8 @@ def main():
                 if ff: more.append({"src": f"../lp/{ff.parent.parent.name}/img/{ff.name}", "cap": extra[1]})
             # din 10.11.2026 (cererea lui Eric): pozele reale ale lamelor de examen (lp/recap-histo-ospe-v2-anim/img/ex_*) în locul celor de la LP;
             # lama 1 (mezenter, argentic) nu are poză de examen și rămâne cu pozele de la LP
-            exk = HISTO_EXAM[z["nr"] - 1]; exf = sorted((SITE / "lp" / "recap-histo-ospe-v2-anim" / "img").glob(f"ex_{exk}_*.jpg"))
+            exk = HISTO_EXAM[z["nr"] + {6: 12, 7: 15}.get(lp, 0) - 1];  # la LP 6–7 numărul lamei e local (1–3, 1–4)
+             exf = sorted((SITE / "lp" / "recap-histo-ospe-v2-anim" / "img").glob(f"ex_{exk}_*.jpg"))
             imgcap = "Poza de ansamblu"
             if exf:
                 key = f"l{i}"; imgs[key] = f"../lp/recap-histo-ospe-v2-anim/img/{exf[0].name}"; imgcap = "Lama de examen · poză reală la microscop"
