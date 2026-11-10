@@ -16,6 +16,16 @@ const exList = (k) => Array.from({ length: EXN[k] || 0 }, (_, j) => `ex_${k}_${j
 const organOf = (s) => s.kick.split(' · ').slice(2).join(' · ');
 const exSide = (k, s, lp) => (EXN[k] ? { img: `ex_${k}_${EXREP[k]}`, cap: k === 'adi' ? 'Examen: adipocite · HE' : `Examen: ${organOf(s)}` } : { img: lp.img, cap: lp.cap.replace(/^(Pe lamă|DD): /, 'Poza de la LP: ') });
 const BYKEY = {};
+// ★ = lamele care la examen arată clar altfel decât poza de la LP (comparație vizuală a pozelor, 10.11.2026); textul stă în chenarul albastru
+const STAR = {
+  cub: 'La mărirea mică, lama de examen e un câmp gri-lila aproape uniform; la mărirea mare apare și un glomerul lângă tubi. Poza de la LP era un prim-plan cu câțiva tubi.',
+  es: 'La mărirea mică vezi toată secțiunea de esofag, cu lumenul în formă de stea; poza de la LP arăta doar epiteliul, de aproape.',
+  seb: 'La mărirea mică, lama de examen e o bucată de piele, palidă, cu epidermul sus și firul de păr; glanda e mică în câmp. Poza de la LP era un prim-plan cu celulele vacuolare.',
+  sr: 'Pe lama de examen se vede capsula sus și corticala sub ea, roz pal; poza de la LP prindea doar zonele profunde.',
+  col: 'Pe lama de examen culoarea e mult mai pală: roz deschis pe fond gălbui-verzui; rozul intens din poza de la LP apare doar la mărirea mare.',
+  ret: 'Lama de examen e splină: fond gri, cu fire negre foarte fine și dese, fără ochiuri mari albe. Poza de la LP era rinichi, cu rețea neagră groasă în jurul tubilor.',
+  rt: 'La mărirea mică, lama de examen e albastru-violet dens, cu o zonă mai rară, ca o dantelă; poza de la LP era un prim-plan roz, cu celule rare.',
+};
 const strip = (s) => s.replace(/!{2}|\*{2}/g, '');
 const short = (t) => t.split(':')[0].trim();
 
@@ -38,8 +48,9 @@ function micSlide(s) {
   return {
     scene: 'mic', sceneOpts: { main: o.main, size: m.size, steps, exam: ex, examCap: o.main.img === 'adi' ? 'Examen: adipocite · HE (poză reală la microscop)' : `Lama de examen: ${organOf(s)} (${ex.length === 1 ? 'poză reală' : ex.length + ' poze reale, de la mărire mică la mare'})` }, anim: true, beatDur: 4,
     spec: ex.length ? 'Doar pozele reale ale lamei de examen (fără pozele de la LP, fără cercuri). P1 (diagnosticul): toate pozele lamei odată, în vizoare rotunde, de la mărirea mică la cea mare. Pe punctele următoare: una dintre poze, mare, în vizor (în ordine, de la mărirea mică spre cea mare), cu trecere prin stingere/aprindere; celelalte rămân mici în dreapta, cu cea curentă încercuită galben. Se joacă o dată și rămâne pe cadrul final.' : 'Lama 1 nu are poză de examen: vizor rotund cu poza de la LP; pe fiecare punct camera se apropie de decupajul existent al punctului și apare elipsa lui din recapitularea veche. Se joacă o dată și rămâne pe cadrul final.',
-    kick: s.kick, title: s.title,
-    hud: s.hud, points,
+    kick: s.kick, title: (STAR[o.main.img] ? '★ ' : '') + s.title,
+    hud: STAR[o.main.img] ? [...s.hud, '★ altfel decât la LP'] : s.hud, points,
+    ...(STAR[o.main.img] ? { xtra: '★ ' + STAR[o.main.img] + ' (Comparație după poze; o parte din diferența de culoare poate veni de la poza făcută cu telefonul.)' } : {}),
     ...(s.warn ? { warn: s.warn } : {}),
   };
 }
@@ -53,8 +64,8 @@ function ddSlide(s) {
   return {
     scene: 'ddface', sceneOpts: { main: exSide(o.main.img, s, o.main), dd: exSide(o.dd.img, BYKEY[o.dd.img], o.dd), items, heads, credit: 'Pozele: lamele de examen la microscop (unde nu există, poza de la LP).' }, anim: false, beatDur: 4,
     spec: 'Static: două vizoare alăturate, stânga lama, dreapta partenerul de DD, cu pozele reale ale lamelor de examen (fără cercuri; lama 1 are poza de la LP). Inelul galben pe partener la P1 și P3–P5, verde pe ambele la asemănare; jos apare textul pasului.',
-    kick: s.kick.replace(/(Lama \d+ din 19).*/, '$1 · DD față în față'), title: `${short(s.title)} față în față cu partenerul de DD`,
-    hud: [s.hud[0], 'DD · 2 p'],
+    kick: s.kick.replace(/(Lama \d+ din 19).*/, '$1 · DD față în față'), title: `${STAR[o.main.img] ? '★ ' : ''}${short(s.title)} față în față cu partenerul de DD`,
+    hud: [s.hud[0], 'DD · 2 p', ...(STAR[o.main.img] ? ['★ altfel decât la LP'] : [])],
     points: [
       { h: heads[0], d: [partner] },
       { h: heads[1], d: [same] },
