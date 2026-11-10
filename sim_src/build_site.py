@@ -31,6 +31,7 @@ OUT = SITE / "sim"
 # pachetele folosite de simulări (restul nu se publică)
 KEEP = re.compile(r"^(unix_.+|anatopat_lp\d+|micro_lp0[1-6]b?|fizio_lp\d+|embrio_lp\d+)$")
 # Histologie și Farmacologie: fișele OSPE se construiesc din deck-urile aliniate la LP-urile oficiale (vezi build_fise)
+HISTO_EXAM = ["pav", "cub", "pri", "ps", "es", "uro", "tub", "seb", "sub", "tir", "sr", "pan", "gr", "col", "ret", "lax", "adi", "ten", "rt"]  # lama 1..19 → poza de examen
 ORDER = {"histo": 0, "anatopat": 1, "farma": 2, "micro": 3, "fizio": 4, "fiziopat": 5, "embrio": 6}
 
 # Fiziopatologie: „una de mecanism, una din definiții / clasificări”. Împărțirea după formularea întrebării:
@@ -277,7 +278,15 @@ def main():
             for extra in HISTO_CLEAN.get((lp, local), []):
                 ff = next((SITE / "lp").glob(f"*/img/{extra[0]}.jpg"), None)
                 if ff: more.append({"src": f"../lp/{ff.parent.parent.name}/img/{ff.name}", "cap": extra[1]})
-            qs.append({"id": f"{uid}_l{i+1}", "topic": i, "diff": 0, "imgcap": "Poza de ansamblu", "more": more, "annot": annot, "type": "open", "station": 1, "img": key,
+            # din 10.11.2026 (cererea lui Eric): pozele reale ale lamelor de examen (lp/recap-histo-ospe-v2-anim/img/ex_*) în locul celor de la LP;
+            # lama 1 (mezenter, argentic) nu are poză de examen și rămâne cu pozele de la LP
+            exk = HISTO_EXAM[z["nr"] - 1]; exf = sorted((SITE / "lp" / "recap-histo-ospe-v2-anim" / "img").glob(f"ex_{exk}_*.jpg"))
+            imgcap = "Poza de ansamblu"
+            if exf:
+                key = f"l{i}"; imgs[key] = f"../lp/recap-histo-ospe-v2-anim/img/{exf[0].name}"; imgcap = "Lama de examen · poză reală la microscop"
+                more = [{"src": f"../lp/recap-histo-ospe-v2-anim/img/{f.name}", "cap": f"Lama de examen · poza {j + 2}"} for j, f in enumerate(exf[1:])]
+                annot = []
+            qs.append({"id": f"{uid}_l{i+1}", "topic": i, "diff": 0, "imgcap": imgcap, "more": more, "annot": annot, "type": "open", "station": 1, "img": key,
                        "q": "Recunoașteți lama și colorația, descrieți preparatul (obiectiv mic, apoi obiectiv mare) și faceți diagnosticul diferențial cu o singură altă lamă.",
                        "kp": z["kp"], "ev": HF[(lp, z["nr"])], "src": f"Recapitularea OSPE de Histologie · LP {lp}, {z['title']} ({z['col']} · {z['org']})"})
         titles = {2: "Epiteliile de acoperire (I)", 3: "Epiteliile de acoperire (II)", 4: "Epiteliile glandulare exocrine (III)",

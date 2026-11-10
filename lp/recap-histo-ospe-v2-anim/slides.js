@@ -8,7 +8,8 @@ import { GLOS as G0, TERMS as T0, SLIDES as S0 } from './slides_base.js';
 import { RECTS } from './rects.js';
 
 // Pozele reale ale lamelor de examen (din notițele „Histology LP”, 10.11.2026): decupate pe câmpul microscopului, în ordinea mărire mică → mare.
-// Lama 1 (mezenter, argentic) nu are poză de examen în notițe; la adipos e poza de adipocite din notițe.
+// La cererea lui Eric (10.11, 14:10): se arată DOAR pozele lamelor de examen, fără cele de la LP. Excepție: lama 1 (mezenter, argentic) nu are
+// poză de examen în notițe, deci rămâne cu poza de la LP; la adipos e poza de adipocite din notițe.
 const EXN = { cub: 3, pri: 3, ps: 3, es: 3, uro: 3, tub: 2, seb: 3, sub: 3, tir: 2, sr: 2, pan: 3, gr: 1, col: 3, ret: 2, lax: 3, adi: 1, ten: 1, rt: 1 };
 const EXREP = { cub: 1, pri: 2, ps: 1, es: 1, uro: 1, tub: 1, seb: 2, sub: 2, tir: 0, sr: 1, pan: 2, gr: 0, col: 2, ret: 1, lax: 2, adi: 0, ten: 0, rt: 0 }; // poza reprezentativă, pentru DD
 const exList = (k) => Array.from({ length: EXN[k] || 0 }, (_, j) => `ex_${k}_${j}`);
@@ -24,14 +25,19 @@ function micSlide(s) {
   const steps = [{ mode: ex.length ? 'exam' : 'full', img: o.main.img, cap: o.main.cap }];
   const points = [s.points[0]]; // fișa, neschimbată: punctul i al fișei = pasul i din vizor
   for (let i = 1; i < n - 1; i++) {
-    const e = o.seq[i]; const r = RECTS[e.img];
-    const mode = e.img === o.main.img ? 'full' : r && r.img === o.main.img ? 'zoom' : 'swap';
-    steps.push({ mode, img: e.img, cap: e.cap, rect: r && r.rect });
+    if (ex.length) { // doar pozele lamei de examen: punctele merg de la poza cu mărirea mică la cea cu mărirea mare
+      const m = n - 2; const j = m === 1 ? ex.length - 1 : Math.round(((i - 1) * (ex.length - 1)) / (m - 1));
+      steps.push({ mode: 'ex', img: ex[j], cap: ex.length === 1 ? 'Lama de examen · poză reală la microscop' : `Lama de examen · poza ${j + 1} din ${ex.length} (de la mărire mică la mare)` });
+    } else {
+      const e = o.seq[i]; const r = RECTS[e.img];
+      const mode = e.img === o.main.img ? 'full' : r && r.img === o.main.img ? 'zoom' : 'swap';
+      steps.push({ mode, img: e.img, cap: e.cap, rect: r && r.rect });
+    }
     points.push(s.points[i]);
   }
   return {
     scene: 'mic', sceneOpts: { main: o.main, size: m.size, steps, exam: ex, examCap: o.main.img === 'adi' ? 'Examen: adipocite · HE (poză reală la microscop)' : `Lama de examen: ${organOf(s)} (${ex.length === 1 ? 'poză reală' : ex.length + ' poze reale, de la mărire mică la mare'})` }, anim: true, beatDur: 4,
-    spec: 'Vizor rotund cu poza reală a lamei (același fișier ca în fișă, nemodificat). P1 (diagnosticul): pozele reale ale lamei de examen, toate odată, în vizoare rotunde, de la mărirea mică la cea mare (lama 1 nu are poză de examen: acolo e poza de la LP). Pe fiecare punct următor apare vizorul mare cu poza de la LP și camera se apropie de locul decupajului existent al punctului (poziția din rects.js), se oprește acolo și apare decupajul cu elipsa lui din recapitularea veche; Dacă decupajul vine din altă poză (obiectiv mare), poza se schimbă prin stingere/aprindere, fără zoom. Se joacă o dată și rămâne pe cadrul final.',
+    spec: ex.length ? 'Doar pozele reale ale lamei de examen (fără pozele de la LP, fără cercuri). P1 (diagnosticul): toate pozele lamei odată, în vizoare rotunde, de la mărirea mică la cea mare. Pe punctele următoare: una dintre poze, mare, în vizor (în ordine, de la mărirea mică spre cea mare), cu trecere prin stingere/aprindere; celelalte rămân mici în dreapta, cu cea curentă încercuită galben. Se joacă o dată și rămâne pe cadrul final.' : 'Lama 1 nu are poză de examen: vizor rotund cu poza de la LP; pe fiecare punct camera se apropie de decupajul existent al punctului și apare elipsa lui din recapitularea veche. Se joacă o dată și rămâne pe cadrul final.',
     kick: s.kick, title: s.title,
     hud: s.hud, points,
     ...(s.warn ? { warn: s.warn } : {}),

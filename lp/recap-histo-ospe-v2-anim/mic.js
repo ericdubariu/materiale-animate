@@ -75,6 +75,15 @@ export function mic({ spec }) {
       g.fillStyle = BG; g.fillRect(-2000, -2000, 4000 + SW, 4000 + SH);
       const i = Math.max(0, Math.min(steps.length - 1, b.i)); const st = steps[i], pv = steps[i - 1];
       if (st.mode === 'exam') { drawExam(g, 1); tag(g, 'lama de examen · poze reale la microscop', SW - 8, 54, 360, '#ffe36e', 13, 'right'); return; }
+      if (st.mode === 'ex') { // doar pozele lamei de examen: poza punctului, mare; toate pozele rămân în coloana din dreapta
+        const u2 = ease(clamp((b.i < 0 ? 0 : b.bt) / 0.8)); const same = pv && pv.mode === 'ex' && pv.img === st.img;
+        if (pv && pv.mode === 'exam') drawExam(g, 1 - u2);
+        if (pv && pv.mode === 'ex' && !same) disc(g, pv.img, 322, 340, 276, 1 - u2);
+        disc(g, st.img, 322, 340, 276, same ? 1 : u2);
+        if (exam.length > 1) exam.forEach((e, k) => disc(g, e, 668, 150 + k * 108, 44, 1, e === st.img ? '#ffe36e' : '#c2558c'));
+        tag(g, st.cap, 8, 640, SW - 16, '#ffe36e');
+        return;
+      }
       const fromExam = pv && pv.mode === 'exam';
       const bt = b.i < 0 ? 0 : b.bt; const u = ease(clamp(bt / DZ));
       const vTo = views[i], vFrom = fromExam ? vTo : i > 0 ? views[i - 1] : vFull;
