@@ -22,6 +22,16 @@ function tag(g, s, x, y, maxW, col = '#f6eef7', size = 13, align = 'left') {
 }
 function wrap(g, s, maxW) { const out = []; let line = ''; for (const w of s.split(' ')) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; } if (line) out.push(line); return out; }
 
+// poza într-un cerc: umple cercul (pozele de examen sunt deja decupate pătrat pe câmpul microscopului)
+function disc(g, name, cx, cy, R, a = 1, ringCol = '#c2558c') {
+  const im = img(name);
+  g.save(); g.globalAlpha = a; g.beginPath(); g.arc(cx, cy, R, 0, 7); g.fillStyle = '#050208'; g.fill(); g.clip();
+  if (ready(im)) { const s = Math.max((2 * R) / im.naturalWidth, (2 * R) / im.naturalHeight) * 1.03; g.imageSmoothingQuality = 'high'; g.drawImage(im, cx - (im.naturalWidth * s) / 2, cy - (im.naturalHeight * s) / 2, im.naturalWidth * s, im.naturalHeight * s); }
+  g.restore();
+  g.save(); g.globalAlpha = a; g.lineWidth = 12; g.strokeStyle = OUT; g.beginPath(); g.arc(cx, cy, R + 3, 0, 7); g.stroke(); g.lineWidth = ringCol === '#c2558c' ? 3 : 6; g.strokeStyle = ringCol; if (ringCol !== '#c2558c') { g.shadowColor = ringCol; g.shadowBlur = 16; } g.beginPath(); g.arc(cx, cy, R + 8, 0, 7); g.stroke(); g.restore();
+}
+const EXPOS = { 1: [[362, 350, 278]], 2: [[186, 350, 170], [538, 350, 170]], 3: [[180, 230, 146], [544, 230, 146], [362, 482, 146]] };
+
 /* ================================================================== MICROSCOPUL */
 // sceneOpts: main {img, cap}, size [w, h] (pixelii pozei), steps: [{mode: 'full' | 'zoom' | 'swap', img, cap, rect}] (câte unul pe punct)
 export function mic({ spec }) {
@@ -35,6 +45,13 @@ export function mic({ spec }) {
   // harta mică (toată poza), jos-dreapta
   const mS = Math.min(190 / IW, 125 / IH), mW = IW * mS, mH = IH * mS, mX = SW - 8 - mW, mY = SH - 30 - mH;
   const anchors = steps.map((_, i) => [36 + i * 42, 72]);
+  const exam = o.exam || []; const EP = EXPOS[Math.min(3, exam.length)] || [];
+  function drawExam(g, a) { // pozele reale ale lamei de examen, toate odată (de la mărirea mică la cea mare)
+    if (a <= 0.005) return;
+    g.save(); g.globalAlpha = a; g.fillStyle = BG; g.fillRect(0, 44, SW, SH - 44); g.restore();
+    EP.forEach(([x, y, r], k) => disc(g, exam[k], x, y, r, a));
+    g.save(); g.globalAlpha = a; tag(g, o.examCap, 8, 640, SW - 16, '#ffe36e'); g.restore();
+  }
   const phases = (spec.points || []).map((p) => p.h.split('·')[0].trim());
   function drawMain(g, v, a) {
     const im = img(o.main.img); if (!ready(im) || a <= 0.005) return;
@@ -57,8 +74,10 @@ export function mic({ spec }) {
     draw(g, t, b) {
       g.fillStyle = BG; g.fillRect(-2000, -2000, 4000 + SW, 4000 + SH);
       const i = Math.max(0, Math.min(steps.length - 1, b.i)); const st = steps[i], pv = steps[i - 1];
+      if (st.mode === 'exam') { drawExam(g, 1); tag(g, 'lama de examen · poze reale la microscop', SW - 8, 54, 360, '#ffe36e', 13, 'right'); return; }
+      const fromExam = pv && pv.mode === 'exam';
       const bt = b.i < 0 ? 0 : b.bt; const u = ease(clamp(bt / DZ));
-      const vTo = views[i], vFrom = i > 0 ? views[i - 1] : vFull;
+      const vTo = views[i], vFrom = fromExam ? vTo : i > 0 ? views[i - 1] : vFull;
       // vizorul
       g.save(); g.beginPath(); g.arc(C[0], C[1], R, 0, 7); g.fillStyle = '#050208'; g.fill(); g.clip();
       let v = vTo, mag = vTo.s / sFull;
@@ -80,18 +99,19 @@ export function mic({ spec }) {
       g.save(); g.lineWidth = 14; g.strokeStyle = OUT; g.beginPath(); g.arc(C[0], C[1], R + 4, 0, 7); g.stroke(); g.lineWidth = 3; g.strokeStyle = '#c2558c'; g.beginPath(); g.arc(C[0], C[1], R + 9, 0, 7); g.stroke(); g.restore();
       // starea vizorului (sus-dreapta)
       const done = u >= 0.999;
-      const state = swapNow && u > 0.5 ? 'decupaj la obiectiv mare' : st.mode === 'zoom' || (pv && pv.mode === 'zoom' && !done) ? (mag > 1.05 ? `aceeași poză, mărită ×${mag.toFixed(1).replace('.', ',')}` : 'aceeași poză, alt loc pe lamă') : 'ansamblu · toată poza e pe harta mică';
+      const state = swapNow && u > 0.5 ? 'decupaj la obiectiv mare' : st.mode === 'zoom' || (pv && pv.mode === 'zoom' && !done) ? (mag > 1.05 ? `poza de la LP, mărită ×${mag.toFixed(1).replace('.', ',')}` : 'poza de la LP, alt loc pe lamă') : 'poza de la LP · ansamblu';
       tag(g, state, SW - 8, 54, 330, '#ffe36e', 13, 'right');
       // legenda pasului (jos-stânga)
       tag(g, st.cap, 8, 630, SW - mW - 32);
-      g.save(); g.font = `500 10.5px ${FONT}`; g.fillStyle = 'rgba(246,238,247,.62)'; g.fillText('Pozele: preparatele de la LP (cum le vezi la examen).', 8, 670); g.restore();
+      g.save(); g.font = `500 10.5px ${FONT}`; g.fillStyle = 'rgba(246,238,247,.62)'; g.fillText('Detaliile încercuite: pe pozele preparatelor de la LP.', 8, 670); g.restore();
       // harta mică: unde ești pe lamă
       const mm = img(o.main.img);
       g.save(); g.fillStyle = '#0b0610'; g.strokeStyle = OUT; g.lineWidth = 4; g.beginPath(); g.roundRect(mX - 3, mY - 3, mW + 6, mH + 6, 8); g.fill(); g.stroke();
       if (ready(mm)) { g.globalAlpha = swapNow && u > 0.5 ? 0.45 : 1; g.drawImage(mm, mX, mY, mW, mH); g.globalAlpha = 1; }
       if (!(swapNow || swapPrev)) { g.beginPath(); g.rect(mX, mY, mW, mH); g.clip(); g.strokeStyle = '#ffe36e'; g.lineWidth = 2.5; g.shadowColor = '#ffe36e'; g.shadowBlur = 8; g.beginPath(); g.arc(mX + v.cx * mS, mY + v.cy * mS, Math.max(4, (R / v.s) * mS), 0, 7); g.stroke(); }
       g.restore();
-      tag(g, 'toată poza · cercul = ce vezi în vizor', SW - 8, mY - 28, 260, 'rgba(246,238,247,.8)', 11, 'right');
+      tag(g, 'poza de la LP · cercul = ce vezi în vizor', SW - 8, mY - 28, 270, 'rgba(246,238,247,.8)', 11, 'right');
+      if (fromExam) drawExam(g, 1 - clamp(u * 2.5));
     },
   };
 }
@@ -99,30 +119,25 @@ export function mic({ spec }) {
 /* ================================================================== DD FAȚĂ ÎN FAȚĂ */
 // sceneOpts: main {img, cap}, dd {img, cap}, items: [textul pasului] (partenerul, asemănarea, caracteristicile 1–3), heads: [titlul pasului]
 export function ddface({ spec }) {
-  const o = spec.sceneOpts; const TB = [8, 48, 708, 262], BB = [8, 356, 708, 262];
-  const fit = (im, B) => { const r = Math.min(B[2] / im.naturalWidth, B[3] / im.naturalHeight); return [B[0] + (B[2] - im.naturalWidth * r) / 2, B[1] + (B[3] - im.naturalHeight * r) / 2, im.naturalWidth * r, im.naturalHeight * r]; };
-  function photo(g, name, B) { const im = img(name); g.save(); g.beginPath(); g.roundRect(...B, 12); g.fillStyle = '#0b0610'; g.fill(); g.clip(); if (ready(im)) { g.imageSmoothingQuality = 'high'; g.drawImage(im, ...fit(im, B)); } g.restore(); }
-  function frame(g, B, col) { g.save(); g.lineWidth = col ? 6 : 4; g.strokeStyle = col || OUT; if (col) { g.shadowColor = col; g.shadowBlur = 16; } g.beginPath(); g.roundRect(...B, 12); g.stroke(); g.restore(); }
-  const anchors = [[BB[0] + 28, BB[1] + 24], [SW / 2, 335], [BB[0] + 70, BB[1] + 24], [BB[0] + 112, BB[1] + 24], [BB[0] + 154, BB[1] + 24]];
+  const o = spec.sceneOpts; const L = [186, 318, 172], Rr = [538, 318, 172];
+  const anchors = [[Rr[0] - 63, 112], [SW / 2, L[1]], [Rr[0] - 21, 112], [Rr[0] + 21, 112], [Rr[0] + 63, 112]];
   return {
     W: SW, H: SH, home: { x: SW / 2, y: SH / 2, z: 1 }, cams: null, anchors, labels: [],
     phase: (i) => (i < 0 ? '' : o.heads[i] || ''),
     draw(g, t, b) {
       g.fillStyle = BG; g.fillRect(-2000, -2000, 4000 + SW, 4000 + SH);
       const i = b.i; const a = i < 0 ? 0 : ease(clamp(b.bt / 0.6));
-      photo(g, o.main.img, TB); photo(g, o.dd.img, BB);
-      frame(g, TB, i === 1 ? '#9dff8a' : null); frame(g, BB, i === 1 ? '#9dff8a' : i >= 0 ? '#ffe36e' : null);
-      tag(g, o.main.cap.replace(/^Pe lamă: /, 'Lama ta: '), TB[0] + 8, TB[1] + TB[3] - 31, 520);
-      tag(g, o.dd.cap, BB[0] + 8, BB[1] + BB[3] - 31, 520, '#ffe36e');
-      // banda dintre poze
-      g.save(); g.font = `800 15px "Plus Jakarta Sans", ${FONT}`; g.textBaseline = 'middle'; g.fillStyle = 'rgba(246,238,247,.85)';
-      g.textAlign = 'left'; g.fillText('▲ lama ta', 16, 335); g.textAlign = 'right'; g.fillStyle = '#ffe36e'; g.fillText('partenerul de DD ▼', SW - 16, 335); g.restore();
-      // textul pasului
+      disc(g, o.main.img, L[0], L[1], L[2], 1, i === 1 ? '#9dff8a' : '#c2558c');
+      disc(g, o.dd.img, Rr[0], Rr[1], Rr[2], 1, i === 1 ? '#9dff8a' : i >= 0 ? '#ffe36e' : '#c2558c');
+      g.save(); g.font = `800 15px "Plus Jakarta Sans", ${FONT}`; g.textBaseline = 'middle'; g.textAlign = 'center'; g.fillStyle = 'rgba(246,238,247,.9)'; g.fillText('lama ta', L[0], 520); g.fillStyle = '#ffe36e'; g.fillText('partenerul de DD', Rr[0], 520); g.restore();
+      g.save(); g.font = `700 13px ${FONT}`; const w1 = Math.min(336, g.measureText(o.main.cap).width + 14), w2 = Math.min(336, g.measureText(o.dd.cap).width + 14); g.restore();
+      tag(g, o.main.cap, L[0] - w1 / 2, 538, 340); tag(g, o.dd.cap, Rr[0] - w2 / 2, 538, 340, '#ffe36e');
       if (i >= 0 && o.items[i]) {
         g.save(); g.globalAlpha = a; g.font = `700 15px ${FONT}`; const lines = wrap(g, o.items[i], 684).slice(0, 2);
-        g.fillStyle = 'rgba(20,10,28,.92)'; g.strokeStyle = i === 1 ? '#9dff8a' : '#ffe36e'; g.lineWidth = 2; g.beginPath(); g.roundRect(8, 626, 708, 44, 10); g.fill(); g.stroke();
-        g.fillStyle = '#f6eef7'; g.textBaseline = 'middle'; g.textAlign = 'left'; lines.forEach((ln, k) => g.fillText(ln, 20, lines.length === 1 ? 648 : 638 + k * 19)); g.restore();
+        g.fillStyle = 'rgba(20,10,28,.92)'; g.strokeStyle = i === 1 ? '#9dff8a' : '#ffe36e'; g.lineWidth = 2; g.beginPath(); g.roundRect(8, 592, 708, 44, 10); g.fill(); g.stroke();
+        g.fillStyle = '#f6eef7'; g.textBaseline = 'middle'; g.textAlign = 'left'; lines.forEach((ln, k) => g.fillText(ln, 20, lines.length === 1 ? 614 : 604 + k * 19)); g.restore();
       }
+      g.save(); g.font = `500 10.5px ${FONT}`; g.fillStyle = 'rgba(246,238,247,.62)'; g.fillText(o.credit, 8, 664); g.restore();
     },
   };
 }

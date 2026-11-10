@@ -7,12 +7,21 @@
 import { GLOS as G0, TERMS as T0, SLIDES as S0 } from './slides_base.js';
 import { RECTS } from './rects.js';
 
+// Pozele reale ale lamelor de examen (din notițele „Histology LP”, 10.11.2026): decupate pe câmpul microscopului, în ordinea mărire mică → mare.
+// Lama 1 (mezenter, argentic) nu are poză de examen în notițe; la adipos e poza de adipocite din notițe.
+const EXN = { cub: 3, pri: 3, ps: 3, es: 3, uro: 3, tub: 2, seb: 3, sub: 3, tir: 2, sr: 2, pan: 3, gr: 1, col: 3, ret: 2, lax: 3, adi: 1, ten: 1, rt: 1 };
+const EXREP = { cub: 1, pri: 2, ps: 1, es: 1, uro: 1, tub: 1, seb: 2, sub: 2, tir: 0, sr: 1, pan: 2, gr: 0, col: 2, ret: 1, lax: 2, adi: 0, ten: 0, rt: 0 }; // poza reprezentativă, pentru DD
+const exList = (k) => Array.from({ length: EXN[k] || 0 }, (_, j) => `ex_${k}_${j}`);
+const organOf = (s) => s.kick.split(' · ').slice(2).join(' · ');
+const exSide = (k, s, lp) => (EXN[k] ? { img: `ex_${k}_${EXREP[k]}`, cap: k === 'adi' ? 'Examen: adipocite · HE' : `Examen: ${organOf(s)}` } : { img: lp.img, cap: lp.cap.replace(/^(Pe lamă|DD): /, 'Poza de la LP: ') });
+const BYKEY = {};
 const strip = (s) => s.replace(/!{2}|\*{2}/g, '');
 const short = (t) => t.split(':')[0].trim();
 
 function micSlide(s) {
   const o = s.sceneOpts; const n = s.points.length; const m = RECTS[o.seq[1].img] || Object.values(RECTS).find((r) => r.img === o.main.img);
-  const steps = [{ mode: 'full', img: o.main.img, cap: o.main.cap }];
+  const ex = exList(o.main.img);
+  const steps = [{ mode: ex.length ? 'exam' : 'full', img: o.main.img, cap: o.main.cap }];
   const points = [s.points[0]]; // fișa, neschimbată: punctul i al fișei = pasul i din vizor
   for (let i = 1; i < n - 1; i++) {
     const e = o.seq[i]; const r = RECTS[e.img];
@@ -21,8 +30,8 @@ function micSlide(s) {
     points.push(s.points[i]);
   }
   return {
-    scene: 'mic', sceneOpts: { main: o.main, size: m.size, steps }, anim: true, beatDur: 4,
-    spec: 'Vizor rotund cu poza reală a lamei (același fișier ca în fișă, nemodificat). P1: vedere de ansamblu (poza umple vizorul; toată poza e pe harta mică din colț, unde cercul galben arată ce se vede în vizor). Pe fiecare punct următor camera se apropie, pe aceeași poză, de locul decupajului existent al punctului (poziția din rects.js), se oprește acolo și apare decupajul cu elipsa lui din recapitularea veche; Dacă decupajul vine din altă poză (obiectiv mare), poza se schimbă prin stingere/aprindere, fără zoom. Se joacă o dată și rămâne pe cadrul final.',
+    scene: 'mic', sceneOpts: { main: o.main, size: m.size, steps, exam: ex, examCap: o.main.img === 'adi' ? 'Examen: adipocite · HE (poză reală la microscop)' : `Lama de examen: ${organOf(s)} (${ex.length === 1 ? 'poză reală' : ex.length + ' poze reale, de la mărire mică la mare'})` }, anim: true, beatDur: 4,
+    spec: 'Vizor rotund cu poza reală a lamei (același fișier ca în fișă, nemodificat). P1 (diagnosticul): pozele reale ale lamei de examen, toate odată, în vizoare rotunde, de la mărirea mică la cea mare (lama 1 nu are poză de examen: acolo e poza de la LP). Pe fiecare punct următor apare vizorul mare cu poza de la LP și camera se apropie de locul decupajului existent al punctului (poziția din rects.js), se oprește acolo și apare decupajul cu elipsa lui din recapitularea veche; Dacă decupajul vine din altă poză (obiectiv mare), poza se schimbă prin stingere/aprindere, fără zoom. Se joacă o dată și rămâne pe cadrul final.',
     kick: s.kick, title: s.title,
     hud: s.hud, points,
     ...(s.warn ? { warn: s.warn } : {}),
@@ -36,8 +45,8 @@ function ddSlide(s) {
   const heads = ['Partenerul · 0,5 p', 'Asemănarea (nepunctată)', 'La partener · 1 · 0,5 p', 'La partener · 2 · 0,5 p', 'La partener · 3 · 0,5 p'];
   const items = [strip(partner).replace(/\s*\(0,5 p\)$/, ''), 'Asemănarea: ' + same, ...feats.map((f, k) => `La partener (${k + 1}): ${f}`)];
   return {
-    scene: 'ddface', sceneOpts: { main: o.main, dd: o.dd, items, heads }, anim: false, beatDur: 4,
-    spec: 'Static: sus poza lamei, jos poza partenerului de DD (aceleași fișiere și legende ca în fișă, nemodificate, fără cercuri). Chenarul galben pe partener la P1 și P3–P5, verde pe ambele la asemănare; jos apare textul pasului.',
+    scene: 'ddface', sceneOpts: { main: exSide(o.main.img, s, o.main), dd: exSide(o.dd.img, BYKEY[o.dd.img], o.dd), items, heads, credit: 'Pozele: lamele de examen la microscop (unde nu există, poza de la LP).' }, anim: false, beatDur: 4,
+    spec: 'Static: două vizoare alăturate, stânga lama, dreapta partenerul de DD, cu pozele reale ale lamelor de examen (fără cercuri; lama 1 are poza de la LP). Inelul galben pe partener la P1 și P3–P5, verde pe ambele la asemănare; jos apare textul pasului.',
     kick: s.kick.replace(/(Lama \d+ din 19).*/, '$1 · DD față în față'), title: `${short(s.title)} față în față cu partenerul de DD`,
     hud: [s.hud[0], 'DD · 2 p'],
     points: [
@@ -64,6 +73,7 @@ const SCHELET = {
   say: S0[0].say, warn: S0[0].warn,
 };
 
+S0.forEach((s) => { if (s.scene === 'photo') BYKEY[s.sceneOpts.main.img] = s; });
 const out = [SCHELET];
 S0.forEach((s) => { if (s.scene === 'photo') out.push(micSlide(s), ddSlide(s)); });
 export const SLIDES = out;
