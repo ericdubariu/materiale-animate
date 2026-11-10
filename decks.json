@@ -283,6 +283,18 @@
    "ord": 900
   },
   {
+   "id": "recap-farma-01-04-v2-anim",
+   "subj": "farma",
+   "tip": "lp",
+   "title": "Recapitulare OSPE · LP 1–4 (nou, în probă)",
+   "sub": "Aceleași 28 de cazuri pe barem, cu animații noi: drumul medicamentului, receptorii pas cu pas, curbe desenate live și „cazul, văzut” înaintea fișelor · recapitularea veche rămâne mai sus",
+   "slides": 55,
+   "path": "lp/recap-farma-01-04-v2-anim/index.html",
+   "added": "2026-11-10",
+   "updated": "2026-11-10",
+   "ord": 910
+  },
+  {
    "id": "recap-anatopat-01-26-anim",
    "subj": "anatopat",
    "tip": "lp",
