@@ -10,7 +10,7 @@ import { GLOS as G0, TERMS as T0 } from './glos.js';
 import { PREPS } from './preps.js';
 import { MECH1 } from './m1s.js';
 import { MECH2 } from './m2s.js';
-import { MECH3 } from './m3s.js';
+import { MECH3, GLOS3 } from './m3s.js';
 const MECH = { ...MECH1, ...MECH2, ...MECH3 }; // { nrPreparat: [slide, …] }
 
 const firstOld = (n) => 7 + 2 * (n - 1);
@@ -18,9 +18,9 @@ const redCap = (arr, max) => { let c = 0; return arr.map((s) => s.replace(/!!(.+
 
 /* ---------- (10) scheletul stației ---------- */
 const SKEL = {
-  scene: 'skel', anim: false, spec: 'Static: cele 7 rubrici ale fișei oficiale, de sus în jos, pe o coloană (1 organ, 2 leziune, 3 definiție = chenarul „obligatoriu · 3 p”; 4 descriere, 5 cauze, 6 complicații, 7 DD); rubrica punctului activ se aprinde. Jos: „minim 5 p”.',
+  scene: 'skel', anim: false, spec: 'Static: cei 7 pași ai fișei oficiale, de sus în jos, pe o coloană (1 organ, 2 leziune, 3 definiție = chenarul „obligatoriu · 3 p”; 4 descriere, 5 cauze, 6 complicații, 7 DD); pasul punctului activ se aprinde. Jos: „minim 5 p”.',
   kick: 'Recapitulare OSPE · Scheletul stației', title: 'Ordinea fișei: aceeași la toate cele 26 de preparate',
-  hud: ['spui rubricile în ordinea asta'],
+  hud: ['spui în ordinea asta'],
   points: [
     { h: 'Organ → leziune → definiție', d: ['!!3 puncte obligatorii!!: le spui primele, câte o frază'] },
     { h: 'Descrierea', d: ['pe buline: !!o bulină = 1 punct!!', 'lama: **ob. mic → ob. mare** · piesa: **dimensiune, formă, culoare, consistență, suprafață, pe secțiune**'] },
@@ -36,16 +36,16 @@ const SKEL = {
 // P = bulinele de la „obiectiv mic” (ansamblul), M[k] = bulinele structurii k (în ordinea adnotărilor vechi). [punct, bulină] în fișa 1/2; un text = frază scurtă scoasă din aceeași fișă.
 const SC = {
   1: { P: [[2, 0], [2, 1]], M: [[[2, 2]], [[2, 3]]] },
-  2: { P: [], M: [[[2, 1], [2, 2]], [[2, 0]], ['**vase congestionate** în septuri']] },
-  3: { P: [[2, 1]], M: [[[2, 0]], [[2, 2]], ['**capilare congestionate** în lizereu']] },
-  4: { P: [[2, 4]], M: [[[2, 0]], [[2, 1]], [[2, 3]]] },
+  2: { P: ['pe aceeași lamă cauți și **zona de infarct** (a doua leziune): alveole inundate hemoragic, septuri fără nuclei'], M: [[[2, 1], [2, 2]], [[2, 0]], ['**vase congestionate** în septuri']] },
+  3: { P: [[2, 1]], M: [[[2, 0]], [[2, 2]], ['**vas congestionat** (congestie)']] },
+  4: { P: [], M: [[[2, 0], [2, 2], [2, 4]], [[2, 1]], ['**fibrele normale** ale miocardului vecin; printre ele pătrunde țesutul de granulație']] },
   5: { P: [[2, 1]], M: [['straturi **roșii** (bogate în hematii; roșu închis macroscopic)'], ['straturi **slab eozinofile** (trombocite + fibrină; palide macroscopic)', 'alternanța lor = !!liniile lui Zahn!!'], [[2, 0]]] },
   13: { P: [], M: [[[2, 0], [2, 1]], [[2, 2]], [[2, 3]]] },
   14: { P: [[2, 5]], M: [[[2, 1], [2, 2], [2, 3]], [[2, 0]]] },
   15: { P: [], M: [[[2, 3], [2, 4]], [[2, 1], [2, 2]], [[2, 0]]] },
   16: { P: [[2, 1]], M: [[[2, 2], [2, 3]], [[2, 4]], ['**granulocite** (inflamația purulentă = exsudare dominată de leucodiapedeză)']] },
   17: { P: [[2, 1]], M: [[[2, 2]], [[2, 3], [2, 4]], [[2, 5]]] },
-  18: { P: [[2, 5]], M: [[[2, 1]], [[2, 2], [2, 3]], [[2, 0], [2, 4]]] },
+  18: { P: [[2, 5], [2, 4]], M: [[[2, 1]], [[2, 2], [2, 3]], [[2, 0]]] },
 };
 const cut = (s) => s.replace(/^ob\. mic: /, '').replace(/\.$/, '');
 function scopeSlide(n) {
@@ -102,5 +102,5 @@ S0.forEach((s, i) => { out.push(s); (INS[i + 1] || []).forEach((x) => out.push(x
 // coperta: spune ce e nou și în ce ordine vin slide-urile unui preparat (restul textului rămâne cel vechi)
 out[0] = { ...out[0], xtra: 'Varianta nouă (în probă): la fiecare preparat, înaintea stației vin „de ce arată așa” (mecanismul, unde ajută) și, la lame, „la microscop” (aceeași poză, obiectiv mic → mare); după stație vine „DD față în față”. Pozele și fișele sunt cele din recapitularea veche.' };
 export const SLIDES = out;
-export const GLOS = G0;
+export const GLOS = [...G0, ...GLOS3].filter((x, k, arr) => arr.findIndex((y) => y[0] === x[0]) === k);
 export const TERMS = T0;

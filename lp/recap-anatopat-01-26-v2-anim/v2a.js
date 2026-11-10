@@ -38,7 +38,7 @@ export function skel() {
     phase: (i) => ['ordinea fișei', 'obligatoriu · 3 p', 'descrierea', 'cauzele', 'complicațiile', 'DD'][i + 1] || '',
     draw(g, t, b) {
       bgK(g, [[500, 300, 620, '#C2558C', 0.08]]);
-      tx(g, 'Fișa oficială, de sus în jos', 500, 70, 30, K.ink);
+      tx(g, 'Ordinea de pe fișă, de sus în jos', 500, 70, 30, K.ink);
       // coloana („scheletul”)
       g.save(); g.strokeStyle = 'rgba(255,243,230,.22)'; g.lineWidth = 8; g.lineCap = 'round'; g.beginPath(); g.moveTo(X0, Y0 - 20); g.lineTo(X0, Y0 + 6 * DY + 20); g.stroke(); g.restore();
       // acolada „obligatoriu”
