@@ -1,37 +1,31 @@
-// Recapitulare OSPE Histologie LP 2–7 · varianta nouă (v2, 10.11.2026).
-// Cele 25 de slide-uri vechi vin NESCHIMBATE din slides_base.js (text, poze, scene). Aici se ADAUGĂ doar:
-//  1) „scheletul stației” (ordinea de punctaj), după slide-ul 1;
-//  2) pentru fiecare dintre cele 19 lame: „la microscop” ÎNAINTE de fișă și „DD față în față” DUPĂ fișă.
-// Slide-urile noi nu aduc fapte noi: textul lor e luat automat din fișa aceleiași lame (diagnosticul, noțiunile de 1 p, rândurile de DD),
-// iar pozele și legendele sunt cele din slide-ul vechi (sceneOpts.main / seq / dd). Pozițiile decupajelor pe lamă: rects.js.
+// Recapitulare OSPE Histologie LP 2–7 · varianta nouă (v2, 10.11.2026; refăcută la cererea lui Eric: fără slide-urile identice cu cea veche).
+// Deck-ul are DOAR slide-uri noi: scheletul stației + pentru fiecare dintre cele 19 lame:
+//  1) „la microscop” = fișa completă a lamei (diagnosticul + toate noțiunile cu punctajul lor + bonusul + capcana), pe poza reală din vizor;
+//  2) „DD față în față” = rândurile de DD ale fișei, pe rând, cu cele două poze reale.
+// Textul vine NESCHIMBAT din fișele recapitulării vechi (slides_base.js = copia slides.js din recap-histo-ospe-anim), la fel pozele și legendele
+// (sceneOpts.main / seq / dd). Pozițiile decupajelor pe lamă: rects.js. Capcanele finale și tabelele rămân în recapitularea veche.
 import { GLOS as G0, TERMS as T0, SLIDES as S0 } from './slides_base.js';
 import { RECTS } from './rects.js';
 
 const strip = (s) => s.replace(/!{2}|\*{2}/g, '');
-const noPts = (h) => h.replace(/ · [\d,]+ p( · obligatoriu)?$/, '');
 const short = (t) => t.split(':')[0].trim();
-// noțiunile de 1 p dintr-un punct al fișei (fără marcaje)
-const onePt = (p) => p.d.flatMap((x) => x.split(' · ')).filter((x) => /\(1 p\)\s*$/.test(x)).map((x) => strip(x).replace(/\s*\(1 p\)\s*$/, ''));
 
 function micSlide(s) {
   const o = s.sceneOpts; const n = s.points.length; const m = RECTS[o.seq[1].img] || Object.values(RECTS).find((r) => r.img === o.main.img);
   const steps = [{ mode: 'full', img: o.main.img, cap: o.main.cap }];
-  const points = [{ h: 'Ansamblul · întâi spui diagnosticul', d: [s.points[0].d[0]] }];
+  const points = [s.points[0]]; // fișa, neschimbată: punctul i al fișei = pasul i din vizor
   for (let i = 1; i < n - 1; i++) {
     const e = o.seq[i]; const r = RECTS[e.img];
     const mode = e.img === o.main.img ? 'full' : r && r.img === o.main.img ? 'zoom' : 'swap';
     steps.push({ mode, img: e.img, cap: e.cap, rect: r && r.rect });
-    const one = onePt(s.points[i]);
-    const d = [`pe poză: **${e.cap}**` + (mode === 'swap' ? ' (decupaj la obiectiv mare)' : '')];
-    if (one.length) d.push(`noțiunile de 1 p ale punctului: ${one.join(' · ')}`);
-    points.push({ h: noPts(s.points[i].h), d });
+    points.push(s.points[i]);
   }
   return {
     scene: 'mic', sceneOpts: { main: o.main, size: m.size, steps }, anim: true, beatDur: 4,
     spec: 'Vizor rotund cu poza reală a lamei (același fișier ca în fișă, nemodificat). P1: vedere de ansamblu (poza umple vizorul; toată poza e pe harta mică din colț, unde cercul galben arată ce se vede în vizor). Pe fiecare punct următor camera se apropie, pe aceeași poză, de locul decupajului existent al punctului (poziția din rects.js), se oprește acolo și apare decupajul cu elipsa lui din recapitularea veche; Dacă decupajul vine din altă poză (obiectiv mare), poza se schimbă prin stingere/aprindere, fără zoom. Se joacă o dată și rămâne pe cadrul final.',
-    kick: s.kick.replace(/(Lama \d+ din 19).*/, '$1 · la microscop'), title: `${short(s.title)} · la microscop`,
-    hud: [s.hud[0], steps.some((x) => x.mode === 'swap') ? 'poza lamei + decupaj la obiectiv mare' : 'aceeași poză, doar mărită'], points,
-    ...(o.main.img === 'ret' ? { warn: S0[0].warn } : {}),
+    kick: s.kick, title: s.title,
+    hud: s.hud, points,
+    ...(s.warn ? { warn: s.warn } : {}),
   };
 }
 
@@ -51,33 +45,27 @@ function ddSlide(s) {
       { h: heads[1], d: [same] },
       ...feats.map((f, k) => ({ h: `La partener · caracteristica ${k + 1} · 0,5 p`, d: [`**${f}**`] })),
     ],
-    ...(o.dd.img === 'ret' || o.main.img === 'ret' ? { warn: S0[0].warn } : {}),
+    ...(o.dd.img === 'ret' ? { warn: S0[0].warn } : {}),
   };
 }
 
 const SCHELET = {
-  scene: 'schelet', anim: false, beatDur: 4,
+  deckName: S0[0].deckName, scene: 'schelet', anim: false, beatDur: 4,
   spec: 'Static: cinci trepte în ordinea de punctaj a fișei (citire, diagnostic, diagnostic pozitiv, DD, bonus), cu punctajul fiecăreia; treapta punctului se aprinde; jos, bara 1 + 6 + 2 = 9 p și 1 p din oficiu.',
   kick: 'Recapitulare OSPE · Histologie · Scheletul stației', title: 'Scheletul stației: aceeași ordine la toate cele 19 lame',
   hud: ['7 min', '9 p + 1 din oficiu'],
   points: [
     { h: '1 min citești, 6 min vorbești', d: ['contează doar ce spui **cu voce tare**'] },
-    { h: 'Diagnosticul · 1 p', d: ['!!țesut/organ + colorație + organul!!', 'obligatoriu și eliminatoriu: fără el, stația are **0 p**'] },
-    { h: 'Diagnostic pozitiv · maxim 6 p', d: ['întâi **ob. mic**, apoi **ob. mare**', 'noțiuni scurte, de 1 p (cele decisive) sau 0,5 p'] },
+    { h: 'Diagnosticul · 1 p', d: ['!!țesut/organ + colorație + organul!!, ex.: „fibrele de reticulină, impregnație argentică, splină”', 'obligatoriu și eliminatoriu: fără el, stația are **0 p**'] },
+    { h: 'Diagnostic pozitiv · maxim 6 p', d: ['întâi **ob. mic**, apoi **ob. mare**', '7–10 noțiuni scurte, de 1 p (cele decisive) sau 0,5 p'] },
     { h: 'Diagnostic diferențial · maxim 2 p', d: ['!!o singură lamă-partener, cu colorația și organul: 0,5 p!!', '3 caracteristici ale partenerului: câte 0,5 p'] },
     { h: 'Bonus · maxim 0,5 p', d: ['informații corecte în plus despre preparat: 0,25 p/noțiune', 'total: maxim 9 p + 1 p din oficiu'] },
   ],
-  say: 'La fiecare lamă urmează trei slide-uri, în ordinea asta: la microscop (ce vezi) → fișa (ce spui, cu punctajul) → DD față în față.',
+  say: S0[0].say, warn: S0[0].warn,
 };
 
-const out = [];
-S0.forEach((s, i) => {
-  const lama = s.scene === 'photo';
-  if (lama) out.push(micSlide(s));
-  out.push(s);
-  if (lama) out.push(ddSlide(s));
-  if (i === 0) out.push(SCHELET);
-});
+const out = [SCHELET];
+S0.forEach((s) => { if (s.scene === 'photo') out.push(micSlide(s), ddSlide(s)); });
 export const SLIDES = out;
 export const GLOS = G0;
 // „zona medulară” din glosar e a nodulului limfatic: o legăm doar de formularea de pe lama 19, ca să nu apară la medulara renală / suprarenală
