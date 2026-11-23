@@ -112,6 +112,8 @@ button{font-family:inherit}
 .seg button small{font:700 11.5px/1 var(--f-ui);color:inherit;opacity:.8;background:var(--tint);border-radius:999px;padding:3px 7px;font-variant-numeric:tabular-nums}
 .seg button[aria-selected="true"]{color:var(--accent-ink);background:var(--accent)}
 .seg button[aria-selected="true"] small{background:rgba(255,255,255,.28);opacity:1}
+.seg.mod{margin-right:12px}
+.seg.mod:empty{display:none}
 
 .lead2{margin:-6px 0 20px;color:var(--body);max-width:62ch}
 
@@ -273,6 +275,7 @@ footer{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;font-si
       <div class="cols">
         <nav class="rail" id="rail" aria-label="Materii"></nav>
         <div>
+          <div class="seg mod" role="tablist" aria-label="Modulul" id="modSeg"></div>
           <div class="seg" role="tablist" aria-label="Tipul materialului">
             <button type="button" role="tab" id="tLp" aria-controls="list" aria-selected="true">LP <small id="nLp">0</small></button>
             <button type="button" role="tab" id="tCurs" aria-controls="list" aria-selected="false">Curs <small id="nCurs">0</small></button>
@@ -485,7 +488,8 @@ addEventListener('popstate', () => {
 });
 
 /* ---------- secțiunile și lista ---------- */
-let DECKS = [], DATA = null;
+let DECKS = [], DATA = null, MOD = 1, KIND = 'lp';
+const modOf = (d) => d.modul || 1;
 const SIMS = [
   { id: 'sim-unix', kind: 'unix', title: 'Simulare UNIX', sub: 'Grile cu 5 variante (2–5 corecte) și complement simplu, notare Full Match. Alegi materiile, blocurile și câte întrebări.', fmt: 'Full Match · blocuri', lab: 'UNIX', subj: 'unix', path: 'sim/index.html#unix' },
   { id: 'sim-histo', kind: 'lp', subj: 'histo', title: 'Histologie · OSPE', sub: 'Cele 19 lame din LP 2–7, pe fișa de evaluare oficială: diagnostic + colorație (1 p), diagnostic pozitiv (6 p), DD cu o lamă (2 p), 1 p din oficiu.', fmt: 'OSPE · fișa oficială', lab: '7 min', path: 'sim/index.html#lp=histo' },
@@ -505,8 +509,19 @@ function setTab(t, save = true) {
 }
 function setKind(k, save = true) {
   $('tLp').setAttribute('aria-selected', String(k !== 'curs')); $('tCurs').setAttribute('aria-selected', String(k === 'curs'));
-  renderList(k === 'curs' ? 'curs' : 'lp');
+  KIND = k === 'curs' ? 'curs' : 'lp';
+  renderList(KIND);
   if (save) store.set('kind', k);
+}
+// modulele: fiecare deck are `modul` în decks.json (lipsă = Modulul 1); se deschide pe cel mai nou
+function setMod(m, save = true) {
+  MOD = m;
+  const mods = [...new Set(DECKS.map(modOf))].sort((a, b) => b - a);
+  $('modSeg').innerHTML = mods.length > 1 ? mods.map((x) => `<button type="button" role="tab" data-mod="${x}" aria-controls="list" aria-selected="${x === MOD}">Modulul ${x} <small>${DECKS.filter((d) => modOf(d) === x).length}</small></button>`).join('') : '';
+  $('nLp').textContent = DECKS.filter((x) => modOf(x) === MOD && (x.tip || 'lp') === 'lp').length;
+  $('nCurs').textContent = DECKS.filter((x) => modOf(x) === MOD && x.tip === 'curs').length;
+  renderList(KIND);
+  if (save) store.set('modul', String(m));
 }
 const col = (k) => (DATA && DATA.subjects[k] && DATA.subjects[k].color) || '#C2558C';
 function renderSims() {
@@ -528,17 +543,18 @@ $('tPractice').addEventListener('click', () => setTab('practice'));
 $('tExams').addEventListener('click', () => setTab('exams'));
 $('tLp').addEventListener('click', () => setKind('lp'));
 $('tCurs').addEventListener('click', () => setKind('curs'));
+$('modSeg').addEventListener('click', (e) => { const b = e.target.closest('button[data-mod]'); if (b) setMod(+b.dataset.mod); });
 $('nextEx').addEventListener('click', (e) => { e.preventDefault(); setTab('exams'); $('pExams').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 $('rail').addEventListener('click', (e) => {
   const b = e.target.closest('button[data-sec]'); if (!b) return;
   const s = document.getElementById('sec-' + b.dataset.sec); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
-const ORDER = ['histo', 'anatopat', 'farma', 'micro', 'fizio', 'fiziopat', 'embrio'];
+const ORDER = ['histo', 'anatopat', 'farma', 'micro', 'fizio', 'fiziopat', 'embrio', 'genetica'];
 function renderList(kind) {
   const el = $('list');
   if (!DATA) return;
   const groups = {};
-  for (const d of DECKS.filter((x) => (x.tip || 'lp') === kind)) (groups[d.subj] ||= []).push(d);
+  for (const d of DECKS.filter((x) => modOf(x) === MOD && (x.tip || 'lp') === kind)) (groups[d.subj] ||= []).push(d);
   for (const k in groups) groups[k].sort((a, b) => (a.ord ?? 500) - (b.ord ?? 500));
   const keys = Object.keys(groups).sort((a, b) => (ORDER.indexOf(a) + 99) % 99 - (ORDER.indexOf(b) + 99) % 99);
   const now = Date.now();
@@ -621,9 +637,10 @@ fetch('examene.json', { cache: 'no-cache' }).then((r) => r.json()).then(renderEx
   try { DATA = await (await fetch('decks.json', { cache: 'no-cache' })).json(); }
   catch (e) { $('list').innerHTML = '<p class="err">Lista nu s-a putut încărca. Reîncarcă pagina.</p>'; return; }
   DECKS = DATA.decks;
-  $('nLp').textContent = DECKS.filter((x) => (x.tip || 'lp') === 'lp').length;
-  $('nCurs').textContent = DECKS.filter((x) => x.tip === 'curs').length;
-  setKind(store.get('kind') === 'curs' ? 'curs' : 'lp', false);
+  KIND = store.get('kind') === 'curs' ? 'curs' : 'lp';
+  const mods = [...new Set(DECKS.map(modOf))].sort((a, b) => b - a), m0 = +store.get('modul');
+  MOD = mods.includes(m0) ? m0 : (mods[0] || 1);
+  setKind(KIND, false); setMod(MOD, false);
   const start = location.hash.slice(1);
   const d0 = simById(start) ? { ...simById(start), game: true } : start && DECKS.find((x) => x.id === start);
   renderSims();

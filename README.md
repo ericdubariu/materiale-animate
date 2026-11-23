@@ -13,7 +13,7 @@ Repo-ul e sursa de adevăr: materialele animate se publică doar aici (din 25.10
   - **Exersat**: simulările de examen din `sim/`.
   - **Calendarul examenelor**: examenele modulului (materie, format, data, ora, locul, confirmat / de confirmat), citite din `examene.json`; examenele trecute apar estompate, următorul e evidențiat cu numărătoarea zilelor.
   Deck-urile și jocul se deschid în pagină (iframe), ca ecranul complet să rămână activ. Temă deschisă / închisă (după sistem, cu buton de schimbat). Butonul „Ecran complet” folosește Fullscreen API; pe telefon/tabletă, la intrare apare ghidul „Adaugă pe ecranul principal” (iPhone/iPad + Android; `manifest.json` cu `display: fullscreen`). Statistici anonime Umami, fără cookie-uri și fără nume.
-- `decks.json` — `subjects` (nume + culoare) și `decks` (id, subj, tip, title, sub, slides, path, added, updated, ord).
+- `decks.json` — `subjects` (nume + culoare) și `decks` (id, subj, tip, modul, title, sub, slides, path, added, updated, ord). `modul` = modulul din care face parte materialul (lipsă = Modulul 1); pagina „Învățat” are un comutator pe module și se deschide pe cel mai nou.
 - `examene.json` — calendarul examenelor; se actualizează aici când se schimbă o dată, o oră sau o sală (câmpurile `null` apar ca „de confirmat”).
 - `lp/<id>/` — câte un deck animat (`index.html`, `engine.js`, `slides.js`, `scenes2d.js`, `kit2d.js`, `atlas.js`, `data.json`, `img/`…).
 - `sim/` — simulările de examen (`index.html`, `pachete/`, `fonts/`); sursa și build-ul în `sim_src/` (`app.html`, `build_site.py`).

@@ -27,6 +27,10 @@
   "embrio": {
    "name": "Embriologie",
    "color": "#C4541A"
+  },
+  "genetica": {
+   "name": "Genetică",
+   "color": "#2E9E5B"
   }
  },
  "decks": [
@@ -365,6 +369,19 @@
    "added": "2026-11-10",
    "updated": "2026-11-10",
    "ord": 914
+  },
+  {
+   "id": "genetica-lp01-anim",
+   "subj": "genetica",
+   "tip": "lp",
+   "modul": 2,
+   "title": "LP 1 · Cromozomii umani și diviziunea celulară",
+   "sub": "Cromozomii, ciclul celular, mitoza, meioza, fecundarea · baza pentru testul-surpriză pe slide-urile 3–7",
+   "slides": 30,
+   "path": "lp/genetica-lp01-anim/index.html",
+   "added": "2026-11-23",
+   "updated": "2026-11-23",
+   "ord": 10
   }
  ]
 }
